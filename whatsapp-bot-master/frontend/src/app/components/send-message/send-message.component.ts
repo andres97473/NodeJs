@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 
@@ -17,13 +17,13 @@ export class SendMessageComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  sendMessage(forma: NgForm) {
+  sendMessage(nTo: any, nMessage: any) {
     //console.log(this.to, this.message);
 
     this.http
       .post(this.URL, {
-        to: this.to,
-        message: this.message,
+        to: nTo,
+        message: nMessage,
       })
       .subscribe(
         (res) => {
@@ -34,5 +34,30 @@ export class SendMessageComponent implements OnInit {
           console.log(err);
         }
       );
+  }
+
+  sendMessageButton() {
+    this.sendMessage(this.to, this.message);
+  }
+
+  sendMessagesPrueba() {
+    const number1 = '3226798392';
+    const number2 = '3176996191';
+    const number3 = '31769';
+
+    const msg1 = 'Hola como estas';
+    const msg2 = 'Esta es una prueba';
+    const msg3 = 'de envio de mensajes';
+
+    console.log('prueba boton');
+    this.sendMessage(number1, msg1);
+    this.sendMessage(number2, msg1);
+    this.sendMessage(number3, msg1);
+    this.sendMessage(number1, msg2);
+    this.sendMessage(number2, msg2);
+    this.sendMessage(number3, msg2);
+    this.sendMessage(number1, msg3);
+    this.sendMessage(number2, msg3);
+    this.sendMessage(number3, msg3);
   }
 }

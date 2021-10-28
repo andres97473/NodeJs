@@ -1,5 +1,5 @@
 <div class="wrapper">
-  <form (submit)="sendMessage(forma)" #forma="ngForm">
+  <form (submit)="sendMessageButton()" #forma="ngForm">
     <input
       type="text"
       [ngModelOptions]="{ standalone: true }"
@@ -16,4 +16,11 @@
     />
     <button>Enviar</button>
   </form>
+</div>
+
+<div>
+  <h1>Prueba de envio varios mensajes</h1>
+  <button type="button" (click)="sendMessagesPrueba()">
+    Enviar Varios mensajes
+  </button>
 </div>

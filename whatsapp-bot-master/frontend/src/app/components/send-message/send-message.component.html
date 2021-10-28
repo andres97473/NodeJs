@@ -1,0 +1,19 @@
+<div class="wrapper">
+  <form (submit)="sendMessage(forma)" #forma="ngForm">
+    <input
+      type="text"
+      [ngModelOptions]="{ standalone: true }"
+      name="to"
+      [(ngModel)]="to"
+      placeholder="Numero de Telefono"
+    />
+    <input
+      type="text"
+      [ngModelOptions]="{ standalone: true }"
+      name="message"
+      [(ngModel)]="message"
+      placeholder="Ingrese el mensaje"
+    />
+    <button>Enviar</button>
+  </form>
+</div>

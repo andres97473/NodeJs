@@ -1,0 +1,19 @@
+sequelize init
+
+sequelize model:generate --name Contact --attributes firstname:string,lastname:string,phone:string,email:string
+
+sequelize db:migrate
+
+sequelize seed:generate --name seed-contact
+
+sequelize db:seed:all
+
+
+// pasar argumentos por consola
+node . --create:Contact
+
+// crear contacto
+node . --create:Contact --firstname=Marluam --lastname=Espiritusanto --phone=333445522 --email="marluam@email.com"
+
+// listar contactos
+node . --read:Contact

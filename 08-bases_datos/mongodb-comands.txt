@@ -1,0 +1,8 @@
+// instalar libreria de mongose.
+npm i mongoose
+
+// instalar libreria de node-cron para ejecutar comandos en determinado tiempo.
+npm i node-cron axios cheerio
+
+// libreria para configurar las variables de entorno.
+npm i dotenv

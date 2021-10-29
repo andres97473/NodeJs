@@ -11,11 +11,11 @@
     accept=".csv"
   />
 
-  <label> Parse Headers? </label>
+  <!-- <label> Parse Headers? </label>
   <select aria-placeholder="Parse headers?" [(ngModel)]="header">
     <option [value]="true">Yes</option>
     <option [value]="false">No</option>
-  </select>
+  </select> -->
 </div>
 
 <div>
@@ -32,7 +32,12 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let csvData of csvRecords; let i = index">
+      <tr
+        *ngFor="
+          let csvData of csvRecords | slice: starIndex:endIndex;
+          let i = index
+        "
+      >
         <th>{{ i + 1 }}</th>
         <td>
           <span>{{ csvData.firstName }}</span>
@@ -55,4 +60,29 @@
       </tr>
     </tbody>
   </table>
+
+  <nav aria-label="Page navigation example">
+    <ul class="pagination">
+      <li class="page-item">
+        <a class="page-link" href="#" aria-label="Previous">
+          <span aria-hidden="true">&laquo;</span>
+        </a>
+      </li>
+      <li
+        *ngFor="
+          let item of getArrayFromNumber(csvRecords.length);
+          let i = index
+        "
+        class="page-item"
+      >
+        <a class="page-link" (click)="updateIndex(i)">{{ i + 1 }}</a>
+      </li>
+
+      <li class="page-item">
+        <a class="page-link" href="#" aria-label="Next">
+          <span aria-hidden="true">&raquo;</span>
+        </a>
+      </li>
+    </ul>
+  </nav>
 </div>

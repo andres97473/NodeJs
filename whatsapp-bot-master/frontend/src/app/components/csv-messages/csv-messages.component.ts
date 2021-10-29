@@ -11,6 +11,11 @@ export class CsvMessagesComponent {
   csvRecords: any[] = [];
   header: boolean = true;
 
+  paginacion = 5;
+
+  starIndex = 0;
+  endIndex = this.paginacion;
+
   constructor(private ngxCsvParser: NgxCsvParser) {}
 
   @ViewChild('fileImportInput') fileImportInput: any;
@@ -32,5 +37,14 @@ export class CsvMessagesComponent {
           console.log('Error', error);
         }
       );
+  }
+
+  getArrayFromNumber(length: any) {
+    return new Array(Math.ceil(length / this.paginacion));
+  }
+
+  updateIndex(pageIndex: any) {
+    this.starIndex = pageIndex * this.paginacion;
+    this.endIndex = this.starIndex + this.paginacion;
   }
 }

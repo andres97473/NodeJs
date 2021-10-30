@@ -1,6 +1,9 @@
 import { Component, ViewChild } from '@angular/core';
 import { NgxCsvParser } from 'ngx-csv-parser';
 import { NgxCSVParserError } from 'ngx-csv-parser';
+import { RecordatorioModel } from '../../models/recordatorio.model';
+import { MessagesService } from '../../services/messages.service';
+
 
 @Component({
   selector: 'app-csv-messages',
@@ -8,7 +11,7 @@ import { NgxCSVParserError } from 'ngx-csv-parser';
   styleUrls: ['./csv-messages.component.css'],
 })
 export class CsvMessagesComponent {
-  csvRecords: any[] = [];
+  csvRecords: RecordatorioModel[] = [];
   header: boolean = true;
 
   paginacion = 5;
@@ -16,7 +19,7 @@ export class CsvMessagesComponent {
   starIndex = 0;
   endIndex = this.paginacion;
 
-  constructor(private ngxCsvParser: NgxCsvParser) {}
+  constructor(private ngxCsvParser: NgxCsvParser, private _sms:MessagesService) {}
 
   @ViewChild('fileImportInput') fileImportInput: any;
 
@@ -30,7 +33,7 @@ export class CsvMessagesComponent {
       .pipe()
       .subscribe(
         (result: any) => {
-          console.log('Result', result);
+          //console.log('Result', result);
           this.csvRecords = result;
         },
         (error: NgxCSVParserError) => {
@@ -47,4 +50,17 @@ export class CsvMessagesComponent {
     this.starIndex = pageIndex * this.paginacion;
     this.endIndex = this.starIndex + this.paginacion;
   }
+
+  sendMessagesCsv(messages:RecordatorioModel[]){
+    //console.log(messages);
+    for (const message of messages) {
+      const {num_doc_usr,apellido1,apellido2,nombre1,nombre2,celular,fec_hora_cita,especialidad,profesional,descripcion}=  message
+      const recordatorio=`Estimado sr(a) ${nombre1} ${nombre2} ${apellido1} ${apellido2} le recordamos la oportuna asistencia a su cita el dia ${fec_hora_cita} por ${especialidad} con el profesional ${profesional} para ${descripcion}`;      
+      //console.log(recordatorio);
+
+      this._sms.sendMessage(celular,recordatorio);
+      
+    }
+  }
+
 }

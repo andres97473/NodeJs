@@ -14,4 +14,14 @@ table,
 th,
 td {
   border: 1px solid black;
+  font-size: small;
+}
+
+button {
+  margin-left: 5px;
+}
+
+.logo {
+  width: 20px;
+  fill: red !important;
 }

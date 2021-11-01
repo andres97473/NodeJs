@@ -3,6 +3,7 @@ import { NgxCsvParser } from 'ngx-csv-parser';
 import { NgxCSVParserError } from 'ngx-csv-parser';
 import { RecordatorioModel } from '../../models/recordatorio.model';
 import { MessagesService } from '../../services/messages.service';
+import { NgForm } from '@angular/forms';
 
 
 @Component({
@@ -12,6 +13,7 @@ import { MessagesService } from '../../services/messages.service';
 })
 export class CsvMessagesComponent {
   csvRecords: RecordatorioModel[] = [];
+  csvRecordsFilter: RecordatorioModel[] = [];
   header: boolean = true;
 
   paginacion = 5;
@@ -19,7 +21,16 @@ export class CsvMessagesComponent {
   starIndex = 0;
   endIndex = this.paginacion;
 
-  constructor(private ngxCsvParser: NgxCsvParser, private _sms:MessagesService) {}
+  nextId=0;
+  apellido1='';
+  apellido2='';
+  id=0;
+
+  constructor(private ngxCsvParser: NgxCsvParser, private _sms:MessagesService) {
+
+    
+    
+  }
 
   @ViewChild('fileImportInput') fileImportInput: any;
 
@@ -35,11 +46,25 @@ export class CsvMessagesComponent {
         (result: any) => {
           //console.log('Result', result);
           this.csvRecords = result;
+          this.csvRecordsFilter = result;
+
+          if(this.csvRecords.length>0){
+            
+            for (const iterator of this.csvRecords) {
+              this.id++;
+              iterator.id=this.id;
+              //console.log(iterator);  
+              
+            }
+          }
+          
+          
         },
         (error: NgxCSVParserError) => {
           console.log('Error', error);
         }
       );
+      
   }
 
   getArrayFromNumber(length: any) {
@@ -62,5 +87,52 @@ export class CsvMessagesComponent {
       
     }
   }
+
+
+  eliminarItem(obj:RecordatorioModel){
+    this.csvRecords = this.csvRecordsFilter
+
+    //console.log(obj.id);
+    const index = this.csvRecords.findIndex(records => records.id === obj.id);
+
+    console.log(index);
+
+    this.csvRecords.splice(index, 1)
+    console.log(this.csvRecords); 
+
+    this.filterForItems(this.apellido1,this.apellido2)
+    
+  }
+
+  
+ 
+ filterItems(query:string,query2:string) {
+   
+   
+   return this.csvRecords.filter(function(el) {
+     return el.apellido1.toLowerCase().indexOf(query.toLowerCase()) > -1 
+     && el.apellido2.toLowerCase().indexOf(query2.toLowerCase()) > -1;
+     
+     
+    })
+    
+  }
+
+
+  filterForItems(nApellido1:any,nApellido2:any){
+    this.csvRecords = this.csvRecordsFilter
+    this.apellido1=nApellido1
+    this.apellido2=nApellido2
+    console.log(this.apellido1,this.apellido2);
+
+    this.csvRecords=this.filterItems(this.apellido1,this.apellido2);
+    this.updateIndex(0)
+
+
+  }
+
+  
+
+
 
 }

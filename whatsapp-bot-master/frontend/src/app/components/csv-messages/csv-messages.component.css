@@ -13,7 +13,7 @@
 table,
 th,
 td {
-  border: 1px solid black;
+  border-bottom: 1px solid black;
   font-size: small;
 }
 
@@ -21,7 +21,7 @@ button {
   margin-left: 5px;
 }
 
-.logo {
-  width: 20px;
-  fill: red !important;
+.logo-red {
+  margin-right: 10px;
+  color: red;
 }

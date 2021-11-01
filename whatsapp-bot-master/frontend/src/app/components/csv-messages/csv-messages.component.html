@@ -14,6 +14,8 @@
   <button *ngIf="csvRecords.length>0" type="button" class="btn btn-primary" (click)="sendMessagesCsv(csvRecords)">Enviar Mensajes
     <span class="badge badge-light">{{csvRecords.length}}</span>
   </button>
+
+  
   
   <!-- <label> Parse Headers? </label>
     <select aria-placeholder="Parse headers?" [(ngModel)]="header">
@@ -60,7 +62,7 @@
         <th>Especialidad</th>
         <th>Profesional</th>
         <th>Descripcion</th>
-        <th>Opciones</th>
+        <th></th>
       </tr>
     </thead>
     <tbody>
@@ -105,10 +107,8 @@
           <span>{{ csvData.descripcion }}</span>
         </td>
         <td>            
-            <button type="button" class="btn btn-danger" (click)="eliminarItem(csvData)"><img src="../../../assets/img/trash-can-solid.svg" alt="" class="logo"></button>
-        </td>
-        <td>
-          <img src="../../../assets/img/trash-can-solid.svg" alt="" class="logo">
+            <!-- <button type="button" class="btn btn-danger" (click)="eliminarItem(csvData)"></button> -->
+            <i class="fas fa-trash-alt fa-lg logo-red" (click)="eliminarItem(csvData)"></i>
         </td>
         
       </tr>

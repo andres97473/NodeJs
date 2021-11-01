@@ -17,7 +17,7 @@ import { HomeComponent } from './components/home/home.component';
     SendMessageComponent,
     CsvMessagesComponent,
     NavbarComponent,
-    HomeComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,

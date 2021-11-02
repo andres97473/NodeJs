@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { Respuesta } from '../../models/recordatorio.model';
 
 @Component({
   selector: 'app-send-message',
@@ -10,6 +11,9 @@ import { NgForm } from '@angular/forms';
 export class SendMessageComponent implements OnInit {
   to: any;
   message: any;
+
+  respuesta = '';
+  enviado = false;
 
   URL = 'http://localhost:9000/send';
 
@@ -27,8 +31,11 @@ export class SendMessageComponent implements OnInit {
       })
       .subscribe(
         (res) => {
-          console.log('Mensaje enviado !!');
+          //console.log('Mensaje enviado !!');
           console.log(res);
+          this.respuesta = (res as Respuesta).status;
+          this.enviado = (res as Respuesta).send;
+          console.log(this.respuesta, this.enviado);
         },
         (err) => {
           console.log(err);

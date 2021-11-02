@@ -187,7 +187,7 @@ const sendWithApi = (req, res) => {
   console.log(message, to);
 
   sendMessage(newNumber, message);
-  res.send({ status: "Enviado" });
+  res.send({ status: "Mensajes Enviados !!", send: true });
 };
 
 app.post("/send", sendWithApi);

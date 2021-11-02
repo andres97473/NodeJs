@@ -2,38 +2,27 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 import { map, delay } from 'rxjs/operators';
+import { Respuesta } from '../models/recordatorio.model';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class MessagesService {
-
   to: any;
   message: any;
+  respuesta = '';
+  enviado = false;
 
   URL = 'http://localhost:9000/send';
 
-
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   sendMessage(nTo: any, nMessage: any) {
     //console.log(this.to, this.message);
 
-    this.http
-      .post(this.URL, {
-        to: nTo,
-        message: nMessage,
-      })
-      .subscribe(
-        (res) => {
-          console.log('Mensaje enviado !!');
-          console.log(res);
-        },
-        (err) => {
-          console.log(err);
-        }
-      );
+    return this.http.post(this.URL, {
+      to: nTo,
+      message: nMessage,
+    });
   }
-
-  
 }

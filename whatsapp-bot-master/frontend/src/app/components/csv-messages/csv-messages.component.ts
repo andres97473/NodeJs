@@ -5,7 +5,6 @@ import { RecordatorioModel } from '../../models/recordatorio.model';
 import { MessagesService } from '../../services/messages.service';
 import { NgForm } from '@angular/forms';
 
-
 @Component({
   selector: 'app-csv-messages',
   templateUrl: './csv-messages.component.html',
@@ -16,21 +15,25 @@ export class CsvMessagesComponent {
   csvRecordsFilter: RecordatorioModel[] = [];
   header: boolean = true;
 
+  sinCoincidencia = false;
+
   paginacion = 5;
 
   starIndex = 0;
   endIndex = this.paginacion;
 
-  nextId=0;
-  apellido1='';
-  apellido2='';
-  id=0;
+  nextId = 0;
+  num_doc_usr = '';
+  apellido1 = '';
+  apellido2 = '';
+  especialidad = '';
+  profesional = '';
+  id = 0;
 
-  constructor(private ngxCsvParser: NgxCsvParser, private _sms:MessagesService) {
-
-    
-    
-  }
+  constructor(
+    private ngxCsvParser: NgxCsvParser,
+    private _sms: MessagesService
+  ) {}
 
   @ViewChild('fileImportInput') fileImportInput: any;
 
@@ -48,23 +51,18 @@ export class CsvMessagesComponent {
           this.csvRecords = result;
           this.csvRecordsFilter = result;
 
-          if(this.csvRecords.length>0){
-            
+          if (this.csvRecords.length > 0) {
             for (const iterator of this.csvRecords) {
               this.id++;
-              iterator.id=this.id;
-              //console.log(iterator);  
-              
+              iterator.id = this.id;
+              //console.log(iterator);
             }
           }
-          
-          
         },
         (error: NgxCSVParserError) => {
           console.log('Error', error);
         }
       );
-      
   }
 
   getArrayFromNumber(length: any) {
@@ -76,63 +74,127 @@ export class CsvMessagesComponent {
     this.endIndex = this.starIndex + this.paginacion;
   }
 
-  sendMessagesCsv(messages:RecordatorioModel[]){
+  sendMessagesCsv(messages: RecordatorioModel[]) {
     //console.log(messages);
     for (const message of messages) {
-      const {num_doc_usr,apellido1,apellido2,nombre1,nombre2,celular,fec_hora_cita,especialidad,profesional,descripcion}=  message
-      const recordatorio=`Estimado sr(a) ${nombre1} ${nombre2} ${apellido1} ${apellido2} le recordamos la oportuna asistencia a su cita el dia ${fec_hora_cita} por ${especialidad} con el profesional ${profesional} para ${descripcion}`;      
+      const {
+        num_doc_usr,
+        apellido1,
+        apellido2,
+        nombre1,
+        nombre2,
+        celular,
+        fec_hora_cita,
+        especialidad,
+        profesional,
+        descripcion,
+      } = message;
+      const recordatorio = `Estimado sr(a) ${nombre1} ${nombre2} ${apellido1} ${apellido2} le recordamos la oportuna asistencia a su cita el dia ${fec_hora_cita} por ${especialidad} con el profesional ${profesional} para ${descripcion}`;
       //console.log(recordatorio);
-
-      this._sms.sendMessage(celular,recordatorio);
-      
+      this._sms.sendMessage(celular, recordatorio);
     }
   }
 
+  eliminarItem(obj: RecordatorioModel) {
+    this.csvRecords = this.csvRecordsFilter;
 
-  eliminarItem(obj:RecordatorioModel){
-    this.csvRecords = this.csvRecordsFilter
+    console.log('array mayor a 0');
 
     //console.log(obj.id);
-    const index = this.csvRecords.findIndex(records => records.id === obj.id);
+    const index = this.csvRecords.findIndex((records) => records.id === obj.id);
+    //console.log(index);
+    this.csvRecords.splice(index, 1);
+    //console.log(this.csvRecords);
+    this.filterForItems(
+      this.num_doc_usr,
+      this.apellido1,
+      this.apellido2,
+      this.especialidad,
+      this.profesional
+    );
 
-    console.log(index);
+    console.log(this.csvRecords.length);
 
-    this.csvRecords.splice(index, 1)
-    console.log(this.csvRecords); 
+    if (this.csvRecords.length < 1) {
+      this.num_doc_usr = '';
+      this.apellido1 = '';
+      this.apellido2 = '';
+      this.especialidad = '';
+      this.profesional = '';
 
-    this.filterForItems(this.apellido1,this.apellido2)
-    
+      this.filterForItems(
+        this.num_doc_usr,
+        this.apellido1,
+        this.apellido2,
+        this.especialidad,
+        this.profesional
+      );
+    }
   }
 
-  
- 
- filterItems(query:string,query2:string) {
-   
-   
-   return this.csvRecords.filter(function(el) {
-     return el.apellido1.toLowerCase().indexOf(query.toLowerCase()) > -1 
-     && el.apellido2.toLowerCase().indexOf(query2.toLowerCase()) > -1;
-     
-     
-    })
-    
+  filterItems(
+    query: string,
+    query2: string,
+    query3: string,
+    query4: string,
+    query5: string
+  ) {
+    return this.csvRecords.filter(function (el) {
+      return (
+        el.num_doc_usr.toLowerCase().indexOf(query.toLowerCase()) > -1 &&
+        el.apellido1.toLowerCase().indexOf(query2.toLowerCase()) > -1 &&
+        el.apellido2.toLowerCase().indexOf(query3.toLowerCase()) > -1 &&
+        el.especialidad.toLowerCase().indexOf(query4.toLowerCase()) > -1 &&
+        el.profesional.toLowerCase().indexOf(query5.toLowerCase()) > -1
+      );
+    });
   }
 
+  filterForItems(
+    nNumDoc: any,
+    nApellido1: any,
+    nApellido2: any,
+    nEspecialidad: any,
+    nProfesional: any
+  ) {
+    this.csvRecords = this.csvRecordsFilter;
+    this.num_doc_usr = nNumDoc;
+    this.apellido1 = nApellido1;
+    this.apellido2 = nApellido2;
+    this.especialidad = nEspecialidad;
+    this.profesional = nProfesional;
+    //console.log(this.num_doc_usr,this.apellido1,this.apellido2,this.especialidad,this.profesional);
 
-  filterForItems(nApellido1:any,nApellido2:any){
-    this.csvRecords = this.csvRecordsFilter
-    this.apellido1=nApellido1
-    this.apellido2=nApellido2
-    console.log(this.apellido1,this.apellido2);
+    this.csvRecords = this.filterItems(
+      this.num_doc_usr,
+      this.apellido1,
+      this.apellido2,
+      this.especialidad,
+      this.profesional
+    );
 
-    this.csvRecords=this.filterItems(this.apellido1,this.apellido2);
-    this.updateIndex(0)
+    this.updateIndex(0);
 
+    if (this.csvRecords.length == 0) {
+      console.log('No existen coincidencias');
 
+      this.sinCoincidencia = true;
+
+      console.log(this.sinCoincidencia);
+
+      this.num_doc_usr = '';
+      this.apellido1 = '';
+      this.apellido2 = '';
+      this.especialidad = '';
+      this.profesional = '';
+
+      this.filterForItems(
+        this.num_doc_usr,
+        this.apellido1,
+        this.apellido2,
+        this.especialidad,
+        this.profesional
+      );
+    }
   }
-
-  
-
-
-
 }

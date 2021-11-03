@@ -23,7 +23,7 @@ export class CsvMessagesComponent {
 
   sinCoincidencia = false;
 
-  paginacion = 5;
+  paginacion = 10;
 
   starIndex = 0;
   endIndex = this.paginacion;

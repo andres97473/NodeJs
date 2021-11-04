@@ -17,6 +17,7 @@ export class CsvMessagesComponent {
   csvRecordsFilter: RecordatorioModel[] = [];
   header: boolean = true;
   files: any;
+  delimitador = '|';
 
   respuesta: Respuesta = {
     send: false,
@@ -54,7 +55,10 @@ export class CsvMessagesComponent {
     //console.log(this.files);
 
     this.ngxCsvParser
-      .parse(this.files[0], { header: this.header, delimiter: ',' || '|' })
+      .parse(this.files[0], {
+        header: this.header,
+        delimiter: this.delimitador,
+      })
       .pipe()
       .subscribe(
         (result: any) => {
@@ -173,8 +177,25 @@ export class CsvMessagesComponent {
   }
 
   eliminarLista() {
-    this.csvRecords = [];
-    this.resetFile();
+    Swal.fire({
+      title: 'Esta seguro de eliminar la tabla?',
+      text: 'Aunque la tabla se elimine el archivo permanecerá igual',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Si, Eliminar tabla!',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire(
+          'Tabla eliminada!',
+          'Si deseas enviar nuevos mensajes debes volver a cargar un archivo',
+          'success'
+        );
+        this.csvRecords = [];
+        this.resetFile();
+      }
+    });
   }
 
   resetFile() {

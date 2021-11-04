@@ -4,6 +4,14 @@
 
 <div class="csv-file-chooser-section">
   <input
+    type="text"
+    [ngModelOptions]="{ standalone: true }"
+    name="delimitador"
+    [(ngModel)]="delimitador"
+    placeholder="delimitador"
+    style="width: 100px"
+  />
+  <input
     type="file"
     #fileImportInput
     name="File Upload"
@@ -148,11 +156,9 @@
           <span>{{ csvData.descripcion }}</span>
         </td>
         <td>
-          <!-- <button type="button" class="btn btn-danger" (click)="eliminarItem(csvData)"></button> -->
-          <i
-            class="fas fa-trash-alt fa-lg logo-red"
-            (click)="eliminarItem(csvData)"
-          ></i>
+          <div (click)="eliminarItem(csvData)" style="text-align: center">
+            <img src="../../../assets/img/trash.png" width="20" alt="trash" />
+          </div>
         </td>
       </tr>
     </tbody>

@@ -25,6 +25,7 @@
     type="button"
     class="btn btn-primary"
     (click)="sendMessagesCsv(csvRecords)"
+    (click)="coneccion = true"
   >
     Enviar Mensajes
     <span class="badge badge-light">{{ csvRecords.length }}</span>
@@ -101,6 +102,7 @@
         <th>nombre 2</th>
         <th>Celular</th>
         <th>Fecha cita</th>
+        <th>Hora cita</th>
         <th>Especialidad</th>
         <th>Profesional</th>
         <th>Descripcion</th>
@@ -144,7 +146,10 @@
           <span>{{ csvData.celular }}</span>
         </td>
         <td>
-          <span>{{ csvData.fec_hora_cita }}</span>
+          <span>{{ csvData.fec_cita | date }}</span>
+        </td>
+        <td>
+          <span>{{ csvData.hora_cita }}</span>
         </td>
         <td>
           <span>{{ csvData.especialidad }}</span>

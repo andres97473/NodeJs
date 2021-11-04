@@ -1,10 +1,11 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { NgxCsvParser } from 'ngx-csv-parser';
 import { NgxCSVParserError } from 'ngx-csv-parser';
 import { RecordatorioModel, Respuesta } from '../../models/recordatorio.model';
 import { MessagesService } from '../../services/messages.service';
 import { NgForm } from '@angular/forms';
 import Swal from 'sweetalert2';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-csv-messages',
@@ -15,6 +16,7 @@ export class CsvMessagesComponent {
   csvRecords: RecordatorioModel[] = [];
   csvRecordsFilter: RecordatorioModel[] = [];
   header: boolean = true;
+  files: any;
 
   respuesta: Respuesta = {
     send: false,
@@ -27,8 +29,8 @@ export class CsvMessagesComponent {
 
   starIndex = 0;
   endIndex = this.paginacion;
+  pageIndex = 0;
 
-  nextId = 0;
   num_doc_usr = '';
   apellido1 = '';
   apellido2 = '';
@@ -38,18 +40,21 @@ export class CsvMessagesComponent {
 
   constructor(
     private ngxCsvParser: NgxCsvParser,
-    private _sms: MessagesService
+    private _sms: MessagesService,
+    private router: Router
   ) {}
 
   @ViewChild('fileImportInput') fileImportInput: any;
 
   fileChangeListener($event: any): void {
-    const files = $event.srcElement.files;
+    this.files = $event.srcElement.files;
     this.header =
       (this.header as unknown as string) === 'true' || this.header === true;
 
+    //console.log(this.files);
+
     this.ngxCsvParser
-      .parse(files[0], { header: this.header, delimiter: ',' })
+      .parse(this.files[0], { header: this.header, delimiter: ',' || '|' })
       .pipe()
       .subscribe(
         (result: any) => {
@@ -75,9 +80,12 @@ export class CsvMessagesComponent {
     return new Array(Math.ceil(length / this.paginacion));
   }
 
-  updateIndex(pageIndex: any) {
-    this.starIndex = pageIndex * this.paginacion;
+  updateIndex(pgIdx: any) {
+    this.starIndex = pgIdx * this.paginacion;
     this.endIndex = this.starIndex + this.paginacion;
+
+    this._sms.pageIndex = pgIdx;
+    //console.log(this._sms.pageIndex);
   }
 
   sendMessagesCsv(messages: RecordatorioModel[]) {
@@ -103,7 +111,7 @@ export class CsvMessagesComponent {
           //console.log(res);
           this.respuesta = res;
           Swal.fire({
-            position: 'top-end',
+            position: 'center',
             icon: 'success',
             title: this.respuesta.status,
             text: `${this.csvRecords.length} Mensajes enviados !!`,
@@ -114,7 +122,7 @@ export class CsvMessagesComponent {
         (err) => {
           console.log(err);
           Swal.fire({
-            position: 'top-end',
+            position: 'center',
             icon: 'error',
             title: 'Error al enviar los mensajes !!',
             text: 'Revisa la coneccion!',
@@ -145,6 +153,7 @@ export class CsvMessagesComponent {
     );
 
     //console.log(this.csvRecords.length);
+    this.updateIndex(this._sms.pageIndex);
 
     if (this.csvRecords.length < 1) {
       this.num_doc_usr = '';
@@ -161,6 +170,15 @@ export class CsvMessagesComponent {
         this.profesional
       );
     }
+  }
+
+  eliminarLista() {
+    this.csvRecords = [];
+    this.resetFile();
+  }
+
+  resetFile() {
+    (this.fileImportInput as ElementRef).nativeElement.value = '';
   }
 
   filterItems(
@@ -203,14 +221,14 @@ export class CsvMessagesComponent {
       this.especialidad,
       this.profesional
     );
-
-    this.updateIndex(0);
+    //console.log(this.csvRecords.length);
+    this.updateIndex(this._sms.pageIndex);
 
     if (this.csvRecords.length == 0) {
       //console.log('No existen coincidencias');
 
       Swal.fire({
-        position: 'top-end',
+        position: 'center',
         icon: 'error',
         title: 'No existen coincidencias !!',
         //text: 'Revisa la coneccion!',
@@ -235,12 +253,14 @@ export class CsvMessagesComponent {
         this.especialidad,
         this.profesional
       );
+    } else if (this.csvRecords.length <= 10) {
+      this.updateIndex(0);
     }
   }
 
   alert(sends: number) {
     Swal.fire({
-      position: 'top-end',
+      position: 'center',
       icon: 'success',
       title: `Se enviaron ${sends} mensajes`,
       showConfirmButton: false,

@@ -96,7 +96,15 @@
         <th>Especialidad</th>
         <th>Profesional</th>
         <th>Descripcion</th>
-        <th></th>
+        <th>
+          <button
+            (click)="eliminarLista()"
+            type="button"
+            class="btn btn-danger"
+          >
+            Borrar Tabla
+          </button>
+        </th>
       </tr>
     </thead>
     <tbody>
@@ -150,28 +158,12 @@
     </tbody>
   </table>
 
-  <nav aria-label="Page navigation example">
-    <ul class="pagination">
-      <li class="page-item">
-        <a class="page-link" href="#" aria-label="Previous">
-          <span aria-hidden="true">&laquo;</span>
-        </a>
-      </li>
-      <li
-        *ngFor="
-          let item of getArrayFromNumber(csvRecords.length);
-          let i = index
-        "
-        class="page-item"
-      >
-        <a class="page-link" (click)="updateIndex(i)">{{ i + 1 }}</a>
-      </li>
-
-      <li class="page-item">
-        <a class="page-link" href="#" aria-label="Next">
-          <span aria-hidden="true">&raquo;</span>
-        </a>
-      </li>
-    </ul>
-  </nav>
+  <button
+    *ngFor="let item of getArrayFromNumber(csvRecords.length); let i = index"
+    (click)="updateIndex(i)"
+    type="button"
+    class="btn btn-light"
+  >
+    {{ i + 1 }}
+  </button>
 </div>

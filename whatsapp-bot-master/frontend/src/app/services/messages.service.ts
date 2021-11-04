@@ -13,6 +13,8 @@ export class MessagesService {
   respuesta = '';
   enviado = false;
 
+  pageIndex = 0;
+
   URL = 'http://localhost:9000/send';
 
   constructor(private http: HttpClient) {}

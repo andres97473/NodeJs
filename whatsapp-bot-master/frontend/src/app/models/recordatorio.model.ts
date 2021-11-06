@@ -23,8 +23,10 @@ export class RecordatorioModel {
   usuario?: string;
   estado_cita?: string;
   motivo_cancelacion?: string;
-  descripcion?: string;
+  descripcion: string = '';
   id_ingreso?: string;
+  estado?: string;
+  fecha_proceso?: Date;
 }
 
 export class Respuesta {

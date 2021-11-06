@@ -94,18 +94,20 @@
   <table class="table table-sm">
     <thead class="thead-dark">
       <tr>
-        <th>id</th>
-        <th>Documento</th>
-        <th>Apellido 1</th>
-        <th>Apellido 2</th>
-        <th>nombre 1</th>
-        <th>nombre 2</th>
-        <th>Celular</th>
-        <th>Fecha cita</th>
-        <th>Hora cita</th>
-        <th>Especialidad</th>
-        <th>Profesional</th>
-        <th>Descripcion</th>
+        <th>ID</th>
+        <th>DOCUMENTO</th>
+        <th>APELLIDO 1</th>
+        <th>APELLIDO 2</th>
+        <th>NOMBRE 1</th>
+        <th>NOMBRE 2</th>
+        <th>CELULAR</th>
+        <th>FECHA CITA</th>
+        <th>HORA CITA</th>
+        <th>ESPECIALIDAD</th>
+        <th>PROFESIONAL</th>
+        <th>DESCRIPCION</th>
+        <th>ESTADO</th>
+        <th>FECHA PROCESO</th>
         <th>
           <button
             (click)="eliminarLista()"
@@ -146,7 +148,7 @@
           <span>{{ csvData.celular }}</span>
         </td>
         <td>
-          <span>{{ csvData.fec_cita | date }}</span>
+          <span>{{ csvData.fec_cita | date:'short' }}</span>
         </td>
         <td>
           <span>{{ csvData.hora_cita }}</span>
@@ -159,6 +161,12 @@
         </td>
         <td>
           <span>{{ csvData.descripcion }}</span>
+        </td>
+        <td>
+          <span>{{ csvData.estado }}</span>
+        </td>
+        <td>
+          <span>{{ csvData.fecha_proceso | date:'short' }}</span>
         </td>
         <td>
           <div (click)="eliminarItem(csvData)" style="text-align: center">

@@ -28,6 +28,7 @@ export class CsvMessagesComponent {
 
   coneccion = true;
   errores = 0;
+  estado = 'PENDIENTE';
 
   // paginacion
   paginacion = 10;
@@ -41,6 +42,7 @@ export class CsvMessagesComponent {
   apellido2 = '';
   especialidad = '';
   profesional = '';
+  descripcion = '';
   sinCoincidencia = false;
 
   // iniciar id en 0
@@ -79,6 +81,17 @@ export class CsvMessagesComponent {
               this.id++;
 
               iterator.id = this.id;
+              iterator.estado = this.estado;
+              iterator.fecha_proceso = new Date();
+
+              iterator.apellido1 = this.removeAccents(iterator.apellido1);
+              iterator.apellido2 = this.removeAccents(iterator.apellido2);
+              iterator.nombre1 = this.removeAccents(iterator.nombre1);
+              iterator.nombre2 = this.removeAccents(iterator.nombre2);
+              iterator.especialidad = this.removeAccents(iterator.especialidad);
+              iterator.profesional = this.removeAccents(iterator.profesional);
+              iterator.descripcion = this.removeAccents(iterator.descripcion);
+
               //console.log(iterator);
             }
           }
@@ -103,9 +116,11 @@ export class CsvMessagesComponent {
 
   sendMessagesCsv(messages: RecordatorioModel[]) {
     //console.log(messages);
+    this.errores = 0;
     if (this.coneccion) {
       for (const message of messages) {
         const {
+          id,
           num_doc_usr,
           apellido1,
           apellido2,
@@ -133,6 +148,8 @@ export class CsvMessagesComponent {
               showConfirmButton: false,
               timer: 3000,
             });
+
+            this.cambiarEstado(id, 'ENVIADO');
           },
           (err) => {
             console.log(err);
@@ -148,6 +165,7 @@ export class CsvMessagesComponent {
               });
             }
 
+            this.cambiarEstado(id, 'ERROR');
             return (this.coneccion = false);
           }
         );
@@ -155,6 +173,18 @@ export class CsvMessagesComponent {
     } else {
       console.log('sin coneccion');
     }
+  }
+
+  cambiarEstado(id: number, estado: string) {
+    const datos = this.csvRecords;
+    datos.map((dato) => {
+      if (dato.id == id) {
+        dato.estado = estado;
+        dato.fecha_proceso = new Date();
+      }
+
+      //console.log(dato);
+    });
   }
 
   eliminarItem(obj: RecordatorioModel) {
@@ -213,6 +243,7 @@ export class CsvMessagesComponent {
         );
         this.csvRecords = [];
         this.resetFile();
+        this.id = 0;
       }
     });
   }
@@ -306,5 +337,18 @@ export class CsvMessagesComponent {
       showConfirmButton: false,
       timer: 1500,
     });
+  }
+
+  removeAccents(str: string) {
+    return str
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace('á', 'a')
+      .replace('é', 'e')
+      .replace('í', 'i')
+      .replace('ó', 'o')
+      .replace('ú', 'u')
+      .replace('´', '')
+      .toUpperCase();
   }
 }

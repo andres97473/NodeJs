@@ -14,8 +14,10 @@ const SESSION_FILE_PATH = "./session.json";
 const country_code = "52";
 const number_code = "57";
 const number = "3166651382";
-const msg = "Hello World!";
-const formatDate = "DD/MM/YYYY HH:mm";
+const msg = "Chat iniciado!";
+const formatDate = "DD/MM/YYYY hh:mm a";
+const fech = moment().format(formatDate);
+const inicioFech = msg + " " + fech;
 
 // Load the session data if it has been previously saved
 let sessionData;
@@ -56,9 +58,10 @@ client.on("ready", () => {
   // Funcion de prueba a mi propio numero
   setTimeout(() => {
     let chatId = `${country_code}${number}@c.us`;
-    client.sendMessage(chatId, msg).then((response) => {
+
+    client.sendMessage(chatId, inicioFech).then((response) => {
       if (response.id.fromMe) {
-        console.log("It works!");
+        console.log("It works! " + inicioFech);
       }
     });
   }, 3000);

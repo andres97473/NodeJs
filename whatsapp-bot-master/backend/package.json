@@ -5,18 +5,21 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index"
+    "start": "nodemon app.js"
   },
   "author": "oscar-aguilar",
   "license": "ISC",
   "dependencies": {
-    "body-parser": "^1.19.0",
+    "body-parser": "^1.19.1",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "exceljs": "^4.3.0",
     "express": "^4.17.1",
     "moment": "^2.29.1",
     "qrcode-terminal": "^0.12.0",
-    "whatsapp-web.js": "^1.15.3"
+    "whatsapp-web.js": "^1.15.6"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
   }
 }

@@ -89,13 +89,17 @@ const listenMessage = () => {
           sendMessage(from, "Bienvenido !!");
           sendMedia(from, "curso-1.jpg");
           break;
+        case "hola2":
+          sendMessage(from, "Bienvenido !!");
+          sendMedia(from, "curso-2.jpeg");
+          break;
       }
 
       saveChat(from, body);
 
       const today = moment().format(formatDate);
 
-      console.log(from, to, body, today);
+      console.log(from, to, body, "->", today);
     } else {
       console.log("no es mensaje");
     }

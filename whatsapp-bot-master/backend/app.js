@@ -10,8 +10,9 @@ const cors = require("cors");
 
 
 // Environment variables
+
+// const country_code = "52";
 const PORT = 9000
-const country_code = "52";
 const number_code = "57";
 const number = "3166651382";
 const msg = "Chat iniciado!";
@@ -57,14 +58,14 @@ client.on("ready", () => {
 
     // Funcion de prueba a mi propio numero
     setTimeout(() => {
-        let chatId = `${country_code}${number}@c.us`;
+        let chatId = `${number_code}${number}@c.us`;
 
         client.sendMessage(chatId, inicioFech).then((response) => {
             if (response.id.fromMe) {
                 console.log("It works! " + inicioFech);
             }
         });
-    }, 3000);
+    }, 1000);
 });
 
 /*
@@ -91,7 +92,7 @@ const listenMessage = () => {
                     break;
             }
 
-            saveChat(from, body);
+            saveChatExcel(from, body);
 
             const today = moment().format(formatDate);
 
@@ -122,7 +123,7 @@ const sendMedia = (to, file) => {
  * @param {*} number
  * @param {*} message
  */
-const saveChat = async(number, message) => {
+const saveChatExcel = async(number, message) => {
     const pathExcel = `./chats/${number}.xlsx`;
     const workbook = new ExcelJS.Workbook();
     const today = moment().format(formatDate);

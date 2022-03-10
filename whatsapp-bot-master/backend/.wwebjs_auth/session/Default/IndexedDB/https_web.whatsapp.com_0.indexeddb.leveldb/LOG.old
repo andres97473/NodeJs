@@ -1,0 +1,36 @@
+2022/03/10-09:05:48.538 20b0 Reusing MANIFEST D:\NodeJs\whatsapp-bot-master\backend\.wwebjs_auth\session\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/MANIFEST-000001
+2022/03/10-09:05:48.539 20b0 Recovering log #242
+2022/03/10-09:05:48.623 20b0 Reusing old log D:\NodeJs\whatsapp-bot-master\backend\.wwebjs_auth\session\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/000242.log 
+2022/03/10-09:06:41.920 34d4 Level-0 table #257: started
+2022/03/10-09:06:42.082 34d4 Level-0 table #257: 1130998 bytes OK
+2022/03/10-09:06:42.163 34d4 Delete type=0 #242
+2022/03/10-09:06:42.350 34d4 Compacting 1@0 + 0@1 files
+2022/03/10-09:06:42.470 34d4 Generated table #258@0: 33076 keys, 648504 bytes
+2022/03/10-09:06:42.471 34d4 Compacted 1@0 + 0@1 files => 648504 bytes
+2022/03/10-09:06:42.593 34d4 compacted to: files[ 0 1 10 0 0 0 0 ]
+2022/03/10-09:06:42.594 34d4 Delete type=2 #257
+2022/03/10-09:06:43.885 34d4 Compacting 1@1 + 10@2 files
+2022/03/10-09:06:45.603 34d4 Generated table #259@1: 27306 keys, 2221285 bytes
+2022/03/10-09:06:46.220 34d4 Generated table #260@1: 3598 keys, 2159698 bytes
+2022/03/10-09:06:46.612 34d4 Generated table #261@1: 3831 keys, 2159813 bytes
+2022/03/10-09:06:46.837 34d4 Generated table #262@1: 4406 keys, 2161554 bytes
+2022/03/10-09:06:47.231 34d4 Generated table #263@1: 9846 keys, 2173070 bytes
+2022/03/10-09:06:48.103 34d4 Generated table #264@1: 31203 keys, 2251374 bytes
+2022/03/10-09:06:48.837 34d4 Generated table #265@1: 27332 keys, 2260842 bytes
+2022/03/10-09:06:49.435 34d4 Generated table #266@1: 39406 keys, 2208438 bytes
+2022/03/10-09:06:49.751 34d4 Generated table #267@1: 77404 keys, 2222011 bytes
+2022/03/10-09:06:50.088 34d4 Generated table #268@1: 102970 keys, 2255855 bytes
+2022/03/10-09:06:50.276 34d4 Generated table #269@1: 4649 keys, 102500 bytes
+2022/03/10-09:06:50.276 34d4 Compacted 1@1 + 10@2 files => 22176440 bytes
+2022/03/10-09:06:50.334 34d4 compacted to: files[ 0 0 11 0 0 0 0 ]
+2022/03/10-09:06:50.336 34d4 Delete type=2 #245
+2022/03/10-09:06:50.336 34d4 Delete type=2 #246
+2022/03/10-09:06:50.336 34d4 Delete type=2 #247
+2022/03/10-09:06:50.336 34d4 Delete type=2 #248
+2022/03/10-09:06:50.336 34d4 Delete type=2 #249
+2022/03/10-09:06:50.336 34d4 Delete type=2 #250
+2022/03/10-09:06:50.336 34d4 Delete type=2 #251
+2022/03/10-09:06:50.337 34d4 Delete type=2 #252
+2022/03/10-09:06:50.337 34d4 Delete type=2 #253
+2022/03/10-09:06:50.337 34d4 Delete type=2 #254
+2022/03/10-09:06:50.337 34d4 Delete type=2 #258

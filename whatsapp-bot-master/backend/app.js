@@ -8,11 +8,10 @@ const express = require("express");
 const cors = require("cors");
 // const bodyParser = require("body-parser");
 
-
 // Environment variables
 
 // const country_code = "52";
-const PORT = 9000
+const PORT = 9000;
 const number_code = "57";
 const number = "3166651382";
 const msg = "Chat iniciado!";
@@ -29,94 +28,100 @@ app.use(express.json());
 
 app.use(express.urlencoded({ extended: true }));
 
-
-
 const client = new Client({
-    authStrategy: new LocalAuth()
+  authStrategy: new LocalAuth(),
 });
 
 client.initialize();
 
 client.on("qr", (qr) => {
-    qrcode.generate(qr, { small: true });
+  qrcode.generate(qr, { small: true });
 });
 
-client.on('authenticated', () => {
-    console.log('AUTHENTICATED');
+client.on("authenticated", () => {
+  console.log("AUTHENTICATED");
 });
-
 
 client.on("auth_failure", (msg) => {
-    // Fired if session restore was unsuccessfull
-    console.error("AUTHENTICATION FAILURE", msg);
+  // Fired if session restore was unsuccessfull
+  console.error("AUTHENTICATION FAILURE", msg);
 });
 
 client.on("ready", () => {
-    console.log("Client is ready!");
+  console.log("Client is ready!");
 
-    listenMessage();
+  listenMessage();
 
-    // Funcion de prueba a mi propio numero
-    setTimeout(() => {
-        let chatId = `${number_code}${number}@c.us`;
+  // Funcion de prueba a mi propio numero
+  setTimeout(() => {
+    let chatId = `${number_code}${number}@c.us`;
 
-        client.sendMessage(chatId, inicioFech).then((response) => {
-            if (response.id.fromMe) {
-                console.log("It works! " + inicioFech);
-            }
-        });
-    }, 1000);
+    client.sendMessage(chatId, inicioFech).then((response) => {
+      if (response.id.fromMe) {
+        console.log("It works! " + inicioFech);
+      }
+    });
+  }, 1000);
 });
 
 /*
 Funcion se encarga de escuchar cada vez que un nuevo mensaje entra
  */
 const listenMessage = () => {
-    client.on("message", (msg) => {
-        //console.log("mensaje ", msg);
-        const { from, to, body } = msg;
+  client.on("message", (msg) => {
+    //console.log("mensaje ", msg);
+    const { from, to, body } = msg;
 
-        if (from.includes("@c.us")) {
-            //console.log("es mensaje");
+    if (from.includes("@c.us")) {
+      //console.log("es mensaje");
 
-            switch (removeAccents(body)) {
-                case "consulta":
-                    sendMessage(from, "Estimado potositano vota por nuestra formula partido de la U con Berner Zambarano al senado con el numero 99 y Teresa Enriquez a la camara con el numero 101. Para mas informacion de como votar escribre senado o camara");
-                    break;
-                case "senado":
-                    sendMessage(from, "Berner Zambrano, vota al senado partido de la U marcando una X sobre el numero 99");
-                    sendMedia(from, "senado.jpg");
-                    break;
-                case "camara":
-                    sendMessage(from, "Teresa Enriquez, vota a la camara partido de la U marcando una X sobre el numero 101");
-                    sendMedia(from, "camara.jpg");
-                    break;
-            }
+      switch (removeAccents(body)) {
+        case "consulta":
+          sendMessage(
+            from,
+            "Estimado potositano vota por nuestra formula partido de la U con Berner Zambarano al senado con el número 99 y Teresa Enriquez a la cámara con el número 101.\nPara más información de como votar escribe *senado* o *camara*"
+          );
+          break;
+        case "senado":
+          sendMessage(
+            from,
+            "Berner Zambrano, vota al senado partido de la U marcando una X sobre el numero 99"
+          );
+          sendMedia(from, "senado.jpg");
+          break;
+        case "camara":
+          sendMessage(
+            from,
+            "Teresa Enriquez, vota a la camara partido de la U marcando una X sobre el numero 101"
+          );
+          sendMedia(from, "camara.jpg");
+          break;
+      }
 
-            // saveChatExcel(from, body);
+      // saveChatExcel(from, body);
 
-            // const today = moment().format(formatDate);
+      // const today = moment().format(formatDate);
 
-            // console.log(from, to, body, "->", today);
-        } else {
-            // console.log("no es mensaje");
-        }
-    });
+      // console.log(from, to, body, "->", today);
+    } else {
+      // console.log("no es mensaje");
+    }
+  });
 };
 
 /* 
 Funcion para enviar mensajes
  */
 const sendMessage = (to, message) => {
-    client.sendMessage(to, message);
+  client.sendMessage(to, message);
 };
 
 /* 
 Enviar media
  */
 const sendMedia = (to, file) => {
-    const mediaFile = MessageMedia.fromFilePath(`./mediaSend/${file}`);
-    client.sendMessage(to, mediaFile);
+  const mediaFile = MessageMedia.fromFilePath(`./mediaSend/${file}`);
+  client.sendMessage(to, mediaFile);
 };
 
 /**
@@ -124,71 +129,69 @@ const sendMedia = (to, file) => {
  * @param {*} number
  * @param {*} message
  */
-const saveChatExcel = async(number, message) => {
-    const pathExcel = `./chats/${number}.xlsx`;
-    const workbook = new ExcelJS.Workbook();
-    const today = moment().format(formatDate);
+const saveChatExcel = async (number, message) => {
+  const pathExcel = `./chats/${number}.xlsx`;
+  const workbook = new ExcelJS.Workbook();
+  const today = moment().format(formatDate);
 
-    if (fs.existsSync(pathExcel)) {
-        /**
-         * Si existe el archivo de conversacion lo actualizamos
-         */
-        const workbook = new ExcelJS.Workbook();
-        workbook.xlsx.readFile(pathExcel).then(() => {
-            const worksheet = workbook.getWorksheet(1);
-            const lastRow = worksheet.lastRow;
-            var getRowInsert = worksheet.getRow(++lastRow.number);
-            getRowInsert.getCell("A").value = today;
-            getRowInsert.getCell("B").value = message;
-            getRowInsert.commit();
-            workbook.xlsx.writeFile(pathExcel);
-        });
-    } else {
-        /**
-         * NO existe el archivo de conversacion lo creamos
-         */
-        const worksheet = workbook.addWorksheet("Chats");
-        worksheet.columns = [
-            { header: "Fecha", key: "number_customer" },
-            { header: "Mensajes", key: "message" },
-        ];
-        worksheet.addRow([today, message]);
-        workbook.xlsx
-            .writeFile(pathExcel)
-            .then(() => {
-                console.log("saved");
-            })
-            .catch((err) => {
-                console.log("err", err);
-            });
-    }
+  if (fs.existsSync(pathExcel)) {
+    /**
+     * Si existe el archivo de conversacion lo actualizamos
+     */
+    const workbook = new ExcelJS.Workbook();
+    workbook.xlsx.readFile(pathExcel).then(() => {
+      const worksheet = workbook.getWorksheet(1);
+      const lastRow = worksheet.lastRow;
+      var getRowInsert = worksheet.getRow(++lastRow.number);
+      getRowInsert.getCell("A").value = today;
+      getRowInsert.getCell("B").value = message;
+      getRowInsert.commit();
+      workbook.xlsx.writeFile(pathExcel);
+    });
+  } else {
+    /**
+     * NO existe el archivo de conversacion lo creamos
+     */
+    const worksheet = workbook.addWorksheet("Chats");
+    worksheet.columns = [
+      { header: "Fecha", key: "number_customer" },
+      { header: "Mensajes", key: "message" },
+    ];
+    worksheet.addRow([today, message]);
+    workbook.xlsx
+      .writeFile(pathExcel)
+      .then(() => {
+        console.log("saved");
+      })
+      .catch((err) => {
+        console.log("err", err);
+      });
+  }
 };
 
 /* 
 remover acentos
  */
 const removeAccents = (str) => {
-    return str
-        .normalize("NFD")
-        .replace(/[\u0300-\u036f]/g, "")
-        .toLowerCase();
+  return str
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase();
 };
-
-
 
 // enviar mensaje con api
 const sendWithApi = (req, res) => {
-    const { message, to } = req.body;
-    const newNumber = `${number_code}${to}@c.us`;
-    console.log(message, to);
+  const { message, to } = req.body;
+  const newNumber = `${number_code}${to}@c.us`;
+  console.log(message, to);
 
-    sendMessage(newNumber, message);
-    res.send({ status: "Mensajes Enviados !!", send: true });
+  sendMessage(newNumber, message);
+  res.send({ status: "Mensajes Enviados !!", send: true });
 };
 
 app.post("/send", sendWithApi);
 
 // LEVANTAR API
 app.listen(PORT, () => {
-    console.log("API ESTA ARRIBA!!, PUERTO ", PORT);
+  console.log("API ESTA ARRIBA!!, PUERTO ", PORT);
 });

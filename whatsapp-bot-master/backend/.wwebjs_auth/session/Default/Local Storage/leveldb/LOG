@@ -1,3 +1,6 @@
-2022/03/11-16:26:39.112 1b54 Reusing MANIFEST D:\NodeJs\whatsapp-bot-master\backend\.wwebjs_auth\session\Default\Local Storage\leveldb/MANIFEST-000001
-2022/03/11-16:26:39.112 1b54 Recovering log #4
-2022/03/11-16:26:39.112 1b54 Reusing old log D:\NodeJs\whatsapp-bot-master\backend\.wwebjs_auth\session\Default\Local Storage\leveldb/000004.log 
+2022/03/11-16:33:55.289 614 Reusing MANIFEST D:\NodeJs\whatsapp-bot-master\backend\.wwebjs_auth\session\Default\Local Storage\leveldb/MANIFEST-000001
+2022/03/11-16:33:55.289 614 Recovering log #4
+2022/03/11-16:33:55.293 614 Reusing old log D:\NodeJs\whatsapp-bot-master\backend\.wwebjs_auth\session\Default\Local Storage\leveldb/000004.log 
+2022/03/11-17:08:55.970 a90 Level-0 table #6: started
+2022/03/11-17:08:56.011 a90 Level-0 table #6: 15806 bytes OK
+2022/03/11-17:08:56.055 a90 Delete type=0 #4

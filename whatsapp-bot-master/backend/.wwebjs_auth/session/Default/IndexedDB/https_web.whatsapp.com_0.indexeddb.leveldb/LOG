@@ -1,30 +1,94 @@
-2022/03/11-16:26:40.207 2860 Reusing MANIFEST D:\NodeJs\whatsapp-bot-master\backend\.wwebjs_auth\session\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/MANIFEST-000001
-2022/03/11-16:26:40.208 2860 Recovering log #1089
-2022/03/11-16:26:40.886 2860 Reusing old log D:\NodeJs\whatsapp-bot-master\backend\.wwebjs_auth\session\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/001089.log 
-2022/03/11-16:26:53.703 1b54 Level-0 table #1103: started
-2022/03/11-16:26:53.822 1b54 Level-0 table #1103: 1274309 bytes OK
-2022/03/11-16:26:53.869 1b54 Delete type=0 #1089
-2022/03/11-16:26:53.899 1b54 Compacting 1@1 + 10@2 files
-2022/03/11-16:26:54.231 1b54 Generated table #1104@1: 10304 keys, 2165956 bytes
-2022/03/11-16:26:54.563 1b54 Generated table #1105@1: 3544 keys, 2154836 bytes
-2022/03/11-16:26:54.768 1b54 Generated table #1106@1: 14150 keys, 2178221 bytes
-2022/03/11-16:26:55.080 1b54 Generated table #1107@1: 27319 keys, 2265290 bytes
-2022/03/11-16:26:55.490 1b54 Generated table #1108@1: 11425 keys, 2152136 bytes
-2022/03/11-16:26:56.063 1b54 Generated table #1109@1: 39731 keys, 2171958 bytes
-2022/03/11-16:26:56.914 1b54 Generated table #1110@1: 102646 keys, 2254430 bytes
-2022/03/11-16:26:58.057 1b54 Generated table #1111@1: 103952 keys, 2257446 bytes
-2022/03/11-16:26:58.948 1b54 Generated table #1112@1: 93708 keys, 2243801 bytes
-2022/03/11-16:26:59.121 1b54 Generated table #1113@1: 21202 keys, 938040 bytes
-2022/03/11-16:26:59.121 1b54 Compacted 1@1 + 10@2 files => 20782114 bytes
-2022/03/11-16:26:59.176 1b54 compacted to: files[ 0 0 10 0 0 0 0 ]
-2022/03/11-16:26:59.177 1b54 Delete type=2 #1091
-2022/03/11-16:26:59.177 1b54 Delete type=2 #1092
-2022/03/11-16:26:59.177 1b54 Delete type=2 #1093
-2022/03/11-16:26:59.177 1b54 Delete type=2 #1094
-2022/03/11-16:26:59.177 1b54 Delete type=2 #1095
-2022/03/11-16:26:59.177 1b54 Delete type=2 #1096
-2022/03/11-16:26:59.177 1b54 Delete type=2 #1097
-2022/03/11-16:26:59.177 1b54 Delete type=2 #1098
-2022/03/11-16:26:59.177 1b54 Delete type=2 #1099
-2022/03/11-16:26:59.177 1b54 Delete type=2 #1100
-2022/03/11-16:26:59.177 1b54 Delete type=2 #1103
+2022/03/11-16:33:56.185 614 Reusing MANIFEST D:\NodeJs\whatsapp-bot-master\backend\.wwebjs_auth\session\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/MANIFEST-000001
+2022/03/11-16:33:56.186 614 Recovering log #1102
+2022/03/11-16:33:56.530 614 Reusing old log D:\NodeJs\whatsapp-bot-master\backend\.wwebjs_auth\session\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/001102.log 
+2022/03/11-16:34:07.606 36bc Level-0 table #1116: started
+2022/03/11-16:34:07.718 36bc Level-0 table #1116: 1295104 bytes OK
+2022/03/11-16:34:07.767 36bc Delete type=0 #1102
+2022/03/11-16:34:08.364 614 Compacting 1@1 + 10@2 files
+2022/03/11-16:34:08.509 614 Generated table #1117@1: 10563 keys, 2166855 bytes
+2022/03/11-16:34:08.653 614 Generated table #1118@1: 3544 keys, 2156360 bytes
+2022/03/11-16:34:08.868 614 Generated table #1119@1: 13863 keys, 2176063 bytes
+2022/03/11-16:34:09.109 614 Generated table #1120@1: 27300 keys, 2265132 bytes
+2022/03/11-16:34:09.260 614 Generated table #1121@1: 11828 keys, 2161232 bytes
+2022/03/11-16:34:09.419 614 Generated table #1122@1: 32054 keys, 2160310 bytes
+2022/03/11-16:34:09.687 614 Generated table #1123@1: 103353 keys, 2255271 bytes
+2022/03/11-16:34:10.027 614 Generated table #1124@1: 104617 keys, 2257532 bytes
+2022/03/11-16:34:10.285 614 Generated table #1125@1: 104067 keys, 2257240 bytes
+2022/03/11-16:34:10.480 614 Generated table #1126@1: 30914 keys, 1390760 bytes
+2022/03/11-16:34:10.501 614 Compacted 1@1 + 10@2 files => 21246755 bytes
+2022/03/11-16:34:10.617 614 compacted to: files[ 0 0 10 0 0 0 0 ]
+2022/03/11-16:59:29.941 1ec0 Level-0 table #1128: started
+2022/03/11-16:59:30.070 1ec0 Level-0 table #1128: 1396386 bytes OK
+2022/03/11-16:59:30.124 1ec0 Delete type=2 #1104
+2022/03/11-16:59:30.124 1ec0 Delete type=2 #1105
+2022/03/11-16:59:30.124 1ec0 Delete type=2 #1106
+2022/03/11-16:59:30.124 1ec0 Delete type=2 #1107
+2022/03/11-16:59:30.124 1ec0 Delete type=2 #1108
+2022/03/11-16:59:30.124 1ec0 Delete type=2 #1109
+2022/03/11-16:59:30.124 1ec0 Delete type=2 #1110
+2022/03/11-16:59:30.124 1ec0 Delete type=2 #1111
+2022/03/11-16:59:30.124 1ec0 Delete type=2 #1112
+2022/03/11-16:59:30.124 1ec0 Delete type=2 #1113
+2022/03/11-16:59:30.124 1ec0 Delete type=0 #1115
+2022/03/11-16:59:30.124 1ec0 Delete type=2 #1116
+2022/03/11-16:59:36.847 1ec0 Compacting 1@0 + 0@1 files
+2022/03/11-16:59:36.980 1ec0 Generated table #1129@0: 22211 keys, 597445 bytes
+2022/03/11-16:59:36.980 1ec0 Compacted 1@0 + 0@1 files => 597445 bytes
+2022/03/11-16:59:37.018 1ec0 compacted to: files[ 0 1 10 0 0 0 0 ]
+2022/03/11-16:59:37.018 1ec0 Delete type=2 #1128
+2022/03/11-16:59:37.309 2cd8 Compacting 1@1 + 10@2 files
+2022/03/11-16:59:37.430 2cd8 Generated table #1130@1: 11293 keys, 2168036 bytes
+2022/03/11-16:59:37.532 2cd8 Generated table #1131@1: 3562 keys, 2156298 bytes
+2022/03/11-16:59:37.638 2cd8 Generated table #1132@1: 13043 keys, 2173970 bytes
+2022/03/11-16:59:37.880 2cd8 Generated table #1133@1: 27517 keys, 2263698 bytes
+2022/03/11-16:59:38.011 2cd8 Generated table #1134@1: 12584 keys, 2159488 bytes
+2022/03/11-16:59:38.140 2cd8 Generated table #1135@1: 27100 keys, 2152306 bytes
+2022/03/11-16:59:38.346 2cd8 Generated table #1136@1: 104221 keys, 2256792 bytes
+2022/03/11-16:59:38.557 2cd8 Generated table #1137@1: 104020 keys, 2255330 bytes
+2022/03/11-16:59:38.800 2cd8 Generated table #1138@1: 104376 keys, 2256622 bytes
+2022/03/11-16:59:38.957 2cd8 Generated table #1139@1: 40472 keys, 1717624 bytes
+2022/03/11-16:59:38.957 2cd8 Compacted 1@1 + 10@2 files => 21560164 bytes
+2022/03/11-16:59:38.979 2cd8 compacted to: files[ 0 0 10 0 0 0 0 ]
+2022/03/11-16:59:38.980 2cd8 Delete type=2 #1117
+2022/03/11-16:59:38.980 2cd8 Delete type=2 #1118
+2022/03/11-16:59:38.980 2cd8 Delete type=2 #1119
+2022/03/11-16:59:38.980 2cd8 Delete type=2 #1120
+2022/03/11-16:59:38.980 2cd8 Delete type=2 #1121
+2022/03/11-16:59:38.980 2cd8 Delete type=2 #1122
+2022/03/11-16:59:38.980 2cd8 Delete type=2 #1123
+2022/03/11-16:59:38.980 2cd8 Delete type=2 #1124
+2022/03/11-16:59:38.980 2cd8 Delete type=2 #1125
+2022/03/11-16:59:38.980 2cd8 Delete type=2 #1126
+2022/03/11-16:59:38.980 2cd8 Delete type=2 #1129
+2022/03/11-17:25:38.052 2624 Level-0 table #1141: started
+2022/03/11-17:25:38.199 2624 Level-0 table #1141: 1298737 bytes OK
+2022/03/11-17:25:38.219 2624 Delete type=0 #1127
+2022/03/11-17:26:46.081 2cd8 Compacting 1@0 + 0@1 files
+2022/03/11-17:26:46.224 2cd8 Generated table #1142@0: 31630 keys, 688268 bytes
+2022/03/11-17:26:46.224 2cd8 Compacted 1@0 + 0@1 files => 688268 bytes
+2022/03/11-17:26:46.249 2cd8 compacted to: files[ 0 1 10 0 0 0 0 ]
+2022/03/11-17:26:46.249 2cd8 Delete type=2 #1141
+2022/03/11-17:27:53.957 2624 Compacting 1@1 + 10@2 files
+2022/03/11-17:27:54.150 2624 Generated table #1143@1: 10315 keys, 2167772 bytes
+2022/03/11-17:27:54.264 2624 Generated table #1144@1: 3549 keys, 2156260 bytes
+2022/03/11-17:27:54.386 2624 Generated table #1145@1: 12885 keys, 2174215 bytes
+2022/03/11-17:27:54.551 2624 Generated table #1146@1: 27570 keys, 2263457 bytes
+2022/03/11-17:27:54.681 2624 Generated table #1147@1: 12703 keys, 2160899 bytes
+2022/03/11-17:27:54.803 2624 Generated table #1148@1: 19808 keys, 2143482 bytes
+2022/03/11-17:27:55.015 2624 Generated table #1149@1: 105508 keys, 2259824 bytes
+2022/03/11-17:27:55.213 2624 Generated table #1150@1: 104135 keys, 2257459 bytes
+2022/03/11-17:27:55.400 2624 Generated table #1151@1: 104290 keys, 2256393 bytes
+2022/03/11-17:27:55.564 2624 Generated table #1152@1: 59316 keys, 2155609 bytes
+2022/03/11-17:27:55.564 2624 Compacted 1@1 + 10@2 files => 21995370 bytes
+2022/03/11-17:27:55.599 2624 compacted to: files[ 0 0 10 0 0 0 0 ]
+2022/03/11-17:27:55.600 2624 Delete type=2 #1130
+2022/03/11-17:27:55.600 2624 Delete type=2 #1131
+2022/03/11-17:27:55.600 2624 Delete type=2 #1132
+2022/03/11-17:27:55.600 2624 Delete type=2 #1133
+2022/03/11-17:27:55.600 2624 Delete type=2 #1134
+2022/03/11-17:27:55.600 2624 Delete type=2 #1135
+2022/03/11-17:27:55.600 2624 Delete type=2 #1136
+2022/03/11-17:27:55.600 2624 Delete type=2 #1137
+2022/03/11-17:27:55.600 2624 Delete type=2 #1138
+2022/03/11-17:27:55.600 2624 Delete type=2 #1139
+2022/03/11-17:27:55.600 2624 Delete type=2 #1142

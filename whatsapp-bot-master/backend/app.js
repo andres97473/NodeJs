@@ -93,13 +93,13 @@ const listenMessage = () => {
                     break;
             }
 
-            saveChatExcel(from, body);
+            // saveChatExcel(from, body);
 
-            const today = moment().format(formatDate);
+            // const today = moment().format(formatDate);
 
-            console.log(from, to, body, "->", today);
+            // console.log(from, to, body, "->", today);
         } else {
-            console.log("no es mensaje");
+            // console.log("no es mensaje");
         }
     });
 };

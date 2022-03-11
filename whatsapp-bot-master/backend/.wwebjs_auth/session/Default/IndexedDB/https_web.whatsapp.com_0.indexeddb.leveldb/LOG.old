@@ -1,47 +1,30 @@
-2022/03/11-15:04:01.099 2d68 Reusing MANIFEST D:\NodeJs\whatsapp-bot-master\backend\.wwebjs_auth\session\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/MANIFEST-000001
-2022/03/11-15:04:01.099 2d68 Recovering log #894
-2022/03/11-15:04:01.243 2d68 Reusing old log D:\NodeJs\whatsapp-bot-master\backend\.wwebjs_auth\session\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/000894.log 
-2022/03/11-15:04:01.244 2d68 Delete type=2 #889
-2022/03/11-15:04:01.244 2d68 Delete type=2 #890
-2022/03/11-15:04:01.244 2d68 Delete type=2 #891
-2022/03/11-15:04:01.244 2d68 Delete type=2 #892
-2022/03/11-15:04:01.244 2d68 Delete type=2 #893
-2022/03/11-15:04:01.244 2d68 Delete type=2 #895
-2022/03/11-15:04:32.695 3070 Level-0 table #904: started
-2022/03/11-15:04:33.023 3070 Level-0 table #904: 1226571 bytes OK
-2022/03/11-15:04:33.106 3070 Delete type=0 #894
-2022/03/11-15:04:33.517 91c Compacting 1@1 + 6@2 files
-2022/03/11-15:04:33.861 91c Generated table #905@1: 10318 keys, 2170391 bytes
-2022/03/11-15:04:34.186 91c Generated table #906@1: 3610 keys, 2155979 bytes
-2022/03/11-15:04:34.520 91c Generated table #907@1: 15420 keys, 2185455 bytes
-2022/03/11-15:04:34.762 91c Generated table #908@1: 27436 keys, 2263818 bytes
-2022/03/11-15:04:35.069 91c Generated table #909@1: 77243 keys, 2233908 bytes
-2022/03/11-15:04:35.243 91c Generated table #910@1: 11055 keys, 473442 bytes
-2022/03/11-15:04:35.243 91c Compacted 1@1 + 6@2 files => 11482993 bytes
-2022/03/11-15:04:35.363 91c compacted to: files[ 0 0 6 0 0 0 0 ]
-2022/03/11-15:04:35.363 91c Delete type=2 #896
-2022/03/11-15:04:35.363 91c Delete type=2 #897
-2022/03/11-15:04:35.363 91c Delete type=2 #898
-2022/03/11-15:04:35.363 91c Delete type=2 #899
-2022/03/11-15:04:35.363 91c Delete type=2 #900
-2022/03/11-15:04:35.364 91c Delete type=2 #901
-2022/03/11-15:04:35.364 91c Delete type=2 #904
-2022/03/11-15:05:28.988 2d68 Level-0 table #912: started
-2022/03/11-15:05:29.204 2d68 Level-0 table #912: 1117736 bytes OK
-2022/03/11-15:05:29.257 2d68 Delete type=0 #903
-2022/03/11-15:05:29.303 6ec Compacting 1@1 + 6@2 files
-2022/03/11-15:05:29.571 6ec Generated table #913@1: 10281 keys, 2170765 bytes
-2022/03/11-15:05:29.904 6ec Generated table #914@1: 3610 keys, 2155979 bytes
-2022/03/11-15:05:30.087 6ec Generated table #915@1: 15420 keys, 2185455 bytes
-2022/03/11-15:05:30.571 6ec Generated table #916@1: 27436 keys, 2263818 bytes
-2022/03/11-15:05:30.835 6ec Generated table #917@1: 71528 keys, 2225955 bytes
-2022/03/11-15:05:30.942 6ec Generated table #918@1: 33563 keys, 1003241 bytes
-2022/03/11-15:05:30.942 6ec Compacted 1@1 + 6@2 files => 12005213 bytes
-2022/03/11-15:05:31.095 6ec compacted to: files[ 0 0 6 0 0 0 0 ]
-2022/03/11-15:05:31.096 6ec Delete type=2 #905
-2022/03/11-15:05:31.096 6ec Delete type=2 #906
-2022/03/11-15:05:31.096 6ec Delete type=2 #907
-2022/03/11-15:05:31.096 6ec Delete type=2 #908
-2022/03/11-15:05:31.096 6ec Delete type=2 #909
-2022/03/11-15:05:31.096 6ec Delete type=2 #910
-2022/03/11-15:05:31.096 6ec Delete type=2 #912
+2022/03/11-15:26:55.163 14fc Reusing MANIFEST D:\NodeJs\whatsapp-bot-master\backend\.wwebjs_auth\session\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/MANIFEST-000001
+2022/03/11-15:26:55.164 14fc Recovering log #1076
+2022/03/11-15:26:55.351 14fc Reusing old log D:\NodeJs\whatsapp-bot-master\backend\.wwebjs_auth\session\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/001076.log 
+2022/03/11-15:46:18.569 1464 Level-0 table #1090: started
+2022/03/11-15:46:18.697 1464 Level-0 table #1090: 1189411 bytes OK
+2022/03/11-15:46:18.751 1464 Delete type=0 #1076
+2022/03/11-15:46:38.363 564 Compacting 1@1 + 10@2 files
+2022/03/11-15:46:38.574 564 Generated table #1091@1: 10290 keys, 2166077 bytes
+2022/03/11-15:46:38.731 564 Generated table #1092@1: 3598 keys, 2157368 bytes
+2022/03/11-15:46:38.845 564 Generated table #1093@1: 14494 keys, 2179226 bytes
+2022/03/11-15:46:39.004 564 Generated table #1094@1: 27317 keys, 2263404 bytes
+2022/03/11-15:46:39.120 564 Generated table #1095@1: 10968 keys, 2150584 bytes
+2022/03/11-15:46:39.283 564 Generated table #1096@1: 42615 keys, 2174559 bytes
+2022/03/11-15:46:39.491 564 Generated table #1097@1: 102816 keys, 2255819 bytes
+2022/03/11-15:46:39.669 564 Generated table #1098@1: 103722 keys, 2257156 bytes
+2022/03/11-15:46:39.848 564 Generated table #1099@1: 93443 keys, 2249372 bytes
+2022/03/11-15:46:39.922 564 Generated table #1100@1: 10336 keys, 491259 bytes
+2022/03/11-15:46:39.922 564 Compacted 1@1 + 10@2 files => 20344824 bytes
+2022/03/11-15:46:39.953 564 compacted to: files[ 0 0 10 0 0 0 0 ]
+2022/03/11-15:46:39.953 564 Delete type=2 #1078
+2022/03/11-15:46:39.954 564 Delete type=2 #1079
+2022/03/11-15:46:39.954 564 Delete type=2 #1080
+2022/03/11-15:46:39.954 564 Delete type=2 #1081
+2022/03/11-15:46:39.954 564 Delete type=2 #1082
+2022/03/11-15:46:39.954 564 Delete type=2 #1083
+2022/03/11-15:46:39.954 564 Delete type=2 #1084
+2022/03/11-15:46:39.954 564 Delete type=2 #1085
+2022/03/11-15:46:39.954 564 Delete type=2 #1086
+2022/03/11-15:46:39.954 564 Delete type=2 #1087
+2022/03/11-15:46:39.954 564 Delete type=2 #1090

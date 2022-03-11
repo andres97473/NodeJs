@@ -80,15 +80,16 @@ const listenMessage = () => {
             //console.log("es mensaje");
 
             switch (removeAccents(body)) {
-                case "info":
-                    sendMessage(from, "De que quieres informacion !!");
+                case "consulta":
+                    sendMessage(from, "Estimado potositano vota por nuestra formula partido de la U con Berner Zambarano al senado con el numero 99 y Teresa Enriquez a la camara con el numero 101. Para mas informacion de como votar escribre senado o camara");
                     break;
-                case "adios":
-                    sendMessage(from, "Nos vemos pronto !!");
+                case "senado":
+                    sendMessage(from, "Berner Zambrano, vota al senado partido de la U marcando una X sobre el numero 99");
+                    sendMedia(from, "senado.jpg");
                     break;
-                case "hola":
-                    sendMessage(from, "Bienvenido !!");
-                    sendMedia(from, "curso-1.jpg");
+                case "camara":
+                    sendMessage(from, "Teresa Enriquez, vota a la camara partido de la U marcando una X sobre el numero 101");
+                    sendMedia(from, "camara.jpg");
                     break;
             }
 

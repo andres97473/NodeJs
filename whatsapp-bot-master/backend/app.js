@@ -6,6 +6,10 @@ const { Client, MessageMedia, LocalAuth } = require("whatsapp-web.js");
 const moment = require("moment");
 const express = require("express");
 const cors = require("cors");
+const { dbConnection } = require("./database/config");
+
+const Message = require("./models/message");
+
 // const bodyParser = require("body-parser");
 
 // Environment variables
@@ -25,6 +29,9 @@ const app = express();
 app.use(cors());
 
 app.use(express.json());
+
+// Base de datos
+dbConnection();
 
 app.use(express.urlencoded({ extended: true }));
 
@@ -85,12 +92,14 @@ const listenMessage = () => {
             from,
             "Estimado potositano vota por nuestra formula partido de la U con Berner Zambarano al senado con el número 99 y Teresa Enriquez a la cámara con el número 101.\nPara más información de como votar escribe *senado* o *camara*"
           );
+          saveChatMongo(from, body);
           break;
         case "senado":
           sendMessage(
             from,
             "¿Cómo Votar por Berner Zambrano al Senado?\n1-Ubicar su lugar y mesa de votación\n2-Pida el tarjetón azul del Senado\n3-En la parte inferior ubique el logo del partido de la U y el numero 99\n4-Marque con un (X) el logo del partido de la U y el numero 99"
           );
+          saveChatMongo(from, body);
           sendMedia(from, "senado-vid.mp4");
           break;
         case "camara":
@@ -98,6 +107,7 @@ const listenMessage = () => {
             from,
             "¿Cómo Votar por Teresa Enriquez a la Camara?\n1-Ubicar su lugar y mesa de votación\n2-Pida el tarjetón cafe de la Camara\n3-En la parte inferior ubique el logo del partido de la U y el numero 101\n4-Marque con un (X) el logo del partido de la U y el numero 101"
           );
+          saveChatMongo(from, body);
           sendMedia(from, "camara-vid.mp4");
           break;
       }
@@ -170,6 +180,18 @@ const saveChatExcel = async (number, message) => {
       .catch((err) => {
         console.log("err", err);
       });
+  }
+};
+
+const saveChatMongo = async (number, message) => {
+  const chat = new Message({ number, message });
+
+  try {
+    const messageDB = await chat.save();
+
+    // console.log(messageDB);
+  } catch (error) {
+    console.log(error);
   }
 };
 

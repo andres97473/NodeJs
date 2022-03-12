@@ -4,6 +4,7 @@ const MessageSchema = Schema(
   {
     number: { type: String },
     message: { type: String },
+    created_at: { type: Date, required: true, default: Date.now },
   },
   { collection: "messages" }
 );

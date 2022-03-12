@@ -30,6 +30,10 @@ app.use(express.urlencoded({ extended: true }));
 
 const client = new Client({
   authStrategy: new LocalAuth(),
+  puppeteer: {
+    executablePath:
+      "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+  },
 });
 
 client.initialize();
@@ -85,16 +89,16 @@ const listenMessage = () => {
         case "senado":
           sendMessage(
             from,
-            "Berner Zambrano, vota al senado partido de la U marcando una X sobre el numero 99"
+            "¿Cómo Votar por Berner Zambrano al Senado?\n1-Ubicar su lugar y mesa de votación\n2-Pida el tarjetón azul del Senado\n3-En la parte inferior ubique el logo del partido de la U y el numero 99\n4-Marque con un (X) el logo del partido de la U y el numero 99"
           );
-          sendMedia(from, "senado.jpg");
+          sendMedia(from, "senado-vid.mp4");
           break;
         case "camara":
           sendMessage(
             from,
-            "Teresa Enriquez, vota a la camara partido de la U marcando una X sobre el numero 101"
+            "¿Cómo Votar por Teresa Enriquez a la Camara?\n1-Ubicar su lugar y mesa de votación\n2-Pida el tarjetón cafe de la Camara\n3-En la parte inferior ubique el logo del partido de la U y el numero 101\n4-Marque con un (X) el logo del partido de la U y el numero 101"
           );
-          sendMedia(from, "camara.jpg");
+          sendMedia(from, "camara-vid.mp4");
           break;
       }
 

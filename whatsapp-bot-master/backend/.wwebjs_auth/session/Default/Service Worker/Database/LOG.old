@@ -1,3 +1,2 @@
-2022/03/11-18:18:13.410 1f20 Reusing MANIFEST D:\NodeJs\whatsapp-bot-master\backend\.wwebjs_auth\session\Default\Service Worker\Database/MANIFEST-000001
-2022/03/11-18:18:13.410 1f20 Recovering log #3
-2022/03/11-18:18:13.411 1f20 Reusing old log D:\NodeJs\whatsapp-bot-master\backend\.wwebjs_auth\session\Default\Service Worker\Database/000003.log 
+2022/03/12-11:11:24.526 176c Creating DB D:\NodeJs\whatsapp-bot-master\backend\.wwebjs_auth\session\Default\Service Worker\Database since it was missing.
+2022/03/12-11:11:24.759 176c Reusing MANIFEST D:\NodeJs\whatsapp-bot-master\backend\.wwebjs_auth\session\Default\Service Worker\Database/MANIFEST-000001

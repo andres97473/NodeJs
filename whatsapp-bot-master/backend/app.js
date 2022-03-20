@@ -2,7 +2,13 @@ require("dotenv").config();
 const fs = require("fs");
 const ExcelJS = require("exceljs");
 const qrcode = require("qrcode-terminal");
-const { Client, MessageMedia, LocalAuth } = require("whatsapp-web.js");
+const {
+  Client,
+  MessageMedia,
+  LocalAuth,
+  Buttons,
+  Location,
+} = require("whatsapp-web.js");
 const moment = require("moment");
 const express = require("express");
 const cors = require("cors");
@@ -17,7 +23,7 @@ const Message = require("./models/message");
 // const country_code = "52";
 const PORT = 9000;
 const number_code = "57";
-const number = "3166651382";
+const number = "3226798392";
 const msg = "Chat iniciado!";
 const formatDate = "DD/MM/YYYY hh:mm a";
 const fech = moment().format(formatDate);
@@ -79,37 +85,63 @@ client.on("ready", () => {
 Funcion se encarga de escuchar cada vez que un nuevo mensaje entra
  */
 const listenMessage = () => {
-  client.on("message", (msg) => {
+  client.on("message", async (msg) => {
     //console.log("mensaje ", msg);
     const { from, to, body } = msg;
 
     if (from.includes("@c.us")) {
       //console.log("es mensaje");
 
-      switch (removeAccents(body)) {
-        case "consulta":
-          sendMessage(
-            from,
-            "Estimado potositano vota por nuestra formula partido de la U con Berner Zambarano al senado con el número 99 y Teresa Enriquez a la cámara con el número 101.\nPara más información de como votar escribe *senado* o *camara*"
-          );
-          saveChatMongo(from, body);
-          break;
-        case "senado":
-          sendMessage(
-            from,
-            "¿Cómo Votar por Berner Zambrano al Senado?\n1-Ubicar su lugar y mesa de votación\n2-Pida el tarjetón azul del Senado\n3-En la parte inferior ubique el logo del partido de la U y el numero 99\n4-Marque con un (X) el logo del partido de la U y el numero 99"
-          );
-          saveChatMongo(from, body);
-          sendMedia(from, "senado-vid.mp4");
-          break;
-        case "camara":
-          sendMessage(
-            from,
-            "¿Cómo Votar por Teresa Enriquez a la Camara?\n1-Ubicar su lugar y mesa de votación\n2-Pida el tarjetón cafe de la Camara\n3-En la parte inferior ubique el logo del partido de la U y el numero 101\n4-Marque con un (X) el logo del partido de la U y el numero 101"
-          );
-          saveChatMongo(from, body);
-          sendMedia(from, "camara-vid.mp4");
-          break;
+      // sendMedia(from, "senado-vid.mp4");
+
+      let msgRecibido = removeAccents(body);
+
+      if (msgRecibido.includes("ping")) {
+        sendMessage(from, "pong!!");
+        // saveChatMongo(from, body);
+      }
+      // botones
+      else if (msgRecibido.includes("boton")) {
+        let button = new Buttons(
+          "Button body",
+          [{ body: "bt1" }, { body: "bt2" }],
+          "title",
+          "footer"
+        );
+        sendMessage(from, "Esto es un boton!!");
+        sendMessage(from, button);
+        // saveChatMongo(from, body);
+      }
+      // location
+      else if (msgRecibido.includes("ubicacion")) {
+        msg.reply(
+          new Location(37.422, -122.084, "Googleplex\nGoogle Headquarters")
+        );
+      }
+
+      // capturar ubicacion
+      else if (msg.location) {
+        // msg.reply(msg.location);
+
+        const { latitude, longitude, description } = msg.location;
+
+        if (latitude && description === "") {
+          sendMessage(from, "Enviar su nombre");
+          // const nDescription = await msg.body;
+
+          // console.log(nBody);
+          client.on("message", async (msg) => {
+            // console.log(nBody);
+            const nBody = await msg.body;
+            const respuestaLocation = `numero: ${from}\nlatitude: ${latitude}\nlongitude: ${longitude}\ndescription: ${nBody}`;
+            console.log(respuestaLocation);
+            sendMessage(from, respuestaLocation);
+          });
+        } else {
+          const respuestaLocation = `numero: ${from}\nlatitude: ${latitude}\nlongitude: ${longitude}\ndescription: ${description}`;
+          console.log(respuestaLocation);
+          sendMessage(from, respuestaLocation);
+        }
       }
 
       // saveChatExcel(from, body);
@@ -118,7 +150,7 @@ const listenMessage = () => {
 
       // console.log(from, to, body, "->", today);
     } else {
-      // console.log("no es mensaje");
+      //console.log("no es mensaje");
     }
   });
 };
@@ -137,6 +169,10 @@ const sendMedia = (to, file) => {
   const mediaFile = MessageMedia.fromFilePath(`./mediaSend/${file}`);
   client.sendMessage(to, mediaFile);
 };
+
+/* 
+respuesta
+ */
 
 /**
  * Guardar historial de conversacion

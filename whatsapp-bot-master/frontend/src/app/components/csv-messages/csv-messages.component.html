@@ -148,7 +148,7 @@
           <span>{{ csvData.celular }}</span>
         </td>
         <td>
-          <span>{{ csvData.fec_cita | date:'short' }}</span>
+          <span>{{ csvData.fec_cita | date: "short" }}</span>
         </td>
         <td>
           <span>{{ csvData.hora_cita }}</span>
@@ -162,13 +162,19 @@
         <td>
           <span>{{ csvData.descripcion }}</span>
         </td>
-        <td >
-          <span class="badge badge-pill" [ngClass]="{'badge-primary':csvData.estado == 'PENDIENTE',
-          'badge-success':csvData.estado == 'ENVIADO',
-          'badge-danger':csvData.estado == 'ERROR'}" >{{ csvData.estado }}</span>
+        <td>
+          <span
+            class="badge badge-pill"
+            [ngClass]="{
+              'badge-primary': csvData.estado == 'PENDIENTE',
+              'badge-success': csvData.estado == 'ENVIADO',
+              'badge-danger': csvData.estado == 'ERROR'
+            }"
+            >{{ csvData.estado }}</span
+          >
         </td>
         <td>
-          <span>{{ csvData.fecha_proceso | date:'short' }}</span>
+          <span>{{ csvData.fecha_proceso | date: "short" }}</span>
         </td>
         <td>
           <div (click)="eliminarItem(csvData)" style="text-align: center">

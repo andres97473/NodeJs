@@ -1,6 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import * as XLSX from 'xlsx';
 import { RecordatorioModel } from '../../models/recordatorio.model';
+
+// material
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort, SortDirection } from '@angular/material/sort';
+import { merge, Observable, of as observableOf } from 'rxjs';
+import { catchError, map, startWith, switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-recordatorio',

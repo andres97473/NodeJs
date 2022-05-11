@@ -6,9 +6,11 @@ import { AppComponent } from './app.component';
 import { RecordatorioComponent } from './components/recordatorio/recordatorio.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from './material/material.module';
+import { NavbarComponent } from './components/navbar/navbar.component';
+import { HomeComponent } from './components/home/home.component';
 
 @NgModule({
-  declarations: [AppComponent, RecordatorioComponent],
+  declarations: [AppComponent, RecordatorioComponent, NavbarComponent, HomeComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

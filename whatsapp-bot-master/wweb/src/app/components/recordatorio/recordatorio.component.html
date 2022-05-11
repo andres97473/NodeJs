@@ -1,36 +1,68 @@
-<h2>File Upload & Image Preview</h2>
-<p class="lead">No Plugins <b>Just Javascript</b></p>
+<h2>Cargar archivo y enviar mensajes</h2>
 
-<!-- Upload  -->
-<form id="file-upload-form" class="uploader">
-  <input
-    id="file-upload"
-    type="file"
-    name="fileUpload"
-    accept=".xls,.xlsx"
-    (change)="fileUpload($event)"
-  />
+<div class="container">
+  <div class="row">
+    <!-- Upload  -->
+    <form id="file-upload-form" class="uploader">
+      <input
+        id="file-upload"
+        type="file"
+        name="fileUpload"
+        accept=".xls,.xlsx"
+        (change)="fileUpload($event)"
+      />
 
-  <label for="file-upload" id="file-drag">
-    <img id="file-image" src="#" alt="Preview" class="hidden" />
-    <div id="start">
-      <i class="fa fa-download" aria-hidden="true"></i>
-      <div>Select a file or drag here</div>
-      <div id="notimage" class="hidden">Please select an image</div>
-      <span id="file-upload-btn" class="btn btn-primary">Select a file</span>
+      <label for="file-upload" id="file-drag">
+        <img id="file-image" src="#" alt="Preview" class="hidden" />
+        <div id="start">
+          <i class="fa fa-download" aria-hidden="true"></i>
+          <div>Seleccione un archivo xls o xlsx</div>
+
+          <span id="file-upload-btn" class="btn btn-primary"
+            >Seleccionar Archivo</span
+          >
+        </div>
+        <div id="response" class="hidden">
+          <div id="messages"></div>
+          <progress class="progress" id="file-progress" value="0">
+            <span>0</span>%
+          </progress>
+        </div>
+      </label>
+    </form>
+  </div>
+  <div class="row" *ngIf="recordatorios.length > 0">
+    <div>
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Id</th>
+            <th scope="col">Tipo Doc</th>
+            <th scope="col">Num Documento</th>
+            <th scope="col">Primer Apellido</th>
+            <th scope="col">Segundo Apellido</th>
+            <th scope="col">Primer Nombre</th>
+            <th scope="col">Segundo Nombre</th>
+            <th scope="col">Celular</th>
+            <th scope="col">Estado</th>
+            <th scope="col">Proceso</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let recordatorio of recordatorios">
+            <td>{{ recordatorio.id }}</td>
+            <td>{{ recordatorio.tipo_doc }}</td>
+            <td>{{ recordatorio.num_doc_usr }}</td>
+            <td>{{ recordatorio.apellido1 }}</td>
+            <td>{{ recordatorio.apellido2 }}</td>
+            <td>{{ recordatorio.nombre1 }}</td>
+            <td>{{ recordatorio.nombre2 }}</td>
+            <td>{{ recordatorio.celular }}</td>
+            <td>{{ recordatorio.estado }}</td>
+            <td>{{ recordatorio.fecha_proceso | date: "short" }}</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
-    <div id="response" class="hidden">
-      <div id="messages"></div>
-      <progress class="progress" id="file-progress" value="0">
-        <span>0</span>%
-      </progress>
-    </div>
-  </label>
-</form>
-
-<div>
-  <pre>
-        {{ convertedJson }}
-    </pre
-  >
+  </div>
 </div>

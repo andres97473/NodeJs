@@ -1,12 +1,24 @@
 table {
     width: 100%;
-}
+  }
   
-th.mat-sort-header-sorted {
-    color: black;
-}
-
 .mat-form-field {
     font-size: 14px;
     width: 100%;
+}
+  
+.example-container {
+    position: relative;
+}
+  
+.example-table-container {
+    position: relative;
+    min-height: 200px;
+    max-height: 400px;
+    overflow: auto;
+}
+
+.filter{
+    width: 95%;
+    margin: auto
 }

@@ -1,33 +1,52 @@
-import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  OnChanges,
+  OnInit,
+  SimpleChanges,
+  ViewChild,
+} from '@angular/core';
+// cargar excel
 import * as XLSX from 'xlsx';
 import { RecordatorioModel } from '../../models/recordatorio.model';
-
-// material
+// tabla material
 import { MatPaginator } from '@angular/material/paginator';
-import { MatSort, SortDirection } from '@angular/material/sort';
-import { merge, Observable, of as observableOf } from 'rxjs';
-import { catchError, map, startWith, switchMap } from 'rxjs/operators';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-recordatorio',
   templateUrl: './recordatorio.component.html',
   styleUrls: ['./recordatorio.component.css'],
 })
-export class RecordatorioComponent implements OnInit {
-  convertedJson!: string;
+export class RecordatorioComponent {
+  // propiedades cargar archivo excel
   recordatorios: RecordatorioModel[] = [];
-
   id = 1;
   estado = 'PENDIENTE';
   fecha_proceso?: Date;
 
-  constructor() {}
+  // propiedades tabla material
+  displayedColumns: string[] = [
+    'id',
+    'tipo_doc',
+    'num_doc_usr',
+    'apellido1',
+    'apellido2',
+    'nombre1',
+    'nombre2',
+    'celular',
+    'estado',
+    'fecha_proceso',
+  ];
+  dataSource!: MatTableDataSource<RecordatorioModel>;
 
-  ngOnInit(): void {}
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
 
   fileUpload(event: any) {
     this.recordatorios = [];
-    this.estado = '';
+    this.estado = 'PENDIENTE';
     this.fecha_proceso = new Date();
     //console.log(event.target.files);
     const selectedFile = event.target.files[0];
@@ -66,14 +85,29 @@ export class RecordatorioComponent implements OnInit {
             nombre1,
             nombre2,
             celular,
-            estado,
+            estado: this.estado,
             fecha_proceso,
           });
         });
-        console.log(this.recordatorios);
-        //this.convertedJson = JSON.stringify(data, undefined, 4);
+        //console.log(this.recordatorios);
+        this.cargarRecordatorios();
       });
       //console.log(workbook);
     };
+  }
+
+  cargarRecordatorios() {
+    this.dataSource = new MatTableDataSource(this.recordatorios);
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+  }
+
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
   }
 }

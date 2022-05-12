@@ -1,9 +1,21 @@
+<p>
+  <mat-form-field appearance="standard">
+    <mat-label>Filter</mat-label>
+    <input
+      matInput
+      (keyup)="applyFilter($event)"
+      placeholder="Ex. ium"
+      #input
+    />
+  </mat-form-field>
+</p>
+
 <table
   mat-table
   [dataSource]="dataSource"
   matSort
   (matSortChange)="announceSortChange($event)"
-  class="mat-elevation-z8 mt-5"
+  class="mat-elevation-z8"
 >
   <!-- id Column -->
   <ng-container matColumnDef="id">
@@ -60,4 +72,11 @@
 
   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
   <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+
+  <!-- Row shown when there is no matching data. -->
+  <tr class="mat-row" *matNoDataRow>
+    <td class="mat-cell" colspan="4">
+      No data matching the filter "{{ input.value }}"
+    </td>
+  </tr>
 </table>

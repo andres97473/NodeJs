@@ -1,11 +1,10 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
-import { NgxCsvParser } from 'ngx-csv-parser';
-import { NgxCSVParserError } from 'ngx-csv-parser';
+import { Router } from '@angular/router';
+import * as XLSX from 'xlsx';
 import { RecordatorioModel, Respuesta } from '../../models/recordatorio.model';
 import { MessagesService } from '../../services/messages.service';
-import { NgForm } from '@angular/forms';
 import Swal from 'sweetalert2';
-import { Router } from '@angular/router';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-csv-messages',
@@ -15,10 +14,13 @@ import { Router } from '@angular/router';
 export class CsvMessagesComponent {
   // cargar archivo csv
   csvRecords: RecordatorioModel[] = [];
-  csvRecordsFilter: RecordatorioModel[] = [];
-  header: boolean = true;
-  files: any;
-  delimitador = '|';
+  // csvRecordsFilter: RecordatorioModel[] = [];
+
+  // cargar archivo xls p xlsx
+  recordatorios: RecordatorioModel[] = [];
+  id = 1;
+  estado = 'PENDIENTE';
+  fecha_proceso?: Date;
 
   // objeto para inicar la respuesta de la api
   respuesta: Respuesta = {
@@ -28,7 +30,6 @@ export class CsvMessagesComponent {
 
   coneccion = true;
   errores = 0;
-  estado = 'PENDIENTE';
 
   // paginacion
   paginacion = 10;
@@ -40,66 +41,63 @@ export class CsvMessagesComponent {
   num_doc_usr = '';
   apellido1 = '';
   apellido2 = '';
-  especialidad = '';
-  profesional = '';
-  descripcion = '';
   sinCoincidencia = false;
-
-  // iniciar id en 0
-  id = 0;
-
-  constructor(
-    private ngxCsvParser: NgxCsvParser,
-    private _sms: MessagesService,
-    private router: Router
-  ) {}
 
   @ViewChild('fileImportInput') fileImportInput: any;
 
-  fileChangeListener($event: any): void {
-    this.files = $event.srcElement.files;
-    this.header =
-      (this.header as unknown as string) === 'true' || this.header === true;
+  constructor(private _sms: MessagesService, private router: Router) {}
 
-    //console.log(this.files);
+  fileUpload(event: any) {
+    this.recordatorios = [];
+    this.estado = 'PENDIENTE';
+    this.fecha_proceso = new Date();
+    //console.log(event.target.files);
+    const selectedFile = event.target.files[0];
+    const fileReader = new FileReader();
+    fileReader.readAsBinaryString(selectedFile);
+    fileReader.onload = (event) => {
+      //console.log(event);
+      let binaryData = event.target?.result;
+      let workbook = XLSX.read(binaryData, { type: 'binary' });
+      workbook.SheetNames.forEach((sheet) => {
+        const data = XLSX.utils.sheet_to_json(workbook.Sheets[sheet]);
 
-    this.ngxCsvParser
-      .parse(this.files[0], {
-        header: this.header,
-        delimiter: this.delimitador,
-      })
-      .pipe()
-      .subscribe(
-        (result: any) => {
-          //console.log('Result', result);
+        data.map((resp: any) => {
+          // definir variables
+          let id = this.id++;
 
-          this.csvRecords = result;
-          this.csvRecordsFilter = result;
+          const fecha_proceso = this.fecha_proceso;
 
-          if (this.csvRecords.length > 0) {
-            for (const iterator of this.csvRecords) {
-              this.id++;
+          // desestructurar objetos
+          const {
+            tipo_doc,
+            num_doc_usr,
+            apellido1,
+            apellido2,
+            nombre1,
+            nombre2,
+            celular,
+          } = resp;
 
-              iterator.id = this.id;
-              iterator.estado = this.estado;
-              iterator.fecha_proceso = new Date();
-
-              iterator.apellido1 = this.removeAccents(iterator.apellido1);
-              iterator.apellido2 = this.removeAccents(iterator.apellido2);
-              iterator.nombre1 = this.removeAccents(iterator.nombre1);
-              iterator.nombre2 = this.removeAccents(iterator.nombre2);
-              iterator.especialidad = this.removeAccents(iterator.especialidad);
-              iterator.profesional = this.removeAccents(iterator.profesional);
-              iterator.descripcion = this.removeAccents(iterator.descripcion);
-
-              //console.log(iterator);
-            }
-          }
-        },
-        (error: NgxCSVParserError) => {
-          console.log('Error', error);
-        }
-      );
+          this.recordatorios.push({
+            id,
+            tipo_doc,
+            num_doc_usr,
+            apellido1,
+            apellido2,
+            nombre1,
+            nombre2,
+            celular,
+            estado: this.estado,
+            fecha_proceso,
+          });
+        });
+        // console.log(this.recordatorios);
+        this.csvRecords = this.recordatorios;
+        // this.csvRecordsFilter = this.recordatorios;
+      });
+      //console.log(workbook);
+    };
   }
 
   getArrayFromNumber(length: any) {
@@ -127,13 +125,8 @@ export class CsvMessagesComponent {
           nombre1,
           nombre2,
           celular,
-          fec_cita,
-          hora_cita,
-          especialidad,
-          profesional,
-          descripcion,
         } = message;
-        const recordatorio = `Estimado sr(a) ${nombre1} ${nombre2} ${apellido1} ${apellido2} le recordamos la oportuna asistencia a su cita el dia ${fec_cita} a las ${hora_cita} por ${especialidad} con el profesional ${profesional} para ${descripcion}`;
+        const recordatorio = `Estimado sr(a) ${nombre1} ${nombre2} ${apellido1} ${apellido2}, su numero de documento es: ${num_doc_usr}`;
         //console.log(recordatorio);
         this._sms.sendMessage(celular, recordatorio).subscribe(
           (res: any) => {
@@ -188,41 +181,13 @@ export class CsvMessagesComponent {
   }
 
   eliminarItem(obj: RecordatorioModel) {
-    this.csvRecords = this.csvRecordsFilter;
+    // this.csvRecords = this.csvRecordsFilter;
 
-    //console.log('array mayor a 0');
-
-    //console.log(obj.id);
     const index = this.csvRecords.findIndex((records) => records.id === obj.id);
-    //console.log(index);
+
     this.csvRecords.splice(index, 1);
-    //console.log(this.csvRecords);
-    this.filterForItems(
-      this.num_doc_usr,
-      this.apellido1,
-      this.apellido2,
-      this.especialidad,
-      this.profesional
-    );
 
-    //console.log(this.csvRecords.length);
     this.updateIndex(this._sms.pageIndex);
-
-    if (this.csvRecords.length < 1) {
-      this.num_doc_usr = '';
-      this.apellido1 = '';
-      this.apellido2 = '';
-      this.especialidad = '';
-      this.profesional = '';
-
-      this.filterForItems(
-        this.num_doc_usr,
-        this.apellido1,
-        this.apellido2,
-        this.especialidad,
-        this.profesional
-      );
-    }
   }
 
   eliminarLista() {
@@ -243,90 +208,13 @@ export class CsvMessagesComponent {
         );
         this.csvRecords = [];
         this.resetFile();
-        this.id = 0;
+        this.id = 1;
       }
     });
   }
 
   resetFile() {
     (this.fileImportInput as ElementRef).nativeElement.value = '';
-  }
-
-  filterItems(
-    query: string,
-    query2: string,
-    query3: string,
-    query4: string,
-    query5: string
-  ) {
-    return this.csvRecords.filter(function (el) {
-      return (
-        el.num_doc_usr.toLowerCase().indexOf(query.toLowerCase()) > -1 &&
-        el.apellido1.toLowerCase().indexOf(query2.toLowerCase()) > -1 &&
-        el.apellido2.toLowerCase().indexOf(query3.toLowerCase()) > -1 &&
-        el.especialidad.toLowerCase().indexOf(query4.toLowerCase()) > -1 &&
-        el.profesional.toLowerCase().indexOf(query5.toLowerCase()) > -1
-      );
-    });
-  }
-
-  filterForItems(
-    nNumDoc: any,
-    nApellido1: any,
-    nApellido2: any,
-    nEspecialidad: any,
-    nProfesional: any
-  ) {
-    this.csvRecords = this.csvRecordsFilter;
-    this.num_doc_usr = nNumDoc;
-    this.apellido1 = nApellido1;
-    this.apellido2 = nApellido2;
-    this.especialidad = nEspecialidad;
-    this.profesional = nProfesional;
-    //console.log(this.num_doc_usr,this.apellido1,this.apellido2,this.especialidad,this.profesional);
-
-    this.csvRecords = this.filterItems(
-      this.num_doc_usr,
-      this.apellido1,
-      this.apellido2,
-      this.especialidad,
-      this.profesional
-    );
-    //console.log(this.csvRecords.length);
-    this.updateIndex(this._sms.pageIndex);
-
-    if (this.csvRecords.length == 0) {
-      //console.log('No existen coincidencias');
-
-      Swal.fire({
-        position: 'center',
-        icon: 'error',
-        title: 'No existen coincidencias !!',
-        //text: 'Revisa la coneccion!',
-        showConfirmButton: false,
-        timer: 3000,
-      });
-
-      this.sinCoincidencia = true;
-
-      //console.log(this.sinCoincidencia);
-
-      this.num_doc_usr = '';
-      this.apellido1 = '';
-      this.apellido2 = '';
-      this.especialidad = '';
-      this.profesional = '';
-
-      this.filterForItems(
-        this.num_doc_usr,
-        this.apellido1,
-        this.apellido2,
-        this.especialidad,
-        this.profesional
-      );
-    } else if (this.csvRecords.length <= 10) {
-      this.updateIndex(0);
-    }
   }
 
   alert(sends: number) {
@@ -339,16 +227,16 @@ export class CsvMessagesComponent {
     });
   }
 
-  removeAccents(str: string) {
-    return str
-      .normalize('NFD')
-      .replace(/[\u0300-\u036f]/g, '')
-      .replace('á', 'a')
-      .replace('é', 'e')
-      .replace('í', 'i')
-      .replace('ó', 'o')
-      .replace('ú', 'u')
-      .replace('´', '')
-      .toUpperCase();
-  }
+  // removeAccents(str: string) {
+  //   return str
+  //     .normalize('NFD')
+  //     .replace(/[\u0300-\u036f]/g, '')
+  //     .replace('á', 'a')
+  //     .replace('é', 'e')
+  //     .replace('í', 'i')
+  //     .replace('ó', 'o')
+  //     .replace('ú', 'u')
+  //     .replace('´', '')
+  //     .toUpperCase();
+  // }
 }

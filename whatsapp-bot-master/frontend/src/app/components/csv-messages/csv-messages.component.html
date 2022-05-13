@@ -4,20 +4,12 @@
 
 <div class="csv-file-chooser-section">
   <input
-    type="text"
-    [ngModelOptions]="{ standalone: true }"
-    name="delimitador"
-    [(ngModel)]="delimitador"
-    placeholder="delimitador"
-    style="width: 100px"
-  />
-  <input
     type="file"
     #fileImportInput
     name="File Upload"
     id="csvFileUpload"
-    (change)="fileChangeListener($event)"
-    accept=".csv"
+    (change)="fileUpload($event)"
+    accept=".xls, .xlsx"
   />
 
   <button
@@ -38,58 +30,6 @@
     </select> -->
 </div>
 
-<div class="mb-2" *ngIf="csvRecords.length > 0">
-  <form
-    (submit)="
-      filterForItems(
-        num_doc_usr,
-        apellido1,
-        apellido2,
-        especialidad,
-        profesional
-      )
-    "
-    #forma="ngForm"
-  >
-    <input
-      type="text"
-      [ngModelOptions]="{ standalone: true }"
-      name="num_doc_usr"
-      [(ngModel)]="num_doc_usr"
-      placeholder="documento"
-    />
-    <input
-      type="text"
-      [ngModelOptions]="{ standalone: true }"
-      name="apellido1"
-      [(ngModel)]="apellido1"
-      placeholder="apellido 1"
-    />
-    <input
-      type="text"
-      [ngModelOptions]="{ standalone: true }"
-      name="apellido2"
-      [(ngModel)]="apellido2"
-      placeholder="apellido 2"
-    />
-    <input
-      type="text"
-      [ngModelOptions]="{ standalone: true }"
-      name="especialidad"
-      [(ngModel)]="especialidad"
-      placeholder="especialidad"
-    />
-    <input
-      type="text"
-      [ngModelOptions]="{ standalone: true }"
-      name="profesional"
-      [(ngModel)]="profesional"
-      placeholder="profesional"
-    />
-
-    <button>Filtrar</button>
-  </form>
-</div>
 <div *ngIf="csvRecords.length > 0">
   <table class="table table-sm">
     <thead class="thead-dark">
@@ -101,11 +41,6 @@
         <th>NOMBRE 1</th>
         <th>NOMBRE 2</th>
         <th>CELULAR</th>
-        <th>FECHA CITA</th>
-        <th>HORA CITA</th>
-        <th>ESPECIALIDAD</th>
-        <th>PROFESIONAL</th>
-        <th>DESCRIPCION</th>
         <th>ESTADO</th>
         <th>FECHA PROCESO</th>
         <th>
@@ -147,21 +82,7 @@
         <td>
           <span>{{ csvData.celular }}</span>
         </td>
-        <td>
-          <span>{{ csvData.fec_cita | date: "short" }}</span>
-        </td>
-        <td>
-          <span>{{ csvData.hora_cita }}</span>
-        </td>
-        <td>
-          <span>{{ csvData.especialidad }}</span>
-        </td>
-        <td>
-          <span>{{ csvData.profesional }}</span>
-        </td>
-        <td>
-          <span>{{ csvData.descripcion }}</span>
-        </td>
+
         <td>
           <span
             class="badge badge-pill"

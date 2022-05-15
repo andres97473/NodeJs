@@ -11,6 +11,7 @@ const ClienteSchema = Schema(
     celular: { type: String },
     estado: { type: String, default: "PENDIENTE" },
     created_at: { type: Date, required: true, default: Date.now },
+    update_at: { type: Date, required: true, default: Date.now },
   },
   { collection: "clientes" }
 );

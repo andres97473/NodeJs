@@ -119,11 +119,15 @@ const listenMessage = () => {
         const msg = String(msgRecibido);
         const arrayMsg = msg.split(",", 2);
         const docCliente = arrayMsg[0];
-        console.log(docCliente);
+        //console.log(docCliente);
 
         sendMessage(from, "Usuario confirmado");
         const clienteDB = await Cliente.findOne({ num_doc_usr: docCliente });
-        console.log(clienteDB);
+        // console.log(clienteDB);
+        const updateEstado = await Cliente.updateOne(
+          { num_doc_usr: docCliente },
+          { $set: { estado: "CONFIRMADO", update_at: new Date() } }
+        );
       }
       // location
       else if (msgRecibido.includes("ubicacion")) {
@@ -246,6 +250,10 @@ const saveRecordatorioMongo = async (
   });
 
   try {
+    const clienteDB = await Cliente.findOne({ num_doc_usr });
+    if (clienteDB) {
+      return "Usuario ya existe";
+    }
     const messageDB = await recordatorio.save();
 
     // console.log(messageDB);

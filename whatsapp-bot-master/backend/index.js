@@ -343,6 +343,8 @@ const sendRecordatorio = (req, res) => {
 // RUTAS
 app.post("/send", sendWithApi);
 app.post("/recordatorio", sendRecordatorio);
+// rutas
+app.use("/api/clientes", require("./routes/clientes"));
 
 // LEVANTAR API
 app.listen(PORT, () => {

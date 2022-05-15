@@ -1,200 +1,23 @@
-import { AfterViewInit, Component, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ViewChild, OnInit } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { RecordatorioModel } from '../../models/recordatorio.model';
-const ELEMENT_DATA: RecordatorioModel[] = [
+import { GetClientesI, ClienteI } from '../../interface/cliente.interface';
+import { ClientesService } from '../../services/clientes.service';
+
+const ELEMENT_DATA: ClienteI[] = [
   {
-    id: 1,
+    _id: '628144f5a356ccf4b4ad33c4',
+    num_doc_usr: '2020',
     tipo_doc: 'CC',
-    num_doc_usr: '1010',
     apellido1: 'OJEDA',
     apellido2: 'IBARRA',
     nombre1: 'ANDRES',
     nombre2: 'FELIPE',
     celular: '3166651382',
     estado: 'PENDIENTE',
-    fecha_proceso: new Date(),
-  },
-  {
-    id: 2,
-    tipo_doc: 'CC',
-    num_doc_usr: '2020',
-    apellido1: 'OJEDA2',
-    apellido2: 'IBARRA2',
-    nombre1: 'ANDRES2',
-    nombre2: 'FELIPE2',
-    celular: '3166651382',
-    estado: 'PENDIENTE',
-    fecha_proceso: new Date(),
-  },
-  {
-    id: 3,
-    tipo_doc: 'TI',
-    num_doc_usr: '3030',
-    apellido1: 'OJEDA3',
-    apellido2: 'IBARRA3',
-    nombre1: 'ANDRES3',
-    nombre2: 'FELIPE3',
-    celular: '3166651382',
-    estado: 'ENVIADO',
-    fecha_proceso: new Date(),
-  },
-  {
-    id: 4,
-    tipo_doc: 'CC',
-    num_doc_usr: '4040',
-    apellido1: 'OJEDA4',
-    apellido2: 'IBARRA4',
-    nombre1: 'ANDRES4',
-    nombre2: 'FELIPE4',
-    celular: '3166651382',
-    estado: 'PENDIENTE',
-    fecha_proceso: new Date(),
-  },
-  {
-    id: 4,
-    tipo_doc: 'CC',
-    num_doc_usr: '4040',
-    apellido1: 'OJEDA4',
-    apellido2: 'IBARRA4',
-    nombre1: 'ANDRES4',
-    nombre2: 'FELIPE4',
-    celular: '3166651382',
-    estado: 'PENDIENTE',
-    fecha_proceso: new Date(),
-  },
-  {
-    id: 4,
-    tipo_doc: 'CC',
-    num_doc_usr: '4040',
-    apellido1: 'OJEDA4',
-    apellido2: 'IBARRA4',
-    nombre1: 'ANDRES4',
-    nombre2: 'FELIPE4',
-    celular: '3166651382',
-    estado: 'PENDIENTE',
-    fecha_proceso: new Date(),
-  },
-  {
-    id: 4,
-    tipo_doc: 'CC',
-    num_doc_usr: '4040',
-    apellido1: 'OJEDA4',
-    apellido2: 'IBARRA4',
-    nombre1: 'ANDRES4',
-    nombre2: 'FELIPE4',
-    celular: '3166651382',
-    estado: 'PENDIENTE',
-    fecha_proceso: new Date(),
-  },
-  {
-    id: 4,
-    tipo_doc: 'CC',
-    num_doc_usr: '4040',
-    apellido1: 'OJEDA4',
-    apellido2: 'IBARRA4',
-    nombre1: 'ANDRES4',
-    nombre2: 'FELIPE4',
-    celular: '3166651382',
-    estado: 'PENDIENTE',
-    fecha_proceso: new Date(),
-  },
-  {
-    id: 4,
-    tipo_doc: 'CC',
-    num_doc_usr: '4040',
-    apellido1: 'OJEDA4',
-    apellido2: 'IBARRA4',
-    nombre1: 'ANDRES4',
-    nombre2: 'FELIPE4',
-    celular: '3166651382',
-    estado: 'PENDIENTE',
-    fecha_proceso: new Date(),
-  },
-  {
-    id: 4,
-    tipo_doc: 'CC',
-    num_doc_usr: '4040',
-    apellido1: 'OJEDA4',
-    apellido2: 'IBARRA4',
-    nombre1: 'ANDRES4',
-    nombre2: 'FELIPE4',
-    celular: '3166651382',
-    estado: 'PENDIENTE',
-    fecha_proceso: new Date(),
-  },
-  {
-    id: 4,
-    tipo_doc: 'CC',
-    num_doc_usr: '4040',
-    apellido1: 'OJEDA4',
-    apellido2: 'IBARRA4',
-    nombre1: 'ANDRES4',
-    nombre2: 'FELIPE4',
-    celular: '3166651382',
-    estado: 'PENDIENTE',
-    fecha_proceso: new Date(),
-  },
-  {
-    id: 4,
-    tipo_doc: 'CC',
-    num_doc_usr: '4040',
-    apellido1: 'OJEDA4',
-    apellido2: 'IBARRA4',
-    nombre1: 'ANDRES4',
-    nombre2: 'FELIPE4',
-    celular: '3166651382',
-    estado: 'PENDIENTE',
-    fecha_proceso: new Date(),
-  },
-  {
-    id: 4,
-    tipo_doc: 'CC',
-    num_doc_usr: '4040',
-    apellido1: 'OJEDA4',
-    apellido2: 'IBARRA4',
-    nombre1: 'ANDRES4',
-    nombre2: 'FELIPE4',
-    celular: '3166651382',
-    estado: 'PENDIENTE',
-    fecha_proceso: new Date(),
-  },
-  {
-    id: 4,
-    tipo_doc: 'CC',
-    num_doc_usr: '4040',
-    apellido1: 'OJEDA4',
-    apellido2: 'IBARRA4',
-    nombre1: 'ANDRES4',
-    nombre2: 'FELIPE4',
-    celular: '3166651382',
-    estado: 'PENDIENTE',
-    fecha_proceso: new Date(),
-  },
-  {
-    id: 4,
-    tipo_doc: 'CC',
-    num_doc_usr: '4040',
-    apellido1: 'OJEDA4',
-    apellido2: 'IBARRA4',
-    nombre1: 'ANDRES4',
-    nombre2: 'FELIPE4',
-    celular: '3166651382',
-    estado: 'PENDIENTE',
-    fecha_proceso: new Date(),
-  },
-  {
-    id: 4,
-    tipo_doc: 'CC',
-    num_doc_usr: '4040',
-    apellido1: 'OJEDA4',
-    apellido2: 'IBARRA4',
-    nombre1: 'ANDRES4',
-    nombre2: 'FELIPE4',
-    celular: '3166651382',
-    estado: 'PENDIENTE',
-    fecha_proceso: new Date(),
+    created_at: new Date(),
+    update_at: new Date(),
   },
 ];
 
@@ -203,9 +26,8 @@ const ELEMENT_DATA: RecordatorioModel[] = [
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css'],
 })
-export class HomeComponent implements AfterViewInit {
+export class HomeComponent implements OnInit, AfterViewInit {
   displayedColumns: string[] = [
-    'id',
     'tipo_doc',
     'num_doc_usr',
     'apellido1',
@@ -214,20 +36,32 @@ export class HomeComponent implements AfterViewInit {
     'nombre2',
     'celular',
     'estado',
-    'fecha_proceso',
+    'created_at',
+    'update_at',
   ];
-  dataSource: MatTableDataSource<RecordatorioModel>;
+  dataSource!: MatTableDataSource<ClienteI>;
+
+  clientes: ClienteI[] = [];
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  constructor() {
-    this.dataSource = new MatTableDataSource(ELEMENT_DATA);
+  constructor(private _cli: ClientesService) {
+    this.getClientes();
+  }
+  ngOnInit(): void {}
+
+  getClientes() {
+    this._cli.getClientes().subscribe((resp) => {
+      this.clientes = resp.clientes;
+      console.log(this.clientes);
+      this.dataSource = new MatTableDataSource(this.clientes);
+    });
   }
 
   ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
+    setTimeout(() => (this.dataSource.paginator = this.paginator));
+    setTimeout(() => (this.dataSource.sort = this.sort));
   }
 
   applyFilter(event: Event) {

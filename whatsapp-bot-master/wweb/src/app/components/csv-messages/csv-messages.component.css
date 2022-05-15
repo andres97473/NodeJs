@@ -1,0 +1,31 @@
+
+
+.csv-file-chooser-section {
+    padding: 10px;
+    margin: 5%;
+    border: 1px solid;
+    text-align: center;
+  }
+  
+  .csv-result-table {
+    margin: 5%;
+    border: 1px solid #73ad21;
+  }
+  
+  table,
+  th,
+  td {
+    border-bottom: 1px solid black;
+    font-size: small;
+    vertical-align: middle;
+  }
+  
+  button {
+    margin-left: 5px;
+  }
+  
+  .logo-red {
+    margin-right: 10px;
+    color: red;
+  }
+  

@@ -1,0 +1,118 @@
+<!-- <h1>
+  NgxCSVParser by <a href="https://DevelopersHive.com">Developers Hive</a>
+</h1> -->
+
+<div class="csv-file-chooser-section">
+  <input
+    type="file"
+    #fileImportInput
+    name="File Upload"
+    id="csvFileUpload"
+    (change)="fileUpload($event)"
+    accept=".xls, .xlsx"
+  />
+
+  <button
+    *ngIf="csvRecords.length > 0"
+    type="button"
+    class="btn btn-primary"
+    (click)="sendMessagesCsv(csvRecords)"
+    (click)="coneccion = true"
+  >
+    Enviar Mensajes
+
+    <span class="badge bg-light text-dark">{{ csvRecords.length }}</span>
+  </button>
+
+  <!-- <label> Parse Headers? </label>
+      <select aria-placeholder="Parse headers?" [(ngModel)]="header">
+        <option [value]="true">Yes</option>
+        <option [value]="false">No</option>
+      </select> -->
+</div>
+
+<div *ngIf="csvRecords.length > 0">
+  <table class="table table-sm table-bordered">
+    <thead class="table-dark">
+      <tr>
+        <th>ID</th>
+        <th>DOCUMENTO</th>
+        <th>APELLIDO 1</th>
+        <th>APELLIDO 2</th>
+        <th>NOMBRE 1</th>
+        <th>NOMBRE 2</th>
+        <th>CELULAR</th>
+        <th>ESTADO</th>
+        <th>FECHA PROCESO</th>
+        <th>
+          <button
+            (click)="eliminarLista()"
+            type="button"
+            class="btn btn-danger"
+          >
+            Borrar Tabla
+          </button>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr
+        *ngFor="
+          let csvData of csvRecords | slice: starIndex:endIndex;
+          let i = index
+        "
+      >
+        <td>
+          <span>{{ csvData.id }}</span>
+        </td>
+        <td>
+          <span>{{ csvData.num_doc_usr }}</span>
+        </td>
+        <td>
+          <span>{{ csvData.apellido1 }}</span>
+        </td>
+        <td>
+          <span>{{ csvData.apellido2 }}</span>
+        </td>
+        <td>
+          <span>{{ csvData.nombre1 }}</span>
+        </td>
+        <td>
+          <span>{{ csvData.nombre2 }}</span>
+        </td>
+        <td>
+          <span>{{ csvData.celular }}</span>
+        </td>
+
+        <td>
+          <span
+            class="badge"
+            [ngClass]="{
+              'bg-primary': csvData.estado == 'PENDIENTE',
+              'bg-success': csvData.estado == 'ENVIADO',
+              'bg-danger': csvData.estado == 'ERROR'
+            }"
+            >{{ csvData.estado }}</span
+          >
+        </td>
+        <td>
+          <span>{{ csvData.fecha_proceso | date: "short" }}</span>
+        </td>
+        <td>
+          <div (click)="eliminarItem(csvData)" style="text-align: center">
+            <img src="../../../assets/img/trash.png" width="20" alt="trash" />
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <button
+    *ngFor="let item of getArrayFromNumber(csvRecords.length); let i = index"
+    (click)="updateIndex(i)"
+    type="button"
+    class="btn btn-light"
+  >
+    {{ i + 1 }}
+  </button>
+</div>

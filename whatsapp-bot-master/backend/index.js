@@ -15,6 +15,8 @@ const cors = require("cors");
 const { dbConnection } = require("./database/config");
 
 const Message = require("./models/message");
+const Cliente = require("./models/cliente");
+const { response } = require("express");
 
 // const bodyParser = require("body-parser");
 
@@ -113,37 +115,21 @@ const listenMessage = () => {
         sendMessage(from, "Esto es un boton!!");
         sendMessage(from, button);
         // saveChatMongo(from, body);
+      } else if (msgRecibido.includes("confirmar")) {
+        const msg = String(msgRecibido);
+        const arrayMsg = msg.split(",", 2);
+        const docCliente = arrayMsg[0];
+        console.log(docCliente);
+
+        sendMessage(from, "Usuario confirmado");
+        const clienteDB = await Cliente.findOne({ num_doc_usr: docCliente });
+        console.log(clienteDB);
       }
       // location
       else if (msgRecibido.includes("ubicacion")) {
         msg.reply(
           new Location(37.422, -122.084, "Googleplex\nGoogle Headquarters")
         );
-      }
-
-      // capturar ubicacion
-      else if (msg.location) {
-        // msg.reply(msg.location);
-
-        const { latitude, longitude, description } = msg.location;
-
-        if (latitude && description === "") {
-          sendMessage(from, "Enviar su nombre");
-          // const nDescription = await msg.body;
-
-          // console.log(nBody);
-          client.on("message", async (msg) => {
-            // console.log(nBody);
-            const nBody = await msg.body;
-            const respuestaLocation = `numero: ${from}\nlatitude: ${latitude}\nlongitude: ${longitude}\ndescription: ${nBody}`;
-            console.log(respuestaLocation);
-            sendMessage(from, respuestaLocation);
-          });
-        } else {
-          const respuestaLocation = `numero: ${from}\nlatitude: ${latitude}\nlongitude: ${longitude}\ndescription: ${description}`;
-          console.log(respuestaLocation);
-          sendMessage(from, respuestaLocation);
-        }
       }
 
       // saveChatExcel(from, body);
@@ -157,14 +143,14 @@ const listenMessage = () => {
   });
 };
 
-/* 
+/*
 Funcion para enviar mensajes
  */
 const sendMessage = (to, message) => {
   client.sendMessage(to, message);
 };
 
-/* 
+/*
 Enviar media
  */
 const sendMedia = (to, file) => {
@@ -172,9 +158,15 @@ const sendMedia = (to, file) => {
   client.sendMessage(to, mediaFile);
 };
 
-/* 
-respuesta
- */
+const sendButton = (to) => {
+  let button = new Buttons(
+    "Button body",
+    [{ body: "bt1" }, { body: "bt2" }, { body: "bt3" }],
+    "title",
+    "footer"
+  );
+  client.sendMessage(to, button);
+};
 
 /**
  * Guardar historial de conversacion
@@ -221,6 +213,7 @@ const saveChatExcel = async (number, message) => {
   }
 };
 
+// guardar chat en mongo
 const saveChatMongo = async (number, message) => {
   const chat = new Message({ number, message });
 
@@ -232,8 +225,54 @@ const saveChatMongo = async (number, message) => {
     console.log(error);
   }
 };
+// guardar chat en mongo
+const saveRecordatorioMongo = async (
+  num_doc_usr,
+  tipo_doc,
+  apellido1,
+  apellido2,
+  nombre1,
+  nombre2,
+  celular
+) => {
+  const recordatorio = new Cliente({
+    num_doc_usr,
+    tipo_doc,
+    apellido1,
+    apellido2,
+    nombre1,
+    nombre2,
+    celular,
+  });
 
-/* 
+  try {
+    const messageDB = await recordatorio.save();
+
+    // console.log(messageDB);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+// buscar Cliente
+const findCliente = async (num_doc_usr) => {
+  try {
+    const clienteDB = await Cliente.find({ num_doc_usr });
+
+    if (!clienteDB) {
+      return "No existe ese cliente";
+    }
+    return clienteDB;
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      ok: false,
+      msg: "Error inesperado",
+    });
+  }
+};
+
+/*
 remover acentos
  */
 const removeAccents = (str) => {
@@ -253,7 +292,49 @@ const sendWithApi = (req, res) => {
   res.send({ status: "Mensajes Enviados !!", send: true });
 };
 
+// enviar recordatorio con api
+const sendRecordatorio = (req, res) => {
+  const {
+    num_doc_usr,
+    tipo_doc,
+    apellido1,
+    apellido2,
+    nombre1,
+    nombre2,
+    celular,
+  } = req.body;
+  const newNumber = `${number_code}${celular}@c.us`;
+  const message = `Estimado sr(a) ${nombre1} ${nombre2} ${apellido1} ${apellido2}, su numero de documento es: ${num_doc_usr}?, si su informacion es correcta por favor dar click en el siguiente enlace`;
+
+  // console.log(message, celular);
+  // enviar mensaje y boton
+  sendMessage(newNumber, message);
+  sendMessage(
+    newNumber,
+    `https://wa.me/57${number}?text=${num_doc_usr},confirmar`
+  );
+
+  // respuesta de api
+  res.send({ status: "Mensajes Enviados v2..", send: true });
+
+  // almacenar Clientes enviados en mongo
+  saveRecordatorioMongo(
+    num_doc_usr,
+    tipo_doc,
+    apellido1,
+    apellido2,
+    nombre1,
+    nombre2,
+    celular
+  );
+
+  // enviar boton
+  sendButton(newNumber);
+};
+
+// RUTAS
 app.post("/send", sendWithApi);
+app.post("/recordatorio", sendRecordatorio);
 
 // LEVANTAR API
 app.listen(PORT, () => {

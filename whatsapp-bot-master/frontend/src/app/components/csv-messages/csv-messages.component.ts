@@ -120,48 +120,59 @@ export class CsvMessagesComponent {
         const {
           id,
           num_doc_usr,
+          tipo_doc,
           apellido1,
           apellido2,
           nombre1,
           nombre2,
           celular,
         } = message;
-        const recordatorio = `Estimado sr(a) ${nombre1} ${nombre2} ${apellido1} ${apellido2}, su numero de documento es: ${num_doc_usr}`;
+        //const recordatorio = `Estimado sr(a) ${nombre1} ${nombre2} ${apellido1} ${apellido2}, su numero de documento es: ${num_doc_usr}`;
         //console.log(recordatorio);
-        this._sms.sendMessage(celular, recordatorio).subscribe(
-          (res: any) => {
-            //console.log('Mensaje enviado !!');
-            //console.log(res);
-            this.respuesta = res;
-            Swal.fire({
-              position: 'center',
-              icon: 'success',
-              title: this.respuesta.status,
-              text: `${this.csvRecords.length} Mensajes enviados !!`,
-              showConfirmButton: false,
-              timer: 3000,
-            });
-
-            this.cambiarEstado(id, 'ENVIADO');
-          },
-          (err) => {
-            console.log(err);
-            this.errores++;
-            if (this.errores < 2) {
+        this._sms
+          .sendRecordatorio(
+            num_doc_usr,
+            tipo_doc,
+            apellido1,
+            apellido2,
+            nombre1,
+            nombre2,
+            celular
+          )
+          .subscribe(
+            (res: any) => {
+              //console.log('Mensaje enviado !!');
+              //console.log(res);
+              this.respuesta = res;
               Swal.fire({
                 position: 'center',
-                icon: 'error',
-                title: 'Error al enviar los mensajes !!',
-                text: 'Revisa la coneccion!',
+                icon: 'success',
+                title: this.respuesta.status,
+                text: `${this.csvRecords.length} Mensajes enviados !!`,
                 showConfirmButton: false,
                 timer: 3000,
               });
-            }
 
-            this.cambiarEstado(id, 'ERROR');
-            return (this.coneccion = false);
-          }
-        );
+              this.cambiarEstado(id, 'ENVIADO');
+            },
+            (err) => {
+              console.log(err);
+              this.errores++;
+              if (this.errores < 2) {
+                Swal.fire({
+                  position: 'center',
+                  icon: 'error',
+                  title: 'Error al enviar los mensajes !!',
+                  text: 'Revisa la coneccion!',
+                  showConfirmButton: false,
+                  timer: 3000,
+                });
+              }
+
+              this.cambiarEstado(id, 'ERROR');
+              return (this.coneccion = false);
+            }
+          );
       }
     } else {
       console.log('sin coneccion');

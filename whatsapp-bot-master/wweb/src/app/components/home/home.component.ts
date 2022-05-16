@@ -46,6 +46,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
+  selectedRow!: ClienteI | null;
+
   constructor(private _cli: ClientesService) {
     this.getClientes();
   }
@@ -54,7 +56,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   getClientes() {
     this._cli.getClientes().subscribe((resp) => {
       this.clientes = resp.clientes;
-      console.log(this.clientes);
+      // console.log(this.clientes);
       this.dataSource = new MatTableDataSource(this.clientes);
     });
   }
@@ -76,5 +78,13 @@ export class HomeComponent implements OnInit, AfterViewInit {
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }
+  }
+
+  selectRow(row: any) {
+    //console.log(row);
+  }
+
+  actualizarCliente(row: any) {
+    console.log(row);
   }
 }

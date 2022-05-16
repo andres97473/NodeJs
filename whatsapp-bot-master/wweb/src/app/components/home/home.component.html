@@ -163,7 +163,14 @@
       </ng-container>
 
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      <tr
+        mat-row
+        *matRowDef="let row; columns: displayedColumns"
+        (click)="selectRow(row)"
+        (click)="selectedRow = selectedRow === row ? null : row"
+        [class.demo-row-is-clicked]="selectedRow === row"
+        (dblclick)="actualizarCliente(row)"
+      ></tr>
 
       <!-- Row shown when there is no matching data. -->
       <tr class="mat-row" *matNoDataRow>

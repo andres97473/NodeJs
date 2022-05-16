@@ -60,8 +60,13 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    setTimeout(() => (this.dataSource.paginator = this.paginator));
-    setTimeout(() => (this.dataSource.sort = this.sort));
+    setTimeout(
+      () => (
+        (this.dataSource.paginator = this.paginator),
+        (this.dataSource.sort = this.sort)
+      ),
+      100
+    );
   }
 
   applyFilter(event: Event) {

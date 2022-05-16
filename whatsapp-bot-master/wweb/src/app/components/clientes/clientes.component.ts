@@ -2,31 +2,16 @@ import { AfterViewInit, Component, ViewChild, OnInit } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import Swal from 'sweetalert2';
 import { GetClientesI, ClienteI } from '../../interface/cliente.interface';
 import { ClientesService } from '../../services/clientes.service';
 
-const ELEMENT_DATA: ClienteI[] = [
-  {
-    _id: '628144f5a356ccf4b4ad33c4',
-    num_doc_usr: '2020',
-    tipo_doc: 'CC',
-    apellido1: 'OJEDA',
-    apellido2: 'IBARRA',
-    nombre1: 'ANDRES',
-    nombre2: 'FELIPE',
-    celular: '3166651382',
-    estado: 'PENDIENTE',
-    created_at: new Date(),
-    update_at: new Date(),
-  },
-];
-
 @Component({
-  selector: 'app-home',
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css'],
+  selector: 'app-clientes',
+  templateUrl: './clientes.component.html',
+  styleUrls: ['./clientes.component.css'],
 })
-export class HomeComponent implements OnInit, AfterViewInit {
+export class ClientesComponent implements OnInit, AfterViewInit {
   displayedColumns: string[] = [
     'tipo_doc',
     'num_doc_usr',
@@ -86,5 +71,19 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   actualizarCliente(row: any) {
     console.log(row);
+    Swal.fire({
+      title: `Desea Eliminar al Cliente, ${row.apellido1} ${row.apellido2} ${row.nombre1} ${row.nombre2} ?`,
+      text: `id: ${row._id}`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Si, Borrar!',
+      cancelButtonText: 'Cancelar',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire('Eliminado!', 'El cliente se elimino con exito.', 'success');
+      }
+    });
   }
 }

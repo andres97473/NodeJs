@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { ClientesComponent } from './components/clientes/clientes.component';
 import { CsvMessagesComponent } from './components/csv-messages/csv-messages.component';
-import { HomeComponent } from './components/home/home.component';
 
 const routes: Routes = [
-  { path: 'home', component: HomeComponent },
+  { path: 'clientes', component: ClientesComponent },
   { path: 'csvmessage', component: CsvMessagesComponent },
-  { path: '**', redirectTo: '/home' },
+  { path: '**', redirectTo: '/clientes' },
 ];
 
 @NgModule({

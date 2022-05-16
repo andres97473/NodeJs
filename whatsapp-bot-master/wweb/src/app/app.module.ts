@@ -9,12 +9,12 @@ import { NavbarComponent } from './components/navbar/navbar.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CsvMessagesComponent } from './components/csv-messages/csv-messages.component';
 import { HttpClientModule } from '@angular/common/http';
-import { HomeComponent } from './components/home/home.component';
+import { ClientesComponent } from './components/clientes/clientes.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    HomeComponent,
+    ClientesComponent,
     NavbarComponent,
     CsvMessagesComponent,
   ],

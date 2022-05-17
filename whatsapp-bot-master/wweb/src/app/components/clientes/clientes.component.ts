@@ -47,6 +47,7 @@ export class ClientesComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
+    this.paginator._intl.itemsPerPageLabel = 'Items por Pagina';
     setTimeout(
       () => (
         (this.dataSource.paginator = this.paginator),

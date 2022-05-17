@@ -2,7 +2,7 @@
   NgxCSVParser by <a href="https://DevelopersHive.com">Developers Hive</a>
 </h1> -->
 
-<div class="csv-file-chooser-section">
+<div class="csv-file-chooser-section animate__animated animate__fadeIn">
   <input
     type="file"
     #fileImportInput
@@ -31,7 +31,7 @@
       </select> -->
 </div>
 
-<div *ngIf="csvRecords.length > 0">
+<div *ngIf="csvRecords.length > 0" class="animate__animated animate__fadeIn">
   <table class="table table-sm table-bordered">
     <thead class="table-dark">
       <tr>

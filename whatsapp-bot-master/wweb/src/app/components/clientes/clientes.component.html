@@ -2,7 +2,10 @@
   <h2>Cargando...</h2>
 </div>
 
-<div *ngIf="clientes" class="example-container mat-elevation-z8 mt-5">
+<div
+  *ngIf="clientes"
+  class="example-container mat-elevation-z8 mt-5 animate__animated animate__fadeIn"
+>
   <div class="filter">
     <mat-form-field appearance="standard">
       <mat-label>Filtro</mat-label>
@@ -162,7 +165,7 @@
         </td>
       </ng-container>
 
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
       <tr
         mat-row
         *matRowDef="let row; columns: displayedColumns"
@@ -179,10 +182,9 @@
         </td>
       </tr>
     </table>
-
-    <mat-paginator
-      [pageSizeOptions]="[5, 10, 25, 100]"
-      aria-label="Items por pagina"
-    ></mat-paginator>
   </div>
+  <mat-paginator
+    [pageSizeOptions]="[5, 10, 25, 100]"
+    aria-label="Items por pagina"
+  ></mat-paginator>
 </div>

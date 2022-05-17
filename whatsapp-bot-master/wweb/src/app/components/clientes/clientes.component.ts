@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, ViewChild, OnInit } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
+import { MatRow, MatTableDataSource } from '@angular/material/table';
 import Swal from 'sweetalert2';
 import { GetClientesI, ClienteI } from '../../interface/cliente.interface';
 import { ClientesService } from '../../services/clientes.service';
@@ -86,11 +86,12 @@ export class ClientesComponent implements OnInit, AfterViewInit {
     }
   }
 
-  selectRow(row: any) {
-    //console.log(row);
+  selectRow(row: ClienteI) {
+    // const nClientes = this.clientes.filter((item) => item._id !== row._id);
+    // console.log(nClientes);
   }
 
-  actualizarCliente(row: any) {
+  borrarCliente(row: any, i: number) {
     console.log(row);
     Swal.fire({
       title: `Desea Eliminar al Cliente, ${row.apellido1} ${row.apellido2} ${row.nombre1} ${row.nombre2} ?`,
@@ -103,7 +104,16 @@ export class ClientesComponent implements OnInit, AfterViewInit {
       cancelButtonText: 'Cancelar',
     }).then((result) => {
       if (result.isConfirmed) {
-        Swal.fire('Eliminado!', 'El cliente se elimino con exito.', 'success');
+        this._cli.borrarCliente(row._id).subscribe((resp) => {
+          Swal.fire(
+            'Eliminado!',
+            'El cliente se elimino con exito.',
+            'success'
+          );
+        });
+        const nClientes = this.clientes.filter((item) => item._id !== row._id);
+        this.clientes = nClientes;
+        this.dataSource.data = this.clientes;
       }
     });
   }

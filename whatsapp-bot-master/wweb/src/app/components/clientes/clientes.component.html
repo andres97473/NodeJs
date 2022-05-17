@@ -168,11 +168,11 @@
       <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
       <tr
         mat-row
-        *matRowDef="let row; columns: displayedColumns"
+        *matRowDef="let row; columns: displayedColumns; let i = index"
         (click)="selectRow(row)"
         (click)="selectedRow = selectedRow === row ? null : row"
         [class.demo-row-is-clicked]="selectedRow === row"
-        (dblclick)="actualizarCliente(row)"
+        (dblclick)="borrarCliente(row, i)"
       ></tr>
 
       <!-- Row shown when there is no matching data. -->

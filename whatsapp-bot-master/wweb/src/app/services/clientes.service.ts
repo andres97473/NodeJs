@@ -13,4 +13,8 @@ export class ClientesService {
   getClientes() {
     return this.http.get<GetClientesI>(`${this.URL}/api/clientes`);
   }
+
+  borrarCliente(id: string) {
+    return this.http.delete(`${this.URL}/api/clientes/${id}`);
+  }
 }

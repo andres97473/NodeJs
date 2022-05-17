@@ -46,12 +46,32 @@ export class ClientesComponent implements OnInit, AfterViewInit {
     });
   }
 
-  ngAfterViewInit() {
+  iniciarPaginator() {
     this.paginator._intl.itemsPerPageLabel = 'Items por Pagina';
+    this.paginator._intl.nextPageLabel = 'Siguiente';
+    this.paginator._intl.previousPageLabel = 'Anterior';
+    this.paginator._intl.firstPageLabel = 'Primera pagina';
+    this.paginator._intl.lastPageLabel = 'Ultima pagina';
+    // cambiar etiqueta de range label
+    this.paginator._intl.getRangeLabel = (
+      page: number,
+      pageSize: number,
+      length: number
+    ) => {
+      const start = page * pageSize + 1;
+      const end = (page + 1) * pageSize;
+      // console.log(length);
+
+      return `${start} - ${end} de ${length}`;
+    };
+  }
+
+  ngAfterViewInit() {
     setTimeout(
       () => (
         (this.dataSource.paginator = this.paginator),
-        (this.dataSource.sort = this.sort)
+        (this.dataSource.sort = this.sort),
+        this.iniciarPaginator()
       ),
       100
     );

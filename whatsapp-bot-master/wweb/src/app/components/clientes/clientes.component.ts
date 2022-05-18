@@ -1,8 +1,16 @@
-import { AfterViewInit, Component, ViewChild, OnInit } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ViewChild,
+  OnInit,
+  Inject,
+} from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatRow, MatTableDataSource } from '@angular/material/table';
+import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import Swal from 'sweetalert2';
+import { ClienteComponent } from './cliente/cliente.component';
 import { GetClientesI, ClienteI } from '../../interface/cliente.interface';
 import { ClientesService } from '../../services/clientes.service';
 
@@ -33,7 +41,7 @@ export class ClientesComponent implements OnInit, AfterViewInit {
 
   selectedRow!: ClienteI | null;
 
-  constructor(private _cli: ClientesService) {
+  constructor(private _cli: ClientesService, private dialog: MatDialog) {
     this.getClientes();
   }
   ngOnInit(): void {}
@@ -87,8 +95,7 @@ export class ClientesComponent implements OnInit, AfterViewInit {
   }
 
   selectRow(row: ClienteI) {
-    // const nClientes = this.clientes.filter((item) => item._id !== row._id);
-    // console.log(nClientes);
+    console.log(row);
   }
 
   borrarCliente(row: any, i: number) {
@@ -115,6 +122,12 @@ export class ClientesComponent implements OnInit, AfterViewInit {
         this.clientes = nClientes;
         this.dataSource.data = this.clientes;
       }
+    });
+  }
+
+  openDialog() {
+    this.dialog.open(ClienteComponent, {
+      width: '30%',
     });
   }
 }

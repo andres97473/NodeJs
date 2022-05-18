@@ -312,7 +312,7 @@ const removeAccents = (str) => {
 const sendWithApi = (req, res) => {
   const { message, to } = req.body;
   const newNumber = `${number_code}${to}@c.us`;
-  console.log(message, to);
+  //console.log(message, to);
 
   sendMessage(newNumber, message);
   res.send({ status: "Mensajes Enviados !!", send: true });

@@ -4,21 +4,28 @@
 
 <div
   *ngIf="clientes"
-  class="example-container mat-elevation-z8 mt-5 animate__animated animate__fadeIn"
+  class="example-container mat-elevation-z8 mt-3 animate__animated animate__fadeIn"
 >
-  <div class="filter">
-    <mat-form-field appearance="standard">
-      <mat-label>Filtro</mat-label>
-      <input
-        matInput
-        (keyup)="applyFilter($event)"
-        placeholder="Ejemplo. Juan"
-        #input
-        autocomplete="off"
-      />
-    </mat-form-field>
-  </div>
+  <mat-toolbar>
+    <div class="filter">
+      <mat-form-field appearance="standard">
+        <mat-label>Filtro</mat-label>
+        <input
+          matInput
+          (keyup)="applyFilter($event)"
+          placeholder="Ejemplo. Juan"
+          #input
+          autocomplete="off"
+        />
+      </mat-form-field>
+    </div>
 
+    <span class="example-spacer"></span>
+
+    <button mat-raised-button color="warn" (click)="openDialog()">
+      Open dialog
+    </button>
+  </mat-toolbar>
   <div class="example-table-container table-responsive-md">
     <table
       class="table table-sm table-bordered"

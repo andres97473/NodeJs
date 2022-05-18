@@ -10,6 +10,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CsvMessagesComponent } from './components/csv-messages/csv-messages.component';
 import { HttpClientModule } from '@angular/common/http';
 import { ClientesComponent } from './components/clientes/clientes.component';
+import { ClienteComponent } from './components/clientes/cliente/cliente.component';
 
 @NgModule({
   declarations: [
@@ -17,6 +18,7 @@ import { ClientesComponent } from './components/clientes/clientes.component';
     ClientesComponent,
     NavbarComponent,
     CsvMessagesComponent,
+    ClienteComponent,
   ],
   imports: [
     BrowserModule,

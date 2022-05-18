@@ -14,6 +14,8 @@ export interface ClienteI {
   nombre2: string;
   celular: string;
   estado: string;
+  latitud?: string;
+  longitud?: string;
   created_at: Date;
   update_at: Date;
 }

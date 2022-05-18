@@ -136,6 +136,24 @@ const listenMessage = () => {
         );
       }
 
+      // capturar ubicacion
+      else if (msg.location) {
+        // msg.reply(msg.location);
+
+        const { latitude, longitude, description } = msg.location;
+        const newNUmero = from.slice(2);
+        const newNumero2 = newNUmero.replace("@c.us", "");
+
+        const respuestaLocation = `numero: ${newNumero2}\nlatitude: ${latitude}\nlongitude: ${longitude}\ndescription: ${description}`;
+        // console.log(respuestaLocation);
+        sendMessage(from, "Su ubicacion se almaceno con exito");
+
+        const updateUbicacion = await Cliente.updateMany(
+          { celular: newNumero2 },
+          { $set: { longitud: longitude, latitud: latitude } }
+        );
+      }
+
       // saveChatExcel(from, body);
 
       // const today = moment().format(formatDate);

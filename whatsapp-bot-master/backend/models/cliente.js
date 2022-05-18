@@ -10,6 +10,8 @@ const ClienteSchema = Schema(
     nombre2: { type: String },
     celular: { type: String },
     estado: { type: String, default: "PENDIENTE" },
+    longitud: { type: String },
+    latitud: { type: String },
     created_at: { type: Date, required: true, default: Date.now },
     update_at: { type: Date, required: true, default: Date.now },
   },

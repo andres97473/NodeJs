@@ -127,7 +127,7 @@ export class ClientesComponent implements OnInit, AfterViewInit {
 
   openDialog() {
     this.dialog.open(ClienteComponent, {
-      width: '30%',
+      width: '70%',
     });
   }
 }

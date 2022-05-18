@@ -1,9 +1,86 @@
 <h1 mat-dialog-title>Agregar Cliente</h1>
+
 <div mat-dialog-content>
-  <mat-form-field appearance="legacy">
-    <mat-label>Legacy form field</mat-label>
-    <input matInput placeholder="Placeholder" />
-    <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
-    <mat-hint>Hint</mat-hint>
-  </mat-form-field>
+  <div class="container border">
+    <h2></h2>
+    <mat-grid-list cols="3" rowHeight="4:1">
+      <mat-grid-tile
+        ><mat-form-field appearance="outline">
+          <mat-label>ID</mat-label>
+          <input matInput placeholder="ID" /> </mat-form-field
+      ></mat-grid-tile>
+      <mat-grid-tile
+        ><mat-form-field appearance="outline">
+          <mat-label>Creado</mat-label>
+          <input matInput placeholder="Creado" /> </mat-form-field
+      ></mat-grid-tile>
+      <mat-grid-tile
+        ><mat-form-field appearance="outline">
+          <mat-label>Actualizado</mat-label>
+          <input matInput placeholder="Actualizado" /> </mat-form-field
+      ></mat-grid-tile>
+      <mat-grid-tile
+        ><mat-form-field appearance="outline">
+          <mat-label>Identificacion</mat-label>
+          <input matInput placeholder="Identificacion" /> </mat-form-field
+      ></mat-grid-tile>
+      <mat-grid-tile
+        ><mat-form-field appearance="outline">
+          <mat-label>Tipo Documento</mat-label>
+          <mat-select placeholder="Tipo Documento">
+            <mat-option value="CC">CC</mat-option>
+            <mat-option value="TI">TI</mat-option>
+            <mat-option value="RC">RC</mat-option>
+          </mat-select>
+        </mat-form-field></mat-grid-tile
+      >
+      <mat-grid-tile
+        ><mat-form-field appearance="outline">
+          <mat-label>Primer Apellido</mat-label>
+          <input matInput placeholder="Primer Apellido" /> </mat-form-field
+      ></mat-grid-tile>
+      <mat-grid-tile
+        ><mat-form-field appearance="outline">
+          <mat-label>Segundo Apellido</mat-label>
+          <input matInput placeholder="Segundo Apellido" /> </mat-form-field
+      ></mat-grid-tile>
+      <mat-grid-tile
+        ><mat-form-field appearance="outline">
+          <mat-label>Primer Nombre</mat-label>
+          <input matInput placeholder="Primer Nombre" /> </mat-form-field
+      ></mat-grid-tile>
+      <mat-grid-tile
+        ><mat-form-field appearance="outline">
+          <mat-label>Segundo Nombre</mat-label>
+          <input matInput placeholder="Segundo Nombre" /> </mat-form-field
+      ></mat-grid-tile>
+      <mat-grid-tile
+        ><mat-form-field appearance="outline">
+          <mat-label>Celular</mat-label>
+          <input matInput placeholder="Celular" /> </mat-form-field
+      ></mat-grid-tile>
+      <mat-grid-tile
+        ><mat-form-field appearance="outline">
+          <mat-label>Estado</mat-label>
+          <input matInput placeholder="Estado" /> </mat-form-field
+      ></mat-grid-tile>
+    </mat-grid-list>
+  </div>
+
+  <h1 class="mt-2">Ubicacion</h1>
+  <div class="container border">
+    <mat-grid-list cols="4" rowHeight="150px">
+      <mat-grid-tile colspan="2" rowspan="1"
+        ><mat-form-field appearance="outline">
+          <mat-label>Latitud</mat-label>
+          <input matInput placeholder="Latitud" /> </mat-form-field
+      ></mat-grid-tile>
+      <mat-grid-tile colspan="2" rowspan="2">2</mat-grid-tile>
+      <mat-grid-tile colspan="2" rowspan="1"
+        ><mat-form-field appearance="outline">
+          <mat-label>Longitud</mat-label>
+          <input matInput placeholder="Longitud" /> </mat-form-field
+      ></mat-grid-tile>
+    </mat-grid-list>
+  </div>
 </div>

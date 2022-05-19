@@ -1,86 +1,153 @@
 <h1 mat-dialog-title>Agregar Cliente</h1>
 
 <div mat-dialog-content>
-  <div class="container border">
-    <h2></h2>
-    <mat-grid-list cols="3" rowHeight="4:1">
-      <mat-grid-tile
-        ><mat-form-field appearance="outline">
-          <mat-label>ID</mat-label>
-          <input matInput placeholder="ID" /> </mat-form-field
-      ></mat-grid-tile>
-      <mat-grid-tile
-        ><mat-form-field appearance="outline">
-          <mat-label>Creado</mat-label>
-          <input matInput placeholder="Creado" /> </mat-form-field
-      ></mat-grid-tile>
-      <mat-grid-tile
-        ><mat-form-field appearance="outline">
-          <mat-label>Actualizado</mat-label>
-          <input matInput placeholder="Actualizado" /> </mat-form-field
-      ></mat-grid-tile>
-      <mat-grid-tile
-        ><mat-form-field appearance="outline">
-          <mat-label>Identificacion</mat-label>
-          <input matInput placeholder="Identificacion" /> </mat-form-field
-      ></mat-grid-tile>
-      <mat-grid-tile
-        ><mat-form-field appearance="outline">
-          <mat-label>Tipo Documento</mat-label>
-          <mat-select placeholder="Tipo Documento">
-            <mat-option value="CC">CC</mat-option>
-            <mat-option value="TI">TI</mat-option>
-            <mat-option value="RC">RC</mat-option>
-          </mat-select>
-        </mat-form-field></mat-grid-tile
-      >
-      <mat-grid-tile
-        ><mat-form-field appearance="outline">
-          <mat-label>Primer Apellido</mat-label>
-          <input matInput placeholder="Primer Apellido" /> </mat-form-field
-      ></mat-grid-tile>
-      <mat-grid-tile
-        ><mat-form-field appearance="outline">
-          <mat-label>Segundo Apellido</mat-label>
-          <input matInput placeholder="Segundo Apellido" /> </mat-form-field
-      ></mat-grid-tile>
-      <mat-grid-tile
-        ><mat-form-field appearance="outline">
-          <mat-label>Primer Nombre</mat-label>
-          <input matInput placeholder="Primer Nombre" /> </mat-form-field
-      ></mat-grid-tile>
-      <mat-grid-tile
-        ><mat-form-field appearance="outline">
-          <mat-label>Segundo Nombre</mat-label>
-          <input matInput placeholder="Segundo Nombre" /> </mat-form-field
-      ></mat-grid-tile>
-      <mat-grid-tile
-        ><mat-form-field appearance="outline">
-          <mat-label>Celular</mat-label>
-          <input matInput placeholder="Celular" /> </mat-form-field
-      ></mat-grid-tile>
-      <mat-grid-tile
-        ><mat-form-field appearance="outline">
-          <mat-label>Estado</mat-label>
-          <input matInput placeholder="Estado" /> </mat-form-field
-      ></mat-grid-tile>
-    </mat-grid-list>
-  </div>
+  <form [formGroup]="clienteForm">
+    <div class="container border">
+      <h2></h2>
+      <mat-grid-list cols="3" rowHeight="4:1">
+        <mat-grid-tile
+          ><mat-form-field appearance="outline">
+            <mat-label>ID</mat-label>
+            <input
+              matInput
+              formControlName="_id"
+              placeholder="ID"
+              readonly
+            /> </mat-form-field
+        ></mat-grid-tile>
+        <mat-grid-tile
+          ><mat-form-field appearance="outline">
+            <mat-label>Creado</mat-label>
+            <input
+              matInput
+              formControlName="created_at"
+              placeholder="ID"
+              readonly
+            /> </mat-form-field
+        ></mat-grid-tile>
+        <mat-grid-tile
+          ><mat-form-field appearance="outline">
+            <mat-label>Actualizado</mat-label>
+            <input
+              matInput
+              formControlName="update_at"
+              placeholder="ID"
+              readonly
+            /> </mat-form-field
+        ></mat-grid-tile>
+        <mat-grid-tile
+          ><mat-form-field appearance="outline">
+            <mat-label>Identificacion</mat-label>
+            <input
+              formControlName="num_doc_usr"
+              matInput
+              placeholder="Identificacion"
+            /> </mat-form-field
+        ></mat-grid-tile>
+        <mat-grid-tile
+          ><mat-form-field appearance="outline">
+            <mat-label>Tipo Documento</mat-label>
+            <mat-select formControlName="tipo_doc" placeholder="Tipo Documento">
+              <mat-option value="CC">CC</mat-option>
+              <mat-option value="TI">TI</mat-option>
+              <mat-option value="RC">RC</mat-option>
+            </mat-select>
+          </mat-form-field></mat-grid-tile
+        >
+        <mat-grid-tile
+          ><mat-form-field appearance="outline">
+            <mat-label>Primer Apellido</mat-label>
+            <input
+              formControlName="apellido1"
+              matInput
+              placeholder="Primer Apellido"
+            /> </mat-form-field
+        ></mat-grid-tile>
+        <mat-grid-tile
+          ><mat-form-field appearance="outline">
+            <mat-label>Segundo Apellido</mat-label>
+            <input
+              formControlName="apellido2"
+              matInput
+              placeholder="Segundo Apellido"
+            /> </mat-form-field
+        ></mat-grid-tile>
+        <mat-grid-tile
+          ><mat-form-field appearance="outline">
+            <mat-label>Primer Nombre</mat-label>
+            <input
+              formControlName="nombre1"
+              matInput
+              placeholder="Primer Nombre"
+            /> </mat-form-field
+        ></mat-grid-tile>
+        <mat-grid-tile
+          ><mat-form-field appearance="outline">
+            <mat-label>Segundo Nombre</mat-label>
+            <input
+              formControlName="nombre2"
+              matInput
+              placeholder="Segundo Nombre"
+            /> </mat-form-field
+        ></mat-grid-tile>
+        <mat-grid-tile
+          ><mat-form-field appearance="outline">
+            <mat-label>Celular</mat-label>
+            <input
+              formControlName="celular"
+              matInput
+              placeholder="Celular"
+            /> </mat-form-field
+        ></mat-grid-tile>
+        <mat-grid-tile
+          ><mat-form-field appearance="outline">
+            <mat-label>Estado</mat-label>
+            <input
+              formControlName="estado"
+              matInput
+              placeholder="Estado"
+              readonly
+            /> </mat-form-field
+        ></mat-grid-tile>
+      </mat-grid-list>
+    </div>
 
-  <h1 class="mt-2">Ubicacion</h1>
-  <div class="container border">
-    <mat-grid-list cols="4" rowHeight="150px">
-      <mat-grid-tile colspan="2" rowspan="1"
-        ><mat-form-field appearance="outline">
-          <mat-label>Latitud</mat-label>
-          <input matInput placeholder="Latitud" /> </mat-form-field
-      ></mat-grid-tile>
-      <mat-grid-tile colspan="2" rowspan="2">2</mat-grid-tile>
-      <mat-grid-tile colspan="2" rowspan="1"
-        ><mat-form-field appearance="outline">
-          <mat-label>Longitud</mat-label>
-          <input matInput placeholder="Longitud" /> </mat-form-field
-      ></mat-grid-tile>
-    </mat-grid-list>
-  </div>
+    <h1 class="mt-2">Ubicacion</h1>
+    <div class="container border">
+      <mat-grid-list cols="4" rowHeight="150px">
+        <mat-grid-tile colspan="2" rowspan="1"
+          ><mat-form-field appearance="outline">
+            <mat-label>Latitud</mat-label>
+            <input
+              formControlName="latitud"
+              matInput
+              placeholder="Latitud"
+              readonly
+            /> </mat-form-field
+        ></mat-grid-tile>
+        <mat-grid-tile colspan="2" rowspan="2">2</mat-grid-tile>
+        <mat-grid-tile colspan="2" rowspan="1"
+          ><mat-form-field appearance="outline">
+            <mat-label>Longitud</mat-label>
+            <input
+              formControlName="longitud"
+              matInput
+              placeholder="Longitud"
+              readonly
+            /> </mat-form-field
+        ></mat-grid-tile>
+      </mat-grid-list>
+    </div>
+  </form>
+</div>
+<div mat-dialog-actions [align]="'end'">
+  <button mat-raised-button color="warn" mat-dialog-close>Cerrar</button>
+  <button
+    style="margin-left: 8px"
+    mat-raised-button
+    color="primary"
+    (click)="addCliente()"
+  >
+    Guardar
+  </button>
 </div>

@@ -56,7 +56,7 @@ export class ClienteComponent implements OnInit {
     });
     // console.log(this.editCliente);
     if (this.editCliente) {
-      this.ubicacion = `https://www.google.com/maps/@${this.editCliente.latitud},${this.editCliente.longitud},15z`;
+      this.ubicacion = `https://maps.google.com/?q=${this.editCliente.latitud},${this.editCliente.longitud}`;
       this.tituloCliente = 'Actualizar Cliente';
       this.isUpdate = true;
       const creado = this.editCliente.created_at;

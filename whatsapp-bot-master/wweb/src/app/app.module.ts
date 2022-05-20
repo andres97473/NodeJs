@@ -12,6 +12,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { ClientesComponent } from './components/clientes/clientes.component';
 import { ClienteComponent } from './components/clientes/cliente/cliente.component';
 import { MapboxComponent } from './components/mapbox/mapbox.component';
+import { MapComponent } from './components/map/map.component';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { MapboxComponent } from './components/mapbox/mapbox.component';
     CsvMessagesComponent,
     ClienteComponent,
     MapboxComponent,
+    MapComponent,
   ],
   imports: [
     BrowserModule,

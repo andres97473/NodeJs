@@ -47,10 +47,11 @@ export class MapboxComponent implements OnInit, AfterViewInit {
       zoom: 14, // starting zoom
     });
 
+    map.addControl(new mapboxgl.FullscreenControl());
+    map.addControl(new mapboxgl.NavigationControl());
+
     const marker1 = new mapboxgl.Marker()
       .setLngLat([this.longitud, this.latitud])
       .addTo(map);
-
-    const control1 = new mapboxgl.FullscreenControl();
   }
 }

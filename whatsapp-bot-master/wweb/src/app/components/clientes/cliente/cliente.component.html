@@ -132,10 +132,15 @@
             /> </mat-form-field
         ></mat-grid-tile>
         <mat-grid-tile colspan="2" rowspan="2">
-          <a *ngIf="editCliente.latitud" [href]="ubicacion" target="_blank"
+          <!-- <a *ngIf="editCliente.latitud" [href]="ubicacion" target="_blank"
             >Ver ubicacion</a
-          >
-          <h4 *ngIf="!editCliente.latitud">No hay registrada una ubicacion</h4>
+          > -->
+          <div class="container" *ngIf="editCliente.latitud">
+            <app-mapbox [cliente]="editCliente"></app-mapbox>
+          </div>
+          <div class="container border" *ngIf="!editCliente.latitud">
+            <h4>No hay registrada una ubicacion</h4>
+          </div>
         </mat-grid-tile>
         <mat-grid-tile colspan="2" rowspan="1"
           ><mat-form-field appearance="outline">

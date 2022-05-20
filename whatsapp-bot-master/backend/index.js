@@ -22,7 +22,7 @@ const { response } = require("express");
 
 // Environment variables
 
-const PORT = 9000 || process.env.PORT;
+const PORT = 3000 || process.env.PORT;
 const number_code = "57";
 const number = "3166651382";
 const msg = "Chat iniciado!";

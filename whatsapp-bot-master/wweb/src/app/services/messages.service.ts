@@ -15,7 +15,7 @@ export class MessagesService {
 
   pageIndex = 0;
 
-  URL = 'http://localhost:9000';
+  URL = 'http://localhost:3000';
 
   constructor(private http: HttpClient) {}
 

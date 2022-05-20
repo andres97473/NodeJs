@@ -1,4 +1,4 @@
-<h1 mat-dialog-title>Agregar Cliente</h1>
+<h1 mat-dialog-title>{{ tituloCliente }}</h1>
 
 <div mat-dialog-content>
   <form [formGroup]="clienteForm">
@@ -42,6 +42,7 @@
               formControlName="num_doc_usr"
               matInput
               placeholder="Identificacion"
+              autocomplete="off"
             /> </mat-form-field
         ></mat-grid-tile>
         <mat-grid-tile
@@ -61,6 +62,7 @@
               formControlName="apellido1"
               matInput
               placeholder="Primer Apellido"
+              autocomplete="off"
             /> </mat-form-field
         ></mat-grid-tile>
         <mat-grid-tile
@@ -70,6 +72,7 @@
               formControlName="apellido2"
               matInput
               placeholder="Segundo Apellido"
+              autocomplete="off"
             /> </mat-form-field
         ></mat-grid-tile>
         <mat-grid-tile
@@ -79,6 +82,7 @@
               formControlName="nombre1"
               matInput
               placeholder="Primer Nombre"
+              autocomplete="off"
             /> </mat-form-field
         ></mat-grid-tile>
         <mat-grid-tile
@@ -88,6 +92,7 @@
               formControlName="nombre2"
               matInput
               placeholder="Segundo Nombre"
+              autocomplete="off"
             /> </mat-form-field
         ></mat-grid-tile>
         <mat-grid-tile
@@ -97,6 +102,7 @@
               formControlName="celular"
               matInput
               placeholder="Celular"
+              autocomplete="off"
             /> </mat-form-field
         ></mat-grid-tile>
         <mat-grid-tile
@@ -125,7 +131,12 @@
               readonly
             /> </mat-form-field
         ></mat-grid-tile>
-        <mat-grid-tile colspan="2" rowspan="2">2</mat-grid-tile>
+        <mat-grid-tile colspan="2" rowspan="2">
+          <a *ngIf="editCliente.latitud" [href]="ubicacion" target="_blank"
+            >Ver ubicacion</a
+          >
+          <h4 *ngIf="!editCliente.latitud">No hay registrada una ubicacion</h4>
+        </mat-grid-tile>
         <mat-grid-tile colspan="2" rowspan="1"
           ><mat-form-field appearance="outline">
             <mat-label>Longitud</mat-label>
@@ -146,7 +157,7 @@
     style="margin-left: 8px"
     mat-raised-button
     color="primary"
-    (click)="addCliente()"
+    (click)="guardar()"
   >
     Guardar
   </button>

@@ -99,15 +99,8 @@ export class ClientesComponent implements OnInit, AfterViewInit {
     // console.log(row);
   }
 
-  editarCliente(row: ClienteI) {
-    this.dialog.open(ClienteComponent, {
-      width: '70%',
-      data: row,
-    });
-  }
-
   borrarCliente(row: any) {
-    console.log(row);
+    // console.log(row);
     Swal.fire({
       title: `Desea Eliminar al Cliente, ${row.apellido1} ${row.apellido2} ${row.nombre1} ${row.nombre2} ?`,
       text: `id: ${row._id}`,
@@ -133,9 +126,30 @@ export class ClientesComponent implements OnInit, AfterViewInit {
     });
   }
 
-  openDialog() {
-    this.dialog.open(ClienteComponent, {
-      width: '70%',
-    });
+  crearCliente() {
+    this.dialog
+      .open(ClienteComponent, {
+        width: '70%',
+      })
+      .afterClosed()
+      .subscribe((val) => {
+        if (val === 'save') {
+          this.getClientes();
+        }
+      });
+  }
+
+  editarCliente(row: ClienteI) {
+    this.dialog
+      .open(ClienteComponent, {
+        width: '70%',
+        data: row,
+      })
+      .afterClosed()
+      .subscribe((val) => {
+        if (val === 'update') {
+          this.getClientes();
+        }
+      });
   }
 }

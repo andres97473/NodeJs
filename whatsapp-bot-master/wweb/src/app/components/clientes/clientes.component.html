@@ -22,8 +22,8 @@
 
     <span class="example-spacer"></span>
 
-    <button mat-raised-button color="warn" (click)="openDialog()">
-      Open dialog
+    <button mat-raised-button color="warn" (click)="crearCliente()">
+      Agregar Cliente
     </button>
   </mat-toolbar>
   <div class="example-table-container table-responsive-md">
@@ -209,7 +209,7 @@
         (click)="selectRow(row)"
         (click)="selectedRow = selectedRow === row ? null : row"
         [class.demo-row-is-clicked]="selectedRow === row"
-        (dblclick)="borrarCliente(row)"
+        (dblclick)="editarCliente(row)"
       ></tr>
 
       <!-- Row shown when there is no matching data. -->

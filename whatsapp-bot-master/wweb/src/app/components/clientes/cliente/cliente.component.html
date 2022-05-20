@@ -120,7 +120,7 @@
 
     <h1 class="mt-2">Ubicacion</h1>
     <div class="container border">
-      <mat-grid-list cols="4" rowHeight="150px">
+      <mat-grid-list cols="4" rowHeight="100px">
         <mat-grid-tile colspan="2" rowspan="1"
           ><mat-form-field appearance="outline">
             <mat-label>Latitud</mat-label>
@@ -131,12 +131,12 @@
               readonly
             /> </mat-form-field
         ></mat-grid-tile>
-        <mat-grid-tile colspan="2" rowspan="2">
-          <!-- <a *ngIf="editCliente.latitud" [href]="ubicacion" target="_blank"
-            >Ver ubicacion</a
-          > -->
-          <div class="container" *ngIf="editCliente.latitud">
-            <app-mapbox [cliente]="editCliente"></app-mapbox>
+        <mat-grid-tile colspan="2" rowspan="3">
+          <div *ngIf="editCliente.latitud">
+            <app-mapbox
+              [cliente]="editCliente"
+              style="width: 100%"
+            ></app-mapbox>
           </div>
           <div class="container border" *ngIf="!editCliente.latitud">
             <h4>No hay registrada una ubicacion</h4>
@@ -150,8 +150,22 @@
               matInput
               placeholder="Longitud"
               readonly
-            /> </mat-form-field
-        ></mat-grid-tile>
+            />
+          </mat-form-field>
+          <!-- <a *ngIf="editCliente.latitud" [href]="ubicacion" target="_blank"
+            >Ver ubicacion</a
+          > -->
+        </mat-grid-tile>
+        <mat-grid-tile *ngIf="editCliente.latitud" colspan="2" rowspan="1">
+          <a
+            mat-raised-button
+            color="primary"
+            [href]="ubicacion"
+            target="_blank"
+            style="width: 100%"
+            >Ver mapa <mat-icon> place</mat-icon></a
+          >
+        </mat-grid-tile>
       </mat-grid-list>
     </div>
   </form>

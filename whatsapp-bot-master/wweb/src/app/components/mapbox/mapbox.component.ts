@@ -50,5 +50,7 @@ export class MapboxComponent implements OnInit, AfterViewInit {
     const marker1 = new mapboxgl.Marker()
       .setLngLat([this.longitud, this.latitud])
       .addTo(map);
+
+    const control1 = new mapboxgl.FullscreenControl();
   }
 }

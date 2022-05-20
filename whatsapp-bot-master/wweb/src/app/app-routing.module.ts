@@ -7,6 +7,7 @@ import { MapboxComponent } from './components/mapbox/mapbox.component';
 const routes: Routes = [
   { path: 'clientes', component: ClientesComponent },
   { path: 'csvmessage', component: CsvMessagesComponent },
+  { path: 'maps', component: MapboxComponent },
   { path: '**', redirectTo: '/clientes' },
 ];
 

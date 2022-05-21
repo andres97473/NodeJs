@@ -1,7 +1,13 @@
 mat-form-field {
-  width: 100%;
+  width: 95%;
+  font-size: 12px;
 }
 
 mat-raised-button {
   width: 200px;
+}
+
+.disable {
+  color: rgb(0, 136, 11);
+  background-color: aqua;
 }

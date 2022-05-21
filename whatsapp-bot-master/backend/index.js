@@ -150,7 +150,13 @@ const listenMessage = () => {
 
         const updateUbicacion = await Cliente.updateMany(
           { celular: newNumero2 },
-          { $set: { longitud: longitude, latitud: latitude } }
+          {
+            $set: {
+              longitud: longitude,
+              latitud: latitude,
+              update_at: new Date(),
+            },
+          }
         );
       }
 

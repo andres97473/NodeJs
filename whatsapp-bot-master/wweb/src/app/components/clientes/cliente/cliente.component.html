@@ -6,7 +6,7 @@
       <h2></h2>
       <mat-grid-list cols="3" rowHeight="4:1">
         <mat-grid-tile
-          ><mat-form-field appearance="outline">
+          ><mat-form-field appearance="fill">
             <mat-label>ID</mat-label>
             <input
               matInput
@@ -16,7 +16,7 @@
             /> </mat-form-field
         ></mat-grid-tile>
         <mat-grid-tile
-          ><mat-form-field appearance="outline">
+          ><mat-form-field appearance="fill">
             <mat-label>Creado</mat-label>
             <input
               matInput
@@ -26,7 +26,7 @@
             /> </mat-form-field
         ></mat-grid-tile>
         <mat-grid-tile
-          ><mat-form-field appearance="outline">
+          ><mat-form-field appearance="fill">
             <mat-label>Actualizado</mat-label>
             <input
               matInput
@@ -106,7 +106,7 @@
             /> </mat-form-field
         ></mat-grid-tile>
         <mat-grid-tile
-          ><mat-form-field appearance="outline">
+          ><mat-form-field appearance="fill">
             <mat-label>Estado</mat-label>
             <input
               formControlName="estado"
@@ -118,11 +118,11 @@
       </mat-grid-list>
     </div>
 
-    <h1 class="mt-2">Ubicacion</h1>
-    <div class="container border">
+    <h1 class="mt-2" *ngIf="editCliente">Ubicacion</h1>
+    <div class="container border" *ngIf="editCliente">
       <mat-grid-list cols="4" rowHeight="100px">
         <mat-grid-tile colspan="2" rowspan="1"
-          ><mat-form-field appearance="outline">
+          ><mat-form-field appearance="fill">
             <mat-label>Latitud</mat-label>
             <input
               formControlName="latitud"
@@ -143,7 +143,7 @@
           </div>
         </mat-grid-tile>
         <mat-grid-tile colspan="2" rowspan="1"
-          ><mat-form-field appearance="outline">
+          ><mat-form-field appearance="fill">
             <mat-label>Longitud</mat-label>
             <input
               formControlName="longitud"

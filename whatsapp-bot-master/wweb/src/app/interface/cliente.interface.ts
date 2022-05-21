@@ -16,6 +16,6 @@ export interface ClienteI {
   estado: string;
   latitud?: string;
   longitud?: string;
-  created_at: Date;
-  update_at: Date;
+  created_at: Date | string;
+  update_at: Date | string;
 }

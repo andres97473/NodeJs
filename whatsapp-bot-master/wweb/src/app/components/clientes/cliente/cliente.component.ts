@@ -4,7 +4,6 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import Swal from 'sweetalert2';
 import { ClienteI } from '../../../interface/cliente.interface';
 import { ClientesService } from '../../../services/clientes.service';
-import { Router } from '@angular/router';
 
 export interface Tile {
   color: string;
@@ -54,13 +53,19 @@ export class ClienteComponent implements OnInit {
       created_at: '2022-01-01',
       update_at: '2022-01-02',
     });
-    // console.log(this.editCliente);
+
     if (this.editCliente) {
+      console.log(this.convertirFecha('2022-05-20T23:53:54.018Z'));
+
       this.ubicacion = `https://maps.google.com/?q=${this.editCliente.latitud},${this.editCliente.longitud}`;
       this.tituloCliente = 'Actualizar Cliente';
       this.isUpdate = true;
-      const creado = this.editCliente.created_at;
-      // console.log(creado);
+      // const creado = moment
+      //   .utc(this.editCliente.created_at)
+      //   .format('DD-MM-YYYY hh:mm a');
+      // const actualizado = moment
+      //   .utc(this.editCliente.update_at)
+      //   .format('DD-MM-YYYY hh:mm a');
 
       this.clienteForm.controls['_id'].setValue(this.editCliente._id);
       this.clienteForm.controls['num_doc_usr'].setValue(
@@ -80,10 +85,10 @@ export class ClienteComponent implements OnInit {
       this.clienteForm.controls['latitud'].setValue(this.editCliente.latitud);
       this.clienteForm.controls['longitud'].setValue(this.editCliente.longitud);
       this.clienteForm.controls['created_at'].setValue(
-        this.editCliente.created_at
+        this.convertirFecha(this.editCliente.created_at + '')
       );
       this.clienteForm.controls['update_at'].setValue(
-        this.editCliente.update_at
+        this.convertirFecha(this.editCliente.update_at + '')
       );
     }
   }
@@ -133,16 +138,30 @@ export class ClienteComponent implements OnInit {
             this.clienteForm.reset();
             this.dialogRef.close('update');
           },
-          error: () => {
+          error: (err) => {
             Swal.fire({
               position: 'top-end',
               icon: 'error',
-              title: 'Error al actualizar Cliente',
+              title: 'Error al actualizar Cliente, ' + err.error.msg,
               showConfirmButton: false,
               timer: 1500,
             });
+            console.log(err.error.msg);
           },
         });
     }
+  }
+
+  convertirFecha(date: string) {
+    var time = new Date(date);
+    const dateFormat = time.toLocaleString('es-MX', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+      hour: 'numeric',
+      hour12: true,
+      minute: 'numeric',
+    });
+    return dateFormat;
   }
 }

@@ -75,6 +75,16 @@ const actualizarCliente = async (req, res = response) => {
         ok: false,
         msg: "No existe un cliente con ese id",
       });
+    } else {
+      const clienteDoc = await Cliente.findOne({
+        num_doc_usr: req.body.num_doc_usr,
+      });
+      if (clienteDoc) {
+        return res.status(404).json({
+          ok: false,
+          msg: "Ya existe un usuario con ese numero de Documento..",
+        });
+      }
     }
 
     // Actualizaciones

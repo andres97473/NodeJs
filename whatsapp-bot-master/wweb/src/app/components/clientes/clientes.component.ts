@@ -133,7 +133,7 @@ export class ClientesComponent implements OnInit, AfterViewInit {
       })
       .afterClosed()
       .subscribe((val) => {
-        if (val === 'save') {
+        if (val === 'create') {
           this.getClientes();
         }
       });

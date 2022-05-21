@@ -17,49 +17,32 @@ const getClientes = async (req, res) => {
 };
 
 const crearCliente = async (req, res = response) => {
-  const {
-    num_doc_usr,
-    tipo_doc,
-    apellido1,
-    apellido2,
-    nombre1,
-    nombre2,
-    celular,
-  } = req.body;
-
-  const cliente = new Cliente({
-    num_doc_usr,
-    tipo_doc,
-    apellido1,
-    apellido2,
-    nombre1,
-    nombre2,
-    celular,
-  });
+  const { num_doc_usr } = req.body;
 
   try {
-    const clienteDB = await Cliente.findOne({ num_doc_usr });
-    if (clienteDB) {
-      return res.status(404).json({
+    const existeDocumento = await Cliente.findOne({ num_doc_usr });
+
+    if (existeDocumento) {
+      return res.status(400).json({
         ok: false,
-        msg: "Ya existe un usuario con ese documento..",
+        msg: "El documento ya esta registrado",
       });
     }
+
+    const cliente = new Cliente(req.body);
+
     await cliente.save();
 
-    return res.status(404).json({
+    res.json({
       ok: true,
-      msg: "Cliente registrado con exito..",
+      msg: "Cliente registrado",
       cliente,
     });
-
-    // console.log(messageDB);
   } catch (error) {
     console.log(error);
-    return res.status(404).json({
+    res.status(500).json({
       ok: false,
-      msg: "error inesperado",
-      error,
+      msg: "Error inesperado, revisar logs ",
     });
   }
 };
@@ -75,20 +58,21 @@ const actualizarCliente = async (req, res = response) => {
         ok: false,
         msg: "No existe un cliente con ese id",
       });
-    } else {
-      const clienteDoc = await Cliente.findOne({
-        num_doc_usr: req.body.num_doc_usr,
-      });
-      if (clienteDoc) {
-        return res.status(404).json({
-          ok: false,
-          msg: "Ya existe un usuario con ese numero de Documento..",
-        });
-      }
     }
+    // else {
+    //   const clienteDoc = await Cliente.findOne({
+    //     num_doc_usr: req.body.num_doc_usr,
+    //   });
+    //   if (clienteDoc) {
+    //     return res.status(404).json({
+    //       ok: false,
+    //       msg: "Ya existe un usuario con ese numero de Documento..",
+    //     });
+    //   }
+    // }
 
     // Actualizaciones
-    const { ...campos } = req.body;
+    const { num_doc_usr, ...campos } = req.body;
 
     campos.update_at = new Date();
 

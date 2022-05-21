@@ -55,7 +55,7 @@ export class ClienteComponent implements OnInit {
     });
 
     if (this.editCliente) {
-      console.log(this.convertirFecha('2022-05-20T23:53:54.018Z'));
+      //console.log(this.convertirFecha('2022-05-20T23:53:54.018Z'));
 
       this.ubicacion = `https://maps.google.com/?q=${this.editCliente.latitud},${this.editCliente.longitud}`;
       this.tituloCliente = 'Actualizar Cliente';
@@ -110,16 +110,29 @@ export class ClienteComponent implements OnInit {
   }
 
   addCliente() {
-    if (this.clienteForm.valid) {
-      this._clientesService.crearCliente(this.clienteForm.value).subscribe({
-        next: (res) => {
-          alert('Cliente creado con exito');
-        },
-        error: () => {
-          alert('Error mientras se registraba el cliente');
-        },
-      });
-    }
+    this._clientesService.crearCliente(this.clienteForm.value).subscribe({
+      next: (resp) => {
+        Swal.fire({
+          position: 'top-end',
+          icon: 'success',
+          title: 'Cliente Creado con exito',
+          showConfirmButton: false,
+          timer: 2000,
+        });
+        this.clienteForm.reset();
+        this.dialogRef.close('create');
+      },
+      error: (err) => {
+        Swal.fire({
+          position: 'top-end',
+          icon: 'error',
+          title: 'Error al crear Cliente, ' + err.error.msg,
+          showConfirmButton: false,
+          timer: 2000,
+        });
+        // console.log(err.error.msg);
+      },
+    });
   }
 
   updateCliente() {
@@ -133,7 +146,7 @@ export class ClienteComponent implements OnInit {
               icon: 'success',
               title: 'Cliente Actualizado con exito',
               showConfirmButton: false,
-              timer: 1500,
+              timer: 2000,
             });
             this.clienteForm.reset();
             this.dialogRef.close('update');
@@ -144,9 +157,9 @@ export class ClienteComponent implements OnInit {
               icon: 'error',
               title: 'Error al actualizar Cliente, ' + err.error.msg,
               showConfirmButton: false,
-              timer: 1500,
+              timer: 2000,
             });
-            console.log(err.error.msg);
+            // console.log(err.error.msg);
           },
         });
     }

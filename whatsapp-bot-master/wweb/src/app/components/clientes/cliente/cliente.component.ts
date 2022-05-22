@@ -39,19 +39,19 @@ export class ClienteComponent implements OnInit {
 
   ngOnInit(): void {
     this.clienteForm = this.fb.group({
-      _id: '21010',
-      num_doc_usr: '70707',
-      tipo_doc: 'CC',
-      apellido1: 'ape1',
-      apellido2: 'ape2',
-      nombre1: 'nom1',
-      nombre2: 'nom2',
-      celular: '31313',
-      estado: 'Pendiente',
-      latitud: '00000',
-      longitud: '11111',
-      created_at: '2022-01-01',
-      update_at: '2022-01-02',
+      _id: '',
+      num_doc_usr: '',
+      tipo_doc: '',
+      apellido1: '',
+      apellido2: '',
+      nombre1: '',
+      nombre2: '',
+      celular: '',
+      estado: '',
+      latitud: '',
+      longitud: '',
+      created_at: '',
+      update_at: '',
     });
 
     if (this.editCliente) {

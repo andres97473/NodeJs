@@ -33,7 +33,7 @@ td {
   text-align: center;
   vertical-align: middle;
   border: 1px solid rgb(124, 124, 124) !important;
-  font-size: 12px;
+  font-size: 11px;
 }
 
 td:hover {
@@ -56,4 +56,9 @@ td:hover {
 .noResultados {
   border: none !important;
   width: 100% !important;
+}
+
+.mat-column-acciones {
+  width: 10px;
+  text-align: center;
 }

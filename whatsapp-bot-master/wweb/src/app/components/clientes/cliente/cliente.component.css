@@ -11,3 +11,7 @@ mat-raised-button {
   color: rgb(0, 136, 11);
   background-color: aqua;
 }
+
+.example-spacer {
+  flex: 1 1 auto;
+}

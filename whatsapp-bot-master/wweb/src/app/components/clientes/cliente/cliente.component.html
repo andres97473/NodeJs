@@ -1,6 +1,15 @@
-<h1 mat-dialog-title>{{ tituloCliente }}</h1>
+<p>
+  <mat-toolbar>
+    <h1 mat-dialog-title>{{ tituloCliente }}</h1>
+    <span class="example-spacer"></span>
+    <button mat-raised-button color="warn" [mat-dialog-close]="true">
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-toolbar>
+</p>
 
 <div mat-dialog-content>
+  <h1 mat-dialog-title>Datos Generales</h1>
   <form [formGroup]="clienteForm">
     <div class="container border">
       <h2></h2>
@@ -43,6 +52,7 @@
               matInput
               placeholder="Identificacion"
               autocomplete="off"
+              cdkFocusInitial
             /> </mat-form-field
         ></mat-grid-tile>
         <mat-grid-tile

@@ -18,12 +18,6 @@ export interface Tile {
   styleUrls: ['./cliente.component.css'],
 })
 export class ClienteComponent implements OnInit {
-  tiles: Tile[] = [
-    { text: 'One', cols: 2, rows: 1, color: 'lightblue' },
-    { text: 'Two', cols: 2, rows: 2, color: 'lightgreen' },
-    { text: 'Three', cols: 2, rows: 1, color: 'lightpink' },
-  ];
-
   tituloCliente = 'Agregar Cliente';
   isUpdate = false;
   ubicacion = '';

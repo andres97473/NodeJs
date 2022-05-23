@@ -62,3 +62,8 @@ td:hover {
   width: 10px;
   text-align: center;
 }
+
+/* ANCHO DE FILA */
+tr.mat-row {
+  height: 10px;
+}

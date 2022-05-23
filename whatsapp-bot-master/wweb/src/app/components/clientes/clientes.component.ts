@@ -36,6 +36,7 @@ export class ClientesComponent implements OnInit, AfterViewInit {
   dataSource!: MatTableDataSource<ClienteI>;
 
   clientes: ClienteI[] = [];
+  clientesFiltro: ClienteI[] = [];
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -82,7 +83,7 @@ export class ClientesComponent implements OnInit, AfterViewInit {
         (this.dataSource.sort = this.sort),
         this.iniciarPaginator()
       ),
-      100
+      300
     );
   }
 
@@ -130,6 +131,7 @@ export class ClientesComponent implements OnInit, AfterViewInit {
     this.dialog
       .open(ClienteComponent, {
         width: '70%',
+        disableClose: true,
       })
       .afterClosed()
       .subscribe((val) => {
@@ -143,6 +145,8 @@ export class ClientesComponent implements OnInit, AfterViewInit {
     this.dialog
       .open(ClienteComponent, {
         width: '70%',
+        disableClose: true,
+
         data: row,
       })
       .afterClosed()

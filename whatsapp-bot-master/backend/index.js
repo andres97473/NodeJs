@@ -8,6 +8,7 @@ const {
   LocalAuth,
   Buttons,
   Location,
+  List,
 } = require("whatsapp-web.js");
 const moment = require("moment");
 const express = require("express");
@@ -105,17 +106,43 @@ const listenMessage = () => {
         // saveChatMongo(from, body);
       }
       // botones
-      else if (msgRecibido.includes("boton")) {
-        let button = new Buttons(
-          "Button body",
-          [{ body: "bt1" }, { body: "bt2" }],
-          "title",
+      // else if (msgRecibido.includes("boton")) {
+      //   let button = new Buttons(
+      //     "Button body",
+      //     [
+      //       { id: "1", body: "btn1" },
+      //       { id: "2", body: "btn2" },
+      //     ],
+      //     "title",
+      //     "footer"
+      //   );
+      //   console.log(from);
+      //   console.log(button);
+      //   sendMessage(from, button);
+      // }
+      // listas
+      else if (msgRecibido.includes("lista")) {
+        let sections = [
+          {
+            title: "sectionTitle",
+            rows: [
+              { title: "ListItem1", description: "desc" },
+              { title: "ListItem2" },
+            ],
+          },
+        ];
+        let list = new List(
+          "List body",
+          "btnText",
+          sections,
+          "Title",
           "footer"
         );
-        sendMessage(from, "Esto es un boton!!");
-        sendMessage(from, button);
-        // saveChatMongo(from, body);
-      } else if (msgRecibido.includes("confirmar")) {
+        client.sendMessage(from, list);
+        console.log(list);
+      }
+      // confirmar usuario
+      else if (msgRecibido.includes("confirmar")) {
         const msg = String(msgRecibido);
         const arrayMsg = msg.split(",", 2);
         const docCliente = arrayMsg[0];
@@ -184,16 +211,6 @@ Enviar media
 const sendMedia = (to, file) => {
   const mediaFile = MessageMedia.fromFilePath(`./mediaSend/${file}`);
   client.sendMessage(to, mediaFile);
-};
-
-const sendButton = (to) => {
-  let button = new Buttons(
-    "Button body",
-    [{ body: "bt1" }, { body: "bt2" }, { body: "bt3" }],
-    "title",
-    "footer"
-  );
-  client.sendMessage(to, button);
 };
 
 /**

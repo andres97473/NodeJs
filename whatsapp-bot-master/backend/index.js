@@ -156,6 +156,21 @@ const listenMessage = () => {
           { $set: { estado: "CONFIRMADO", update_at: new Date() } }
         );
       }
+      // cancelar usuario
+      else if (msgRecibido.includes("cancelar")) {
+        const msg = String(msgRecibido);
+        const arrayMsg = msg.split(",", 2);
+        const docCliente = arrayMsg[0];
+        //console.log(docCliente);
+
+        sendMessage(from, "Usuario cancelado");
+        const clienteDB = await Cliente.findOne({ num_doc_usr: docCliente });
+        // console.log(clienteDB);
+        const updateEstado = await Cliente.updateOne(
+          { num_doc_usr: docCliente },
+          { $set: { estado: "CANCELADO", update_at: new Date() } }
+        );
+      }
       // location
       else if (msgRecibido.includes("ubicacion")) {
         msg.reply(
@@ -353,15 +368,34 @@ const sendRecordatorio = (req, res) => {
     celular,
   } = req.body;
   const newNumber = `${number_code}${celular}@c.us`;
-  const message = `Estimado sr(a) ${nombre1} ${nombre2} ${apellido1} ${apellido2}, su numero de documento es: ${num_doc_usr}?, si su informacion es correcta por favor dar click en el siguiente enlace`;
+  const message = `${nombre1} ${nombre2} ${apellido1} ${apellido2}, su numero de documento es: ${num_doc_usr}?, si su informacion es correcta por favor seleccione una de las siguientes opciones`;
+
+  // Crear lista
+  let sections = [
+    {
+      title: "Seleccione una Respuesta y presione Enviar",
+      rows: [
+        { title: `${num_doc_usr},confirmar` },
+        { title: `${num_doc_usr},cancelar` },
+      ],
+    },
+  ];
+  let list = new List(
+    message,
+    "Opciones",
+    sections,
+    "Estimado sr(a)",
+    "gracias por su tiempo"
+  );
 
   // console.log(message, celular);
   // enviar mensaje y boton
-  sendMessage(newNumber, message);
-  sendMessage(
-    newNumber,
-    `https://wa.me/57${number}?text=${num_doc_usr},confirmar`
-  );
+  // sendMessage(newNumber, message);
+  // sendMessage(
+  //   newNumber,
+  //   `https://wa.me/57${number}?text=${num_doc_usr},confirmar`
+  // );
+  sendMessage(newNumber, list);
 
   // respuesta de api
   res.send({ status: "Mensajes Enviados v2..", send: true });
@@ -376,9 +410,6 @@ const sendRecordatorio = (req, res) => {
     nombre2,
     celular
   );
-
-  // enviar boton
-  sendButton(newNumber);
 };
 
 // RUTAS

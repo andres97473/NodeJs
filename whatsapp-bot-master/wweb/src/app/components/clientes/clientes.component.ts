@@ -72,7 +72,11 @@ export class ClientesComponent implements OnInit, AfterViewInit {
       const end = (page + 1) * pageSize;
       // console.log(length);
 
-      return `${start} - ${end} de ${length}`;
+      if (end >= length) {
+        return `Mostrando ${start} - ${length} de ${length}`;
+      } else {
+        return `Mostrando ${start} - ${end} de ${length}`;
+      }
     };
   }
 

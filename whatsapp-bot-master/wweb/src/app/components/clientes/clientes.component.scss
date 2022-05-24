@@ -4,16 +4,10 @@ table {
 
 .mat-form-field {
   width: 100%;
-  height: 15px !important;
-}
-
-.example-container {
-  position: relative;
 }
 
 .example-table-container {
   position: relative;
-  min-height: 200px;
   max-height: 400px;
   overflow: auto;
 }
@@ -27,19 +21,14 @@ table {
 .estado {
   font-size: 11px;
 }
-table,
+
 th,
 td {
   vertical-align: middle;
   border: 1px solid rgb(124, 124, 124) !important;
   font-size: 11px;
 
-  padding: 0 5px 0 5px !important;
-}
-
-tr,
-td {
-  height: 15px !important;
+  padding: 0 0 0 5px !important;
 }
 
 td:hover {
@@ -60,6 +49,20 @@ td:hover {
 }
 
 /* ANCHO DE FILA */
+.mat-table {
+  .mat-header-row,
+  .mat-row {
+    height: 30px;
+  }
+}
+.mat-icon {
+  font-size: 20px;
+  height: 30px;
+}
+
+.mat-icon-button {
+  height: 30px;
+}
 
 /* alto de las filas */
 .mat-column-created_at,

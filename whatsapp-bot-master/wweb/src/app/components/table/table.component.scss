@@ -1,0 +1,49 @@
+table {
+  width: 100%;
+  td {
+    .height {
+      height: 20px;
+    }
+  }
+}
+
+.mat-table {
+  .mat-header-row,
+  .mat-row {
+    height: 20px;
+  }
+}
+
+td:hover {
+  cursor: pointer;
+}
+
+.demo-row-is-clicked {
+  background-color: rgb(214, 212, 212);
+}
+
+.mat-icon {
+  font-size: 20px;
+  height: 20px;
+}
+
+.mat-icon-button {
+  height: 20px;
+}
+
+.color-green {
+  color: rgb(0, 255, 0);
+}
+
+.color-blue {
+  color: rgb(37, 37, 240);
+}
+.color-red {
+  color: rgb(216, 27, 27);
+}
+
+.boton {
+  cursor: pointer;
+  margin-right: 4px;
+  font-size: 16px;
+}

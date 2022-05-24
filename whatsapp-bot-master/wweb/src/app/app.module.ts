@@ -13,6 +13,7 @@ import { ClientesComponent } from './components/clientes/clientes.component';
 import { ClienteComponent } from './components/clientes/cliente/cliente.component';
 import { MapboxComponent } from './components/mapbox/mapbox.component';
 import { MapComponent } from './components/map/map.component';
+import { TableComponent } from './components/table/table.component';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { MapComponent } from './components/map/map.component';
     ClienteComponent,
     MapboxComponent,
     MapComponent,
+    TableComponent,
   ],
   imports: [
     BrowserModule,

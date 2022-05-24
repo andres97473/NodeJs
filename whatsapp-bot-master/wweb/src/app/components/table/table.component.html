@@ -1,0 +1,124 @@
+<div class="mt-5">
+  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+    <!-- tipo_doc Column -->
+    <ng-container matColumnDef="tipo_doc">
+      <th mat-header-cell *matHeaderCellDef>Tipo Doc</th>
+      <td mat-cell *matCellDef="let row" class="height">
+        {{ row.tipo_doc }}
+      </td>
+    </ng-container>
+
+    <!-- num_doc_usr Column -->
+    <ng-container matColumnDef="num_doc_usr">
+      <th mat-header-cell *matHeaderCellDef>Documento</th>
+      <td mat-cell *matCellDef="let row" class="height">
+        {{ row.num_doc_usr }}
+      </td>
+    </ng-container>
+
+    <!-- apellido1 Column -->
+    <ng-container matColumnDef="apellido1">
+      <th mat-header-cell *matHeaderCellDef>Apellido 1</th>
+      <td mat-cell *matCellDef="let row" class="height">
+        {{ row.apellido1 }}
+      </td>
+    </ng-container>
+
+    <!-- apellido2 Column -->
+    <ng-container matColumnDef="apellido2">
+      <th mat-header-cell *matHeaderCellDef>Apellido 2</th>
+      <td mat-cell *matCellDef="let row" class="height">
+        {{ row.apellido2 }}
+      </td>
+    </ng-container>
+    <!-- nombre1 Column -->
+    <ng-container matColumnDef="nombre1">
+      <th mat-header-cell *matHeaderCellDef>Nombre 1</th>
+      <td mat-cell *matCellDef="let row" class="height">
+        {{ row.nombre1 }}
+      </td>
+    </ng-container>
+    <!-- nombre2 Column -->
+    <ng-container matColumnDef="nombre2">
+      <th mat-header-cell *matHeaderCellDef>Nombre 2</th>
+      <td mat-cell *matCellDef="let row" class="height">
+        {{ row.nombre2 }}
+      </td>
+    </ng-container>
+    <!-- celular Column -->
+    <ng-container matColumnDef="celular">
+      <th mat-header-cell *matHeaderCellDef>Celular</th>
+      <td mat-cell *matCellDef="let row" class="height">
+        {{ row.celular }}
+      </td>
+    </ng-container>
+    <!-- estado Column -->
+    <ng-container matColumnDef="estado">
+      <th mat-header-cell *matHeaderCellDef>Estado</th>
+      <td mat-cell *matCellDef="let row" class="height">
+        <span
+          class="badge estado"
+          [ngClass]="{
+            'bg-primary': row.estado == 'PENDIENTE',
+            'bg-success': row.estado == 'CONFIRMADO',
+            'bg-danger': row.estado == 'CANCELADO'
+          }"
+          >{{ row.estado }}</span
+        >
+      </td>
+    </ng-container>
+    <!-- created_at Column -->
+    <ng-container matColumnDef="created_at">
+      <th mat-header-cell *matHeaderCellDef>Registro</th>
+      <td mat-cell *matCellDef="let row" class="height">
+        {{ row.created_at | date: "dd-MM-yyyy, h:mm a" }}
+      </td>
+    </ng-container>
+    <!-- update_at Column -->
+    <ng-container matColumnDef="update_at">
+      <th mat-header-cell *matHeaderCellDef>Actualizado</th>
+      <td mat-cell *matCellDef="let row" class="height">
+        {{ row.update_at | date: "dd-MM-yyyy, h:mm a" }}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="acciones">
+      <th mat-header-cell *matHeaderCellDef>Acciones</th>
+      <td mat-cell *matCellDef="let row" class="height">
+        <i
+          class="fa-brands fa-whatsapp-square color-green boton"
+          (click)="selectRow(row)"
+        ></i>
+        <i
+          class="fa-solid fa-pen-to-square color-blue boton"
+          (click)="editarCliente(row)"
+        ></i>
+        <i
+          class="fa-solid fa-trash-can color-red boton"
+          (click)="borrarCliente(row)"
+        ></i>
+      </td>
+    </ng-container>
+
+    <tr
+      class="altura-row"
+      mat-header-row
+      *matHeaderRowDef="displayedColumns; sticky: true"
+    ></tr>
+    <tr
+      class="altura-row"
+      mat-row
+      *matRowDef="let row; columns: displayedColumns; let i = index"
+      (click)="selectRow(row)"
+      (click)="selectedRow = selectedRow === row ? null : row"
+      [class.demo-row-is-clicked]="selectedRow === row"
+      (dblclick)="editarCliente(row)"
+    ></tr>
+
+    <!-- Row shown when there is no matching data. -->
+    <!-- <tr class="mat-row" *matNoDataRow>
+          <td class="mat-cell noResultados" colspan="4">
+            No hay resultados para "{{ input.value }}"
+          </td>
+        </tr> -->
+  </table>
+</div>

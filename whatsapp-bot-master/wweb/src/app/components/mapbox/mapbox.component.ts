@@ -12,7 +12,7 @@ import { ClienteI } from '../../interface/cliente.interface';
 @Component({
   selector: 'app-mapbox',
   templateUrl: './mapbox.component.html',
-  styleUrls: ['./mapbox.component.css'],
+  styleUrls: ['./mapbox.component.scss'],
 })
 export class MapboxComponent implements OnInit, AfterViewInit {
   @ViewChild('mapDiv') mapDivElement!: ElementRef;

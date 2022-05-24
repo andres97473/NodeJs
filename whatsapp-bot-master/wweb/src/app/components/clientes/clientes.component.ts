@@ -17,7 +17,7 @@ import { ClientesService } from '../../services/clientes.service';
 @Component({
   selector: 'app-clientes',
   templateUrl: './clientes.component.html',
-  styleUrls: ['./clientes.component.css'],
+  styleUrls: ['./clientes.component.scss'],
 })
 export class ClientesComponent implements OnInit, AfterViewInit {
   displayedColumns: string[] = [

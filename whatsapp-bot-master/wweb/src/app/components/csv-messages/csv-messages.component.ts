@@ -9,7 +9,7 @@ import { NgForm } from '@angular/forms';
 @Component({
   selector: 'app-csv-messages',
   templateUrl: './csv-messages.component.html',
-  styleUrls: ['./csv-messages.component.css'],
+  styleUrls: ['./csv-messages.component.scss'],
 })
 export class CsvMessagesComponent {
   // cargar archivo csv

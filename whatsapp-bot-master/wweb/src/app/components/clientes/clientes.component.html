@@ -6,44 +6,41 @@
   *ngIf="clientes"
   class="mat-elevation-z8 mt-3 animate__animated animate__fadeIn"
 >
-  <mat-toolbar>
-    <div class="filter">
-      <mat-form-field appearance="standard">
-        <mat-label>Filtro</mat-label>
-        <input
-          matInput
-          (keyup)="applyFilter($event)"
-          placeholder="Ejemplo. Juan"
-          #input
-          autocomplete="off"
-        />
-      </mat-form-field>
-    </div>
-
-    <span class="example-spacer"></span>
-
-    <button mat-raised-button color="warn" (click)="crearCliente()">
-      Agregar Cliente
-    </button>
-  </mat-toolbar>
+  <mat-grid-list cols="6" rowHeight="50px">
+    <mat-grid-tile colspan="5" rowspan="1">
+      <div class="filter">
+        <mat-form-field appearance="outline">
+          <mat-label>Filtro</mat-label>
+          <input
+            matInput
+            (keyup)="applyFilter($event)"
+            placeholder="Ejemplo. Juan"
+            #input
+            autocomplete="off"
+          />
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+    <mat-grid-tile colspan="1" rowspan="1">
+      <span class="example-spacer"></span>
+      <button mat-raised-button color="warn" (click)="crearCliente()">
+        Agregar Cliente
+      </button>
+    </mat-grid-tile>
+  </mat-grid-list>
   <div class="example-table-container table-responsive-md">
-    <table
-      class="table table-sm table-bordered"
-      mat-table
-      [dataSource]="dataSource"
-      matSort
-    >
+    <table mat-table [dataSource]="dataSource" matSort class="table table-sm">
       <!-- tipo_doc Column -->
       <ng-container matColumnDef="tipo_doc">
         <th
-          class="table-dark col-lg-1"
+          class="table-dark"
           mat-header-cell
           *matHeaderCellDef
           mat-sort-header
         >
-          TIPO DOC
+          Tipo Doc
         </th>
-        <td class="col-lg-1" mat-cell *matCellDef="let row">
+        <td mat-cell *matCellDef="let row" class="height">
           {{ row.tipo_doc }}
         </td>
       </ng-container>
@@ -51,87 +48,100 @@
       <!-- num_doc_usr Column -->
       <ng-container matColumnDef="num_doc_usr">
         <th
-          class="table-dark col-lg-1 mx-auto"
+          class="table-dark"
           mat-header-cell
           *matHeaderCellDef
           mat-sort-header
         >
-          DOCUMENTO
+          Documento
         </th>
-        <td mat-cell *matCellDef="let row">{{ row.num_doc_usr }}</td>
+        <td mat-cell *matCellDef="let row" class="height">
+          {{ row.num_doc_usr }}
+        </td>
       </ng-container>
 
       <!-- apellido1 Column -->
       <ng-container matColumnDef="apellido1">
         <th
-          class="table-dark col-lg-1"
+          class="table-dark"
           mat-header-cell
           *matHeaderCellDef
           mat-sort-header
         >
-          PRIMER APELLIDO
+          Apellido 1
         </th>
-        <td mat-cell *matCellDef="let row">{{ row.apellido1 }}</td>
+        <td mat-cell *matCellDef="let row" class="height">
+          {{ row.apellido1 }}
+        </td>
       </ng-container>
+
       <!-- apellido2 Column -->
       <ng-container matColumnDef="apellido2">
         <th
-          class="table-dark col-lg-1"
+          class="table-dark"
           mat-header-cell
           *matHeaderCellDef
           mat-sort-header
         >
-          SEGUNDO APELLIDO
+          Apellido 2
         </th>
-        <td mat-cell *matCellDef="let row">{{ row.apellido2 }}</td>
+        <td mat-cell *matCellDef="let row" class="height">
+          {{ row.apellido2 }}
+        </td>
       </ng-container>
       <!-- nombre1 Column -->
       <ng-container matColumnDef="nombre1">
         <th
-          class="table-dark col-lg-1"
+          class="table-dark"
           mat-header-cell
           *matHeaderCellDef
           mat-sort-header
         >
-          PRIMER NOMBRE
+          Nombre 1
         </th>
-        <td mat-cell *matCellDef="let row">{{ row.nombre1 }}</td>
+        <td mat-cell *matCellDef="let row" class="height">
+          {{ row.nombre1 }}
+        </td>
       </ng-container>
       <!-- nombre2 Column -->
       <ng-container matColumnDef="nombre2">
         <th
-          class="table-dark col-lg-1"
+          class="table-dark"
           mat-header-cell
           *matHeaderCellDef
           mat-sort-header
         >
-          SEGUNDO NOMBRE
+          Nombre 2
         </th>
-        <td mat-cell *matCellDef="let row">{{ row.nombre2 }}</td>
+        <td mat-cell *matCellDef="let row" class="height">
+          {{ row.nombre2 }}
+        </td>
       </ng-container>
       <!-- celular Column -->
       <ng-container matColumnDef="celular">
         <th
-          class="table-dark col-lg-1"
+          class="table-dark"
           mat-header-cell
           *matHeaderCellDef
           mat-sort-header
         >
-          CELULAR
+          Celular
         </th>
-        <td mat-cell *matCellDef="let row">{{ row.celular }}</td>
+        <td mat-cell *matCellDef="let row" class="height">
+          {{ row.celular }}
+        </td>
       </ng-container>
       <!-- estado Column -->
       <ng-container matColumnDef="estado">
         <th
-          class="table-dark col-lg-1"
+          class="table-dark"
           mat-header-cell
           *matHeaderCellDef
           mat-sort-header
         >
-          ESTADO
+          Estado
         </th>
-        <td mat-cell *matCellDef="let row">
+        <td mat-cell *matCellDef="let row" class="height">
           <span
             class="badge estado"
             [ngClass]="{
@@ -143,57 +153,52 @@
           >
         </td>
       </ng-container>
-      <!-- fecha_proceso Column -->
+      <!-- created_at Column -->
       <ng-container matColumnDef="created_at">
         <th
-          class="table-dark col-lg-1"
+          class="table-dark"
           mat-header-cell
           *matHeaderCellDef
           mat-sort-header
         >
-          FECHA CREACION
+          Registro
         </th>
-        <td mat-cell *matCellDef="let row">
+        <td mat-cell *matCellDef="let row" class="height">
           {{ row.created_at | date: "dd-MM-yyyy, h:mm a" }}
         </td>
       </ng-container>
-      <!-- fecha_proceso Column -->
+      <!-- update_at Column -->
       <ng-container matColumnDef="update_at">
         <th
-          class="table-dark col-lg-1"
+          class="table-dark"
           mat-header-cell
           *matHeaderCellDef
           mat-sort-header
         >
-          FECHA ACTUALIZACION
+          Actualizado
         </th>
-        <td mat-cell *matCellDef="let row">
+        <td mat-cell *matCellDef="let row" class="height">
           {{ row.update_at | date: "dd-MM-yyyy, h:mm a" }}
         </td>
       </ng-container>
-
-      <!-- acciones Column -->
       <ng-container matColumnDef="acciones">
-        <th class="table-dark col-lg-1" mat-header-cell *matHeaderCellDef>
-          ACCIONES
-        </th>
-        <td mat-cell *matCellDef="let row">
-          <button
-            mat-icon-button
-            color="primary"
+        <th class="table-dark" mat-header-cell *matHeaderCellDef>Acciones</th>
+        <td mat-cell *matCellDef="let row" class="height">
+          <i
+            matTooltip="Enviar mensaje a whatsapp"
+            class="fa-brands fa-whatsapp-square color-green boton"
+            (click)="selectRow(row)"
+          ></i>
+          <i
             matTooltip="Editar"
+            class="fa-solid fa-pen-to-square color-blue boton"
             (click)="editarCliente(row)"
-          >
-            <mat-icon>edit</mat-icon>
-          </button>
-          <button
-            mat-icon-button
-            color="warn"
-            matTooltip="Eliminar"
+          ></i>
+          <i
+            matTooltip="Borrar"
+            class="fa-solid fa-trash-can color-red boton"
             (click)="borrarCliente(row)"
-          >
-            <mat-icon>delete</mat-icon>
-          </button>
+          ></i>
         </td>
       </ng-container>
 
@@ -206,7 +211,6 @@
         class="altura-row"
         mat-row
         *matRowDef="let row; columns: displayedColumns; let i = index"
-        (click)="selectRow(row)"
         (click)="selectedRow = selectedRow === row ? null : row"
         [class.demo-row-is-clicked]="selectedRow === row"
         (dblclick)="editarCliente(row)"
@@ -221,7 +225,7 @@
     </table>
   </div>
   <mat-paginator
-    [pageSize]="10"
+    [pageSize]="25"
     [pageSizeOptions]="[5, 10, 25, 100]"
     showFirstLastButtons
   ></mat-paginator>

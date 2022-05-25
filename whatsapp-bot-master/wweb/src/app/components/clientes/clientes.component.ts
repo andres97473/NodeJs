@@ -53,6 +53,7 @@ export class ClientesComponent implements OnInit, AfterViewInit {
 
   clientes: ClienteI[] = [];
   clientesFiltro: ClienteI[] = [];
+  clientesFiltroLargo = 0;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -83,6 +84,8 @@ export class ClientesComponent implements OnInit, AfterViewInit {
   getClientes() {
     this._cli.getClientes().subscribe((resp) => {
       this.clientes = resp.clientes;
+      this.clientesFiltro = resp.clientes;
+      this.clientesFiltroLargo = this.clientesFiltro.length;
       // console.log(this.clientes);
       this.dataSource = new MatTableDataSource(this.clientes);
     });
@@ -126,6 +129,10 @@ export class ClientesComponent implements OnInit, AfterViewInit {
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
+    // console.log(this.dataSource.filter);
+    // console.log(this.dataSource.filteredData);
+    this.clientesFiltro = this.dataSource.filteredData;
+    this.clientesFiltroLargo = this.clientesFiltro.length;
 
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
@@ -217,7 +224,6 @@ export class ClientesComponent implements OnInit, AfterViewInit {
         cancelButtonText: 'Cancelar',
       }).then((result) => {
         if (result.isConfirmed) {
-          // TODO: enviar mensaje
           this._sms
             .sendRecordatorioApp(
               num_doc_usr,
@@ -247,71 +253,85 @@ export class ClientesComponent implements OnInit, AfterViewInit {
     }
   }
 
-  sendMessages(messages: ClienteI[]) {
-    //console.log(messages);
-    this.errores = 0;
-    if (this.coneccion) {
-      for (const message of messages) {
-        const {
-          _id,
-          num_doc_usr,
-          tipo_doc,
-          apellido1,
-          apellido2,
-          nombre1,
-          nombre2,
-          celular,
-        } = message;
-        if (_id) {
-          this._sms
-            .sendRecordatorio(
+  sendMessages() {
+    Swal.fire({
+      title: `Desea Enviar ${this.clientesFiltroLargo} mensajes a los Clientes?`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Si, Enviar mensajes!',
+      cancelButtonText: 'Cancelar',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // TODO:
+        const messages = this.clientesFiltro;
+        // console.log(messages);
+        this.errores = 0;
+        if (this.coneccion) {
+          for (const message of messages) {
+            const {
+              _id,
               num_doc_usr,
               tipo_doc,
               apellido1,
               apellido2,
               nombre1,
               nombre2,
-              celular
-            )
-            .subscribe(
-              (resp: any) => {
-                //console.log('Mensaje enviado !!');
-                //console.log(resp);
-                this.respuesta = resp;
-                Swal.fire({
-                  position: 'center',
-                  icon: 'success',
-                  title: this.respuesta.status,
-                  text: `${this.clientes.length} Mensajes enviados !!`,
-                  showConfirmButton: false,
-                  timer: 3000,
-                });
+              celular,
+            } = message;
+            if (_id) {
+              this._sms
+                .sendRecordatorioApp(
+                  num_doc_usr,
+                  tipo_doc,
+                  apellido1,
+                  apellido2,
+                  nombre1,
+                  nombre2,
+                  celular
+                )
+                .subscribe(
+                  (resp: any) => {
+                    //console.log('Mensaje enviado !!');
+                    //console.log(resp);
+                    this.respuesta = resp;
+                    Swal.fire({
+                      position: 'center',
+                      icon: 'success',
+                      title: this.respuesta.status,
+                      text: `${this.clientesFiltroLargo} Mensajes enviados !!`,
+                      showConfirmButton: false,
+                      timer: 3000,
+                    });
 
-                this.cambiarEstado(_id, 'ENVIADO');
-              },
-              (err) => {
-                console.log(err);
-                this.errores++;
-                if (this.errores < 2) {
-                  Swal.fire({
-                    position: 'center',
-                    icon: 'error',
-                    title: 'Error al enviar los mensajes !!',
-                    text: 'Revisa la coneccion!',
-                    showConfirmButton: false,
-                    timer: 3000,
-                  });
-                }
+                    this.cambiarEstado(_id, 'ENVIADO');
+                  },
+                  (err) => {
+                    console.log(err);
+                    this.errores++;
+                    if (this.errores < 2) {
+                      Swal.fire({
+                        position: 'center',
+                        icon: 'error',
+                        title: 'Error al enviar los mensajes !!',
+                        text: 'Revisa la coneccion!',
+                        showConfirmButton: false,
+                        timer: 3000,
+                      });
+                    }
 
-                this.cambiarEstado(_id, 'ERROR');
-                return (this.coneccion = false);
-              }
-            );
+                    this.cambiarEstado(_id, 'ERROR');
+                    return (this.coneccion = false);
+                  }
+                );
+            }
+          }
+        } else {
+          console.log('sin coneccion');
         }
       }
-    } else {
-      console.log('sin coneccion');
-    }
+    });
   }
 
   cambiarEstado(id: string, estado: string) {

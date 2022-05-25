@@ -6,8 +6,8 @@
   *ngIf="clientes"
   class="mat-elevation-z8 mt-3 animate__animated animate__fadeIn"
 >
-  <mat-grid-list cols="6" rowHeight="50px">
-    <mat-grid-tile colspan="5" rowspan="1">
+  <mat-grid-list cols="8" rowHeight="50px">
+    <mat-grid-tile colspan="6" rowspan="1">
       <div class="filter">
         <mat-form-field appearance="outline">
           <mat-label>Filtro</mat-label>
@@ -22,7 +22,12 @@
       </div>
     </mat-grid-tile>
     <mat-grid-tile colspan="1" rowspan="1">
-      <span class="example-spacer"></span>
+      <button mat-raised-button color="primary" (click)="sendMessages()">
+        Enviar Mensajes
+        <span class="badge bg-light text-dark">{{ clientesFiltroLargo }}</span>
+      </button>
+    </mat-grid-tile>
+    <mat-grid-tile colspan="1" rowspan="1">
       <button mat-raised-button color="warn" (click)="crearCliente()">
         Agregar Cliente
       </button>
@@ -145,10 +150,11 @@
           <span
             class="badge estado"
             [ngClass]="{
-              'bg-primary': row.estado == 'PENDIENTE',
-              'bg-warning text-dark': row.estado == 'ENVIADO',
               'bg-success': row.estado == 'CONFIRMADO',
-              'bg-danger': row.estado == 'CANCELADO'
+              'bg-danger': row.estado == 'CANCELADO',
+              'bg-primary': row.estado == 'PENDIENTE',
+              'bg-secondary': row.estado == 'ERROR',
+              'bg-warning text-dark': row.estado == 'ENVIADO'
             }"
             >{{ row.estado }}</span
           >

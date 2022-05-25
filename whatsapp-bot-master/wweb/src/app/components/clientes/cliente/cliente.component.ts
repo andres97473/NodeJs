@@ -161,11 +161,11 @@ export class ClienteComponent implements OnInit {
 
   convertirFecha(date: string) {
     var time = new Date(date);
-    const dateFormat = time.toLocaleString('es-MX', {
+    const dateFormat = time.toLocaleString('es-CO', {
       day: '2-digit',
       month: '2-digit',
       year: 'numeric',
-      hour: 'numeric',
+      hour: '2-digit',
       hour12: true,
       minute: 'numeric',
     });

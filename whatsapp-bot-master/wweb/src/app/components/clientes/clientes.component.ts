@@ -87,9 +87,9 @@ export class ClientesComponent implements OnInit, AfterViewInit {
       // console.log(length);
 
       if (end >= length) {
-        return `Mostrando ${start} - ${length} de ${length}`;
+        return `Mostrando del ${start} al ${length} de ${length}`;
       } else {
-        return `Mostrando ${start} - ${end} de ${length}`;
+        return `Mostrando del ${start} al ${end} de ${length}`;
       }
     };
   }

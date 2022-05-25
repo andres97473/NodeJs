@@ -40,7 +40,7 @@
         >
           Tipo Doc
         </th>
-        <td mat-cell *matCellDef="let row" class="height">
+        <td mat-cell *matCellDef="let row">
           {{ row.tipo_doc }}
         </td>
       </ng-container>
@@ -55,7 +55,7 @@
         >
           Documento
         </th>
-        <td mat-cell *matCellDef="let row" class="height">
+        <td mat-cell *matCellDef="let row">
           {{ row.num_doc_usr }}
         </td>
       </ng-container>
@@ -70,7 +70,7 @@
         >
           Apellido 1
         </th>
-        <td mat-cell *matCellDef="let row" class="height">
+        <td mat-cell *matCellDef="let row">
           {{ row.apellido1 }}
         </td>
       </ng-container>
@@ -85,7 +85,7 @@
         >
           Apellido 2
         </th>
-        <td mat-cell *matCellDef="let row" class="height">
+        <td mat-cell *matCellDef="let row">
           {{ row.apellido2 }}
         </td>
       </ng-container>
@@ -99,7 +99,7 @@
         >
           Nombre 1
         </th>
-        <td mat-cell *matCellDef="let row" class="height">
+        <td mat-cell *matCellDef="let row">
           {{ row.nombre1 }}
         </td>
       </ng-container>
@@ -113,7 +113,7 @@
         >
           Nombre 2
         </th>
-        <td mat-cell *matCellDef="let row" class="height">
+        <td mat-cell *matCellDef="let row">
           {{ row.nombre2 }}
         </td>
       </ng-container>
@@ -127,7 +127,7 @@
         >
           Celular
         </th>
-        <td mat-cell *matCellDef="let row" class="height">
+        <td mat-cell *matCellDef="let row">
           {{ row.celular }}
         </td>
       </ng-container>
@@ -141,7 +141,7 @@
         >
           Estado
         </th>
-        <td mat-cell *matCellDef="let row" class="height">
+        <td mat-cell *matCellDef="let row">
           <span
             class="badge estado"
             [ngClass]="{
@@ -163,7 +163,7 @@
         >
           Registro
         </th>
-        <td mat-cell *matCellDef="let row" class="height">
+        <td mat-cell *matCellDef="let row">
           {{ row.created_at | date: "dd-MM-yyyy, h:mm a" }}
         </td>
       </ng-container>
@@ -177,13 +177,13 @@
         >
           Actualizado
         </th>
-        <td mat-cell *matCellDef="let row" class="height">
+        <td mat-cell *matCellDef="let row">
           {{ row.update_at | date: "dd-MM-yyyy, h:mm a" }}
         </td>
       </ng-container>
       <ng-container matColumnDef="acciones">
         <th class="table-dark" mat-header-cell *matHeaderCellDef>Acciones</th>
-        <td mat-cell *matCellDef="let row" class="height">
+        <td mat-cell *matCellDef="let row">
           <i
             matTooltip="Enviar mensaje a whatsapp"
             class="fa-brands fa-whatsapp-square color-green boton"

@@ -264,7 +264,6 @@ export class ClientesComponent implements OnInit, AfterViewInit {
       cancelButtonText: 'Cancelar',
     }).then((result) => {
       if (result.isConfirmed) {
-        // TODO:
         const messages = this.clientesFiltro;
         // console.log(messages);
         this.errores = 0;
@@ -334,6 +333,11 @@ export class ClientesComponent implements OnInit, AfterViewInit {
     });
   }
 
+  /**
+   * Cambia el estado de un cliente por id
+   * @param  {string} id
+   * @param  {string} estado
+   */
   cambiarEstado(id: string, estado: string) {
     const datos = this.clientes;
     datos.map((dato) => {

@@ -6,29 +6,29 @@
   *ngIf="clientes"
   class="mat-elevation-z8 mt-3 animate__animated animate__fadeIn"
 >
+  <mat-grid-list cols="6" rowHeight="50px">
+    <mat-grid-tile colspan="5" rowspan="1">
+      <div class="filter">
+        <mat-form-field appearance="outline">
+          <mat-label>Filtro</mat-label>
+          <input
+            matInput
+            (keyup)="applyFilter($event)"
+            placeholder="Ejemplo. Juan"
+            #input
+            autocomplete="off"
+          />
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+    <mat-grid-tile colspan="1" rowspan="1">
+      <span class="example-spacer"></span>
+      <button mat-raised-button color="warn" (click)="crearCliente()">
+        Agregar Cliente
+      </button>
+    </mat-grid-tile>
+  </mat-grid-list>
   <div class="example-table-container table-responsive-md">
-    <mat-grid-list cols="6" rowHeight="50px">
-      <mat-grid-tile colspan="5" rowspan="1">
-        <div class="filter">
-          <mat-form-field appearance="outline">
-            <mat-label>Filtro</mat-label>
-            <input
-              matInput
-              (keyup)="applyFilter($event)"
-              placeholder="Ejemplo. Juan"
-              #input
-              autocomplete="off"
-            />
-          </mat-form-field>
-        </div>
-      </mat-grid-tile>
-      <mat-grid-tile colspan="1" rowspan="1">
-        <span class="example-spacer"></span>
-        <button mat-raised-button color="warn" (click)="crearCliente()">
-          Agregar Cliente
-        </button>
-      </mat-grid-tile>
-    </mat-grid-list>
     <table mat-table [dataSource]="dataSource" matSort class="table table-sm">
       <!-- tipo_doc Column -->
       <ng-container matColumnDef="tipo_doc">

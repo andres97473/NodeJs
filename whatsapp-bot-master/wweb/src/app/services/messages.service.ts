@@ -49,4 +49,25 @@ export class MessagesService {
       celular,
     });
   }
+  sendRecordatorioApp(
+    num_doc_usr: any,
+    tipo_doc: any,
+    apellido1: any,
+    apellido2: any,
+    nombre1: any,
+    nombre2: any,
+    celular: any
+  ) {
+    //console.log(this.to, this.message);
+
+    return this.http.post(`${this.URL}/recordatorio-app`, {
+      num_doc_usr,
+      tipo_doc,
+      apellido1,
+      apellido2,
+      nombre1,
+      nombre2,
+      celular,
+    });
+  }
 }

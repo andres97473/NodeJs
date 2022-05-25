@@ -17,6 +17,8 @@ import Swal from 'sweetalert2';
 import { ClienteComponent } from './cliente/cliente.component';
 import { GetClientesI, ClienteI } from '../../interface/cliente.interface';
 import { ClientesService } from '../../services/clientes.service';
+import { Respuesta } from 'src/app/models/recordatorio.model';
+import { MessagesService } from '../../services/messages.service';
 
 /** Custom options the configure the tooltip's default show/hide delays. */
 export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
@@ -57,7 +59,23 @@ export class ClientesComponent implements OnInit, AfterViewInit {
 
   selectedRow!: ClienteI | null;
 
-  constructor(private _cli: ClientesService, private dialog: MatDialog) {
+  // coneccion
+  estado = 'PENDIENTE';
+
+  // objeto para inicar la respuesta de la api
+  respuesta: Respuesta = {
+    send: false,
+    status: 'no enviado',
+  };
+
+  coneccion = true;
+  errores = 0;
+
+  constructor(
+    private _cli: ClientesService,
+    private dialog: MatDialog,
+    private _sms: MessagesService
+  ) {
     this.getClientes();
   }
   ngOnInit(): void {}
@@ -173,5 +191,125 @@ export class ClientesComponent implements OnInit, AfterViewInit {
           this.getClientes();
         }
       });
+  }
+
+  sendMessageApp(message: ClienteI) {
+    // console.log(message);
+    this.errores = 0;
+    const {
+      _id,
+      num_doc_usr,
+      tipo_doc,
+      apellido1,
+      apellido2,
+      nombre1,
+      nombre2,
+      celular,
+    } = message;
+    if (_id) {
+      this._sms
+        .sendRecordatorioApp(
+          num_doc_usr,
+          tipo_doc,
+          apellido1,
+          apellido2,
+          nombre1,
+          nombre2,
+          celular
+        )
+        .subscribe((resp: any) => {
+          console.log(resp);
+          this.respuesta = resp;
+          Swal.fire({
+            position: 'center',
+            icon: 'success',
+            title: this.respuesta.status,
+            text: `Mensaje enviado !!`,
+            showConfirmButton: false,
+            timer: 3000,
+          });
+
+          this.cambiarEstado(_id, 'ENVIADO');
+        });
+    }
+  }
+
+  sendMessages(messages: ClienteI[]) {
+    //console.log(messages);
+    this.errores = 0;
+    if (this.coneccion) {
+      for (const message of messages) {
+        const {
+          _id,
+          num_doc_usr,
+          tipo_doc,
+          apellido1,
+          apellido2,
+          nombre1,
+          nombre2,
+          celular,
+        } = message;
+        if (_id) {
+          this._sms
+            .sendRecordatorio(
+              num_doc_usr,
+              tipo_doc,
+              apellido1,
+              apellido2,
+              nombre1,
+              nombre2,
+              celular
+            )
+            .subscribe(
+              (resp: any) => {
+                //console.log('Mensaje enviado !!');
+                //console.log(resp);
+                this.respuesta = resp;
+                Swal.fire({
+                  position: 'center',
+                  icon: 'success',
+                  title: this.respuesta.status,
+                  text: `${this.clientes.length} Mensajes enviados !!`,
+                  showConfirmButton: false,
+                  timer: 3000,
+                });
+
+                this.cambiarEstado(_id, 'ENVIADO');
+              },
+              (err) => {
+                console.log(err);
+                this.errores++;
+                if (this.errores < 2) {
+                  Swal.fire({
+                    position: 'center',
+                    icon: 'error',
+                    title: 'Error al enviar los mensajes !!',
+                    text: 'Revisa la coneccion!',
+                    showConfirmButton: false,
+                    timer: 3000,
+                  });
+                }
+
+                this.cambiarEstado(_id, 'ERROR');
+                return (this.coneccion = false);
+              }
+            );
+        }
+      }
+    } else {
+      console.log('sin coneccion');
+    }
+  }
+
+  cambiarEstado(id: string, estado: string) {
+    const datos = this.clientes;
+    datos.map((dato) => {
+      if (dato._id == id) {
+        dato.estado = estado;
+        dato.update_at = new Date();
+      }
+
+      //console.log(dato);
+    });
   }
 }

@@ -146,6 +146,7 @@
             class="badge estado"
             [ngClass]="{
               'bg-primary': row.estado == 'PENDIENTE',
+              'bg-warning text-dark': row.estado == 'ENVIADO',
               'bg-success': row.estado == 'CONFIRMADO',
               'bg-danger': row.estado == 'CANCELADO'
             }"
@@ -187,7 +188,7 @@
           <i
             matTooltip="Enviar mensaje a whatsapp"
             class="fa-brands fa-whatsapp-square color-green boton"
-            (click)="selectRow(row)"
+            (click)="sendMessageApp(row)"
           ></i>
           <i
             matTooltip="Editar"

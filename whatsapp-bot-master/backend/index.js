@@ -412,9 +412,54 @@ const sendRecordatorio = (req, res) => {
   );
 };
 
+// enviar recordatorio desde app
+const sendRecordatorioApp = async (req, res) => {
+  const {
+    num_doc_usr,
+    tipo_doc,
+    apellido1,
+    apellido2,
+    nombre1,
+    nombre2,
+    celular,
+  } = req.body;
+  const newNumber = `${number_code}${celular}@c.us`;
+  const message = `${nombre1} ${nombre2} ${apellido1} ${apellido2}, su numero de documento es: ${num_doc_usr}?, si su informacion es correcta por favor seleccione una de las siguientes opciones`;
+
+  // Crear lista
+  let sections = [
+    {
+      title: "Seleccione una Respuesta y presione Enviar",
+      rows: [
+        { title: `${num_doc_usr},confirmar` },
+        { title: `${num_doc_usr},cancelar` },
+      ],
+    },
+  ];
+  let list = new List(
+    message,
+    "Opciones",
+    sections,
+    "Estimado sr(a)",
+    "gracias por su tiempo"
+  );
+
+  sendMessage(newNumber, list);
+
+  // respuesta de api
+  res.send({ status: "Mensaje Enviado v2..", send: true });
+
+  // cambiar Estado del Cliente
+  const updateEstado = await Cliente.updateOne(
+    { num_doc_usr },
+    { $set: { estado: "ENVIADO", update_at: new Date() } }
+  );
+};
+
 // RUTAS
 app.post("/send", sendWithApi);
 app.post("/recordatorio", sendRecordatorio);
+app.post("/recordatorio-app", sendRecordatorioApp);
 // rutas
 app.use("/api/clientes", require("./routes/clientes"));
 

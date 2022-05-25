@@ -207,30 +207,43 @@ export class ClientesComponent implements OnInit, AfterViewInit {
       celular,
     } = message;
     if (_id) {
-      this._sms
-        .sendRecordatorioApp(
-          num_doc_usr,
-          tipo_doc,
-          apellido1,
-          apellido2,
-          nombre1,
-          nombre2,
-          celular
-        )
-        .subscribe((resp: any) => {
-          console.log(resp);
-          this.respuesta = resp;
-          Swal.fire({
-            position: 'center',
-            icon: 'success',
-            title: this.respuesta.status,
-            text: `Mensaje enviado !!`,
-            showConfirmButton: false,
-            timer: 3000,
-          });
+      Swal.fire({
+        title: `Desea enviar mensaje de whatsapp al Cliente, ${apellido1} ${apellido2} ${nombre1} ${nombre2} ?`,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Si, Enviar!',
+        cancelButtonText: 'Cancelar',
+      }).then((result) => {
+        if (result.isConfirmed) {
+          // TODO: enviar mensaje
+          this._sms
+            .sendRecordatorioApp(
+              num_doc_usr,
+              tipo_doc,
+              apellido1,
+              apellido2,
+              nombre1,
+              nombre2,
+              celular
+            )
+            .subscribe((resp: any) => {
+              console.log(resp);
+              this.respuesta = resp;
+              Swal.fire({
+                position: 'center',
+                icon: 'success',
+                title: this.respuesta.status,
+                text: `Mensaje enviado !!`,
+                showConfirmButton: false,
+                timer: 3000,
+              });
 
-          this.cambiarEstado(_id, 'ENVIADO');
-        });
+              this.cambiarEstado(_id, 'ENVIADO');
+            });
+        }
+      });
     }
   }
 

@@ -1,4 +1,5 @@
 require("dotenv").config();
+var c = require("child_process");
 const fs = require("fs");
 const ExcelJS = require("exceljs");
 const qrcode = require("qrcode-terminal");
@@ -81,6 +82,9 @@ client.on("ready", () => {
     client.sendMessage(chatId, inicioFech).then((response) => {
       if (response.id.fromMe) {
         console.log("It works! " + inicioFech);
+        // correr app desde navegador
+        // Abrir con navegador predeterminado
+        c.exec("start http://localhost:3000/#/");
       }
     });
   }, 1000);

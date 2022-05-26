@@ -9,16 +9,32 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatRow, MatTableDataSource } from '@angular/material/table';
 import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import {
+  MAT_TOOLTIP_DEFAULT_OPTIONS,
+  MatTooltipDefaultOptions,
+} from '@angular/material/tooltip';
 import Swal from 'sweetalert2';
 
 import { ClienteComponent } from '../clientes/cliente/cliente.component';
 import { GetClientesI, ClienteI } from '../../interface/cliente.interface';
 import { ClientesService } from '../../services/clientes.service';
+import { Respuesta } from 'src/app/models/recordatorio.model';
+import { MessagesService } from '../../services/messages.service';
+
+/** Custom options the configure the tooltip's default show/hide delays. */
+export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
+  showDelay: 1000,
+  hideDelay: 500,
+  touchendHideDelay: 500,
+};
 
 @Component({
   selector: 'app-table',
   templateUrl: './table.component.html',
   styleUrls: ['./table.component.scss'],
+  providers: [
+    { provide: MAT_TOOLTIP_DEFAULT_OPTIONS, useValue: myCustomTooltipDefaults },
+  ],
 })
 export class TableComponent implements OnInit, AfterViewInit {
   displayedColumns: string[] = [
@@ -38,13 +54,30 @@ export class TableComponent implements OnInit, AfterViewInit {
 
   clientes: ClienteI[] = [];
   clientesFiltro: ClienteI[] = [];
+  clientesFiltroLargo = 0;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
   selectedRow!: ClienteI | null;
 
-  constructor(private _cli: ClientesService, private dialog: MatDialog) {
+  // coneccion
+  estado = 'PENDIENTE';
+
+  // objeto para inicar la respuesta de la api
+  respuesta: Respuesta = {
+    send: false,
+    status: 'no enviado',
+  };
+
+  coneccion = true;
+  errores = 0;
+
+  constructor(
+    private _cli: ClientesService,
+    private dialog: MatDialog,
+    private _sms: MessagesService
+  ) {
     this.getClientes();
   }
   ngOnInit(): void {}
@@ -52,6 +85,8 @@ export class TableComponent implements OnInit, AfterViewInit {
   getClientes() {
     this._cli.getClientes().subscribe((resp) => {
       this.clientes = resp.clientes;
+      this.clientesFiltro = resp.clientes;
+      this.clientesFiltroLargo = this.clientesFiltro.length;
       // console.log(this.clientes);
       this.dataSource = new MatTableDataSource(this.clientes);
     });
@@ -74,9 +109,9 @@ export class TableComponent implements OnInit, AfterViewInit {
       // console.log(length);
 
       if (end >= length) {
-        return `${pageSize} Mostrando ${start} - ${length} de ${length}`;
+        return `Mostrando del ${start} al ${length} de ${length}`;
       } else {
-        return `${pageSize} Mostrando ${start} - ${end} de ${length}`;
+        return `Mostrando del ${start} al ${end} de ${length}`;
       }
     };
   }
@@ -95,6 +130,10 @@ export class TableComponent implements OnInit, AfterViewInit {
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
+    // console.log(this.dataSource.filter);
+    // console.log(this.dataSource.filteredData);
+    this.clientesFiltro = this.dataSource.filteredData;
+    this.clientesFiltroLargo = this.clientesFiltro.length;
 
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
@@ -102,7 +141,7 @@ export class TableComponent implements OnInit, AfterViewInit {
   }
 
   selectRow(row: ClienteI) {
-    console.log(row);
+    // console.log(row);
   }
 
   borrarCliente(row: any) {
@@ -160,5 +199,155 @@ export class TableComponent implements OnInit, AfterViewInit {
           this.getClientes();
         }
       });
+  }
+
+  sendMessageApp(message: ClienteI) {
+    // console.log(message);
+    this.errores = 0;
+    const {
+      _id,
+      num_doc_usr,
+      tipo_doc,
+      apellido1,
+      apellido2,
+      nombre1,
+      nombre2,
+      celular,
+    } = message;
+    if (_id) {
+      Swal.fire({
+        title: `Desea enviar mensaje de whatsapp al Cliente, ${apellido1} ${apellido2} ${nombre1} ${nombre2} ?`,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Si, Enviar!',
+        cancelButtonText: 'Cancelar',
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this._sms
+            .sendRecordatorioApp(
+              num_doc_usr,
+              tipo_doc,
+              apellido1,
+              apellido2,
+              nombre1,
+              nombre2,
+              celular
+            )
+            .subscribe((resp: any) => {
+              console.log(resp);
+              this.respuesta = resp;
+              Swal.fire({
+                position: 'center',
+                icon: 'success',
+                title: this.respuesta.status,
+                text: `Mensaje enviado !!`,
+                showConfirmButton: false,
+                timer: 3000,
+              });
+
+              this.cambiarEstado(_id, 'ENVIADO');
+            });
+        }
+      });
+    }
+  }
+
+  sendMessages() {
+    Swal.fire({
+      title: `Desea Enviar ${this.clientesFiltroLargo} mensajes a los Clientes?`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Si, Enviar mensajes!',
+      cancelButtonText: 'Cancelar',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const messages = this.clientesFiltro;
+        // console.log(messages);
+        this.errores = 0;
+        if (this.coneccion) {
+          for (const message of messages) {
+            const {
+              _id,
+              num_doc_usr,
+              tipo_doc,
+              apellido1,
+              apellido2,
+              nombre1,
+              nombre2,
+              celular,
+            } = message;
+            if (_id) {
+              this._sms
+                .sendRecordatorioApp(
+                  num_doc_usr,
+                  tipo_doc,
+                  apellido1,
+                  apellido2,
+                  nombre1,
+                  nombre2,
+                  celular
+                )
+                .subscribe(
+                  (resp: any) => {
+                    //console.log('Mensaje enviado !!');
+                    //console.log(resp);
+                    this.respuesta = resp;
+                    Swal.fire({
+                      position: 'center',
+                      icon: 'success',
+                      title: this.respuesta.status,
+                      text: `${this.clientesFiltroLargo} Mensajes enviados !!`,
+                      showConfirmButton: false,
+                      timer: 3000,
+                    });
+
+                    this.cambiarEstado(_id, 'ENVIADO');
+                  },
+                  (err) => {
+                    console.log(err);
+                    this.errores++;
+                    if (this.errores < 2) {
+                      Swal.fire({
+                        position: 'center',
+                        icon: 'error',
+                        title: 'Error al enviar los mensajes !!',
+                        text: 'Revisa la coneccion!',
+                        showConfirmButton: false,
+                        timer: 3000,
+                      });
+                    }
+
+                    this.cambiarEstado(_id, 'ERROR');
+                    return (this.coneccion = false);
+                  }
+                );
+            }
+          }
+        } else {
+          console.log('sin coneccion');
+        }
+      }
+    });
+  }
+
+  /**
+   * Cambia el estado de un cliente por id
+   * @param  {string} id
+   * @param  {string} estado
+   */
+  cambiarEstado(id: string, estado: string) {
+    const datos = this.clientes;
+    datos.map((dato) => {
+      if (dato._id == id) {
+        dato.estado = estado;
+        dato.update_at = new Date();
+      }
+
+      //console.log(dato);
+    });
   }
 }

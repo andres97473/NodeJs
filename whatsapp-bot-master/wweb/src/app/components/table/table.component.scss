@@ -21,8 +21,12 @@ table {
   height: 20px;
 }
 
+th,
 td {
   vertical-align: middle;
+  border: 1px solid rgb(180, 180, 180);
+  border-top: 1px rgb(180, 180, 180);
+  border-bottom: 1px rgb(180, 180, 180);
 }
 
 td:hover {
@@ -39,6 +43,33 @@ td:hover {
 
 ::ng-deep .specific-class > .mat-expansion-indicator:after {
   color: rgb(223, 223, 223);
+}
+
+// .noResultados {
+//   border: 0px;
+// }
+
+// columnas
+.mat-column-tipo_doc {
+  text-align: center;
+}
+.mat-column-acciones {
+  text-align: center !important;
+}
+
+.mat-column-tipo_doc,
+.mat-column-num_doc_usr,
+.mat-column-apellido1,
+.mat-column-apellido2,
+.mat-column-nombre1,
+.mat-column-nombre2,
+.mat-column-celular,
+.mat-column-estado,
+.mat-column-created_at,
+.mat-column-update_at,
+.mat-column-acciones {
+  padding-left: 5px;
+  padding-right: 5px;
 }
 
 // botones

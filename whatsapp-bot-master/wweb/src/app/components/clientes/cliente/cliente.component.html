@@ -12,8 +12,11 @@
   <h1 mat-dialog-title>Datos Generales</h1>
   <form [formGroup]="clienteForm">
     <div class="container border">
-      <h2></h2>
-      <mat-grid-list cols="3" rowHeight="4:1">
+      <mat-grid-list
+        [cols]="breakpoint"
+        rowHeight="60px"
+        (window:resize)="onResize($event)"
+      >
         <mat-grid-tile
           ><mat-form-field appearance="fill">
             <mat-label>ID</mat-label>

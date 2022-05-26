@@ -24,6 +24,12 @@ export class ClienteComponent implements OnInit {
 
   clienteForm!: FormGroup;
 
+  // iniciar columnas
+  breakpoint!: number;
+  breakpointUbicacion!: number;
+  rowspanMap!: number;
+  colspanMap!: number;
+
   constructor(
     private fb: FormBuilder,
     private dialogRef: MatDialogRef<ClienteComponent>,
@@ -32,6 +38,11 @@ export class ClienteComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.breakpoint = window.innerWidth <= 790 ? 1 : 3;
+    this.breakpointUbicacion = window.innerWidth <= 790 ? 1 : 4;
+    this.rowspanMap = window.innerWidth <= 790 ? 1 : 3;
+    this.colspanMap = window.innerWidth <= 790 ? 1 : 2;
+
     this.clienteForm = this.fb.group({
       _id: '',
       num_doc_usr: '',
@@ -85,6 +96,13 @@ export class ClienteComponent implements OnInit {
         this.convertirFecha(this.editCliente.update_at + '')
       );
     }
+  }
+
+  onResize(event: any) {
+    this.breakpoint = event.target.innerWidth <= 790 ? 1 : 3;
+    this.breakpointUbicacion = event.target.innerWidth <= 790 ? 1 : 4;
+    this.rowspanMap = event.target.innerWidth <= 790 ? 1 : 3;
+    this.colspanMap = event.target.innerWidth <= 790 ? 1 : 2;
   }
 
   guardar() {

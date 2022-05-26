@@ -73,6 +73,10 @@ export class TableComponent implements OnInit, AfterViewInit {
   coneccion = true;
   errores = 0;
 
+  // iniciar columnas
+  breakpoint!: number;
+  colFiltro = 6;
+
   constructor(
     private _cli: ClientesService,
     private dialog: MatDialog,
@@ -80,7 +84,15 @@ export class TableComponent implements OnInit, AfterViewInit {
   ) {
     this.getClientes();
   }
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.breakpoint = window.innerWidth <= 800 ? 1 : 8;
+    this.colFiltro = window.innerWidth <= 800 ? 1 : 6;
+  }
+
+  onResize(event: any) {
+    this.breakpoint = event.target.innerWidth <= 800 ? 1 : 8;
+    this.colFiltro = event.target.innerWidth <= 800 ? 1 : 6;
+  }
 
   getClientes() {
     this._cli.getClientes().subscribe((resp) => {

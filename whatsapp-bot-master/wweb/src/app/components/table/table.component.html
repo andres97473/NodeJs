@@ -6,8 +6,12 @@
   *ngIf="clientes"
   class="mat-elevation-z8 mt-3 animate__animated animate__fadeIn"
 >
-  <mat-grid-list cols="8" rowHeight="50px">
-    <mat-grid-tile colspan="6" rowspan="1">
+  <mat-grid-list
+    [cols]="breakpoint"
+    rowHeight="45px"
+    (window:resize)="onResize($event)"
+  >
+    <mat-grid-tile [colspan]="colFiltro">
       <div class="filter">
         <mat-form-field appearance="outline">
           <mat-label>Filtro</mat-label>
@@ -21,14 +25,24 @@
         </mat-form-field>
       </div>
     </mat-grid-tile>
-    <mat-grid-tile colspan="1" rowspan="1">
-      <button mat-raised-button color="primary" (click)="sendMessages()">
+    <mat-grid-tile>
+      <button
+        id="myButton"
+        mat-raised-button
+        color="primary"
+        (click)="sendMessages()"
+      >
         Enviar Mensajes
         <span class="badge bg-light text-dark">{{ clientesFiltroLargo }}</span>
       </button>
     </mat-grid-tile>
-    <mat-grid-tile colspan="1" rowspan="1">
-      <button mat-raised-button color="warn" (click)="crearCliente()">
+    <mat-grid-tile>
+      <button
+        id="myButton"
+        mat-raised-button
+        color="warn"
+        (click)="crearCliente()"
+      >
         Agregar Cliente
       </button>
     </mat-grid-tile>

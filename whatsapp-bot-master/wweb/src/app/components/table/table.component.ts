@@ -74,9 +74,9 @@ export class TableComponent implements OnInit, AfterViewInit {
       // console.log(length);
 
       if (end >= length) {
-        return `Mostrando ${start} - ${length} de ${length}`;
+        return `${pageSize} Mostrando ${start} - ${length} de ${length}`;
       } else {
-        return `Mostrando ${start} - ${end} de ${length}`;
+        return `${pageSize} Mostrando ${start} - ${end} de ${length}`;
       }
     };
   }

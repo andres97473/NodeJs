@@ -15,6 +15,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 @NgModule({
   declarations: [],
@@ -35,6 +36,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     MatNativeDateModule,
     MatGridListModule,
     MatTooltipModule,
+    MatCheckboxModule,
   ],
   exports: [
     MatCardModule,
@@ -52,6 +54,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     MatNativeDateModule,
     MatGridListModule,
     MatTooltipModule,
+    MatCheckboxModule,
   ],
 })
 export class MaterialModule {}

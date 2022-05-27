@@ -33,6 +33,10 @@ td:hover {
   cursor: pointer;
 }
 
+#myButton {
+  width: 95%;
+}
+
 .demo-row-is-clicked {
   background-color: rgb(214, 212, 212);
 }
@@ -43,6 +47,13 @@ td:hover {
 
 ::ng-deep .specific-class > .mat-expansion-indicator:after {
   color: rgb(223, 223, 223);
+}
+
+// color de check
+::ng-deep .mat-checkbox {
+  .mat-checkbox-frame {
+    background-color: #ffffff !important;
+  }
 }
 
 // .noResultados {
@@ -57,6 +68,7 @@ td:hover {
   text-align: center !important;
 }
 
+.mat-column-select,
 .mat-column-tipo_doc,
 .mat-column-num_doc_usr,
 .mat-column-apellido1,
@@ -72,11 +84,15 @@ td:hover {
   padding-right: 5px;
 }
 
+.mat-column-acciones {
+  min-width: 110px;
+}
+
 // botones
 
 .boton {
   cursor: pointer;
-  margin-right: 4px;
+  margin-right: 10px;
   font-size: 16px;
 }
 
@@ -112,8 +128,4 @@ td:hover {
 mat-paginator {
   height: 45px !important;
   vertical-align: middle;
-}
-
-#myButton {
-  width: 95%;
 }

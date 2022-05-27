@@ -9,6 +9,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatRow, MatTableDataSource } from '@angular/material/table';
 import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { SelectionModel } from '@angular/cdk/collections';
 import {
   MAT_TOOLTIP_DEFAULT_OPTIONS,
   MatTooltipDefaultOptions,
@@ -38,6 +39,7 @@ export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
 })
 export class TableComponent implements OnInit, AfterViewInit {
   displayedColumns: string[] = [
+    'select',
     'tipo_doc',
     'num_doc_usr',
     'apellido1',
@@ -51,6 +53,7 @@ export class TableComponent implements OnInit, AfterViewInit {
     'acciones',
   ];
   dataSource!: MatTableDataSource<ClienteI>;
+  selection = new SelectionModel<ClienteI>(true, []);
 
   clientes: ClienteI[] = [];
   clientesFiltro: ClienteI[] = [];
@@ -75,7 +78,7 @@ export class TableComponent implements OnInit, AfterViewInit {
 
   // iniciar columnas
   breakpoint!: number;
-  colFiltro = 6;
+  colFiltro = 5;
 
   constructor(
     private _cli: ClientesService,
@@ -86,12 +89,12 @@ export class TableComponent implements OnInit, AfterViewInit {
   }
   ngOnInit(): void {
     this.breakpoint = window.innerWidth <= 800 ? 1 : 8;
-    this.colFiltro = window.innerWidth <= 800 ? 1 : 6;
+    this.colFiltro = window.innerWidth <= 800 ? 1 : 5;
   }
 
   onResize(event: any) {
     this.breakpoint = event.target.innerWidth <= 800 ? 1 : 8;
-    this.colFiltro = event.target.innerWidth <= 800 ? 1 : 6;
+    this.colFiltro = event.target.innerWidth <= 800 ? 1 : 5;
   }
 
   getClientes() {
@@ -102,6 +105,53 @@ export class TableComponent implements OnInit, AfterViewInit {
       // console.log(this.clientes);
       this.dataSource = new MatTableDataSource(this.clientes);
     });
+  }
+
+  /** Whether the number of selected elements matches the total number of rows. */
+  isAllSelected() {
+    const numSelected = this.selection.selected.length;
+    const numRows = this.dataSource.data.length;
+
+    return numSelected === numRows;
+  }
+
+  removeSelectedRows() {
+    // console.log(this.selection.selected.length);
+
+    Swal.fire({
+      title: `Desea Eliminar ${this.selection.selected.length} Clientes?`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Si, Borrar!',
+      cancelButtonText: 'Cancelar',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // console.log(this.selection.selected);
+        for (const select of this.selection.selected) {
+          if (select._id) {
+            this._cli.borrarCliente(select._id).subscribe((resp) => {
+              // console.log(resp);
+              const nClientes = this.clientes.filter(
+                (item) => item._id !== select._id
+              );
+              this.clientes = nClientes;
+              this.dataSource.data = this.clientes;
+            });
+          }
+        }
+
+        this.selection = new SelectionModel<ClienteI>(true, []);
+      }
+    });
+  }
+
+  /** Selects all rows if they are not all selected; otherwise clear selection. */
+  masterToggle() {
+    this.isAllSelected()
+      ? this.selection.clear()
+      : this.clientesFiltro.forEach((row) => this.selection.select(row));
   }
 
   iniciarPaginator() {
@@ -156,7 +206,7 @@ export class TableComponent implements OnInit, AfterViewInit {
     // console.log(row);
   }
 
-  borrarCliente(row: any) {
+  borrarCliente(row: ClienteI) {
     // console.log(row);
     Swal.fire({
       title: `Desea Eliminar al Cliente, ${row.apellido1} ${row.apellido2} ${row.nombre1} ${row.nombre2} ?`,
@@ -169,7 +219,7 @@ export class TableComponent implements OnInit, AfterViewInit {
       cancelButtonText: 'Cancelar',
     }).then((result) => {
       if (result.isConfirmed) {
-        this._cli.borrarCliente(row._id).subscribe((resp) => {
+        this._cli.borrarCliente(row._id || '').subscribe((resp) => {
           Swal.fire(
             'Eliminado!',
             'El cliente se elimino con exito.',
@@ -248,7 +298,7 @@ export class TableComponent implements OnInit, AfterViewInit {
               celular
             )
             .subscribe((resp: any) => {
-              console.log(resp);
+              // console.log(resp);
               this.respuesta = resp;
               Swal.fire({
                 position: 'center',

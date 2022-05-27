@@ -95,7 +95,7 @@ Funcion se encarga de escuchar cada vez que un nuevo mensaje entra
  */
 const listenMessage = () => {
   client.on("message", async (msg) => {
-    //console.log("mensaje ", msg);
+    console.log("mensaje ", msg);
     const { from, to, body } = msg;
 
     if (from.includes("@c.us")) {

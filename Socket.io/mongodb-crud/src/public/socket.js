@@ -23,8 +23,14 @@ export const getNoteById = (id) => {
   socket.emit("client:getnote", id);
 };
 
-export const onSelected = () => {
-  socket.on("server:selectednote", (note) => {
-    console.log(note);
+export const onSelected = (callback) => {
+  socket.on("server:selectednote", callback);
+};
+
+export const updateNote = (id, title, description) => {
+  socket.emit("client:updatenote", {
+    _id: id,
+    title,
+    description,
   });
 };

@@ -10,7 +10,7 @@ export default (io) => {
     emitNotes();
 
     socket.on("client:newnote", async (data) => {
-      console.log(data);
+      // console.log(data);
       // new Note({
       //   title: data.title,
       //   description: data.description
@@ -36,6 +36,14 @@ export default (io) => {
       const note = await Note.findById(id);
       // console.log(note);
       io.emit("server:selectednote", note);
+    });
+
+    socket.on("client:updatenote", async (data) => {
+      await Note.findByIdAndUpdate(data._id, {
+        title: data.title,
+        description: data.description,
+      });
+      emitNotes();
     });
   });
 };

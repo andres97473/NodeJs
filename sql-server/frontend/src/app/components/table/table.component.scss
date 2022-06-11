@@ -1,0 +1,64 @@
+/* Structure */
+.example-container {
+  position: relative;
+}
+
+.example-historia-container {
+  position: relative;
+  min-height: 320px;
+  max-height: 320px;
+  overflow: auto;
+}
+
+.example-table-container {
+  position: relative;
+  min-height: 180px;
+  max-height: 180px;
+  overflow: auto;
+}
+
+table {
+  width: 100%;
+}
+
+.example-rate-limit-reached {
+  text-align: center;
+}
+
+/* Column Widths */
+.mat-column-especialidad_historia,
+.mat-column-contador,
+.mat-column-fecha_dig,
+.mat-column-nombre_estudio,
+.mat-column-medico {
+  //   max-width: 64px;
+  padding-left: 10px !important;
+}
+
+th,
+td {
+  vertical-align: middle;
+  border: 1px solid rgb(180, 180, 180);
+  border-top: 1px rgb(180, 180, 180);
+  border-bottom: 1px rgb(180, 180, 180);
+}
+
+.mat-header-row {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgb(224, 224, 224);
+  height: 30px !important;
+}
+
+.mat-row {
+  height: 30px !important;
+  background: white;
+  padding: 10px;
+}
+
+.demo-row-is-clicked {
+  background-color: #0d6efd;
+  color: white;
+  font-weight: bold;
+}

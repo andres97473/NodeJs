@@ -5,12 +5,19 @@ import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HistoriaComponent } from './components/historia/historia.component';
-import { MaterialModule } from './material.module';
+import { MaterialModule } from './material/material.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { TableComponent } from './components/table/table.component';
 
 @NgModule({
-  declarations: [AppComponent, HistoriaComponent],
-  imports: [BrowserModule, AppRoutingModule, HttpClientModule, MaterialModule, BrowserAnimationsModule],
+  declarations: [AppComponent, HistoriaComponent, TableComponent],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    HttpClientModule,
+    MaterialModule,
+    BrowserAnimationsModule,
+  ],
   providers: [],
   bootstrap: [AppComponent],
 })

@@ -1,0 +1,42 @@
+<div class="container mt-2">
+  <div class="row">
+    <div class="col">
+      <div class="card">
+        <div class="card-body">This is some text within a card body.</div>
+      </div>
+    </div>
+  </div>
+  <div class="row mt-2">
+    <div class="col">
+      <div class="card">
+        <div class="card-body">This is some text within a card body.</div>
+      </div>
+    </div>
+  </div>
+  <div class="row mt-2">
+    <div class="col">
+      <div class="card">
+        <div class="card-body">
+          <table class="table table-sm">
+            <thead class="table-dark">
+              <tr>
+                <th scope="col">No. Admision</th>
+                <th scope="col">no_historia</th>
+                <th scope="col">nombre_estudio</th>
+                <th scope="col">fecha_dig</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let historia of historias">
+                <td>{{ historia.contador }}</td>
+                <td>{{ historia.no_historia }}</td>
+                <td>{{ historia.nombre_estudio }}</td>
+                <td>{{ historia.fecha_dig | date: "short" }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

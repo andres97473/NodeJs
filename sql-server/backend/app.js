@@ -1,9 +1,11 @@
 const express = require("express");
 const server = express();
+const cors = require("cors");
 const { HomeRoutes, HistoriaRoutes } = require("./routes");
 const PORT = 3000;
 
 // middleware
+server.use(cors());
 server.use(express.static("./public"));
 server.use(express.json());
 

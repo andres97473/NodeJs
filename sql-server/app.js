@@ -1,3 +1,17 @@
-const resultado = require("./myfile.json");
+const express = require("express");
+const server = express();
+const { HomeRoutes, HistoriaRoutes } = require("./routes");
+const PORT = 3000;
 
-console.log(resultado);
+// middleware
+server.use(express.static("./public"));
+server.use(express.json());
+
+// routes
+server.use("/", [HomeRoutes, HistoriaRoutes]);
+
+// obtener historias desde archivo json, http://localhost:3000/historias
+
+server.listen(PORT, () => {
+  console.log(`Application running on PORT ${PORT}`);
+});

@@ -43,6 +43,10 @@ td {
   border-bottom: 1px rgb(180, 180, 180);
 }
 
+td:hover {
+  cursor: pointer;
+}
+
 .mat-header-row {
   position: sticky;
   top: 0;

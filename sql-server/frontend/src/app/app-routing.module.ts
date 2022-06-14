@@ -4,7 +4,7 @@ import { HistoriaComponent } from './components/historia/historia.component';
 import { TableComponent } from './components/table/table.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: 'historia', pathMatch: 'full' },
+  { path: '', redirectTo: 'table', pathMatch: 'full' },
   { path: 'historia', component: HistoriaComponent },
   { path: 'table', component: TableComponent },
 ];

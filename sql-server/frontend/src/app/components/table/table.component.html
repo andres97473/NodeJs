@@ -29,8 +29,10 @@
                 <hr />
                 <span class="badge bg-secondary">Texto 2</span>
                 <br />
-                {{ selectedRow.texto02 }}
+
+                <div *ngFor="let txt2 of texto2">{{ txt2 }}</div>
               </div>
+
               <div>
                 <hr />
                 <span class="badge bg-secondary">Texto 3</span>

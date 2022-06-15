@@ -2,7 +2,13 @@
   <div class="row">
     <div class="col">
       <div class="card">
-        <div class="card-body">Formulario con datos del usuario</div>
+        <div class="card-body">
+          <div>
+            <span class="badge bg-secondary">HISTORIA</span>
+
+            {{ selectedRow.no_historia }}
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -13,31 +19,16 @@
           <div class="example-container">
             <div class="example-historia-container">
               <div>
-                <hr />
-                <span class="badge bg-secondary">HISTORIA</span>
+                <div *ngFor="let hist of historia">
+                  <div *ngIf="hist.largo.length > 0">
+                    <div class="p-3 mb-2 bg-light text-dark fw-bold">
+                      {{ hist.codigo }}
+                    </div>
 
-                {{ selectedRow.no_historia }}
-              </div>
-              <div>
-                <hr />
-                <span class="badge bg-secondary">Texto 1</span>
-                <br />
-
-                <div *ngFor="let txt1 of texto1">{{ txt1 }}</div>
-              </div>
-              <div>
-                <hr />
-                <span class="badge bg-secondary">Texto 2</span>
-                <br />
-
-                <div *ngFor="let txt2 of texto2">{{ txt2 }}</div>
-              </div>
-
-              <div>
-                <hr />
-                <span class="badge bg-secondary">Texto 3</span>
-                <br />
-                {{ selectedRow.texto03 }}
+                    <br />
+                    <div>{{ hist.cuerpo }}</div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

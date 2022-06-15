@@ -21,13 +21,9 @@ table {
   width: 100%;
 }
 
-.example-rate-limit-reached {
-  text-align: center;
-}
-
 /* Column Widths */
 .mat-column-especialidad_historia,
-.mat-column-contador,
+.mat-column-num_orden,
 .mat-column-fecha_dig,
 .mat-column-nombre_estudio,
 .mat-column-medico {
@@ -61,7 +57,19 @@ td:hover {
   padding: 10px;
 }
 
+div {
+  white-space: pre-line;
+}
+
+.mat-row {
+  &.selected {
+    background: #3a7aaf;
+    font-weight: bold;
+    color: white;
+  }
+}
+
 .demo-row-is-clicked {
-  background-color: #0d6efd;
-  color: white !important;
+  font-weight: bold;
+  background: #3a7aaf;
 }

@@ -17,6 +17,8 @@ export class TableComponent implements OnInit {
   ];
   dataSource: HistoriaI[] = [];
 
+  historia: any[] = [];
+
   texto1: string[] = [];
   texto2: string[] = [];
 
@@ -38,13 +40,14 @@ export class TableComponent implements OnInit {
   }
 
   selectRow(row: HistoriaI) {
+    this.historia = [];
     this.selectedRow = row;
     console.log(this.selectedRow);
 
     if (this.selectedRow.texto01) {
       const txt1 = this.splitString(
         this.selectedRow.texto01,
-        /1001 |1002 |1003 |1004 |1005 |1006 |1007 |1008 |1009 |1010 |1030 |1031 |1036 |1350 |1242 |1243 |1244|1245 /
+        /1000 |1001 |1002 |1003 |1004 |1005 |1006 |1007 |1008 |1009 |1010 |1030 |1031 |1036 |1350 |1242 |1243 |1244|1245 /
       );
 
       this.texto1 = txt1;
@@ -60,6 +63,7 @@ export class TableComponent implements OnInit {
 
     for (const iterator of this.texto1) {
       console.log(this.convertirString(iterator));
+      this.historia.push(this.convertirString(iterator));
     }
 
     // console.log(this.texto1);
@@ -94,7 +98,7 @@ export class TableComponent implements OnInit {
     obj.cuerpo = cuerpo;
     obj.orden = orden;
     // console.log(cuerpo);
-    obj.codigo = obj.codigo.split(obj.orden)[1];
+    obj.codigo = obj.codigo.split(obj.orden.trim())[1];
 
     return obj;
   }

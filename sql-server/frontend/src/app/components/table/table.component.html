@@ -21,11 +21,15 @@
               <div>
                 <div *ngFor="let hist of historia">
                   <div *ngIf="hist.largo.length > 0">
-                    <div class="p-3 mb-2 bg-light text-dark fw-bold">
+                    <h3>
+                      ----------------------------------------------------------------------------------
+                    </h3>
+                    <div>
                       {{ hist.codigo }}
                     </div>
-
-                    <br />
+                    <h3>
+                      ----------------------------------------------------------------------------------
+                    </h3>
                     <div>{{ hist.cuerpo }}</div>
                   </div>
                 </div>

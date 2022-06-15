@@ -47,7 +47,7 @@ export class TableComponent implements OnInit {
     if (this.selectedRow.texto01) {
       const txt1 = this.splitString(
         this.selectedRow.texto01,
-        /1000 |1001 |1002 |1003 |1004 |1005 |1006 |1007 |1008 |1009 |1010 |1030 |1031 |1036 |1350 |1242 |1243 |1244|1245 /
+        /1000 |1001 |1002 |1003 |1004 |1005 |1006 |1007 |1008 |1009 |1010 |1011 |1030 |1031 |1036 |1038 |1350 |1150 |1242 |1243 |1244|1245 |1284 |1345 |1056 |1344 |1047 |1171 |1306 |1029 /
       );
 
       this.texto1 = txt1;
@@ -56,7 +56,7 @@ export class TableComponent implements OnInit {
     if (this.selectedRow.texto02) {
       const txt2 = this.splitString(
         this.selectedRow.texto02,
-        /-400 |-401 |-402 |-403 |-404 |-405 |-406 |-407 |-408 |-409 |-410 |-411 |8100 |8000 |8001 |8002 |8003 | 8004|8005 |8006 |8007 /
+        /-400 |-401 |-402 |-403 |-404 |-405 |-406 |-407 |-408 |-409 |-410 |-411 |8100 |8000 |8001 |8002 |8003 | 8004|8005 |8006 |8007 |1345 |1056 |1344 /
       );
       this.texto2 = txt2;
     }
@@ -77,7 +77,7 @@ export class TableComponent implements OnInit {
   }
 
   convertirString(string: string) {
-    const split = string.split(':');
+    const split = this.splitString(string, /:/);
 
     const obj = {
       largo: split[0].trim().split(' ')[0],

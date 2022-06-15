@@ -62,7 +62,7 @@ export class TableComponent implements OnInit {
     }
 
     for (const iterator of this.texto1) {
-      console.log(this.convertirString(iterator));
+      // console.log(this.convertirString(iterator));
       this.historia.push(this.convertirString(iterator));
     }
 
@@ -77,7 +77,17 @@ export class TableComponent implements OnInit {
   }
 
   convertirString(string: string) {
-    const split = this.splitString(string, /:/);
+    // console.log(string);
+    let separador = '';
+    if (string.includes('FACTORES DE RIESGO S.M.')) {
+      separador = '  ';
+    } else if (string.includes('DIAGNOSTICO CIE10')) {
+      separador = '        ';
+    } else {
+      separador = ':';
+    }
+
+    const split = this.splitString(string, separador);
 
     const obj = {
       largo: split[0].trim().split(' ')[0],

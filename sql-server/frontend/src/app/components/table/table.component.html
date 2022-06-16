@@ -7,6 +7,10 @@
             <span class="badge bg-secondary">HISTORIA</span>
 
             {{ selectedRow.no_historia }}
+            <br />
+            <button (click)="generarPdf()" [disabled]="historia.length == 0">
+              Generar Pdf
+            </button>
           </div>
         </div>
       </div>
@@ -21,16 +25,16 @@
               <div>
                 <div *ngFor="let hist of historia">
                   <div *ngIf="hist.largo.length > 0">
-                    <h3>
+                    <div class="separador">
                       ----------------------------------------------------------------------------------
-                    </h3>
+                    </div>
                     <div>
                       {{ hist.codigo }}
                     </div>
-                    <h3>
+                    <div class="separador">
                       ----------------------------------------------------------------------------------
-                    </h3>
-                    <div>{{ hist.cuerpo }}</div>
+                    </div>
+                    <div class="container-text-hist">{{ hist.cuerpo }}</div>
                   </div>
                 </div>
               </div>

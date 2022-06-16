@@ -22,11 +22,20 @@ div {
   font-size: 12px;
 }
 
+.container-text-hist {
+  text-align: justify;
+}
+
 .example-table-container {
   position: relative;
   min-height: 180px;
   max-height: 180px;
   overflow: auto;
+}
+
+.separador {
+  font-size: 15px;
+  letter-spacing: 4px;
 }
 
 table {

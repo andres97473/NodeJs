@@ -2,6 +2,11 @@ import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { HistoriasService } from '../../services/historias.service';
 import { HistoriaI } from '../../interface/historia';
 
+import { PdfMakeWrapper, Txt } from 'pdfmake-wrapper';
+import * as pdfFonts from 'pdfmake/build/vfs_fonts'; // fonts provided for pdfmake
+// Set the fonts to use
+PdfMakeWrapper.setFonts(pdfFonts);
+
 @Component({
   selector: 'app-table',
   templateUrl: './table.component.html',
@@ -47,7 +52,7 @@ export class TableComponent implements OnInit {
     if (this.selectedRow.texto01) {
       const txt1 = this.splitString(
         this.selectedRow.texto01,
-        /1000 |1001 |1002 |1003 |1004 |1005 |1006 |1007 |1008 |1009 |1010 |1011 |1030 |1031 |1036 |1038 |1350 |1150 |1242 |1243 |1244|1245 |1284 |1345 |1056 |1344 |1047 |1171 |1306 |1029 |1151 |1069 |1079 |1152 |1077 |1078 |1336 |1337 |1338 |1153 |1359 |1081 /
+        /1000 |1001 |1002 |1003 |1004 |1005 |1006 |1007 |1008 |1009 |1010 |1011 |1204 |1025 |1028 |1030 |1031 |1062 |1065 |1036 |1038 |1350 |1150 |1242 |1243 |1244|1245 |1284 |1345 |1056 |1344 |1047 |1171 |1306 |1029 |1151 |1069 |1079 |1152 |1077 |1078 |1336 |1337 |1338 |1153 |1359 |1081 |-900 |1034 |9999 |1233 |1234 |1164 |1246 |1166 |1167 |1023 |1161 |1162 |1163 |1165 |1380 |1439 /
       );
 
       this.texto1 = txt1;
@@ -83,6 +88,8 @@ export class TableComponent implements OnInit {
       separador = '  ';
     } else if (string.includes('DIAGNOSTICO CIE10')) {
       separador = '        ';
+    } else if (string.includes('01ANTECEDENTES')) {
+      separador = '::';
     } else {
       separador = ':';
     }
@@ -124,5 +131,19 @@ export class TableComponent implements OnInit {
       minute: 'numeric',
     });
     return dateFormat;
+  }
+
+  generarPdf() {
+    const pdf = new PdfMakeWrapper();
+
+    pdf.add(new Txt('HISTORIA CLINICA\n').alignment('center').bold().end);
+
+    for (const hist of this.historia) {
+      pdf.add(new Txt(hist.codigo).bold().end);
+      pdf.add(new Txt(hist.cuerpo).fontSize(10).alignment('justify').end);
+      pdf.add(new Txt('\n').end);
+    }
+
+    pdf.create().open();
   }
 }

@@ -46,20 +46,32 @@ export class TableComponent implements OnInit {
 
   // TODO: Generar separadores
   generarSeparadores(inicio: number, fin: number) {
-    let conteo = inicio;
-    let texto1 = '/';
-    for (let index = 0; index < fin; index++) {
-      texto1 += conteo + ' |';
-      conteo++;
+    let conteo1 = 1000;
+    let conteo2 = 2100;
+    let conteo3 = -900;
+    let texto1 = '';
+    for (let index = 0; index < 900; index++) {
+      texto1 += conteo1 + ' |';
+      conteo1++;
+    }
+    for (let index = 0; index < 2000; index++) {
+      texto1 += conteo2 + ' |';
+      conteo2++;
+    }
+    for (let index = 0; index < 700; index++) {
+      texto1 += conteo3 + ' |';
+      conteo3++;
     }
     texto1 = texto1.substring(0, texto1.length - 1);
-    texto1 += '/';
 
-    // console.log(texto1);
+    const exp = new RegExp(texto1);
+    // console.log(exp);
+    return exp;
   }
 
   selectRow(row: HistoriaI) {
-    const separadores = this.generarSeparadores(1000, 200);
+    const separadores = this.generarSeparadores(1000, 3000);
+    // console.log(separadores);
 
     let myDiv = document.getElementById('specificDiv');
     if (myDiv) {
@@ -71,10 +83,7 @@ export class TableComponent implements OnInit {
     console.log(this.selectedRow);
 
     if (this.selectedRow.texto01) {
-      const txt1 = this.splitString(
-        this.selectedRow.texto01,
-        /1000|1001|1002|1003|1004 |1005 |1006 |1007 |1008 |1009 |1010 |1011 |1204 |1025 |1028 |1030 |1031 |1062 |1065 |1036 |1038 |1350 |1150 |1242 |1243 |1244|1245 |1284 |1345 |1056 |1344 |1047 |1171 |1306 |1029 |1151 |1069 |1079 |1152 |1077 |1078 |1336 |1337 |1338 |1153 |1359 |1081 |-900 |1034 |9999 |1233 |1234 |1164 |1246 |1166 |1167 |1023 |1161 |1162 |1163 |1165 |1380 |1439 |1067 |1068 |1070 |1071 |1072 |1073 |1074 |1075 |1076 |1466 |1099 |1101 |1103 |1104 |1107 |1105 |1214 |1221 |1416 |1469 |1123 |1247 |1230 |1229 |1057 |1083 /
-      );
+      const txt1 = this.splitString(this.selectedRow.texto01, separadores);
 
       this.texto1 = txt1;
     }
@@ -177,12 +186,31 @@ export class TableComponent implements OnInit {
   }
 
   generarPdf() {
+    const fechImpresion = new Date();
     const pdf = new PdfMakeWrapper();
 
-    pdf.add(new Txt('HISTORIA CLINICA\n').alignment('center').bold().end);
+    pdf.add(
+      new Txt('CENTRO HOSPITAL LUIS ANTONIO MONTERO ESE\n')
+        .fontSize(13)
+        .alignment('center')
+        .bold().end
+    );
+    pdf.add(
+      new Txt(
+        'Direccion: BARRIO LA UNION POTOSI Telefono: 7263046.\n'
+      ).alignment('center').end
+    );
+    pdf.add(
+      new Txt('HISTORIA CLINICA').fontSize(14).alignment('center').bold().end
+    );
+    pdf.add(
+      new Txt(`Fecha Impresion:      16/06/2022\n`)
+        .fontSize(8)
+        .alignment('right').end
+    );
 
     for (const hist of this.historia) {
-      pdf.add(new Txt(hist.codigo).bold().end);
+      pdf.add(new Txt(hist.codigo).fontSize(11).bold().end);
       pdf.add(new Txt(hist.cuerpo).fontSize(10).alignment('justify').end);
       pdf.add(new Txt('\n').end);
     }

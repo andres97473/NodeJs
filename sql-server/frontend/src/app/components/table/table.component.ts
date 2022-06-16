@@ -44,7 +44,28 @@ export class TableComponent implements OnInit {
     });
   }
 
+  // TODO: Generar separadores
+  generarSeparadores(inicio: number, fin: number) {
+    let conteo = inicio;
+    let texto1 = '/';
+    for (let index = 0; index < fin; index++) {
+      texto1 += conteo + ' |';
+      conteo++;
+    }
+    texto1 = texto1.substring(0, texto1.length - 1);
+    texto1 += '/';
+
+    // console.log(texto1);
+  }
+
   selectRow(row: HistoriaI) {
+    const separadores = this.generarSeparadores(1000, 200);
+
+    let myDiv = document.getElementById('specificDiv');
+    if (myDiv) {
+      myDiv.scrollTop = 0;
+    }
+
     this.historia = [];
     this.selectedRow = row;
     console.log(this.selectedRow);
@@ -52,7 +73,7 @@ export class TableComponent implements OnInit {
     if (this.selectedRow.texto01) {
       const txt1 = this.splitString(
         this.selectedRow.texto01,
-        /1000 |1001 |1002 |1003 |1004 |1005 |1006 |1007 |1008 |1009 |1010 |1011 |1204 |1025 |1028 |1030 |1031 |1062 |1065 |1036 |1038 |1350 |1150 |1242 |1243 |1244|1245 |1284 |1345 |1056 |1344 |1047 |1171 |1306 |1029 |1151 |1069 |1079 |1152 |1077 |1078 |1336 |1337 |1338 |1153 |1359 |1081 |-900 |1034 |9999 |1233 |1234 |1164 |1246 |1166 |1167 |1023 |1161 |1162 |1163 |1165 |1380 |1439 /
+        /1000|1001|1002|1003|1004 |1005 |1006 |1007 |1008 |1009 |1010 |1011 |1204 |1025 |1028 |1030 |1031 |1062 |1065 |1036 |1038 |1350 |1150 |1242 |1243 |1244|1245 |1284 |1345 |1056 |1344 |1047 |1171 |1306 |1029 |1151 |1069 |1079 |1152 |1077 |1078 |1336 |1337 |1338 |1153 |1359 |1081 |-900 |1034 |9999 |1233 |1234 |1164 |1246 |1166 |1167 |1023 |1161 |1162 |1163 |1165 |1380 |1439 |1067 |1068 |1070 |1071 |1072 |1073 |1074 |1075 |1076 |1466 |1099 |1101 |1103 |1104 |1107 |1105 |1214 |1221 |1416 |1469 |1123 |1247 |1230 |1229 |1057 |1083 /
       );
 
       this.texto1 = txt1;
@@ -67,7 +88,7 @@ export class TableComponent implements OnInit {
     }
 
     for (const iterator of this.texto1) {
-      // console.log(this.convertirString(iterator));
+      console.log(this.convertirString(iterator));
       this.historia.push(this.convertirString(iterator));
     }
 
@@ -90,6 +111,28 @@ export class TableComponent implements OnInit {
       separador = '        ';
     } else if (string.includes('01ANTECEDENTES')) {
       separador = '::';
+    } else if (string.includes('TIENE DIARREA?')) {
+      separador = '           ';
+    } else if (string.includes('VERIFICAR VACUNACION')) {
+      separador = '     ';
+    } else if (string.includes('TIENE FIEBRE')) {
+      separador = '            ';
+    } else if (string.includes('TIENE PROBLEMA DE OIDO?')) {
+      separador = '  ';
+    } else if (string.includes('VERIFICAR SALUD BUCAL')) {
+      separador = '    ';
+    } else if (string.includes('VERIFICAR DESNUTRICION')) {
+      separador = '   ';
+    } else if (string.includes('VERIFICAR ANEMIA')) {
+      separador = '         ';
+    } else if (string.includes('VERIFICAR MALTRATO')) {
+      separador = '       ';
+    } else if (string.includes('EVALUAR DESARROLLO')) {
+      separador = '       ';
+    } else if (string.includes('EVALUAR ALIMENTACION')) {
+      separador = '     ';
+    } else if (string.includes('MOTIVO DE CONSULTA/ENF')) {
+      separador = ':';
     } else {
       separador = ':';
     }

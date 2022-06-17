@@ -89,10 +89,7 @@ export class TableComponent implements OnInit {
     }
 
     if (this.selectedRow.texto02) {
-      const txt2 = this.splitString(
-        this.selectedRow.texto02,
-        /-400 |-401 |-402 |-403 |-404 |-405 |-406 |-407 |-408 |-409 |-410 |-411 |8100 |8000 |8001 |8002 |8003 | 8004|8005 |8006 |8007 |1345 |1056 |1344 /
-      );
+      const txt2 = this.splitString(this.selectedRow.texto02, separadores);
       this.texto2 = txt2;
     }
 
@@ -114,6 +111,7 @@ export class TableComponent implements OnInit {
   convertirString(string: string) {
     // console.log(string);
     let separador = '';
+    let esPuntos = false;
     if (string.includes('FACTORES DE RIESGO S.M.')) {
       separador = '  ';
     } else if (string.includes('DIAGNOSTICO CIE10')) {
@@ -142,8 +140,10 @@ export class TableComponent implements OnInit {
       separador = '     ';
     } else if (string.includes('MOTIVO DE CONSULTA/ENF')) {
       separador = ':';
+      esPuntos = true;
     } else {
       separador = ':';
+      esPuntos = true;
     }
 
     const split = this.splitString(string, separador);
@@ -151,7 +151,7 @@ export class TableComponent implements OnInit {
     const obj = {
       largo: split[0].trim().split(' ')[0],
       orden: split[0].trim().split(' ')[1],
-      codigo: split[0],
+      codigo: esPuntos ? split[0] + ':' : split[0],
       cuerpo: '',
     };
 
@@ -189,30 +189,43 @@ export class TableComponent implements OnInit {
     const fechImpresion = new Date();
     const pdf = new PdfMakeWrapper();
 
-    pdf.add(
-      new Txt('CENTRO HOSPITAL LUIS ANTONIO MONTERO ESE\n')
-        .fontSize(13)
-        .alignment('center')
-        .bold().end
-    );
-    pdf.add(
-      new Txt(
-        'Direccion: BARRIO LA UNION POTOSI Telefono: 7263046.\n'
-      ).alignment('center').end
-    );
-    pdf.add(
-      new Txt('HISTORIA CLINICA').fontSize(14).alignment('center').bold().end
-    );
-    pdf.add(
-      new Txt(`Fecha Impresion:      16/06/2022\n`)
-        .fontSize(8)
-        .alignment('right').end
-    );
+    pdf.pageMargins([40, 80, 40, 60]);
+
+    pdf.header(() => {
+      return {
+        text: [
+          new Txt('CENTRO HOSPITAL LUIS ANTONIO MONTERO ESE\n')
+            .fontSize(8.5)
+            .alignment('center')
+            .bold().end,
+          new Txt('Direccion: BARRIO LA UNION POTOSI Telefono: 7263046.\n')
+            .fontSize(8.5)
+            .alignment('center').end,
+          new Txt('HISTORIA CLINICA\n').fontSize(8.5).alignment('center').bold()
+            .end,
+          new Txt(`Fecha Impresion:      16/06/2022\n`)
+            .fontSize(6.5)
+            .alignment('right').end,
+        ],
+        // alignment: 'center',
+        // style: 'header',
+        margin: [5, 20, 5, 5],
+      };
+    });
 
     for (const hist of this.historia) {
-      pdf.add(new Txt(hist.codigo).fontSize(11).bold().end);
-      pdf.add(new Txt(hist.cuerpo).fontSize(10).alignment('justify').end);
-      pdf.add(new Txt('\n').end);
+      if (hist.largo.length > 0) {
+        pdf.add(
+          new Txt(hist.codigo + '   ')
+            .fontSize(7)
+            .bold()
+            .background('#f1f1f1')
+            .lineHeight(1.2).end
+        );
+
+        pdf.add(new Txt(hist.cuerpo).fontSize(7.5).alignment('justify').end);
+        pdf.add(new Txt('\n').end);
+      }
     }
 
     pdf.create().open();

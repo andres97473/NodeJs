@@ -1,0 +1,6 @@
+>> generar fuentes
+
+npm i pdfmake-font-generator -g
+
+>> ejecutar comando para generar fuentes, estas ya deben estar agregadas en la carpeta assets
+pdfmakefg src/assets/fonts/ src/assets/custom-fonts.js

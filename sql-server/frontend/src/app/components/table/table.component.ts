@@ -2,17 +2,31 @@ import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { HistoriasService } from '../../services/historias.service';
 import { HistoriaI } from '../../interface/historia';
 
-import {
-  PdfMakeWrapper,
-  Txt,
-  Canvas,
-  Rect,
-  IVector,
-  Line,
-} from 'pdfmake-wrapper';
-import * as pdfFonts from 'pdfmake/build/vfs_fonts'; // fonts provided for pdfmake
+import { PdfMakeWrapper, Txt, Canvas, Rect } from 'pdfmake-wrapper';
+
+// declare fonts
+//import * as pdfFonts from 'pdfmake/build/vfs_fonts';
+
+// TODO: ignorar el error
+import * as pdfFonts from '../../../assets/fonts/custom-fonts.js';
+
 // Set the fonts to use
-PdfMakeWrapper.setFonts(pdfFonts);
+PdfMakeWrapper.setFonts(pdfFonts, {
+  tahoma: {
+    normal: 'tahoma.ttf',
+    bold: 'tahomabd.ttf',
+    italics: 'tahoma.ttf',
+    bolditalics: 'tahomabd.ttf',
+  },
+  cour: {
+    normal: 'cour.ttf',
+    bold: 'courbd.ttf',
+    italics: 'cour.ttf',
+    bolditalics: 'courbd.ttf',
+  },
+});
+
+PdfMakeWrapper.useFont('tahoma');
 
 @Component({
   selector: 'app-table',
@@ -118,6 +132,7 @@ export class TableComponent implements OnInit {
     // console.log(string);
     let separador = '';
     let esPuntos = false;
+
     if (string.includes('FACTORES DE RIESGO S.M.')) {
       separador = '  ';
     } else if (string.includes('DIAGNOSTICO CIE10')) {
@@ -195,7 +210,6 @@ export class TableComponent implements OnInit {
   // TODO: Generar pdf
 
   generarPdf() {
-    const fechImpresion = new Date();
     const pdf = new PdfMakeWrapper();
 
     // pdf.pageMargins([izquierda, arriba, derecha, abajo]);
@@ -233,14 +247,18 @@ export class TableComponent implements OnInit {
 
         pdf.add(
           new Txt(hist.codigo.trim().padEnd(150, ' '))
-            .fontSize(7)
+            .fontSize(6.5)
             .bold()
             .lineHeight(1.2)
             .margin([0, 5, 0, 0])
             .background('#dedede').end
         );
 
-        pdf.add(new Txt(hist.cuerpo).fontSize(7.5).alignment('justify').end);
+        pdf.add(
+          new Txt(hist.cuerpo).font('cour').fontSize(7.5).alignment('justify')
+            .end
+        );
+
         pdf.add(new Txt('\n').end);
       }
     }

@@ -2,7 +2,14 @@ import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { HistoriasService } from '../../services/historias.service';
 import { HistoriaI } from '../../interface/historia';
 
-import { PdfMakeWrapper, Txt } from 'pdfmake-wrapper';
+import {
+  PdfMakeWrapper,
+  Txt,
+  Canvas,
+  Rect,
+  IVector,
+  Line,
+} from 'pdfmake-wrapper';
 import * as pdfFonts from 'pdfmake/build/vfs_fonts'; // fonts provided for pdfmake
 // Set the fonts to use
 PdfMakeWrapper.setFonts(pdfFonts);
@@ -44,7 +51,6 @@ export class TableComponent implements OnInit {
     });
   }
 
-  // TODO: Generar separadores
   generarSeparadores(inicio: number, fin: number) {
     let conteo1 = 1000;
     let conteo2 = 2100;
@@ -172,6 +178,7 @@ export class TableComponent implements OnInit {
     return obj;
   }
 
+  // TODO: corregir o buscar fecha de otro campo
   convertirFecha(date: string) {
     var time = new Date(date);
     const dateFormat = time.toLocaleString('es-CO', {
@@ -185,10 +192,13 @@ export class TableComponent implements OnInit {
     return dateFormat;
   }
 
+  // TODO: Generar pdf
+
   generarPdf() {
     const fechImpresion = new Date();
     const pdf = new PdfMakeWrapper();
 
+    // pdf.pageMargins([izquierda, arriba, derecha, abajo]);
     pdf.pageMargins([40, 80, 40, 60]);
 
     pdf.header(() => {
@@ -201,26 +211,33 @@ export class TableComponent implements OnInit {
           new Txt('Direccion: BARRIO LA UNION POTOSI Telefono: 7263046.\n')
             .fontSize(8.5)
             .alignment('center').end,
-          new Txt('HISTORIA CLINICA\n').fontSize(8.5).alignment('center').bold()
-            .end,
+          new Txt(`${this.selectedRow.nombre_estudio}\n`)
+            .fontSize(8.5)
+            .alignment('center')
+            .bold().end,
           new Txt(`Fecha Impresion:      16/06/2022\n`)
             .fontSize(6.5)
             .alignment('right').end,
         ],
         // alignment: 'center',
         // style: 'header',
-        margin: [5, 20, 5, 5],
+        margin: [40, 20, 40, 5],
       };
     });
 
     for (const hist of this.historia) {
       if (hist.largo.length > 0) {
         pdf.add(
-          new Txt(hist.codigo + '   ')
+          new Canvas([new Rect([0, 0], [515, 0.3]).color('#c0c0c0').end]).end
+        );
+
+        pdf.add(
+          new Txt(hist.codigo.trim().padEnd(150, ' '))
             .fontSize(7)
             .bold()
-            .background('#f1f1f1')
-            .lineHeight(1.2).end
+            .lineHeight(1.2)
+            .margin([0, 5, 0, 0])
+            .background('#dedede').end
         );
 
         pdf.add(new Txt(hist.cuerpo).fontSize(7.5).alignment('justify').end);

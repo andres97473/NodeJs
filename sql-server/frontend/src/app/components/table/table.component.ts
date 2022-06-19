@@ -65,11 +65,11 @@ export class TableComponent implements OnInit {
     });
   }
 
-  generarSeparadores(inicio: number, fin: number) {
+  generarSeparadores() {
+    let texto1 = '(?=';
     let conteo1 = 1000;
     let conteo2 = 2100;
     let conteo3 = -900;
-    let texto1 = '';
     for (let index = 0; index < 900; index++) {
       texto1 += conteo1 + ' |';
       conteo1++;
@@ -83,14 +83,15 @@ export class TableComponent implements OnInit {
       conteo3++;
     }
     texto1 = texto1.substring(0, texto1.length - 1);
+    texto1 += ')';
 
-    const exp = new RegExp(texto1);
+    const exp = new RegExp(texto1, 'g');
     // console.log(exp);
     return exp;
   }
 
   selectRow(row: HistoriaI) {
-    const separadores = this.generarSeparadores(1000, 3000);
+    const separadores = this.generarSeparadores();
     // console.log(separadores);
 
     let myDiv = document.getElementById('specificDiv');
@@ -157,8 +158,6 @@ export class TableComponent implements OnInit {
       separador = '       ';
     } else if (string.includes('EVALUAR DESARROLLO')) {
       separador = '       ';
-    } else if (string.includes('EVALUAR ALIMENTACION')) {
-      separador = '     ';
     } else if (string.includes('MOTIVO DE CONSULTA/ENF')) {
       separador = ':';
       esPuntos = true;
@@ -170,25 +169,30 @@ export class TableComponent implements OnInit {
     const split = this.splitString(string, separador);
 
     const obj = {
-      largo: split[0].trim().split(' ')[0],
-      orden: split[0].trim().split(' ')[1],
-      codigo: esPuntos ? split[0] + ':' : split[0],
-      cuerpo: '',
+      id: split[0].trim().split(' ')[0],
+      largo: split[0].trim().split(' ')[1],
+      orden: split[0].trim().split(' ')[2] || ' ',
+      cuerpo: split[1],
+      codigo: '',
     };
 
-    for (var i = 1; i < split.length; i++) {
-      // console.log(split[i]);
-      obj.cuerpo += split[i] + ':';
+    obj.orden = obj.orden.substring(0, 2);
+
+    const nSplit = split[0].trim().split(' ');
+
+    // console.log(nSplit);
+
+    for (let index = 2; index < nSplit.length; index++) {
+      // console.log(nSplit[index]);
+      obj.codigo += nSplit[index] + ' ';
     }
 
-    let cuerpo = obj.cuerpo;
-    let orden = obj.orden || '';
-    cuerpo = cuerpo.substring(0, cuerpo.length - 1);
-    orden = orden.substring(0, 2);
-    obj.cuerpo = cuerpo;
-    obj.orden = orden;
-    // console.log(cuerpo);
-    obj.codigo = obj.codigo.split(obj.orden.trim())[1];
+    obj.codigo = obj.codigo.trim();
+    obj.codigo = obj.codigo.slice(2);
+
+    if (esPuntos) {
+      obj.codigo += ':';
+    }
 
     return obj;
   }

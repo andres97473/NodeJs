@@ -108,10 +108,10 @@ export class TableComponent implements OnInit {
       this.texto1 = txt1;
     }
 
-    if (this.selectedRow.texto02) {
-      const txt2 = this.splitString(this.selectedRow.texto02, separadores);
-      this.texto2 = txt2;
-    }
+    // if (this.selectedRow.texto02) {
+    //   const txt2 = this.splitString(this.selectedRow.texto02, separadores);
+    //   this.texto2 = txt2;
+    // }
 
     for (const iterator of this.texto1) {
       console.log(this.convertirString(iterator));

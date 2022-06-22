@@ -12,4 +12,8 @@ export class HistoriasService {
   getHistorias() {
     return this.http.get(`${this.url}historias`);
   }
+
+  getCodigos() {
+    return this.http.get(`${this.url}historias-codigos`);
+  }
 }

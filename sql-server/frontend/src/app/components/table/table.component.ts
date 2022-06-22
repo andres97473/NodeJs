@@ -43,6 +43,9 @@ export class TableComponent implements OnInit {
   ];
   dataSource: HistoriaI[] = [];
 
+  // prueba de datos
+  dataApi: HistoriaI[] = [];
+
   historia: any[] = [];
 
   texto1: string[] = [];
@@ -61,8 +64,46 @@ export class TableComponent implements OnInit {
     this.historiasService.getHistorias().subscribe((data: any) => {
       const nData = data.resultado[0];
       this.dataSource = nData;
-      console.log(this.dataSource);
     });
+
+    this.historiasService.getCodigos().subscribe((data: any) => {
+      const nData = data.codigos[0];
+      this.dataApi = nData;
+
+      if (this.dataApi.length > 0) {
+        // console.log(this.getCodigos(this.dataApi));
+      }
+    });
+  }
+
+  // TODO: prueba de codigos
+  getCodigos(data: any) {
+    const separadores = this.generarSeparadores();
+    let nTxt = [];
+    data.map((m) => {
+      nTxt.push(m.texto01);
+    });
+
+    let nTxtSplit = [];
+
+    for (const iterator of nTxt) {
+      const txt1 = this.splitString(iterator, separadores);
+
+      for (const nIterator of txt1) {
+        // console.log(this.convertirString(nIterator));
+        nTxtSplit.push(this.convertirString(nIterator));
+      }
+    }
+
+    let ids = [];
+
+    nTxtSplit = nTxtSplit.map((m) => {
+      ids.push(m.id);
+    });
+
+    const result = ids.filter((item, index) => ids.indexOf(item) === index);
+
+    return result;
   }
 
   generarSeparadores() {
@@ -138,6 +179,8 @@ export class TableComponent implements OnInit {
       separador = '  ';
     } else if (string.includes('DIAGNOSTICO CIE10')) {
       separador = '        ';
+    } else if (string.includes('DIAGNOSTICO DE INGRESO:')) {
+      separador = '  ';
     } else if (string.includes('01ANTECEDENTES')) {
       separador = '::';
     } else if (string.includes('TIENE DIARREA?')) {
@@ -172,9 +215,13 @@ export class TableComponent implements OnInit {
       id: split[0].trim().split(' ')[0],
       largo: split[0].trim().split(' ')[1],
       orden: split[0].trim().split(' ')[2] || ' ',
-      cuerpo: split[1],
+      cuerpo: '',
       codigo: '',
     };
+
+    for (let index = 1; index < split.length; index++) {
+      obj.cuerpo += split[index] + ' ';
+    }
 
     obj.orden = obj.orden.substring(0, 2);
 

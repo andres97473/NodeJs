@@ -48,10 +48,10 @@
         <div class="example-table-container">
           <table mat-table [dataSource]="dataSource" class="example-table">
             <!-- Number Column -->
-            <ng-container matColumnDef="especialidad_historia">
+            <ng-container matColumnDef="tipo_atencion">
               <th mat-header-cell *matHeaderCellDef>Tipo Atencion</th>
               <td mat-cell *matCellDef="let row">
-                {{ row.especialidad_historia }}
+                {{ row.tipo_atencion == 1 ? "AMBULATORIO" : "URGENCIAS" }}
               </td>
             </ng-container>
 
@@ -78,7 +78,17 @@
             <!-- State Column -->
             <ng-container matColumnDef="medico">
               <th mat-header-cell *matHeaderCellDef>Profesional</th>
-              <td mat-cell *matCellDef="let row">{{ row.medico }}</td>
+              <td mat-cell *matCellDef="let row">
+                {{ row.md_apellido1 }} {{ row.md_apellido2 }}
+                {{ row.md_nombre1 }} {{ row.md_nombr2 }}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="especialidad_historia">
+              <th mat-header-cell *matHeaderCellDef>Especialidad</th>
+              <td mat-cell *matCellDef="let row">
+                {{ row.especialidad_historia }}
+              </td>
             </ng-container>
 
             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
@@ -86,6 +96,7 @@
               mat-row
               *matRowDef="let row; columns: displayedColumns; let i = index"
               (click)="selectRow(row)"
+              [class.demo-row-is-anulado]="row.anulado == -1"
               [class.demo-row-is-clicked]="selectedRow === row"
             ></tr>
           </table>

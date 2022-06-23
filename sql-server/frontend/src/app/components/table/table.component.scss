@@ -44,6 +44,7 @@ table {
 }
 
 /* Column Widths */
+.mat-column-tipo_atencion,
 .mat-column-especialidad_historia,
 .mat-column-num_orden,
 .mat-column-fecha_dig,
@@ -79,6 +80,12 @@ td:hover {
   height: 30px !important;
   background: white;
   padding: 10px;
+  &.demo-row-is-anulado {
+    background: $alerta;
+    td {
+      border: 1px solid #f3f3f3;
+    }
+  }
   &.demo-row-is-clicked {
     background: $seleccion;
     td {

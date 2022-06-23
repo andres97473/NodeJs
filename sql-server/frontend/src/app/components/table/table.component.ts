@@ -35,11 +35,12 @@ PdfMakeWrapper.useFont('tahoma');
 })
 export class TableComponent implements OnInit {
   displayedColumns: string[] = [
-    'especialidad_historia',
+    'tipo_atencion',
     'num_orden',
     'fecha_dig',
     'nombre_estudio',
     'medico',
+    'especialidad_historia',
   ];
   dataSource: HistoriaI[] = [];
 
@@ -47,6 +48,8 @@ export class TableComponent implements OnInit {
   dataApi: HistoriaI[] = [];
 
   historia: any[] = [];
+  diagnostico = '';
+  diagnosticoHist = '';
 
   texto1: string[] = [];
   texto2: string[] = [];
@@ -162,6 +165,15 @@ export class TableComponent implements OnInit {
 
     // console.log(this.texto1);
     // console.log(this.texto2);
+
+    if (this.diagnostico.length > 0) {
+      const nDX = this.diagnostico.split('\n');
+
+      // console.log(nDX[0].trim());
+      this.diagnosticoHist = nDX[0].trim();
+    }
+    console.log(this.diagnosticoHist);
+    this.historia = this.historia.filter((h) => h.id != '-900');
   }
 
   splitString(string: string, separator: any = ' ') {
@@ -181,6 +193,8 @@ export class TableComponent implements OnInit {
       separador = '        ';
     } else if (string.includes('DIAGNOSTICO DE INGRESO:')) {
       separador = '  ';
+    } else if (string.includes('DIAGNOSTICO:.')) {
+      separador = '      ';
     } else if (string.includes('01ANTECEDENTES')) {
       separador = '::';
     } else if (string.includes('TIENE DIARREA?')) {
@@ -219,8 +233,13 @@ export class TableComponent implements OnInit {
       codigo: '',
     };
 
+    // concatenar cuerpo
     for (let index = 1; index < split.length; index++) {
       obj.cuerpo += split[index] + ' ';
+    }
+
+    if (obj.id === '1006') {
+      this.diagnostico = obj.cuerpo;
     }
 
     obj.orden = obj.orden.substring(0, 2);

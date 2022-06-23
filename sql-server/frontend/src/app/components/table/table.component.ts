@@ -2,7 +2,14 @@ import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { HistoriasService } from '../../services/historias.service';
 import { HistoriaI } from '../../interface/historia';
 
-import { PdfMakeWrapper, Txt, Canvas, Rect } from 'pdfmake-wrapper';
+import {
+  PdfMakeWrapper,
+  Txt,
+  Canvas,
+  Rect,
+  Columns,
+  Table,
+} from 'pdfmake-wrapper';
 
 // declare fonts
 //import * as pdfFonts from 'pdfmake/build/vfs_fonts';
@@ -283,11 +290,17 @@ export class TableComponent implements OnInit {
     const pdf = new PdfMakeWrapper();
 
     // pdf.pageMargins([izquierda, arriba, derecha, abajo]);
-    pdf.pageMargins([40, 80, 40, 60]);
+    pdf.pageMargins([40, 250, 40, 60]);
 
     pdf.header(() => {
       return {
         text: [
+          new Txt(`Folio No: ${this.selectedRow.num_orden}     \n`)
+            .fontSize(6.5)
+            .alignment('right')
+            .lineHeight(1.2)
+            .margin([0, 5, 0, 0])
+            .background('#dedede').end,
           new Txt('CENTRO HOSPITAL LUIS ANTONIO MONTERO ESE\n')
             .fontSize(8.5)
             .alignment('center')

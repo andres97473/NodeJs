@@ -15,7 +15,7 @@ import { ITable } from 'pdfmake-wrapper/lib/interfaces';
 // declare fonts
 //import * as pdfFonts from 'pdfmake/build/vfs_fonts';
 
-// TODO: ignorar el error
+// ignorar el error
 import * as pdfFonts from '../../../assets/fonts/custom-fonts.js';
 
 // Set the fonts to use
@@ -77,45 +77,44 @@ export class TableComponent implements OnInit {
       this.dataSource = nData;
     });
 
-    this.historiasService.getCodigos().subscribe((data: any) => {
-      const nData = data.codigos[0];
-      this.dataApi = nData;
+    // this.historiasService.getCodigos().subscribe((data: any) => {
+    //   const nData = data.codigos[0];
+    //   this.dataApi = nData;
 
-      if (this.dataApi.length > 0) {
-        // console.log(this.getCodigos(this.dataApi));
-      }
-    });
+    //   if (this.dataApi.length > 0) {
+    //     console.log(this.getCodigos(this.dataApi));
+    //   }
+    // });
   }
 
-  // TODO: prueba de codigos
-  getCodigos(data: any) {
-    const separadores = this.generarSeparadores();
-    let nTxt = [];
-    data.map((m) => {
-      nTxt.push(m.texto01);
-    });
+  // getCodigos(data: any) {
+  //   const separadores = this.generarSeparadores();
+  //   let nTxt = [];
+  //   data.map((m) => {
+  //     nTxt.push(m.texto01);
+  //   });
 
-    let nTxtSplit = [];
+  //   let nTxtSplit = [];
 
-    for (const iterator of nTxt) {
-      const txt1 = this.splitString(iterator, separadores);
+  //   for (const iterator of nTxt) {
+  //     const txt1 = this.splitString(iterator, separadores);
 
-      for (const nIterator of txt1) {
-        // console.log(this.convertirString(nIterator));
-        nTxtSplit.push(this.convertirString(nIterator));
-      }
-    }
+  //     for (const nIterator of txt1) {
+  //       // console.log(this.convertirString(nIterator));
+  //       nTxtSplit.push(this.convertirString(nIterator));
+  //     }
+  //   }
 
-    let ids = [];
+  //   let ids = [];
 
-    nTxtSplit = nTxtSplit.map((m) => {
-      ids.push(m.id);
-    });
+  //   nTxtSplit = nTxtSplit.map((m) => {
+  //     ids.push(m.id);
+  //   });
 
-    const result = ids.filter((item, index) => ids.indexOf(item) === index);
+  //   const result = ids.filter((item, index) => ids.indexOf(item) === index);
 
-    return result;
-  }
+  //   return result;
+  // }
 
   generarSeparadores() {
     let texto1 = '(?=';
@@ -271,23 +270,10 @@ export class TableComponent implements OnInit {
     return obj;
   }
 
-  // TODO: corregir o buscar fecha de otro campo
-  convertirFecha(date: string) {
-    var time = new Date(date);
-    const dateFormat = time.toLocaleString('es-CO', {
-      day: '2-digit',
-      month: '2-digit',
-      year: 'numeric',
-      hour: '2-digit',
-      hour12: true,
-      minute: 'numeric',
-    });
-    return dateFormat;
-  }
-
   // TODO: Generar pdf
 
   generarPdf() {
+    const colorFondo = '#f0f0f0';
     const pdf = new PdfMakeWrapper();
 
     // pdf.pageMargins([izquierda, arriba, derecha, abajo]);
@@ -301,7 +287,7 @@ export class TableComponent implements OnInit {
             .alignment('right')
             .lineHeight(1.2)
             .margin([0, 5, 0, 0])
-            .background('#dedede').end,
+            .background(colorFondo).end,
           new Txt('CENTRO HOSPITAL LUIS ANTONIO MONTERO ESE\n')
             .fontSize(8.5)
             .alignment('center')
@@ -335,13 +321,16 @@ export class TableComponent implements OnInit {
         this.selectedRow.ap_nombre2.trim(),
       fecha_dig: this.selectedRow.fecha_dig,
       fecha_nac: this.selectedRow.fecha_nac,
-      edad: this.selectedRow.fecha_nac,
+      edad: this.calcularEdad(
+        this.selectedRow.fecha_nac,
+        this.selectedRow.fecha_dig
+      ),
       estado_civil: 'UNION LIBRE',
       no_historia: this.selectedRow.no_historia,
       identificacion: this.selectedRow.identificacion,
       empresa: this.selectedRow.empresa_nombre,
       diagnostico: this.diagnosticoHist,
-      sexo: this.selectedRow.sexo,
+      sexo: this.selectedRow.sexo === 'M' ? 'Maxculino' : 'Femenino',
       telefono: this.selectedRow.telefono,
       municipio:
         this.selectedRow.municipio == 52560
@@ -360,13 +349,13 @@ export class TableComponent implements OnInit {
           new Txt(obj.nombre_paciente.trim().padEnd(35, ' '))
             .fontSize(6.5)
             .lineHeight(1.2)
-            .background('#dedede').end,
+            .background(colorFondo).end,
           new Txt('E.CIVIL:'.trim()).fontSize(6.5).bold().alignment('right')
             .end,
           new Txt(obj.estado_civil.trim().padEnd(20, ' '))
             .fontSize(6.5)
             .lineHeight(1.2)
-            .background('#dedede').end,
+            .background(colorFondo).end,
           new Txt('FECHA ATENCION:'.trim())
             .fontSize(6.5)
             .bold()
@@ -374,7 +363,7 @@ export class TableComponent implements OnInit {
           new Txt(String(obj.fecha_dig).trim().padEnd(33, ' '))
             .fontSize(6.5)
             .lineHeight(1.2)
-            .background('#dedede').end,
+            .background(colorFondo).end,
         ],
         // fila 2
         [
@@ -382,18 +371,18 @@ export class TableComponent implements OnInit {
           new Txt(obj.no_historia.trim().padEnd(35, ' '))
             .fontSize(6.5)
             .lineHeight(1.2)
-            .background('#dedede').end,
+            .background(colorFondo).end,
           new Txt('EDAD:'.trim()).fontSize(6.5).bold().alignment('right').end,
           new Txt(String(obj.edad).trim().padEnd(20, ' '))
             .fontSize(6.5)
             .lineHeight(1.2)
-            .background('#dedede').end,
+            .background(colorFondo).end,
           new Txt('TELEFONO:'.trim()).fontSize(6.5).bold().alignment('right')
             .end,
           new Txt(obj.telefono.trim().padEnd(33, ' '))
             .fontSize(6.5)
             .lineHeight(1.2)
-            .background('#dedede').end,
+            .background(colorFondo).end,
         ],
         // fila 3
         [
@@ -401,18 +390,18 @@ export class TableComponent implements OnInit {
           new Txt(obj.identificacion.trim().padEnd(35, ' '))
             .fontSize(6.5)
             .lineHeight(1.2)
-            .background('#dedede').end,
+            .background(colorFondo).end,
           new Txt('SEXO:'.trim()).fontSize(6.5).bold().alignment('right').end,
           new Txt(obj.sexo.trim().padEnd(20, ' '))
             .fontSize(6.5)
             .lineHeight(1.2)
-            .background('#dedede').end,
+            .background(colorFondo).end,
           new Txt('MUNICIPIO:'.trim()).fontSize(6.5).bold().alignment('right')
             .end,
           new Txt(obj.municipio.padEnd(33, ' '))
             .fontSize(6.5)
             .lineHeight(1.2)
-            .background('#dedede').end,
+            .background(colorFondo).end,
         ],
         // fila 4
         [
@@ -420,18 +409,18 @@ export class TableComponent implements OnInit {
           new Txt(String(obj.empresa).trim().padEnd(35, ' '))
             .fontSize(6.5)
             .lineHeight(1.2)
-            .background('#dedede').end,
+            .background(colorFondo).end,
           new Txt('FEC. NAC:').fontSize(6.5).bold().alignment('right').end,
           new Txt(String(obj.fecha_nac).padEnd(20, ' '))
             .fontSize(6.5)
             .lineHeight(1.2)
-            .background('#dedede').end,
+            .background(colorFondo).end,
           new Txt('DIRECCION:'.trim()).fontSize(6.5).bold().alignment('right')
             .end,
           new Txt(String(obj.direccion).trim().padEnd(33, ' '))
             .fontSize(6.5)
             .lineHeight(1.2)
-            .background('#dedede').end,
+            .background(colorFondo).end,
         ],
         // fila 5
         [
@@ -440,7 +429,7 @@ export class TableComponent implements OnInit {
             new Txt(String(obj.diagnostico).trim().padEnd(80, ' '))
               .fontSize(6.5)
               .lineHeight(1.2)
-              .background('#dedede').end
+              .background(colorFondo).end
           ).colSpan(5).end,
         ],
       ])
@@ -475,7 +464,7 @@ export class TableComponent implements OnInit {
             .bold()
             .lineHeight(1.2)
             .margin([0, 5, 0, 0])
-            .background('#dedede').end
+            .background(colorFondo).end
         );
 
         pdf.add(
@@ -488,5 +477,19 @@ export class TableComponent implements OnInit {
     }
 
     pdf.create().open();
+    console.log(this.calcularEdad(obj.fecha_nac, obj.fecha_dig));
+  }
+
+  calcularEdad(fecha_inicio, fecha_fin) {
+    var fin = new Date(fecha_fin);
+    var cumpleanos = new Date(fecha_inicio);
+    var edad = fin.getFullYear() - cumpleanos.getFullYear();
+    var m = fin.getMonth() - cumpleanos.getMonth();
+
+    if (m < 0 || (m === 0 && fin.getDate() < cumpleanos.getDate())) {
+      edad;
+    }
+
+    return edad + ' Años';
   }
 }

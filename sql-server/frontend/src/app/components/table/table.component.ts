@@ -2,7 +2,15 @@ import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { HistoriasService } from '../../services/historias.service';
 import { HistoriaI } from '../../interface/historia';
 
-import { PdfMakeWrapper, Txt, Canvas, Rect, Table } from 'pdfmake-wrapper';
+import {
+  PdfMakeWrapper,
+  Txt,
+  Canvas,
+  Rect,
+  Table,
+  Cell,
+} from 'pdfmake-wrapper';
+import { ITable } from 'pdfmake-wrapper/lib/interfaces';
 
 // declare fonts
 //import * as pdfFonts from 'pdfmake/build/vfs_fonts';
@@ -283,7 +291,7 @@ export class TableComponent implements OnInit {
     const pdf = new PdfMakeWrapper();
 
     // pdf.pageMargins([izquierda, arriba, derecha, abajo]);
-    pdf.pageMargins([40, 250, 40, 60]);
+    pdf.pageMargins([40, 80, 40, 60]);
 
     pdf.header(() => {
       return {
@@ -314,6 +322,146 @@ export class TableComponent implements OnInit {
         margin: [40, 20, 40, 5],
       };
     });
+
+    // TODO: obj
+    const obj = {
+      nombre_paciente:
+        this.selectedRow.ap_apellido1.trim() +
+        ' ' +
+        this.selectedRow.ap_apellido2.trim() +
+        ' ' +
+        this.selectedRow.ap_nombre1.trim() +
+        ' ' +
+        this.selectedRow.ap_nombre2.trim(),
+      fecha_dig: this.selectedRow.fecha_dig,
+      fecha_nac: this.selectedRow.fecha_nac,
+      edad: this.selectedRow.fecha_nac,
+      estado_civil: 'UNION LIBRE',
+      no_historia: this.selectedRow.no_historia,
+      identificacion: this.selectedRow.identificacion,
+      empresa: this.selectedRow.empresa_nombre,
+      diagnostico: this.diagnosticoHist,
+      sexo: this.selectedRow.sexo,
+      telefono: this.selectedRow.telefono,
+      municipio:
+        this.selectedRow.municipio == 52560
+          ? 'POTOSI (N)'
+          : 'FUERA DEL MUNICIPIO',
+      direccion: this.selectedRow.direccion,
+    };
+
+    console.log(obj);
+
+    pdf.add(
+      new Table([
+        // fila 1
+        [
+          new Txt('PACIENTE:'.trim()).fontSize(6.5).bold().end,
+          new Txt(obj.nombre_paciente.trim().padEnd(35, ' '))
+            .fontSize(6.5)
+            .lineHeight(1.2)
+            .background('#dedede').end,
+          new Txt('E.CIVIL:'.trim()).fontSize(6.5).bold().alignment('right')
+            .end,
+          new Txt(obj.estado_civil.trim().padEnd(20, ' '))
+            .fontSize(6.5)
+            .lineHeight(1.2)
+            .background('#dedede').end,
+          new Txt('FECHA ATENCION:'.trim())
+            .fontSize(6.5)
+            .bold()
+            .alignment('right').end,
+          new Txt(String(obj.fecha_dig).trim().padEnd(33, ' '))
+            .fontSize(6.5)
+            .lineHeight(1.2)
+            .background('#dedede').end,
+        ],
+        // fila 2
+        [
+          new Txt('No HISTORIA:'.trim()).fontSize(6.5).bold().end,
+          new Txt(obj.no_historia.trim().padEnd(35, ' '))
+            .fontSize(6.5)
+            .lineHeight(1.2)
+            .background('#dedede').end,
+          new Txt('EDAD:'.trim()).fontSize(6.5).bold().alignment('right').end,
+          new Txt(String(obj.edad).trim().padEnd(20, ' '))
+            .fontSize(6.5)
+            .lineHeight(1.2)
+            .background('#dedede').end,
+          new Txt('TELEFONO:'.trim()).fontSize(6.5).bold().alignment('right')
+            .end,
+          new Txt(obj.telefono.trim().padEnd(33, ' '))
+            .fontSize(6.5)
+            .lineHeight(1.2)
+            .background('#dedede').end,
+        ],
+        // fila 3
+        [
+          new Txt('IDENTIFICACION:'.trim()).fontSize(6.5).bold().end,
+          new Txt(obj.identificacion.trim().padEnd(35, ' '))
+            .fontSize(6.5)
+            .lineHeight(1.2)
+            .background('#dedede').end,
+          new Txt('SEXO:'.trim()).fontSize(6.5).bold().alignment('right').end,
+          new Txt(obj.sexo.trim().padEnd(20, ' '))
+            .fontSize(6.5)
+            .lineHeight(1.2)
+            .background('#dedede').end,
+          new Txt('MUNICIPIO:'.trim()).fontSize(6.5).bold().alignment('right')
+            .end,
+          new Txt(obj.municipio.padEnd(33, ' '))
+            .fontSize(6.5)
+            .lineHeight(1.2)
+            .background('#dedede').end,
+        ],
+        // fila 4
+        [
+          new Txt('EMPRESA:'.trim()).fontSize(6.5).bold().end,
+          new Txt(String(obj.empresa).trim().padEnd(35, ' '))
+            .fontSize(6.5)
+            .lineHeight(1.2)
+            .background('#dedede').end,
+          new Txt('FEC. NAC:').fontSize(6.5).bold().alignment('right').end,
+          new Txt(String(obj.fecha_nac).padEnd(20, ' '))
+            .fontSize(6.5)
+            .lineHeight(1.2)
+            .background('#dedede').end,
+          new Txt('DIRECCION:'.trim()).fontSize(6.5).bold().alignment('right')
+            .end,
+          new Txt(String(obj.direccion).trim().padEnd(33, ' '))
+            .fontSize(6.5)
+            .lineHeight(1.2)
+            .background('#dedede').end,
+        ],
+        // fila 5
+        [
+          new Txt('DIAGNOSTICO:'.trim()).fontSize(6.5).bold().end,
+          new Cell(
+            new Txt(String(obj.diagnostico).trim().padEnd(80, ' '))
+              .fontSize(6.5)
+              .lineHeight(1.2)
+              .background('#dedede').end
+          ).colSpan(5).end,
+        ],
+      ])
+        .widths([60, 120, 40, 80, 80, 90])
+        .layout({
+          hLineWidth: function (i, node) {
+            return i === 0 || i === node.table.body.length ? 0.3 : 0;
+          },
+          vLineWidth: function (i, node) {
+            return i === 0 || i === node.table.widths.length ? 0.3 : 0;
+          },
+          hLineColor: function (i, node) {
+            return i === 0 || i === node.table.body.length ? 'gray' : 'white';
+          },
+          vLineColor: function (i, node) {
+            return i === 0 || i === node.table.widths.length ? 'gray' : 'white';
+          },
+        }).end
+    );
+
+    pdf.add(new Txt('\n').end);
 
     for (const hist of this.historia) {
       if (hist.largo.length > 0) {

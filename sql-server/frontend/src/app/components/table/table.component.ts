@@ -309,6 +309,15 @@ export class TableComponent implements OnInit {
       };
     });
 
+    pdf.footer((currentPage, pageCount) => {
+      const page =
+        'Pagina No:        ' + currentPage.toString() + ' de ' + pageCount;
+      return {
+        text: [new Txt(page).fontSize(6.5).alignment('left').end],
+        margin: [50, 15, 0, 0],
+      };
+    });
+
     // TODO: obj
     const obj = {
       nombre_paciente:

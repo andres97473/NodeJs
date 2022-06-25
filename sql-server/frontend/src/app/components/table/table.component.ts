@@ -2,14 +2,7 @@ import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { HistoriasService } from '../../services/historias.service';
 import { HistoriaI } from '../../interface/historia';
 
-import {
-  PdfMakeWrapper,
-  Txt,
-  Canvas,
-  Rect,
-  Columns,
-  Table,
-} from 'pdfmake-wrapper';
+import { PdfMakeWrapper, Txt, Canvas, Rect, Table } from 'pdfmake-wrapper';
 
 // declare fonts
 //import * as pdfFonts from 'pdfmake/build/vfs_fonts';

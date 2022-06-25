@@ -1,0 +1,156 @@
+[
+  {
+    "Codigo": -1500,
+    "Nombre": " URGENCIAS.",
+    "Usuario": "JORGE",
+    "Fecha_Dig": "2014-07-03T08:47:01.000Z",
+    "grupo_especial": 1
+  },
+  {
+    "Codigo": 100,
+    "Nombre": "MEDICO GENERAL",
+    "Usuario": "JORGE",
+    "Fecha_Dig": "2001-09-26T00:00:00.000Z",
+    "grupo_especial": 1
+  },
+  {
+    "Codigo": 101,
+    "Nombre": "BACTERIOLOGO (A)  PROFESIONAL",
+    "Usuario": "EIMAR",
+    "Fecha_Dig": "2018-08-15T08:24:00.000Z",
+    "grupo_especial": 1
+  },
+  {
+    "Codigo": 102,
+    "Nombre": "RADIOLOGIA",
+    "Usuario": "JORGE",
+    "Fecha_Dig": "2001-09-26T15:56:36.000Z",
+    "grupo_especial": 1
+  },
+  {
+    "Codigo": 103,
+    "Nombre": "ENFERMERA PROFESIONAL",
+    "Usuario": "JORGE",
+    "Fecha_Dig": "2014-07-14T09:17:00.000Z",
+    "grupo_especial": 1
+  },
+  {
+    "Codigo": 104,
+    "Nombre": "ENFERMERA AUXILIAR",
+    "Usuario": "JORGE",
+    "Fecha_Dig": "2014-08-08T11:29:00.000Z",
+    "grupo_especial": 1
+  },
+  {
+    "Codigo": 105,
+    "Nombre": "ODONTOLOGIA",
+    "Usuario": "JORGE",
+    "Fecha_Dig": "2014-07-14T09:16:00.000Z",
+    "grupo_especial": 1
+  },
+  {
+    "Codigo": 106,
+    "Nombre": "HIGIENISTA",
+    "Usuario": "NANCY",
+    "Fecha_Dig": "2005-04-30T08:56:01.000Z",
+    "grupo_especial": 1
+  },
+  {
+    "Codigo": 107,
+    "Nombre": "ORDEN EMPRESA",
+    "Usuario": "IVAN",
+    "Fecha_Dig": "2005-03-08T10:53:23.000Z",
+    "grupo_especial": 1
+  },
+  {
+    "Codigo": 108,
+    "Nombre": "GINECOLOGIA",
+    "Usuario": "IVAN",
+    "Fecha_Dig": "2006-06-04T08:38:28.000Z",
+    "grupo_especial": 1
+  },
+  {
+    "Codigo": 109,
+    "Nombre": "PEDIATRIA",
+    "Usuario": "IVAN",
+    "Fecha_Dig": "2006-06-04T08:38:34.000Z",
+    "grupo_especial": 1
+  },
+  {
+    "Codigo": 110,
+    "Nombre": "MEDICO SSO",
+    "Usuario": "MONICA",
+    "Fecha_Dig": "2009-02-24T12:50:06.000Z",
+    "grupo_especial": 1
+  },
+  {
+    "Codigo": 111,
+    "Nombre": "REGENTE",
+    "Usuario": "IVAN",
+    "Fecha_Dig": "2005-07-19T08:01:09.000Z",
+    "grupo_especial": 1
+  },
+  {
+    "Codigo": 112,
+    "Nombre": "ENFERMERA  SSO",
+    "Usuario": "MONICA",
+    "Fecha_Dig": "2009-02-24T12:50:17.000Z",
+    "grupo_especial": 1
+  },
+  {
+    "Codigo": 113,
+    "Nombre": "TRAUMATOLOGIA",
+    "Usuario": "IVAN",
+    "Fecha_Dig": "2006-06-04T08:37:27.000Z",
+    "grupo_especial": 1
+  },
+  {
+    "Codigo": 114,
+    "Nombre": "MEDICINA INTERNA",
+    "Usuario": "IVAN",
+    "Fecha_Dig": "2006-06-04T08:38:00.000Z",
+    "grupo_especial": 1
+  },
+  {
+    "Codigo": 115,
+    "Nombre": "SPIQUIATRIA",
+    "Usuario": "IVAN",
+    "Fecha_Dig": "2006-06-15T13:39:51.000Z",
+    "grupo_especial": 1
+  },
+  {
+    "Codigo": 116,
+    "Nombre": "NEUROLOGIA",
+    "Usuario": "IVAN",
+    "Fecha_Dig": "2006-07-10T14:00:46.000Z",
+    "grupo_especial": 1
+  },
+  {
+    "Codigo": 117,
+    "Nombre": "CIRUGIA GENERAL",
+    "Usuario": "IVAN",
+    "Fecha_Dig": "2006-07-16T09:53:18.000Z",
+    "grupo_especial": 1
+  },
+  {
+    "Codigo": 118,
+    "Nombre": "OFTALMOLOGIA",
+    "Usuario": "IVAN",
+    "Fecha_Dig": "2006-08-22T10:09:35.000Z",
+    "grupo_especial": 1
+  },
+  {
+    "Codigo": 119,
+    "Nombre": "PSICOLOGO PROFESIONAL",
+    "Usuario": "DANIEL",
+    "Fecha_Dig": "2014-07-03T09:13:00.000Z",
+    "grupo_especial": 1
+  },
+  {
+    "Codigo": 120,
+    "Nombre": "AUXILIAR ADMINISTRATIVA",
+    "Usuario": "JORGE",
+    "Fecha_Dig": "2016-09-01T08:07:00.000Z",
+    "grupo_especial": 5
+  }
+]

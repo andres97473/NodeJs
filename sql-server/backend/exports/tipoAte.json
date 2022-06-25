@@ -1,0 +1,32 @@
+[
+  {
+    "codigo": 1,
+    "nombre": "AMBULATORIO",
+    "Usuario": "JORGE",
+    "Fecha_Dig": "2010-07-12T11:27:27.000Z"
+  },
+  {
+    "codigo": 2,
+    "nombre": "HOSPITALIZADO",
+    "Usuario": "JORGE",
+    "Fecha_Dig": "2010-07-12T11:27:29.000Z"
+  },
+  {
+    "codigo": 3,
+    "nombre": "URGENCIAS",
+    "Usuario": "GABY",
+    "Fecha_Dig": "2003-10-16T09:20:26.000Z"
+  },
+  {
+    "codigo": 4,
+    "nombre": "AGUDEZA VISUAL",
+    "Usuario": "EDISONG",
+    "Fecha_Dig": "2014-07-11T14:27:00.000Z"
+  },
+  {
+    "codigo": 5,
+    "nombre": "JOVEN",
+    "Usuario": "EDISONG",
+    "Fecha_Dig": "2014-07-14T12:40:37.000Z"
+  }
+]

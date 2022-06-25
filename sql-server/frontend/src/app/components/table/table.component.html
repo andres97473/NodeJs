@@ -80,14 +80,14 @@
               <th mat-header-cell *matHeaderCellDef>Profesional</th>
               <td mat-cell *matCellDef="let row">
                 {{ row.md_apellido1 }} {{ row.md_apellido2 }}
-                {{ row.md_nombre1 }} {{ row.md_nombr2 }}
+                {{ row.md_nombre1 }} {{ row.md_nombre2 }}
               </td>
             </ng-container>
 
             <ng-container matColumnDef="especialidad_historia">
               <th mat-header-cell *matHeaderCellDef>Especialidad</th>
               <td mat-cell *matCellDef="let row">
-                {{ row.anulado == -1 ? "ANULADO" : row.especialidad_historia }}
+                {{ row.anulado == -1 ? "ANULADO" : row.md_especialidad }}
               </td>
             </ng-container>
 

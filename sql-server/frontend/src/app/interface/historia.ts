@@ -12,7 +12,8 @@ export interface HistoriaI {
   md_apellido1?: string;
   md_apellido2?: string;
   md_nombre1?: string;
-  md_nombr2?: string;
+  md_nombre2?: string;
+  md_especialidad?: number;
   texto01?: string;
   texto02?: string;
   texto03?: string;

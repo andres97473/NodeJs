@@ -12,6 +12,10 @@
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^4.18.1",
+    "mdb-reader": "^2.2.4",
     "rest-mssql-nodejs": "^1.0.10"
+  },
+  "devDependencies": {
+    "@types/node": "^18.0.0"
   }
 }

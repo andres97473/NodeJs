@@ -477,7 +477,6 @@ export class TableComponent implements OnInit {
     }
 
     pdf.create().open();
-    console.log(this.calcularEdad(obj.fecha_nac, obj.fecha_dig));
   }
 
   calcularEdad(fecha_inicio, fecha_fin) {

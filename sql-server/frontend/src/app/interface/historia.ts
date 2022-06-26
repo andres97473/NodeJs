@@ -5,21 +5,25 @@ export interface HistoriaI {
   ap_nombre1?: string;
   ap_nombre2?: string;
   barrio_nombre?: string;
-  cama?: string;
+  cama?: string | null;
+  contador?: number;
   direccion_archivo?: null | string;
   direccion?: string;
   empresa_nombre?: string;
   especialidad_historia?: number;
   estado_folio?: number;
   etiqueta?: number;
-  fecha_dig?: Date;
+  fecha_dig?: string;
   fecha_nac?: Date;
   identificacion?: string;
   md_apellido1?: string;
   md_apellido2?: string;
+  md_codigo?: number;
   md_especialidad?: number;
+  md_identificacion?: string;
   md_nombre1?: string;
   md_nombre2?: string;
+  md_reg_medico?: string;
   migra?: number;
   municipio?: number;
   no_factura?: number;
@@ -37,5 +41,4 @@ export interface HistoriaI {
   texto03?: string;
   tipo_atencion?: number;
   usuario?: string;
-  contador?: number;
 }

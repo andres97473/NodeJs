@@ -9,8 +9,10 @@ import {
   Rect,
   Table,
   Cell,
+  Columns,
+  Img,
 } from 'pdfmake-wrapper';
-import { ITable } from 'pdfmake-wrapper/lib/interfaces';
+import { ITable, IImg, IText } from 'pdfmake-wrapper/lib/interfaces';
 
 // declare fonts
 //import * as pdfFonts from 'pdfmake/build/vfs_fonts';
@@ -272,7 +274,7 @@ export class TableComponent implements OnInit {
 
   // TODO: Generar pdf
 
-  generarPdf() {
+  async generarPdf() {
     const colorFondo = '#f0f0f0';
     const pdf = new PdfMakeWrapper();
 
@@ -303,6 +305,7 @@ export class TableComponent implements OnInit {
             .fontSize(6.5)
             .alignment('right').end,
         ],
+
         // alignment: 'center',
         // style: 'header',
         margin: [40, 20, 40, 5],
@@ -328,6 +331,15 @@ export class TableComponent implements OnInit {
         this.selectedRow.ap_nombre1.trim() +
         ' ' +
         this.selectedRow.ap_nombre2.trim(),
+      nombre_medico:
+        this.selectedRow.md_apellido1.trim() +
+        ' ' +
+        this.selectedRow.md_apellido2.trim() +
+        ' ' +
+        this.selectedRow.md_nombre1.trim() +
+        ' ' +
+        this.selectedRow.md_nombre2.trim(),
+      reg_medico: this.selectedRow.md_reg_medico,
       fecha_dig: this.selectedRow.fecha_dig,
       fecha_nac: this.selectedRow.fecha_nac,
       edad: this.calcularEdad(
@@ -485,6 +497,73 @@ export class TableComponent implements OnInit {
       }
     }
 
+    // lineas
+    pdf.add([
+      new Canvas([new Rect([0, 0], [515, 0.3]).color('black').end]).end,
+      new Canvas([new Rect([0, 0], [515, 0.3]).color('black').end]).margin([
+        0, 2, 0, 0,
+      ]).end,
+    ]);
+
+    // firmas
+    pdf.add(
+      new Columns([
+        await new Img('assets/firmas/merling.png')
+          .width(120)
+          .margin([50, 4, 0, 0])
+          .build(),
+        new Txt('').end,
+      ]).end
+    );
+    pdf.add(
+      new Columns([
+        new Txt('_________________________________').end,
+        new Txt('_________________________________').alignment('center').end,
+      ]).end
+    );
+
+    pdf.add(
+      new Columns([
+        new Columns([
+          new Txt('MEDICO:').fontSize(6.5).bold().width(60).margin([0, 3, 0, 0])
+            .end,
+          new Table([[new Txt(obj.nombre_medico).fontSize(6.5).end]])
+            .widths([160])
+            .layout({
+              hLineColor: function () {
+                return 'gray';
+              },
+              vLineColor: function () {
+                return 'gray';
+              },
+            }).end,
+        ]).end,
+        new Txt('FIRMA PACIENTE:').fontSize(6.5).bold().alignment('center').end,
+      ]).end
+    );
+    pdf.add(
+      new Columns([
+        new Columns([
+          new Txt('REG MEDICO:')
+            .fontSize(6.5)
+            .bold()
+            .width(60)
+            .margin([0, 3, 0, 0]).end,
+          new Table([[new Txt(obj.reg_medico).fontSize(6.5).end]])
+            .widths([120])
+            .layout({
+              hLineColor: function () {
+                return 'gray';
+              },
+              vLineColor: function () {
+                return 'gray';
+              },
+            }).end,
+        ]).end,
+        new Txt('').end,
+      ]).end
+    );
+
     pdf.create().open();
   }
 
@@ -499,5 +578,18 @@ export class TableComponent implements OnInit {
     }
 
     return edad + ' Años';
+  }
+
+  // prueba de imagen
+  async pruebaPdf() {
+    const pdf = new PdfMakeWrapper();
+
+    const imagen: IImg = await new Img('assets/firmas/merling.png')
+      .width(100)
+      .build();
+
+    pdf.add(imagen);
+
+    pdf.create().open();
   }
 }

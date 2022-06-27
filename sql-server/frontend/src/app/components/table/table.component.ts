@@ -60,6 +60,7 @@ export class TableComponent implements OnInit {
   historia: any[] = [];
   diagnostico = '';
   diagnosticoHist = 'Sin Diagnostico';
+  paciente = {};
 
   texto1: string[] = [];
   texto2: string[] = [];
@@ -77,6 +78,9 @@ export class TableComponent implements OnInit {
     this.historiasService.getHistorias().subscribe((data: any) => {
       const nData = data.resultado[0];
       this.dataSource = nData;
+      console.log(this.dataSource);
+      this.paciente = nData[0];
+      console.log(this.paciente);
     });
 
     // this.historiasService.getCodigos().subscribe((data: any) => {

@@ -2,6 +2,8 @@ import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { HistoriasService } from '../../services/historias.service';
 import { HistoriaI } from '../../interface/historia';
 
+import { MatIconModule } from '@angular/material/icon';
+
 import {
   PdfMakeWrapper,
   Txt,

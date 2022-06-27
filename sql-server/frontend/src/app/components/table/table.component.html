@@ -38,8 +38,13 @@
               </div>
             </div>
             <div class="col-md-2">
-              <button (click)="generarPdf()" [disabled]="historia.length == 0">
-                Generar Pdf
+              <button
+                type="button"
+                class="btn btn-outline-danger"
+                (click)="generarPdf()"
+                [disabled]="historia.length == 0"
+              >
+                Imprimir Historia<mat-icon>picture_as_pdf</mat-icon>
               </button>
             </div>
           </div>

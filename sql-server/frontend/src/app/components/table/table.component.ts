@@ -59,7 +59,7 @@ export class TableComponent implements OnInit {
 
   historia: any[] = [];
   diagnostico = '';
-  diagnosticoHist = '';
+  diagnosticoHist = 'Sin Diagnostico';
 
   texto1: string[] = [];
   texto2: string[] = [];

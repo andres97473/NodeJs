@@ -3,15 +3,20 @@
     <div class="col">
       <div class="card">
         <div class="card-body">
-          <div>
-            <span class="badge bg-secondary">HISTORIA</span>
+          <div class="row">
+            <div class="col-md-10">
+              <!-- <span class="badge bg-secondary">HISTORIA</span>
 
-            {{ selectedRow.no_historia }}
-            <br />
-            <button (click)="generarPdf()" [disabled]="historia.length == 0">
-              Generar Pdf
-            </button>
+              {{ selectedRow.no_historia }} -->
+              <div class="container">x</div>
+            </div>
+            <div class="col-md-2">
+              <button (click)="generarPdf()" [disabled]="historia.length == 0">
+                Generar Pdf
+              </button>
+            </div>
           </div>
+          <div></div>
         </div>
       </div>
     </div>

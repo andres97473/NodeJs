@@ -2,6 +2,8 @@ import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { HistoriasService } from '../../services/historias.service';
 import { HistoriaI } from '../../interface/historia';
 
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+
 import { MatIconModule } from '@angular/material/icon';
 
 import {
@@ -86,14 +88,84 @@ export class TableComponent implements OnInit {
     texto03: '',
   };
 
-  constructor(private historiasService: HistoriasService) {}
+  // Formulario
+  pacienteForm: FormGroup;
+
+  constructor(
+    private historiasService: HistoriasService,
+    private fb: FormBuilder
+  ) {}
+
+  iniciarFormulario() {
+    this.pacienteForm = this.fb.group({
+      inputHistoria: ['', Validators.required],
+    });
+  }
+
+  // onSubmit(): void {
+  //   console.log(this.pacienteForm.value);
+  // }
 
   buscarPaciente() {
+    const historia = this.pacienteForm.value.inputHistoria;
+    console.log(historia);
+
+    this.historia = [];
+    this.selectedRow = {};
+
+    // buscar historia por numero de historia
+
+    this.dataSource = [];
+    this.historiasService
+      .getHistoriasPaciente(historia)
+      .subscribe((data: any) => {
+        const nData = data.resultado.data[0];
+        this.dataSource = nData;
+        // console.log(this.dataSource);
+        const nPaciente = nData[0];
+        this.paciente = {
+          nombre_paciente:
+            nPaciente.ap_apellido1 +
+            ' ' +
+            nPaciente.ap_apellido2 +
+            ' ' +
+            nPaciente.ap_nombre1 +
+            ' ' +
+            nPaciente.ap_nombre2,
+          barrio_nombre: nPaciente.barrio_nombre,
+          direccion: nPaciente.direccion,
+          empresa_nombre: nPaciente.empresa_nombre,
+          fecha_nac: nPaciente.fecha_nac,
+          edad: nPaciente.fecha_nac,
+          identificacion: nPaciente.identificacion,
+          no_historia: nPaciente.no_historia,
+          sexo: nPaciente.sexo === 'M' ? 'Masculino' : 'Femenino',
+          telefono: nPaciente.telefono,
+        };
+        // console.log(this.paciente);
+      });
+
+    // this.historiasService.getCodigos().subscribe((data: any) => {
+    //   const nData = data.codigos[0];
+    //   this.dataApi = nData;
+
+    //   if (this.dataApi.length > 0) {
+    //     console.log(this.getCodigos(this.dataApi));
+    //   }
+    // });
+  }
+
+  buscarPaciente2() {
+    const historia = this.pacienteForm.value.inputHistoria;
+    console.log(historia);
+
+    // buscar historia por numero de historia
+
     this.dataSource = [];
     this.historiasService.getHistorias().subscribe((data: any) => {
       const nData = data.resultado[0];
       this.dataSource = nData;
-      console.log(this.dataSource);
+      // console.log(this.dataSource);
       const nPaciente = nData[0];
       this.paciente = {
         nombre_paciente:
@@ -114,7 +186,7 @@ export class TableComponent implements OnInit {
         sexo: nPaciente.sexo === 'M' ? 'Masculino' : 'Femenino',
         telefono: nPaciente.telefono,
       };
-      console.log(this.paciente);
+      // console.log(this.paciente);
     });
 
     // this.historiasService.getCodigos().subscribe((data: any) => {
@@ -127,7 +199,9 @@ export class TableComponent implements OnInit {
     // });
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.iniciarFormulario();
+  }
 
   // getCodigos(data: any) {
   //   const separadores = this.generarSeparadores();
@@ -637,4 +711,6 @@ export class TableComponent implements OnInit {
 
     pdf.create().open();
   }
+
+  enviarForm() {}
 }

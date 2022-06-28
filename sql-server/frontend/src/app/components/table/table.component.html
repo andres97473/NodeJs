@@ -9,7 +9,7 @@
                 <div class="col-md-10 fuente">
                   <div class="row">
                     <div class="col-md-4">
-                      <form>
+                      <form [formGroup]="pacienteForm">
                         <div class="form-group row">
                           <label
                             for="inputHistoria"
@@ -21,6 +21,7 @@
                               type="text"
                               class="form-control form-control-sm"
                               id="inputHistoria"
+                              formControlName="inputHistoria"
                               placeholder=""
                             />
                           </div>
@@ -29,6 +30,7 @@
                           type="button"
                           class="btn btn-primary btn-sm btn-lg btn-block w-100 mt-2"
                           (click)="buscarPaciente()"
+                          [disabled]="!pacienteForm.valid"
                         >
                           Buscar paciente
                         </button>

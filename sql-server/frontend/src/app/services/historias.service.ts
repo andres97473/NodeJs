@@ -12,6 +12,9 @@ export class HistoriasService {
   getHistorias() {
     return this.http.get(`${this.url}historias`);
   }
+  getHistoriasPaciente(historia: string) {
+    return this.http.get(`${this.url}historias/${historia}`);
+  }
 
   getCodigos() {
     return this.http.get(`${this.url}historias-codigos`);

@@ -14,6 +14,11 @@ input {
   font-size: 11px;
 }
 
+.card-titulo {
+  background-color: $titulo;
+  color: #fff;
+}
+
 .row-no-padding > [class*="col-"] {
   padding-left: 0 !important;
   padding-right: 0 !important;
@@ -38,8 +43,8 @@ input {
 
 .example-historia-container {
   position: relative;
-  min-height: 280px;
-  max-height: 280px;
+  min-height: 270px;
+  max-height: 270px;
   overflow: auto;
   font-size: 12px;
 }
@@ -52,8 +57,8 @@ input {
 .example-table-container {
   border: 1px solid rgb(180, 180, 180);
   position: relative;
-  min-height: 170px;
-  max-height: 170px;
+  min-height: 150px;
+  max-height: 150px;
   overflow: auto;
 }
 

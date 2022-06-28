@@ -216,6 +216,7 @@
               (click)="selectRow(row)"
               [class.demo-row-is-anulado]="row.anulado == -1"
               [class.demo-row-is-clicked]="selectedRow === row"
+              (dblclick)="generarPdf()"
             ></tr>
           </table>
         </div>

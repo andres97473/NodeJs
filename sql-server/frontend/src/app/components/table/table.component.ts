@@ -356,7 +356,12 @@ export class TableComponent implements OnInit {
       const page =
         'Pagina No:        ' + currentPage.toString() + ' de ' + pageCount;
       return {
-        text: [new Txt(page).fontSize(6.5).alignment('left').end],
+        text: [
+          new Txt(
+            '___________________________________________________________________________\n'
+          ).end,
+          new Txt(page).fontSize(6.5).alignment('left').end,
+        ],
         margin: [50, 15, 0, 0],
       };
     });

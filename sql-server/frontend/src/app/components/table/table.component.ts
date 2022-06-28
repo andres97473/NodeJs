@@ -21,6 +21,7 @@ import { ITable, IImg, IText } from 'pdfmake-wrapper/lib/interfaces';
 
 // ignorar el error
 import * as pdfFonts from '../../../assets/fonts/custom-fonts.js';
+import { PacienteI } from '../../interface/paciente';
 
 // Set the fonts to use
 PdfMakeWrapper.setFonts(pdfFonts, {
@@ -62,7 +63,18 @@ export class TableComponent implements OnInit {
   historia: any[] = [];
   diagnostico = '';
   diagnosticoHist = 'Sin Diagnostico';
-  paciente = {};
+  paciente: PacienteI = {
+    nombre_paciente: '',
+    barrio_nombre: '',
+    direccion: '',
+    empresa_nombre: '',
+    fecha_nac: '',
+    edad: '',
+    identificacion: '',
+    no_historia: '',
+    sexo: '',
+    telefono: '',
+  };
 
   texto1: string[] = [];
   texto2: string[] = [];
@@ -76,12 +88,32 @@ export class TableComponent implements OnInit {
 
   constructor(private historiasService: HistoriasService) {}
 
-  ngOnInit(): void {
+  buscarPaciente() {
+    this.dataSource = [];
     this.historiasService.getHistorias().subscribe((data: any) => {
       const nData = data.resultado[0];
       this.dataSource = nData;
       console.log(this.dataSource);
-      this.paciente = nData[0];
+      const nPaciente = nData[0];
+      this.paciente = {
+        nombre_paciente:
+          nPaciente.ap_apellido1 +
+          ' ' +
+          nPaciente.ap_apellido2 +
+          ' ' +
+          nPaciente.ap_nombre1 +
+          ' ' +
+          nPaciente.ap_nombre2,
+        barrio_nombre: nPaciente.barrio_nombre,
+        direccion: nPaciente.direccion,
+        empresa_nombre: nPaciente.empresa_nombre,
+        fecha_nac: nPaciente.fecha_nac,
+        edad: nPaciente.fecha_nac,
+        identificacion: nPaciente.identificacion,
+        no_historia: nPaciente.no_historia,
+        sexo: nPaciente.sexo === 'M' ? 'Masculino' : 'Femenino',
+        telefono: nPaciente.telefono,
+      };
       console.log(this.paciente);
     });
 
@@ -94,6 +126,8 @@ export class TableComponent implements OnInit {
     //   }
     // });
   }
+
+  ngOnInit(): void {}
 
   // getCodigos(data: any) {
   //   const separadores = this.generarSeparadores();

@@ -10,14 +10,36 @@ div {
   white-space: pre-line;
 }
 
+input {
+  font-size: 11px;
+}
+
+.row-no-padding > [class*="col-"] {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+.fuente {
+  font-size: 12px !important;
+  height: 14px !important;
+}
+.input-texto {
+  background-color: #b9d9ca;
+}
+
 .example-container {
   position: relative;
 }
 
+.example-container-paciente {
+  min-height: 80px;
+  max-height: 80px;
+}
+
 .example-historia-container {
   position: relative;
-  min-height: 300px;
-  max-height: 300px;
+  min-height: 280px;
+  max-height: 280px;
   overflow: auto;
   font-size: 12px;
 }
@@ -28,9 +50,7 @@ div {
 }
 
 .example-table-container {
-  border-top: 1px solid rgb(180, 180, 180);
-  border-bottom: 1px solid rgb(180, 180, 180);
-  border-right: 1px solid rgb(180, 180, 180);
+  border: 1px solid rgb(180, 180, 180);
   position: relative;
   min-height: 170px;
   max-height: 170px;

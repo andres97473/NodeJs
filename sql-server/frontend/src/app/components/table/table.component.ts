@@ -109,7 +109,7 @@ export class TableComponent implements OnInit {
 
   buscarPaciente() {
     const historia = this.pacienteForm.value.inputHistoria;
-    console.log(historia);
+    // console.log(historia);
 
     this.historia = [];
     this.selectedRow = {};
@@ -275,14 +275,12 @@ export class TableComponent implements OnInit {
     this.selectedRow = row;
     console.log(this.selectedRow);
 
-    // TODO: firma historia leer archivo para verificar si existe
-
     // this.firma_ruta = 'assets/Firmas/MED' + this.selectedRow.md_codigo + '.bmp';
 
     this.setUrlImagen('assets/Firmas/MED' + this.selectedRow.md_codigo + '.bmp')
       .then((data) => {
         this.firma_ruta = data;
-        console.log(this.firma_ruta);
+        // console.log(this.firma_ruta);
       })
       .catch((err) => {
         console.log(err);
@@ -300,10 +298,10 @@ export class TableComponent implements OnInit {
     //   const txt2 = this.splitString(this.selectedRow.texto02, separadores);
     //   this.texto2 = txt2;
     // }
-    console.log(this.historia);
+    // console.log(this.historia);
 
     for (const iterator of this.texto1) {
-      console.log(this.convertirString(iterator));
+      // console.log(this.convertirString(iterator));
       this.historia.push(this.convertirString(iterator));
     }
 
@@ -316,7 +314,7 @@ export class TableComponent implements OnInit {
       // console.log(nDX[0].trim());
       this.diagnosticoHist = nDX[0].trim();
     }
-    console.log(this.diagnosticoHist);
+    // console.log(this.diagnosticoHist);
     this.historia = this.historia.filter((h) => h.id != '-900');
   }
 

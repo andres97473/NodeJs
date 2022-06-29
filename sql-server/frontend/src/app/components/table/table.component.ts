@@ -116,9 +116,9 @@ export class TableComponent implements OnInit {
     // buscar historia por numero de historia
 
     this.dataSource = [];
-    this.historiasService
-      .getHistoriasPaciente(historia)
-      .subscribe((data: any) => {
+
+    this.historiasService.getHistoriasPaciente(historia).subscribe(
+      (data: any) => {
         const nData = data.resultado.data[0];
         this.dataSource = nData;
         // console.log(this.dataSource);
@@ -143,7 +143,11 @@ export class TableComponent implements OnInit {
           telefono: nPaciente.telefono,
         };
         // console.log(this.paciente);
-      });
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
 
     // this.historiasService.getCodigos().subscribe((data: any) => {
     //   const nData = data.codigos[0];

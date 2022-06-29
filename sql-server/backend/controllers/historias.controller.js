@@ -58,7 +58,7 @@ class HistoriaController {
       ,hm.texto02
       ,hm.texto03
       ,hm.usuario
-      ,convert(varchar(10),hm.fecha_dig,101) + stuff(right(convert(varchar(20),hm.fecha_dig,100),8),7,0,' ') as fecha_dig
+      ,convert(varchar(10),hm.fecha_dig,23) + stuff(right(convert(varchar(20),hm.fecha_dig,100),8),7,0,' ') as fecha_dig
       ,hm.anulado
       ,hm.estado_folio
       ,hm.parametros
@@ -85,10 +85,10 @@ class HistoriaController {
       left JOIN empresa as em ON( em.Codigo = ap.empresa)
       left JOIN a_hist_reg_adjuntos as adj ON(adj.num_orden = hm.num_orden)  
       where hm.no_historia=${historia} 
-      order by num_orden desc`
+      order by convert(varchar(10),hm.fecha_dig,23) + stuff(right(convert(varchar(20),hm.fecha_dig,100),8),7,0,' ') desc`
       );
 
-      console.log(resultado);
+      // console.log(resultado);
 
       res.json({ historia, resultado });
     } catch (error) {

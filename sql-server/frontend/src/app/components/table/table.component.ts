@@ -1,7 +1,6 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { HistoriasService } from '../../services/historias.service';
 import { HistoriaI } from '../../interface/historia';
-import * as fs from 'file-system';
 
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
@@ -278,9 +277,18 @@ export class TableComponent implements OnInit {
 
     // TODO: firma historia leer archivo para verificar si existe
 
-    this.firma_ruta = 'assets/Firmas/MED' + this.selectedRow.md_codigo + '.bmp';
+    // this.firma_ruta = 'assets/Firmas/MED' + this.selectedRow.md_codigo + '.bmp';
 
-    console.log(this.firma_ruta);
+    this.setUrlImagen('assets/Firmas/MED' + this.selectedRow.md_codigo + '.bmp')
+      .then((data) => {
+        this.firma_ruta = data;
+        console.log(this.firma_ruta);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
+    // console.log(this.firma_ruta);
 
     if (this.selectedRow.texto01) {
       const txt1 = this.splitString(this.selectedRow.texto01, separadores);
@@ -710,16 +718,43 @@ export class TableComponent implements OnInit {
   }
 
   // prueba de imagen
-  async pruebaPdf() {
+  async pruebaPdf(): Promise<string> {
     const pdf = new PdfMakeWrapper();
 
-    const imagen: IImg = await new Img('assets/firmas/merling.png')
-      .width(100)
-      .build();
+    try {
+      const imagen: IImg = await new Img(this.firma_ruta).width(100).build();
 
-    pdf.add(imagen);
+      pdf.add(imagen);
 
-    pdf.create().open();
+      pdf.create().open();
+      return this.firma_ruta;
+    } catch (error) {
+      console.log(error);
+      const imagen: IImg = await new Img('assets/Firmas/firma.png')
+        .width(100)
+        .build();
+
+      pdf.add(imagen);
+
+      pdf.create().open();
+      return 'assets/Firmas/firma.png';
+    }
+  }
+
+  // set url imagen
+  async setUrlImagen(url: string) {
+    const pdf = new PdfMakeWrapper();
+    let ruta = 'assets/Firmas/firma.png';
+
+    try {
+      const imagen: IImg = await new Img(url).width(100).build();
+
+      ruta = url;
+    } catch (error) {
+      console.log(error);
+      ruta = 'assets/Firmas/firma.png';
+    }
+    return ruta;
   }
 
   enviarForm() {}

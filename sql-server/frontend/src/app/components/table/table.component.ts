@@ -65,6 +65,7 @@ export class TableComponent implements OnInit {
   historia: any[] = [];
   diagnostico = '';
   diagnosticoHist = 'Sin Diagnostico';
+  firma_ruta = 'assets/Firmas/firma.png';
   paciente: PacienteI = {
     nombre_paciente: '',
     barrio_nombre: '',
@@ -274,6 +275,11 @@ export class TableComponent implements OnInit {
     this.selectedRow = row;
     console.log(this.selectedRow);
 
+    // TODO: firma historia
+    this.firma_ruta = 'assets/Firmas/MED' + this.selectedRow.md_codigo + '.bmp';
+
+    console.log(this.firma_ruta);
+
     if (this.selectedRow.texto01) {
       const txt1 = this.splitString(this.selectedRow.texto01, separadores);
 
@@ -284,6 +290,7 @@ export class TableComponent implements OnInit {
     //   const txt2 = this.splitString(this.selectedRow.texto02, separadores);
     //   this.texto2 = txt2;
     // }
+    console.log(this.historia);
 
     for (const iterator of this.texto1) {
       console.log(this.convertirString(iterator));
@@ -631,10 +638,7 @@ export class TableComponent implements OnInit {
     // firmas
     pdf.add(
       new Columns([
-        await new Img('assets/firmas/merling.png')
-          .width(120)
-          .margin([50, 4, 0, 0])
-          .build(),
+        await new Img(this.firma_ruta).width(120).margin([50, 4, 0, 0]).build(),
         new Txt('').end,
       ]).end
     );

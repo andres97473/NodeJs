@@ -95,6 +95,18 @@ class HistoriaController {
       res.json({ error: "Error de conexion" });
     }
   }
+  async getFirmas(req, res) {
+    // definir ruta de archivo
+    console.log(req.body);
+    // console.log(req.params.name1);
+    const { file, path } = req.body;
+    const archivo = file;
+    const path_archivo = path;
+    const ruta = path_archivo + archivo;
+
+    res.setHeader("Content-Disposition", `attachment; filename=${archivo}`);
+    return res.sendFile(ruta);
+  }
 }
 
 module.exports = new HistoriaController();

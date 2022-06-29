@@ -19,4 +19,10 @@ export class HistoriasService {
   getCodigos() {
     return this.http.get(`${this.url}historias-codigos`);
   }
+
+  postFirmas(file: any) {
+    return this.http.post(`${this.url}historias-firmas`, file, {
+      headers: { 'Content-Type': 'application/json' },
+    });
+  }
 }

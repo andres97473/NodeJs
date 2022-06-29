@@ -66,6 +66,10 @@ export class TableComponent implements OnInit {
   diagnostico = '';
   diagnosticoHist = 'Sin Diagnostico';
   firma_ruta = 'assets/Firmas/firma.png';
+
+  documento_ruta =
+    '../../../../../../../infosalud_sql/base_info/Img_Info/2018/08/9221-1088219367.pdf';
+
   paciente: PacienteI = {
     nombre_paciente: '',
     barrio_nombre: '',
@@ -263,6 +267,8 @@ export class TableComponent implements OnInit {
   }
 
   selectRow(row: HistoriaI) {
+    // archivo
+
     const separadores = this.generarSeparadores();
     // console.log(separadores);
 
@@ -316,6 +322,19 @@ export class TableComponent implements OnInit {
     }
     // console.log(this.diagnosticoHist);
     this.historia = this.historia.filter((h) => h.id != '-900');
+  }
+
+  getFiles() {
+    const archivo = {
+      file: '9221-1088219367.pdf',
+      path: 'D:/Infosalud_sql/base_info/Img_Info/2018/08/',
+    };
+
+    const getArchivo = this.historiasService
+      .postFirmas(archivo)
+      .subscribe((resp) => {
+        console.log(resp);
+      });
   }
 
   splitString(string: string, separator: any = ' ') {

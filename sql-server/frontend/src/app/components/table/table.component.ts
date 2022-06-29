@@ -1,6 +1,7 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { HistoriasService } from '../../services/historias.service';
 import { HistoriaI } from '../../interface/historia';
+import * as fs from 'file-system';
 
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
@@ -275,7 +276,8 @@ export class TableComponent implements OnInit {
     this.selectedRow = row;
     console.log(this.selectedRow);
 
-    // TODO: firma historia
+    // TODO: firma historia leer archivo para verificar si existe
+
     this.firma_ruta = 'assets/Firmas/MED' + this.selectedRow.md_codigo + '.bmp';
 
     console.log(this.firma_ruta);

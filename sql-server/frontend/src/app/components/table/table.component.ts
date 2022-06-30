@@ -67,8 +67,7 @@ export class TableComponent implements OnInit {
   diagnosticoHist = 'Sin Diagnostico';
   firma_ruta = 'assets/Firmas/firma.png';
 
-  documento_ruta =
-    '../../../../../../../infosalud_sql/base_info/Img_Info/2018/08/9221-1088219367.pdf';
+  documento_ruta = null;
 
   paciente: PacienteI = {
     nombre_paciente: '',
@@ -279,7 +278,11 @@ export class TableComponent implements OnInit {
 
     this.historia = [];
     this.selectedRow = row;
+
+    this.documento_ruta = row.direccion_archivo;
+
     console.log(this.selectedRow);
+    console.log(this.selectedRow.direccion_archivo);
 
     // this.firma_ruta = 'assets/Firmas/MED' + this.selectedRow.md_codigo + '.bmp';
 

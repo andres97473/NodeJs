@@ -327,14 +327,18 @@ export class TableComponent implements OnInit {
   getFiles() {
     const archivo = {
       file: '9221-1088219367.pdf',
+      // file: 'bart.jpg',
       path: 'D:/Infosalud_sql/base_info/Img_Info/2018/08/',
     };
 
-    const getArchivo = this.historiasService
-      .postFirmas(archivo)
-      .subscribe((resp) => {
-        console.log(resp);
-      });
+    this.historiasService.postFirmas(archivo).subscribe((response) => {
+      let fileName = archivo.file;
+      let blob: Blob = response.body as Blob;
+      let a = document.createElement('a');
+      a.download = fileName;
+      a.href = window.URL.createObjectURL(blob);
+      a.click();
+    });
   }
 
   splitString(string: string, separator: any = ' ') {

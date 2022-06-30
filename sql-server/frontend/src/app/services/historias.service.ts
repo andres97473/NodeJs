@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 @Injectable({
@@ -22,7 +22,9 @@ export class HistoriasService {
 
   postFirmas(file: any) {
     return this.http.post(`${this.url}historias-firmas`, file, {
-      headers: { 'Content-Type': 'application/json' },
+      responseType: 'blob',
+      observe: 'response',
+      headers: new HttpHeaders().append('Content-Type', 'application/json'),
     });
   }
 }

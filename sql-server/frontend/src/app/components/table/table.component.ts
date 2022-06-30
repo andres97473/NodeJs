@@ -329,8 +329,8 @@ export class TableComponent implements OnInit {
 
   getFiles() {
     const archivo = {
-      file: '9221-1088219367.pdf',
-      // file: 'bart.jpg',
+      // file: '9221-1088219367.pdf',
+      file: 'bart.jpg',
       path: 'D:/Infosalud_sql/base_info/Img_Info/2018/08/',
     };
 
@@ -338,8 +338,9 @@ export class TableComponent implements OnInit {
       let fileName = archivo.file;
       let blob: Blob = response.body as Blob;
       let a = document.createElement('a');
-      a.download = fileName;
+      a.target = '_blank';
       a.href = window.URL.createObjectURL(blob);
+
       a.click();
     });
   }

@@ -165,7 +165,7 @@ export class TableComponent implements OnInit {
 
   buscarPaciente2() {
     const historia = this.pacienteForm.value.inputHistoria;
-    console.log(historia);
+    // console.log(historia);
 
     // buscar historia por numero de historia
 
@@ -282,7 +282,7 @@ export class TableComponent implements OnInit {
     this.documento_ruta = row.direccion_archivo;
 
     console.log(this.selectedRow);
-    console.log(this.selectedRow.direccion_archivo);
+    // console.log(this.selectedRow.direccion_archivo);
 
     // this.firma_ruta = 'assets/Firmas/MED' + this.selectedRow.md_codigo + '.bmp';
 
@@ -776,7 +776,7 @@ export class TableComponent implements OnInit {
 
       ruta = url;
     } catch (error) {
-      console.log(error);
+      // console.log(error);
       ruta = 'assets/Firmas/firma.png';
     }
     return ruta;

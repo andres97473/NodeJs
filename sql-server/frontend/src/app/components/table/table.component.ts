@@ -330,8 +330,8 @@ export class TableComponent implements OnInit {
   getFiles() {
     const archivo = {
       // file: '9221-1088219367.pdf',
-      file: 'bart.jpg',
-      path: 'D:/Infosalud_sql/base_info/Img_Info/2018/08/',
+      file: this.selectedRow.direccion_archivo,
+      path: 'D:\\Infosalud_sql\\base_info\\Img_Info\\',
     };
 
     this.historiasService.postFirmas(archivo).subscribe((response) => {

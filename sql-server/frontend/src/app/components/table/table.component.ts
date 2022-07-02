@@ -528,7 +528,7 @@ export class TableComponent implements OnInit {
       direccion: this.selectedRow.direccion,
     };
 
-    console.log(obj);
+    // console.log(obj);
 
     pdf.add(
       new Table([

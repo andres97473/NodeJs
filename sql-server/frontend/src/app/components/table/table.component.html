@@ -23,13 +23,14 @@
                               id="inputHistoria"
                               formControlName="inputHistoria"
                               placeholder=""
+                              autocomplete="off"
                             />
                           </div>
                         </div>
                         <button
                           type="button"
                           class="btn btn-primary btn-sm btn-lg btn-block w-100 mt-2"
-                          (click)="buscarPaciente2()"
+                          (click)="buscarPaciente()"
                           [disabled]="!pacienteForm.valid"
                         >
                           Buscar paciente

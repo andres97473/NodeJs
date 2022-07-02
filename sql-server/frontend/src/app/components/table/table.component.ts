@@ -100,6 +100,10 @@ export class TableComponent implements OnInit {
     private fb: FormBuilder
   ) {}
 
+  ngOnInit(): void {
+    this.iniciarFormulario();
+  }
+
   iniciarFormulario() {
     this.pacienteForm = this.fb.group({
       inputHistoria: ['', Validators.required],
@@ -205,10 +209,6 @@ export class TableComponent implements OnInit {
     //     console.log(this.getCodigos(this.dataApi));
     //   }
     // });
-  }
-
-  ngOnInit(): void {
-    this.iniciarFormulario();
   }
 
   // getCodigos(data: any) {

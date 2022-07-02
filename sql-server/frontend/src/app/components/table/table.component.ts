@@ -100,8 +100,11 @@ export class TableComponent implements OnInit {
     private fb: FormBuilder
   ) {}
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.iniciarFormulario();
+
+    // TODO:
+    // console.log(this.calcularEdad('2021-08-02', '2022-07-02'));
   }
 
   iniciarFormulario() {
@@ -144,7 +147,7 @@ export class TableComponent implements OnInit {
           direccion: nPaciente.direccion,
           empresa_nombre: nPaciente.empresa_nombre,
           fecha_nac: nPaciente.fecha_nac,
-          edad: nPaciente.fecha_nac,
+          edad: this.calcularEdad(nPaciente.fecha_nac, new Date()),
           identificacion: nPaciente.identificacion,
           no_historia: nPaciente.no_historia,
           sexo: nPaciente.sexo === 'M' ? 'Masculino' : 'Femenino',
@@ -192,7 +195,7 @@ export class TableComponent implements OnInit {
         direccion: nPaciente.direccion,
         empresa_nombre: nPaciente.empresa_nombre,
         fecha_nac: nPaciente.fecha_nac,
-        edad: nPaciente.fecha_nac,
+        edad: this.calcularEdad(nPaciente.fecha_nac, new Date()),
         identificacion: nPaciente.identificacion,
         no_historia: nPaciente.no_historia,
         sexo: nPaciente.sexo === 'M' ? 'Masculino' : 'Femenino',
@@ -729,17 +732,19 @@ export class TableComponent implements OnInit {
     pdf.create().open();
   }
 
-  calcularEdad(fecha_inicio, fecha_fin) {
-    var fin = new Date(fecha_fin);
-    var cumpleanos = new Date(fecha_inicio);
-    var edad = fin.getFullYear() - cumpleanos.getFullYear();
-    var m = fin.getMonth() - cumpleanos.getMonth();
+  // TODO: calcular edad
+  calcularEdad(fecha_inicio, fecha_fin): string {
+    let cumpleanos = new Date(fecha_inicio);
+    let fin = new Date(fecha_fin);
 
-    if (m < 0 || (m === 0 && fin.getDate() < cumpleanos.getDate())) {
-      edad;
-    }
+    let total_months =
+      (fin.getFullYear() - cumpleanos.getFullYear()) * 12 +
+      (fin.getMonth() - cumpleanos.getMonth());
 
-    return edad + ' Años';
+    let years = Math.floor(total_months / 12);
+    let months = total_months - years * 12;
+
+    return years + ' Años ' + months + ' Meses';
   }
 
   // prueba de imagen
@@ -781,6 +786,4 @@ export class TableComponent implements OnInit {
     }
     return ruta;
   }
-
-  enviarForm() {}
 }

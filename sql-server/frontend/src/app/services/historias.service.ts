@@ -1,5 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, Inject } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
 
 @Injectable({
   providedIn: 'root',
@@ -7,7 +8,15 @@ import { Injectable } from '@angular/core';
 export class HistoriasService {
   url = 'http://localhost:3000/';
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    @Inject(DOCUMENT) private document: Document,
+    private http: HttpClient
+  ) {
+    const url2 = this.document.location.href.split('#')[0];
+    // console.log(url2);
+    // activar localhost dinamico
+    // this.url = url2;
+  }
 
   getHistorias() {
     return this.http.get(`${this.url}historias`);

@@ -10,6 +10,6 @@ export class AppComponent {
   title = 'frontend';
 
   constructor(@Inject(DOCUMENT) private document: Document) {
-    console.log(this.document.location.href);
+    // console.log(this.document.location.href);
   }
 }

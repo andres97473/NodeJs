@@ -1,5 +1,7 @@
 const resultado = require("../myfile.json");
 const codigos = require("../myfile2.json");
+const especialidad = require("../exports/especialidad.json");
+const tipoAtencion = require("../exports/tipoAte.json");
 const rest = new (require("rest-mssql-nodejs"))({
   user: "sa",
   password: "Infosalud_01",
@@ -13,6 +15,12 @@ class HistoriaController {
   }
   async codigos(req, res) {
     res.json({ codigos });
+  }
+  async especialidad(req, res) {
+    res.json({ especialidad });
+  }
+  async tipoAtencion(req, res) {
+    res.json({ tipoAtencion });
   }
   async historias(req, res) {
     try {

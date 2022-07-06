@@ -62,6 +62,10 @@ export class TableComponent implements OnInit {
   // prueba de datos
   dataApi: HistoriaI[] = [];
 
+  // tablas
+  especialidades = [];
+  tipoAtencion = [];
+
   historia: any[] = [];
   diagnostico = '';
   diagnosticoHist = 'Sin Diagnostico';
@@ -101,6 +105,15 @@ export class TableComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.historiasService.getEspecialidades().subscribe((resp: any) => {
+      console.log(resp.especialidad);
+      this.especialidades = resp.especialidad;
+    });
+
+    this.historiasService.getTipoAtencion().subscribe((resp: any) => {
+      console.log(resp.tipoAtencion);
+      this.tipoAtencion = resp.tipoAtencion;
+    });
     this.iniciarFormulario();
 
     // TODO:

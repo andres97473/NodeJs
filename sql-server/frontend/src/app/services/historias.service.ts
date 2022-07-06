@@ -29,6 +29,14 @@ export class HistoriasService {
     return this.http.get(`${this.url}historias-codigos`);
   }
 
+  getEspecialidades() {
+    return this.http.get(`${this.url}historias-especialidad`);
+  }
+
+  getTipoAtencion() {
+    return this.http.get(`${this.url}historias-tipo-atencion`);
+  }
+
   postFirmas(file: any) {
     return this.http.post(`${this.url}historias-firmas`, file, {
       responseType: 'blob',

@@ -106,13 +106,13 @@ export class TableComponent implements OnInit {
 
   ngOnInit() {
     this.historiasService.getEspecialidades().subscribe((resp: any) => {
-      console.log(resp.especialidad);
       this.especialidades = resp.especialidad;
+      console.log(resp.especialidad);
     });
 
     this.historiasService.getTipoAtencion().subscribe((resp: any) => {
-      console.log(resp.tipoAtencion);
       this.tipoAtencion = resp.tipoAtencion;
+      console.log(resp.tipoAtencion);
     });
     this.iniciarFormulario();
 
@@ -145,7 +145,6 @@ export class TableComponent implements OnInit {
       (data: any) => {
         const nData = data.resultado.data[0];
         this.dataSource = nData;
-        // console.log(this.dataSource);
         const nPaciente = nData[0];
         this.paciente = {
           nombre_paciente:
@@ -173,6 +172,8 @@ export class TableComponent implements OnInit {
       }
     );
 
+    console.log(this.dataSource);
+
     // this.historiasService.getCodigos().subscribe((data: any) => {
     //   const nData = data.codigos[0];
     //   this.dataApi = nData;
@@ -193,7 +194,8 @@ export class TableComponent implements OnInit {
     this.historiasService.getHistorias().subscribe((data: any) => {
       const nData = data.resultado[0];
       this.dataSource = nData;
-      // console.log(this.dataSource);
+      console.log(this.dataSource);
+
       const nPaciente = nData[0];
       this.paciente = {
         nombre_paciente:
@@ -214,8 +216,9 @@ export class TableComponent implements OnInit {
         sexo: nPaciente.sexo === 'M' ? 'Masculino' : 'Femenino',
         telefono: nPaciente.telefono,
       };
-      // console.log(this.paciente);
     });
+
+    // console.log(this.paciente);
 
     // this.historiasService.getCodigos().subscribe((data: any) => {
     //   const nData = data.codigos[0];

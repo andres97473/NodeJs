@@ -7,7 +7,7 @@ const generarJWT = (codigo) => {
     };
     jwt.sign(
       payload,
-      "EsteEsSecret",
+      process.env.JWT_SECRET,
       {
         expiresIn: "12h",
       },

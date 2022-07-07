@@ -1,13 +1,13 @@
 const jwt = require("jsonwebtoken");
 
-const generarJWT = (uid) => {
+const generarJWT = (codigo) => {
   return new Promise((resolve, reject) => {
     const payload = {
-      uid: uid,
+      codigo: codigo,
     };
     jwt.sign(
       payload,
-      process.env.JWT_SECRET,
+      "EsteEsSecret",
       {
         expiresIn: "12h",
       },

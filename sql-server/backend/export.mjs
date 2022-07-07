@@ -12,6 +12,7 @@ const ruta = path.join(__dirname, "exports");
 const rutaTablas = path.join(ruta, "tablas.json");
 const rutaTipoAte = path.join(ruta, "tipoAte.json");
 const rutaEspecialidad = path.join(ruta, "especialidad.json");
+const rutaUsuarios = path.join(ruta, "usuarios.json");
 
 const buffer = readFileSync("factup.mdb");
 const reader = new MDBReader(buffer, "JOCAMU");
@@ -26,6 +27,9 @@ const data_tipoAte = tipoate.getData();
 
 const especialidad = reader.getTable("especialidad");
 const data_especialidad = especialidad.getData();
+
+const usuarios = reader.getTable("usuarios");
+const data_usuarios = usuarios.getData();
 
 // exportar tablas
 writeFileSync(rutaTablas, JSON.stringify(tablas), (err) => {
@@ -45,6 +49,14 @@ writeFileSync(rutaTipoAte, JSON.stringify(data_tipoAte), (err) => {
 
 // exportar especialidad
 writeFileSync(rutaEspecialidad, JSON.stringify(data_especialidad), (err) => {
+  if (err) {
+    console.error(err);
+    return;
+  }
+});
+
+// exportar usuarios
+writeFileSync(rutaUsuarios, JSON.stringify(data_usuarios), (err) => {
   if (err) {
     console.error(err);
     return;

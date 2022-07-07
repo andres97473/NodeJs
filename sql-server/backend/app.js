@@ -1,7 +1,7 @@
 const express = require("express");
 const server = express();
 const cors = require("cors");
-const { HomeRoutes, HistoriaRoutes } = require("./routes");
+const { HomeRoutes, HistoriaRoutes, AuthRoutes } = require("./routes");
 const PORT = 3000;
 
 // middleware
@@ -10,7 +10,7 @@ server.use(express.static("./public"));
 server.use(express.json());
 
 // routes
-server.use("/", [HomeRoutes, HistoriaRoutes]);
+server.use("/", [HomeRoutes, HistoriaRoutes, AuthRoutes]);
 
 // obtener historias desde archivo json, http://localhost:3000/historias
 

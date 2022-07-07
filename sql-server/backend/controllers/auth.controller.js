@@ -8,12 +8,12 @@ class AuthController {
     res.json({ usuario });
   }
   async usuarioId(req, res) {
-    const { id } = req.params;
-    const buscar = String(id).toUpperCase();
+    const { identificacion, contraseña } = req.body;
+    const login = String(identificacion).toUpperCase();
     const usuario = usuarios.find(
-      (usuario) => usuario.identificacion === buscar
+      (usuario) => usuario.identificacion === login
     ) || { noEncontrado: true };
-    res.json({ buscar, usuario });
+    res.json({ login, contraseña, usuario });
   }
 }
 

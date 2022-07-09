@@ -10,7 +10,10 @@
                 <div class="col-md-10 fuente">
                   <div class="row">
                     <div class="col-md-4">
-                      <form [formGroup]="pacienteForm">
+                      <form
+                        [formGroup]="pacienteForm"
+                        (keydown.enter)="buscarPaciente2()"
+                      >
                         <div class="form-group row">
                           <label
                             for="inputHistoria"
@@ -151,7 +154,7 @@
                     <div class="separador">
                       ----------------------------------------------------------------------------------
                     </div>
-                    <div>{{ hist.id }} {{ hist.codigo }}</div>
+                    <div>{{ hist.codigo }}</div>
                     <div class="separador">
                       ----------------------------------------------------------------------------------
                     </div>

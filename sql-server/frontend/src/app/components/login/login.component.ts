@@ -38,7 +38,7 @@ export class LoginComponent implements OnInit {
     // console.log(this.loginForm.value);
     this._usuarioService.login(this.loginForm.value).subscribe(
       (resp) => {
-        console.log(resp);
+        // console.log(resp);
         const remember = this.loginForm.get('remember')?.value;
         const identificacion = this.loginForm.get('identificacion')?.value;
         if (remember) {

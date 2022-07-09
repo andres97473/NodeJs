@@ -54,7 +54,7 @@ export class UsuarioService {
       })
       .pipe(
         map((resp: any) => {
-          console.log(resp);
+          // console.log(resp);
 
           // this.usuario.imprimirUsuario();
 

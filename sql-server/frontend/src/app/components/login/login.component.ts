@@ -12,7 +12,9 @@ import { UsuarioService } from '../../services/usuario.service';
 })
 export class LoginComponent implements OnInit {
   public formSubmitted = false;
-  public auth2: any;
+
+  public errorIdentificacion = false;
+  public errorPassword = false;
 
   public loginForm = this.fb.group({
     identificacion: [
@@ -31,6 +33,7 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {}
 
   login() {
+    this.formSubmitted = true;
     // this.router.navigateByUrl('/');
     // console.log(this.loginForm.value);
     this._usuarioService.login(this.loginForm.value).subscribe(
@@ -50,7 +53,17 @@ export class LoginComponent implements OnInit {
         this.router.navigateByUrl('/');
       },
       (err) => {
-        Swal.fire('Error', err.error.message, 'error');
+        if (err.error.message) {
+          Swal.fire('Error', err.error.message, 'error');
+        } else {
+          if (err.error.errors.contraseña) {
+            this.errorPassword = true;
+          }
+          if (err.error.errors.identificacion) {
+            this.errorIdentificacion = true;
+          }
+          // console.log(err.error.errors.contraseña);
+        }
       }
     );
   }

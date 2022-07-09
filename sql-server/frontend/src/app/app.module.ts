@@ -9,9 +9,11 @@ import { HistoriaComponent } from './components/historia/historia.component';
 import { MaterialModule } from './material/material.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TableComponent } from './components/table/table.component';
+import { LoginComponent } from './components/login/login.component';
+import { NavbarComponent } from './components/navbar/navbar.component';
 
 @NgModule({
-  declarations: [AppComponent, HistoriaComponent, TableComponent],
+  declarations: [AppComponent, HistoriaComponent, TableComponent, LoginComponent, NavbarComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

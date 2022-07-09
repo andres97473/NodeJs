@@ -37,6 +37,23 @@ class AuthController {
       token,
     });
   }
+  async renewToken(req, res = response) {
+    const codigo = req.codigo;
+    // console.log(req.body);
+    const usuario = (await usuarios.find(
+      (usuario) => usuario.codigo === codigo
+    )) || {
+      noEncontrado: true,
+    };
+
+    const token = await generarJWT(codigo);
+
+    res.json({
+      ok: true,
+      token,
+      usuario,
+    });
+  }
 }
 
 module.exports = new AuthController();

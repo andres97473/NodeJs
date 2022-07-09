@@ -33,7 +33,15 @@ export class UsuarioService {
     };
   }
 
-  guardarLocalStorage(token: string) {
+  guardarLocalStorage(token: string, usuario: any) {
+    const usuarioString = JSON.stringify(usuario);
+
+    if (usuarioString) {
+      let usuarioObj = JSON.parse(usuarioString);
+      const { contraseña, ...nUsuario } = usuarioObj;
+      localStorage.setItem('usuario', JSON.stringify(nUsuario));
+    }
+
     localStorage.setItem('token', token);
   }
 
@@ -46,9 +54,11 @@ export class UsuarioService {
       })
       .pipe(
         map((resp: any) => {
+          console.log(resp);
+
           // this.usuario.imprimirUsuario();
 
-          this.guardarLocalStorage(resp.token);
+          this.guardarLocalStorage(resp.token, resp.usuario);
           return true;
         }),
 
@@ -58,13 +68,14 @@ export class UsuarioService {
 
   logout() {
     localStorage.removeItem('token');
+    localStorage.removeItem('usuario');
   }
 
   login(formData: LoginForm) {
     // console.log('creando usuario');
     return this.http.post(`${this.url}usuarios/login`, formData).pipe(
       tap((resp: any) => {
-        this.guardarLocalStorage(resp.token);
+        this.guardarLocalStorage(resp.token, resp.usuario);
       })
     );
   }

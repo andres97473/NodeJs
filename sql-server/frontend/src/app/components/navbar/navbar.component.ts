@@ -8,12 +8,17 @@ import { Router } from '@angular/router';
   styleUrls: ['./navbar.component.scss'],
 })
 export class NavbarComponent implements OnInit {
+  usuario: any;
+
   constructor(
     private _usuarioService: UsuarioService,
     private router: Router
   ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.usuario = JSON.parse(localStorage.getItem('usuario'));
+    // console.log(this.usuario.identificacion);
+  }
 
   logout() {
     this._usuarioService.logout();

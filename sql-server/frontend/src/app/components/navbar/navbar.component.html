@@ -1,37 +1,15 @@
-<nav
-  class="navbar navbar-expand-sm navbar-dark bg-primary"
-  style="height: 50px"
->
+<nav class="navbar navbar-dark bg-primary">
   <div class="container-fluid">
-    <a class="navbar-brand" href="#">Navbar</a>
+    <span class="navbar-brand mb-0 h1">Navbar</span>
+  </div>
+  <div class="d-flex">
+    <span class="badge bg-info text-dark">{{ usuario.identificacion }}</span>
     <button
-      class="navbar-toggler"
       type="button"
-      data-bs-toggle="collapse"
-      data-bs-target="#navbarSupportedContent"
-      aria-controls="navbarSupportedContent"
-      aria-expanded="false"
-      aria-label="Toggle navigation"
+      class="btn btn-danger btn-sm btn-size"
+      (click)="logout()"
     >
-      <span class="navbar-toggler-icon"></span>
+      <mat-icon class="icon">exit_to_app</mat-icon>
     </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav ms-auto">
-        <li class="nav-item">
-          <a class="nav-link active" aria-current="page">{{
-            usuario.identificacion
-          }}</a>
-        </li>
-        <li class="nav-item">
-          <button
-            type="button"
-            class="btn btn-danger btn-sm"
-            (click)="logout()"
-          >
-            <mat-icon>exit_to_app</mat-icon>
-          </button>
-        </li>
-      </ul>
-    </div>
   </div>
 </nav>

@@ -194,7 +194,7 @@ export class TableComponent implements OnInit {
     this.historiasService.getHistorias().subscribe((data: any) => {
       const nData = data.resultado[0];
       this.dataSource = nData;
-      console.log(this.dataSource);
+      // console.log(this.dataSource);
 
       const nPaciente = nData[0];
       this.paciente = {

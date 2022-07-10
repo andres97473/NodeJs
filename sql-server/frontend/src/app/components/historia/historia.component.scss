@@ -1,16 +1,40 @@
 .row {
+  --bs-gutter-x: 0;
   vertical-align: middle;
+  margin: 5px;
+  margin-top: 0px;
 }
 
 .card {
-  margin-top: 20px;
+  margin-top: 5px;
+  margin-bottom: 5px;
 
   height: 100%;
   min-height: 100%;
+}
+
+.col {
+  padding: 0;
+  padding-left: 5px;
+  padding-right: 0px;
 }
 
 .card-body {
   height: 100%;
   min-height: 100%;
   margin-bottom: 0;
+}
+
+.form-container {
+  height: 90vh;
+  min-height: 90vh;
+}
+
+.historia-container {
+  height: 49%;
+  min-height: 49%;
+}
+.tabla-container {
+  height: 50%;
+  min-height: 50%;
 }

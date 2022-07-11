@@ -1,6 +1,6 @@
 <app-navbar></app-navbar>
 <div class="row">
-  <div class="form-container col-lg-4 col-xs-12">
+  <div class="form-container col-lg-4 col-xs-12 animated fadeIn fast">
     <div class="card">
       <div class="card-body">
         <h4 class="card-title">Datos generales del Paciente</h4>
@@ -95,7 +95,7 @@
                   [placeholder]="paciente.fecha_nac"
                   disabled
                 />
-                <div class="input-group-addon"><i class="ti-lock"></i></div>
+                <div class="input-group-addon"><i class="ti-agenda"></i></div>
               </div>
             </div>
           </div>
@@ -112,7 +112,9 @@
                   [placeholder]="paciente.edad"
                   disabled
                 />
-                <div class="input-group-addon"><i class="ti-lock"></i></div>
+                <div class="input-group-addon">
+                  <i class="ti-alarm-clock"></i>
+                </div>
               </div>
             </div>
           </div>
@@ -129,7 +131,7 @@
                   [placeholder]="paciente.telefono"
                   disabled
                 />
-                <div class="input-group-addon"><i class="ti-lock"></i></div>
+                <div class="input-group-addon"><i class="ti-mobile"></i></div>
               </div>
             </div>
           </div>
@@ -146,7 +148,9 @@
                   [placeholder]="paciente.empresa_nombre"
                   disabled
                 />
-                <div class="input-group-addon"><i class="ti-lock"></i></div>
+                <div class="input-group-addon">
+                  <i class="fa fa-hospital-o"></i>
+                </div>
               </div>
             </div>
           </div>
@@ -179,21 +183,21 @@
     </div>
   </div>
   <div class="col-lg-8 col-xs-12">
-    <div class="historia-container col col-lg-12">
+    <div class="historia-container col col-lg-12 animated fadeIn fast">
       <div class="card">
         <div class="card-header card-titulo">HISTORIA CLINICA:</div>
         <div class="card-body">
           <div class="example-container">
             <div id="specificDiv" class="example-historia-container">
               <div>
-                <div *ngFor="let hist of historia">
+                <div class="animated fadeIn fast" *ngFor="let hist of historia">
                   <div *ngIf="hist.largo.length > 0">
                     <div class="separador">
-                      ----------------------------------------------------------------------------------
+                      ----------------------------------------------------------------------------
                     </div>
                     <div>{{ hist.codigo }}</div>
                     <div class="separador">
-                      ----------------------------------------------------------------------------------
+                      ----------------------------------------------------------------------------
                     </div>
                     <div class="container-text-hist">{{ hist.cuerpo }}</div>
                     <div *ngIf="documento_ruta" class="container-text-hist">
@@ -219,7 +223,7 @@
         </div>
       </div>
     </div>
-    <div class="tabla-container col col-lg-12">
+    <div class="tabla-container col col-lg-12 animated fadeIn fast">
       <div class="card">
         <div id="table-container" class="card-body">
           <div class="example-container">
@@ -228,7 +232,11 @@
                 <!-- Number Column -->
                 <ng-container matColumnDef="tipo_atencion">
                   <th mat-header-cell *matHeaderCellDef>Tipo Atencion</th>
-                  <td mat-cell *matCellDef="let row">
+                  <td
+                    class="animated fadeIn fast"
+                    mat-cell
+                    *matCellDef="let row"
+                  >
                     {{ row.tipo_atencion == 1 ? "AMBULATORIO" : "URGENCIAS" }}
                   </td>
                 </ng-container>
@@ -236,27 +244,45 @@
                 <!-- Title Column -->
                 <ng-container matColumnDef="num_orden">
                   <th mat-header-cell *matHeaderCellDef>No Folio</th>
-                  <td mat-cell *matCellDef="let row">{{ row.num_orden }}</td>
+                  <td
+                    class="animated fadeIn fast"
+                    mat-cell
+                    *matCellDef="let row"
+                  >
+                    {{ row.num_orden }}
+                  </td>
                 </ng-container>
 
                 <!-- State Column -->
                 <ng-container matColumnDef="fecha_dig">
                   <th mat-header-cell *matHeaderCellDef>Fecha</th>
-                  <td mat-cell *matCellDef="let row">
+                  <td
+                    class="animated fadeIn fast"
+                    mat-cell
+                    *matCellDef="let row"
+                  >
                     {{ row.fecha_dig | date: "dd-MM-yyyy h:mm a" }}
                   </td>
                 </ng-container>
                 <!-- State Column -->
                 <ng-container matColumnDef="nombre_estudio">
                   <th mat-header-cell *matHeaderCellDef>Tipo de Historia</th>
-                  <td mat-cell *matCellDef="let row">
+                  <td
+                    class="animated fadeIn fast"
+                    mat-cell
+                    *matCellDef="let row"
+                  >
                     {{ row.nombre_estudio }}
                   </td>
                 </ng-container>
                 <!-- State Column -->
                 <ng-container matColumnDef="medico">
                   <th mat-header-cell *matHeaderCellDef>Profesional</th>
-                  <td mat-cell *matCellDef="let row">
+                  <td
+                    class="animated fadeIn fast"
+                    mat-cell
+                    *matCellDef="let row"
+                  >
                     {{ row.md_apellido1 }} {{ row.md_apellido2 }}
                     {{ row.md_nombre1 }} {{ row.md_nombre2 }}
                   </td>
@@ -264,13 +290,18 @@
 
                 <ng-container matColumnDef="especialidad_historia">
                   <th mat-header-cell *matHeaderCellDef>Anulado</th>
-                  <td mat-cell *matCellDef="let row">
+                  <td
+                    class="animated fadeIn fast"
+                    mat-cell
+                    *matCellDef="let row"
+                  >
                     {{ row.anulado == -1 ? "SI" : "NO" }}
                   </td>
                 </ng-container>
 
                 <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                 <tr
+                  class="animated fadeIn fast"
                   mat-row
                   *matRowDef="let row; columns: displayedColumns; let i = index"
                   (click)="selectRow(row)"

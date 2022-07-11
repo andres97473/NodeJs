@@ -140,8 +140,13 @@ td:hover {
   position: sticky;
   top: 0;
   z-index: 100;
-  background: rgb(224, 224, 224);
+  background: $titulo;
+
   height: 22px !important;
+}
+
+.mat-header-cell {
+  color: #fff;
 }
 
 .mat-row {

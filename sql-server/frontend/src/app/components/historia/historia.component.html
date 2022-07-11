@@ -29,18 +29,21 @@
           </div>
           <div class="form-group row">
             <label
-              for="inputHistoria"
+              for="inputIdentificacion"
               class="col-sm-3 control-label control-lable-sm"
               >Identificacion</label
             >
             <div class="col-sm-9">
               <div class="input-group">
                 <input
-                  type="email"
+                  type="text"
                   class="form-control form-control-sm"
-                  id="exampleInputEmail1"
+                  id="exampleInputIdentificacion"
                   [placeholder]="paciente.identificacion"
                   disabled
+                  data-bs-toggle="tooltip"
+                  data-bs-placement="top"
+                  [title]="paciente.identificacion"
                 />
                 <div class="input-group-addon">
                   <i class="fa fa-id-card-o"></i>
@@ -49,7 +52,7 @@
             </div>
           </div>
           <div class="form-group row">
-            <label for="web1" class="col-sm-3 control-label control-lable-sm"
+            <label for="sexo" class="col-sm-3 control-label control-lable-sm"
               >Sexo</label
             >
             <div class="col-sm-9">
@@ -57,9 +60,12 @@
                 <input
                   type="text"
                   class="form-control form-control-sm"
-                  id="web1"
+                  id="sexo"
                   [placeholder]="paciente.sexo"
                   disabled
+                  data-bs-toggle="tooltip"
+                  data-bs-placement="top"
+                  [title]="paciente.sexo"
                 />
                 <div class="input-group-addon"><i class="ti-world"></i></div>
               </div>
@@ -74,43 +80,52 @@
                 <input
                   type="password"
                   class="form-control form-control-sm"
-                  id="pass3"
+                  id="fechaNac"
                   [placeholder]="paciente.nombre_paciente"
                   disabled
+                  data-bs-toggle="tooltip"
+                  data-bs-placement="top"
+                  [title]="paciente.nombre_paciente"
                 />
                 <div class="input-group-addon"><i class="ti-id-badge"></i></div>
               </div>
             </div>
           </div>
           <div class="form-group row">
-            <label for="pass4" class="col-sm-3 control-label control-lable-sm"
+            <label for="fecha" class="col-sm-3 control-label control-lable-sm"
               >Fecha Nac</label
             >
             <div class="col-sm-9">
               <div class="input-group">
                 <input
-                  type="password"
+                  type="text"
                   class="form-control form-control-sm"
-                  id="pass4"
+                  id="fecha"
                   [placeholder]="paciente.fecha_nac"
                   disabled
+                  data-bs-toggle="tooltip"
+                  data-bs-placement="top"
+                  [title]="paciente.fecha_nac"
                 />
                 <div class="input-group-addon"><i class="ti-agenda"></i></div>
               </div>
             </div>
           </div>
           <div class="form-group row">
-            <label for="pass5" class="col-sm-3 control-label control-lable-sm"
+            <label for="edad" class="col-sm-3 control-label control-lable-sm"
               >Edad</label
             >
             <div class="col-sm-9">
               <div class="input-group">
                 <input
-                  type="password"
+                  type="text"
                   class="form-control form-control-sm"
-                  id="pass4"
+                  id="edad"
                   [placeholder]="paciente.edad"
                   disabled
+                  data-bs-toggle="tooltip"
+                  data-bs-placement="top"
+                  [title]="paciente.edad"
                 />
                 <div class="input-group-addon">
                   <i class="ti-alarm-clock"></i>
@@ -119,7 +134,9 @@
             </div>
           </div>
           <div class="form-group row">
-            <label for="pass5" class="col-sm-3 control-label control-lable-sm"
+            <label
+              for="telefono"
+              class="col-sm-3 control-label control-lable-sm"
               >Telefono</label
             >
             <div class="col-sm-9">
@@ -127,16 +144,19 @@
                 <input
                   type="text"
                   class="form-control form-control-sm"
-                  id="pass4"
+                  id="telefono"
                   [placeholder]="paciente.telefono"
                   disabled
+                  data-bs-toggle="tooltip"
+                  data-bs-placement="top"
+                  [title]="paciente.telefono"
                 />
-                <div class="input-group-addon"><i class="ti-mobile"></i></div>
+                <div class="input-group-addon"><i class="fa fa-phone"></i></div>
               </div>
             </div>
           </div>
           <div class="form-group row">
-            <label for="pass5" class="col-sm-3 control-label control-lable-sm"
+            <label for="empresa" class="col-sm-3 control-label control-lable-sm"
               >Empresa</label
             >
             <div class="col-sm-9">
@@ -144,9 +164,12 @@
                 <input
                   type="text"
                   class="form-control form-control-sm"
-                  id="pass4"
+                  id="empresa"
                   [placeholder]="paciente.empresa_nombre"
                   disabled
+                  data-bs-toggle="tooltip"
+                  data-bs-placement="top"
+                  [title]="paciente.empresa_nombre"
                 />
                 <div class="input-group-addon">
                   <i class="fa fa-hospital-o"></i>

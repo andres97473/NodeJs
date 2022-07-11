@@ -15,7 +15,7 @@ export class HistoriasService {
     const url2 = this.document.location.href.split('#')[0];
     // console.log(url2);
     // activar localhost dinamico
-    this.url = url2;
+    //this.url = url2;
   }
 
   getHistorias() {
@@ -37,8 +37,8 @@ export class HistoriasService {
     return this.http.get(`${this.url}historias-tipo-atencion`);
   }
 
-  postFirmas(file: any) {
-    return this.http.post(`${this.url}historias-firmas`, file, {
+  postArchivos(file: any) {
+    return this.http.post(`${this.url}historias-archivos`, file, {
       responseType: 'blob',
       observe: 'response',
       headers: new HttpHeaders().append('Content-Type', 'application/json'),

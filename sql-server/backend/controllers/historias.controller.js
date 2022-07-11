@@ -96,16 +96,17 @@ class HistoriaController {
       order by convert(varchar(10),hm.fecha_dig,23) + stuff(right(convert(varchar(20),hm.fecha_dig,100),8),7,0,' ') desc`
       );
 
-      // console.log(resultado);
+      // TODO: revisar si no existe una historia con ese numero
+      console.log(resultado);
 
       res.json({ historia, resultado });
     } catch (error) {
       res.json({ error: "Error de conexion" });
     }
   }
-  async getFirmas(req, res) {
+  async getArchivos(req, res) {
     // definir ruta de archivo
-    console.log(req.body);
+    //console.log(req.body);
     // console.log(req.params.name1);
     const { file, path } = req.body;
     const archivo = file;

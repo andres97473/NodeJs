@@ -7,6 +7,6 @@ router.get("/historias/:historia", HistoriaController.historiasPaciente);
 router.get("/historias-codigos", HistoriaController.codigos);
 router.get("/historias-especialidad", HistoriaController.especialidad);
 router.get("/historias-tipo-atencion", HistoriaController.tipoAtencion);
-router.post("/historias-firmas", HistoriaController.getFirmas);
+router.post("/historias-archivos", HistoriaController.getArchivos);
 
 module.exports = router;

@@ -353,7 +353,7 @@ export class TableComponent implements OnInit {
       path: 'D:\\Infosalud_sql\\base_info\\Img_Info\\',
     };
 
-    this.historiasService.postFirmas(archivo).subscribe((response) => {
+    this.historiasService.postArchivos(archivo).subscribe((response) => {
       let fileName = archivo.file;
       let blob: Blob = response.body as Blob;
       let a = document.createElement('a');

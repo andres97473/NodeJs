@@ -6,7 +6,7 @@
         <h4 class="card-title">Datos generales del Paciente</h4>
         <form
           [formGroup]="pacienteForm"
-          (keydown.enter)="buscarPaciente()"
+          (keydown.enter)="buscarPaciente2()"
           class="form-horizontal p-t-20"
         >
           <div class="form-group row">
@@ -161,7 +161,7 @@
               <button
                 type="submit"
                 class="btn btn-success waves-effect waves-light btn-sm btn-lg btn-block w-100"
-                (click)="buscarPaciente()"
+                (click)="buscarPaciente2()"
                 [disabled]="!pacienteForm.valid"
               >
                 Buscar Paciente

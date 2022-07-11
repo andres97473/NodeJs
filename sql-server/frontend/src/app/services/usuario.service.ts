@@ -18,7 +18,7 @@ export class UsuarioService {
     const url2 = this.document.location.href.split('#')[0];
     console.log(url2);
     // activar localhost dinamico
-    this.url = url2;
+    //this.url = url2;
   }
 
   get getToken(): string {

@@ -6,7 +6,7 @@ import { LoginComponent } from './components/login/login.component';
 import { AuthGuard } from './guards/auth.guard';
 
 const routes: Routes = [
-  { path: '', redirectTo: 'table', pathMatch: 'full' },
+  { path: '', redirectTo: 'historia', pathMatch: 'full' },
   {
     path: 'historia',
     canActivate: [AuthGuard],

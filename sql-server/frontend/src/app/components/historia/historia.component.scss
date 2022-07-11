@@ -38,6 +38,11 @@ div {
   padding-right: 0px;
 }
 
+.card-titulo {
+  background-color: $titulo;
+  color: #fff;
+}
+
 .card-body {
   height: 100%;
   min-height: 100%;
@@ -69,8 +74,8 @@ div {
 
 .example-historia-container {
   position: relative;
-  min-height: 210px;
-  max-height: 210px;
+  min-height: 195px;
+  max-height: 195px;
   overflow: auto;
   font-size: 12px;
 }
@@ -83,9 +88,10 @@ div {
 .example-table-container {
   border: 1px solid rgb(180, 180, 180);
   position: relative;
-  min-height: 275px;
-  max-height: 275px;
+  min-height: 270px;
+  max-height: 270px;
   min-width: 100%;
+  min-height: 100%;
   overflow: auto;
   margin: 0;
 }
@@ -155,4 +161,12 @@ td:hover {
       color: white;
     }
   }
+}
+
+.icon-size {
+  font-size: 20px;
+  padding: 0;
+  align-items: center;
+  vertical-align: middle;
+  text-align: right;
 }

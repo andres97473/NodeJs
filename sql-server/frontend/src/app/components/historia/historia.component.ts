@@ -162,7 +162,7 @@ export class HistoriaComponent implements OnInit {
           edad: this.calcularEdad(nPaciente.fecha_nac, new Date()),
           identificacion: nPaciente.identificacion,
           no_historia: nPaciente.no_historia,
-          sexo: nPaciente.sexo === 'M' ? 'Masculino' : 'Femenino',
+          sexo: nPaciente.sexo === 'M' ? 'MASCULINO' : 'FEMENINO',
           telefono: nPaciente.telefono,
         };
         // console.log(this.paciente);
@@ -213,7 +213,7 @@ export class HistoriaComponent implements OnInit {
         edad: this.calcularEdad(nPaciente.fecha_nac, new Date()),
         identificacion: nPaciente.identificacion,
         no_historia: nPaciente.no_historia,
-        sexo: nPaciente.sexo === 'M' ? 'Masculino' : 'Femenino',
+        sexo: nPaciente.sexo === 'M' ? 'MASCULINO' : 'FEMENINO',
         telefono: nPaciente.telefono,
       };
     });
@@ -535,7 +535,7 @@ export class HistoriaComponent implements OnInit {
       identificacion: this.selectedRow.identificacion,
       empresa: this.selectedRow.empresa_nombre,
       diagnostico: this.diagnosticoHist,
-      sexo: this.selectedRow.sexo === 'M' ? 'Maxculino' : 'Femenino',
+      sexo: this.selectedRow.sexo === 'M' ? 'MASCULINO' : 'FEMENINO',
       telefono: this.selectedRow.telefono,
       municipio:
         this.selectedRow.municipio == 52560
@@ -760,7 +760,17 @@ export class HistoriaComponent implements OnInit {
     let years = Math.floor(total_months / 12);
     let months = total_months - years * 12;
 
-    return years + ' Años ' + months + ' Meses';
+    let yearsText = ' AÑOS ';
+    let monthsText = ' MESES';
+
+    if (years === 1) {
+      yearsText = ' AÑO ';
+    }
+    if (months === 1) {
+      monthsText = ' MES';
+    }
+
+    return years + yearsText + months + monthsText;
   }
 
   // prueba de imagen

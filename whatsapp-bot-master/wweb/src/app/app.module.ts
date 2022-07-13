@@ -14,6 +14,7 @@ import { ClienteComponent } from './components/clientes/cliente/cliente.componen
 import { MapboxComponent } from './components/mapbox/mapbox.component';
 import { MapComponent } from './components/map/map.component';
 import { TableComponent } from './components/table/table.component';
+import { CsvFijoComponent } from './components/csv-fijo/csv-fijo.component';
 
 @NgModule({
   declarations: [
@@ -25,6 +26,7 @@ import { TableComponent } from './components/table/table.component';
     MapboxComponent,
     MapComponent,
     TableComponent,
+    CsvFijoComponent,
   ],
   imports: [
     BrowserModule,

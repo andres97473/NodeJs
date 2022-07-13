@@ -53,6 +53,7 @@ export class ClienteComponent implements OnInit {
       nombre2: '',
       celular: '',
       estado: '',
+      mensaje: '',
       latitud: '',
       longitud: '',
       created_at: '',
@@ -87,6 +88,7 @@ export class ClienteComponent implements OnInit {
       this.clienteForm.controls['nombre2'].setValue(this.editCliente.nombre2);
       this.clienteForm.controls['celular'].setValue(this.editCliente.celular);
       this.clienteForm.controls['estado'].setValue(this.editCliente.estado);
+      this.clienteForm.controls['mensaje'].setValue(this.editCliente.mensaje);
       this.clienteForm.controls['latitud'].setValue(this.editCliente.latitud);
       this.clienteForm.controls['longitud'].setValue(this.editCliente.longitud);
       this.clienteForm.controls['created_at'].setValue(

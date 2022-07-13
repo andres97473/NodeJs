@@ -131,19 +131,35 @@
       </mat-grid-list>
     </div>
 
+    <!-- mensaje -->
+    <div *ngIf="isUpdate">
+      <h1 mat-dialog-title>Mensaje Enviado</h1>
+      <div class="container border">
+        <mat-form-field appearance="fill">
+          <textarea
+            formControlName="mensaje"
+            matInput
+            placeholder="mensaje"
+            readonly
+          ></textarea>
+        </mat-form-field>
+      </div>
+    </div>
+
     <h1 class="mt-2" *ngIf="editCliente">Ubicacion</h1>
     <div class="container border" *ngIf="editCliente">
       <mat-grid-list cols="4" rowHeight="100px">
-        <mat-grid-tile colspan="2" rowspan="1"
-          ><mat-form-field appearance="fill">
+        <mat-grid-tile colspan="2" rowspan="1">
+          <mat-form-field appearance="fill">
             <mat-label>Latitud</mat-label>
             <input
               formControlName="latitud"
               matInput
               placeholder="Latitud"
               readonly
-            /> </mat-form-field
-        ></mat-grid-tile>
+            />
+          </mat-form-field>
+        </mat-grid-tile>
         <mat-grid-tile colspan="2" rowspan="3">
           <div *ngIf="editCliente.latitud">
             <app-mapbox

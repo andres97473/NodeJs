@@ -84,10 +84,11 @@ client.on("ready", () => {
         console.log("It works! " + inicioFech);
         // correr app desde navegador
         // Abrir con navegador predeterminado
-        c.exec("start http://localhost:3000/#/");
+        // TODO: abrir con navegador predeterminado
+        // c.exec("start http://localhost:3000/#/");
       }
     });
-  }, 1000);
+  }, 500);
 });
 
 /*
@@ -95,7 +96,7 @@ Funcion se encarga de escuchar cada vez que un nuevo mensaje entra
  */
 const listenMessage = () => {
   client.on("message", async (msg) => {
-    console.log("mensaje ", msg);
+    //console.log("mensaje ", msg);
     const { from, to, body } = msg;
 
     if (from.includes("@c.us")) {
@@ -297,7 +298,8 @@ const saveRecordatorioMongo = async (
   apellido2,
   nombre1,
   nombre2,
-  celular
+  celular,
+  mensaje
 ) => {
   const recordatorio = new Cliente({
     num_doc_usr,
@@ -307,6 +309,7 @@ const saveRecordatorioMongo = async (
     nombre1,
     nombre2,
     celular,
+    mensaje,
   });
 
   try {
@@ -374,6 +377,7 @@ const sendRecordatorio = (req, res) => {
   const newNumber = `${number_code}${celular}@c.us`;
   const message = `${nombre1} ${nombre2} ${apellido1} ${apellido2}, su numero de documento es: ${num_doc_usr}?, si su informacion es correcta por favor seleccione una de las siguientes opciones`;
 
+  const txt1 = "Estimado sr(a)";
   // Crear lista
   let sections = [
     {
@@ -384,13 +388,7 @@ const sendRecordatorio = (req, res) => {
       ],
     },
   ];
-  let list = new List(
-    message,
-    "Opciones",
-    sections,
-    "Estimado sr(a)",
-    "gracias por su tiempo"
-  );
+  let list = new List(message, "Opciones", sections, txt1);
 
   // console.log(message, celular);
   // enviar mensaje y boton
@@ -412,7 +410,8 @@ const sendRecordatorio = (req, res) => {
     apellido2,
     nombre1,
     nombre2,
-    celular
+    celular,
+    txt1 + " " + message
   );
 };
 
@@ -459,11 +458,55 @@ const sendRecordatorioApp = async (req, res) => {
     { $set: { estado: "ENVIADO", update_at: new Date() } }
   );
 };
+// enviar recordatorio desde app mensaje fijo
+const sendRecordatorioFijo = async (req, res) => {
+  const {
+    num_doc_usr,
+    tipo_doc,
+    apellido1,
+    apellido2,
+    nombre1,
+    nombre2,
+    celular,
+    mensaje,
+  } = req.body;
+  const newNumber = `${number_code}${celular}@c.us`;
+  const message = mensaje;
+  // Crear lista
+  let sections = [
+    {
+      title: "Seleccione una Respuesta y presione Enviar",
+      rows: [
+        { title: `${num_doc_usr},confirmar` },
+        { title: `${num_doc_usr},cancelar` },
+      ],
+    },
+  ];
+  let list = new List(
+    message,
+    "Opciones",
+    sections,
+    "Estimado sr(a)",
+    "gracias por su tiempo"
+  );
+
+  sendMessage(newNumber, list);
+
+  // respuesta de api
+  res.send({ status: "Mensaje Enviado v2..", send: true });
+
+  // cambiar Estado del Cliente
+  const updateEstado = await Cliente.updateOne(
+    { num_doc_usr },
+    { $set: { estado: "ENVIADO", update_at: new Date() } }
+  );
+};
 
 // RUTAS
 app.post("/send", sendWithApi);
 app.post("/recordatorio", sendRecordatorio);
 app.post("/recordatorio-app", sendRecordatorioApp);
+app.post("/recordatorio-fijo", sendRecordatorioFijo);
 // rutas
 app.use("/api/clientes", require("./routes/clientes"));
 

@@ -85,7 +85,7 @@ client.on("ready", () => {
         // correr app desde navegador
         // Abrir con navegador predeterminado
         // TODO: abrir con navegador predeterminado
-        // c.exec("start http://localhost:3000/#/");
+        c.exec("start http://localhost:3000/#/");
       }
     });
   }, 500);
@@ -495,7 +495,6 @@ const sendRecordatorio = (req, res) => {
 app.post("/send", sendWithApi);
 app.post("/recordatorio", sendRecordatorio);
 app.post("/recordatorio-app", sendRecordatorioApp);
-// TODO: enviar mensaje fijo
 app.post("/recordatorio-fijo", sendRecordatorioFijo);
 // rutas
 app.use("/api/clientes", require("./routes/clientes"));

@@ -9,6 +9,7 @@ export class RecordatorioModel {
   celular?: string;
   fecha_proceso?: Date;
   estado?: string;
+  mensaje?: string;
 }
 
 export class Respuesta {

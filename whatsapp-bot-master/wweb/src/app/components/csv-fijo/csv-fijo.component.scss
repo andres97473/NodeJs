@@ -1,6 +1,6 @@
 .csv-file-chooser-section {
   padding: 10px;
-  margin: 5%;
+  margin: 2%;
   border: 1px solid;
   text-align: center;
 }
@@ -8,6 +8,18 @@
 .csv-result-table {
   margin: 5%;
   border: 1px solid #73ad21;
+}
+
+.msg-fijo {
+  margin: 1%;
+  border: 1px solid #212fad;
+  width: 90%;
+  height: 70px;
+}
+
+.btn-centrar {
+  vertical-align: bottom !important;
+  margin-top: 10px;
 }
 
 table,

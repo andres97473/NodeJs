@@ -16,6 +16,8 @@ export class CsvFijoComponent {
   csvRecords: RecordatorioModel[] = [];
   // csvRecordsFilter: RecordatorioModel[] = [];
 
+  txtArea = localStorage.getItem('msgwhatsapp') || '';
+
   // cargar archivo xls p xlsx
   recordatorios: RecordatorioModel[] = [];
   id = 1;
@@ -100,6 +102,17 @@ export class CsvFijoComponent {
     };
   }
 
+  msgLocalStorage() {
+    localStorage.setItem('msgwhatsapp', this.txtArea);
+    Swal.fire({
+      position: 'top-end',
+      icon: 'success',
+      title: 'Mensaje almacenado en Memoria!!',
+      showConfirmButton: false,
+      timer: 1500,
+    });
+  }
+
   getArrayFromNumber(length: any) {
     return new Array(Math.ceil(length / this.paginacion));
   }
@@ -130,14 +143,16 @@ export class CsvFijoComponent {
         //const recordatorio = `Estimado sr(a) ${nombre1} ${nombre2} ${apellido1} ${apellido2}, su numero de documento es: ${num_doc_usr}`;
         //console.log(recordatorio);
         this._sms
-          .sendRecordatorio(
+          .sendRecordatorioFijo(
             num_doc_usr,
             tipo_doc,
             apellido1,
             apellido2,
             nombre1,
             nombre2,
-            celular
+            celular,
+            // TODO: cambiar por textarea
+            this.txtArea
           )
           .subscribe(
             (res: any) => {

@@ -24,11 +24,21 @@
     <span class="badge bg-light text-dark">{{ csvRecords.length }}</span>
   </button>
 
-  <!-- <label> Parse Headers? </label>
-        <select aria-placeholder="Parse headers?" [(ngModel)]="header">
-          <option [value]="true">Yes</option>
-          <option [value]="false">No</option>
-        </select> -->
+  <div class="row">
+    <div class="col-10">
+      <textarea
+        class="msg-fijo"
+        placeholder="mensaje de prueba"
+        [(ngModel)]="txtArea"
+        >{{ txtArea }}</textarea
+      >
+    </div>
+    <div class="col-2 btn-centrar">
+      <button type="button" class="btn btn-success" (click)="msgLocalStorage()">
+        Guardar mensaje en memoria
+      </button>
+    </div>
+  </div>
 </div>
 
 <div *ngIf="csvRecords.length > 0" class="animate__animated animate__fadeIn">

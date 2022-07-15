@@ -42,17 +42,40 @@ const crearUsuarios = async (req, res = response) => {
 
     await usuario.save();
 
-    // token
-    const token = await generarJWT(usuario._id);
-
-    const usuarioDB = await Usuario.findByIdAndUpdate(usuario._id, { token });
-
     res.json({
       ok: true,
       msg: "Usuario registrado",
       usuario,
-      token,
     });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      ok: false,
+      msg: "Error inesperado, revisar logs ",
+    });
+  }
+};
+
+const actualizarFechaVencimiento = async (req, res = response) => {
+  const { email } = req.params;
+
+  try {
+    const existeEmail = await Usuario.findOne({ email });
+    if (!existeEmail) {
+      return res.status(404).json({
+        ok: false,
+        msg: "El correo no esta registrado",
+      });
+    }
+
+    // Actualizaciones
+    const { vence } = req.body;
+    const updateFecha = await Usuario.updateOne(
+      { email },
+      { $set: { vence, update_at: new Date() } }
+    );
+
+    res.json({ ok: true, msg: "Fecha de vencimiento actualizada" });
   } catch (error) {
     console.log(error);
     res.status(500).json({
@@ -65,4 +88,5 @@ const crearUsuarios = async (req, res = response) => {
 module.exports = {
   getUsuarios,
   crearUsuarios,
+  actualizarFechaVencimiento,
 };

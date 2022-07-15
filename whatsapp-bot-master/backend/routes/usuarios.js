@@ -7,7 +7,11 @@ const {
   validarADMIN_ROLE_o_MismoUsuario,
 } = require("../middlewares/validar-jwt");
 
-const { getUsuarios, crearUsuarios } = require("../controllers/usuarios");
+const {
+  getUsuarios,
+  crearUsuarios,
+  actualizarFechaVencimiento,
+} = require("../controllers/usuarios");
 
 const router = Router();
 
@@ -24,6 +28,18 @@ router.post(
     validarCampos,
   ],
   crearUsuarios
+);
+router.put(
+  "/:email",
+  [
+    validarJWT,
+    validarADMIN_ROLE,
+    check("vence", "La nueva fecha de vencimiento es obligatoria")
+      .not()
+      .isEmpty(),
+    validarCampos,
+  ],
+  actualizarFechaVencimiento
 );
 
 module.exports = router;

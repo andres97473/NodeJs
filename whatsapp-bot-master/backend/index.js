@@ -401,29 +401,36 @@ const sendRecordatorioFijo = (req, res) => {
 // TODO: enviar recordatorio con api token
 // mensaje con token
 const sendRecordatorioFijoToken = async (req, res) => {
-  const hoy = moment();
   const { celular, mensaje, token } = req.body;
   const newNumber = `${number_code}${celular}@c.us`;
-  const message = mensaje;
 
-  const { uid } = jwt.verify(token, process.env.JWT_SECRET);
-  const { vence, _id } = await Usuario.findOne({ _id: uid });
+  try {
+    const usuario = await Usuario.findOne({ _id: token });
 
-  // TODO: validar si el token ya expiro
-  let vencido = false;
+    if (!usuario) {
+      return res.status(400).json({
+        ok: false,
+        msg: "Usuario no existe",
+      });
+    }
 
-  if (vence < hoy) {
-    vencido = true;
+    sendMessage(newNumber, mensaje);
+
+    // TODO: validar fecha de vencimiento
+
+    res.json({
+      ok: true,
+      msg: "Usuario existe",
+      usuario,
+    });
+    saveChatMongo(celular, mensaje, token);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      ok: false,
+      msg: "Error inesperado, revisar logs ",
+    });
   }
-  // const dias = vence;
-
-  sendMessage(newNumber, mensaje);
-
-  // respuesta de api
-  res.send({ status: "Mensajes Enviados v2..", send: true, vence, vencido });
-
-  // almacenar Clientes enviados en mongo
-  saveChatMongo(celular, message, _id);
 };
 
 // enviar recordatorio desde app

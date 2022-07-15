@@ -18,7 +18,9 @@ const { dbConnection } = require("./database/config");
 
 const Message = require("./models/message");
 const Cliente = require("./models/cliente");
+const Usuario = require("./models/usuario");
 const { response } = require("express");
+const jwt = require("jsonwebtoken");
 
 // const bodyParser = require("body-parser");
 
@@ -85,7 +87,7 @@ client.on("ready", () => {
         // correr app desde navegador
         // Abrir con navegador predeterminado
         // TODO: abrir con navegador predeterminado
-        c.exec("start http://localhost:3000/#/");
+        //c.exec("start http://localhost:3000/#/");
       }
     });
   }, 500);
@@ -279,8 +281,8 @@ const saveChatExcel = async (number, message) => {
 };
 
 // guardar chat en mongo
-const saveChatMongo = async (number, message) => {
-  const chat = new Message({ number, message });
+const saveChatMongo = async (number, message, user_id) => {
+  const chat = new Message({ number, message, user_id });
 
   try {
     const messageDB = await chat.save();
@@ -396,6 +398,34 @@ const sendRecordatorioFijo = (req, res) => {
   );
 };
 
+// TODO: enviar recordatorio con api token
+// mensaje con token
+const sendRecordatorioFijoToken = async (req, res) => {
+  const hoy = moment();
+  const { celular, mensaje, token } = req.body;
+  const newNumber = `${number_code}${celular}@c.us`;
+  const message = mensaje;
+
+  const { uid } = jwt.verify(token, process.env.JWT_SECRET);
+  const { vence, _id } = await Usuario.findOne({ _id: uid });
+
+  // TODO: validar si el token ya expiro
+  let vencido = false;
+
+  if (vence < hoy) {
+    vencido = true;
+  }
+  // const dias = vence;
+
+  sendMessage(newNumber, mensaje);
+
+  // respuesta de api
+  res.send({ status: "Mensajes Enviados v2..", send: true, vence, vencido });
+
+  // almacenar Clientes enviados en mongo
+  saveChatMongo(celular, message, _id);
+};
+
 // enviar recordatorio desde app
 const sendRecordatorioApp = async (req, res) => {
   const {
@@ -491,13 +521,17 @@ const sendRecordatorio = (req, res) => {
   );
 };
 
-// RUTAS
+// Rutas de mensajes
 app.post("/send", sendWithApi);
 app.post("/recordatorio", sendRecordatorio);
 app.post("/recordatorio-app", sendRecordatorioApp);
 app.post("/recordatorio-fijo", sendRecordatorioFijo);
-// rutas
+app.post("/send-message-token", sendRecordatorioFijoToken);
+// rutas de clientes
 app.use("/api/clientes", require("./routes/clientes"));
+// rutas de usuarios
+app.use("/api/usuarios", require("./routes/usuarios"));
+app.use("/api/login", require("./routes/auth"));
 
 // LEVANTAR API
 app.listen(PORT, () => {

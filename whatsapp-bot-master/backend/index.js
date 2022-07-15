@@ -414,14 +414,25 @@ const sendRecordatorioFijoToken = async (req, res) => {
       });
     }
 
-    sendMessage(newNumber, mensaje);
-
     // TODO: validar fecha de vencimiento
+    const fechaVencimiento = moment(usuario.vence);
+    const fechaActual = moment();
+
+    const diferencia = fechaVencimiento.diff(fechaActual, "days");
+
+    if (diferencia < 0) {
+      return res.status(400).json({
+        ok: false,
+        msg: "El token ha expirado",
+      });
+    }
+
+    sendMessage(newNumber, mensaje);
 
     res.json({
       ok: true,
-      msg: "Usuario existe",
-      usuario,
+      msg: "Mensaje enviado con exito!!",
+      diferencia,
     });
     saveChatMongo(celular, mensaje, token);
   } catch (error) {

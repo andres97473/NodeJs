@@ -230,7 +230,6 @@ const sendMessage = (to, message) => {
 /*
 Funcion para enviar mensajes, recibe array de numeros
  */
-// TODO: enviar mensaje a varios numeros
 const sendMessageNumeros = (to, message) => {
   for (const celular of to) {
     const newNumber = `${number_code}${celular}@c.us`;
@@ -439,7 +438,6 @@ const sendRecordatorioFijoToken = async (req, res) => {
       });
     }
 
-    // TODO: enviar mensaje, recibir array de numeros
     sendMessageNumeros(celulares, mensaje);
 
     res.json({

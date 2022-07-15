@@ -228,6 +228,17 @@ const sendMessage = (to, message) => {
 };
 
 /*
+Funcion para enviar mensajes, recibe array de numeros
+ */
+// TODO: enviar mensaje a varios numeros
+const sendMessageNumeros = (to, message) => {
+  for (const celular of to) {
+    const newNumber = `${number_code}${celular}@c.us`;
+    client.sendMessage(newNumber, message);
+  }
+};
+
+/*
 Enviar media
  */
 const sendMedia = (to, file) => {
@@ -398,11 +409,9 @@ const sendRecordatorioFijo = (req, res) => {
   );
 };
 
-// TODO: enviar recordatorio con api token
-// mensaje con token
+// enviar recordatorio con api token
 const sendRecordatorioFijoToken = async (req, res) => {
-  const { celular, mensaje, token } = req.body;
-  const newNumber = `${number_code}${celular}@c.us`;
+  const { celulares, mensaje, token } = req.body;
 
   try {
     const usuario = await Usuario.findOne({ _id: token });
@@ -414,8 +423,10 @@ const sendRecordatorioFijoToken = async (req, res) => {
       });
     }
 
-    // TODO: validar fecha de vencimiento
-    const fechaVencimiento = moment(usuario.vence);
+    // validar fecha de vencimiento
+    const token_vence = usuario.vence;
+
+    const fechaVencimiento = moment(token_vence);
     const fechaActual = moment();
 
     const diferencia = fechaVencimiento.diff(fechaActual, "days");
@@ -423,18 +434,23 @@ const sendRecordatorioFijoToken = async (req, res) => {
     if (diferencia < 0) {
       return res.status(400).json({
         ok: false,
-        msg: "El token ha expirado",
+        msg: "El token ha expirado!!",
+        token_vence,
       });
     }
 
-    sendMessage(newNumber, mensaje);
+    // TODO: enviar mensaje, recibir array de numeros
+    sendMessageNumeros(celulares, mensaje);
 
     res.json({
       ok: true,
       msg: "Mensaje enviado con exito!!",
-      diferencia,
+      token_vence,
     });
-    saveChatMongo(celular, mensaje, token);
+
+    for (const celular of celulares) {
+      saveChatMongo(celular, mensaje, token);
+    }
   } catch (error) {
     console.log(error);
     res.status(500).json({

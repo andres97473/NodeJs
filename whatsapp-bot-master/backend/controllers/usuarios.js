@@ -85,8 +85,38 @@ const actualizarFechaVencimiento = async (req, res = response) => {
   }
 };
 
+const actualizarMensajesDisponibles = async (req, res = response) => {
+  const { email } = req.params;
+
+  try {
+    const existeEmail = await Usuario.findOne({ email });
+    if (!existeEmail) {
+      return res.status(404).json({
+        ok: false,
+        msg: "El correo no esta registrado",
+      });
+    }
+
+    // Actualizaciones
+    const { disponibles } = req.body;
+    const updateDisponibles = await Usuario.updateOne(
+      { email },
+      { $set: { disponibles, update_at: new Date() } }
+    );
+
+    res.json({ ok: true, msg: "Mensajes disponibles actualizados" });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      ok: false,
+      msg: "Error inesperado, revisar logs ",
+    });
+  }
+};
+
 module.exports = {
   getUsuarios,
   crearUsuarios,
   actualizarFechaVencimiento,
+  actualizarMensajesDisponibles,
 };

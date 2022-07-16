@@ -11,6 +11,7 @@ const {
   getUsuarios,
   crearUsuarios,
   actualizarFechaVencimiento,
+  actualizarMensajesDisponibles,
 } = require("../controllers/usuarios");
 
 const router = Router();
@@ -40,6 +41,16 @@ router.put(
     validarCampos,
   ],
   actualizarFechaVencimiento
+);
+router.put(
+  "/mensajes/:email",
+  [
+    validarJWT,
+    validarADMIN_ROLE,
+    check("disponibles", "Es necesario indicar un valor").not().isEmpty(),
+    validarCampos,
+  ],
+  actualizarMensajesDisponibles
 );
 
 module.exports = router;

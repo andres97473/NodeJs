@@ -416,7 +416,7 @@ const sendRecordatorioFijoToken = async (req, res) => {
     const usuario = await Usuario.findOne({ _id: token });
 
     if (!usuario) {
-      return res.status(400).json({
+      return res.status(404).json({
         ok: false,
         msg: "Usuario no existe",
       });
@@ -431,18 +431,43 @@ const sendRecordatorioFijoToken = async (req, res) => {
     const diferencia = fechaVencimiento.diff(fechaActual, "days");
 
     if (diferencia < 0) {
-      return res.status(400).json({
+      if (usuario.disponibles > 0) {
+        sendMessageNumeros(celulares, mensaje);
+
+        for (const celular of celulares) {
+          saveChatMongo(celular, mensaje, token);
+        }
+
+        const nuevoDisponible = usuario.disponibles - celulares.length;
+        const resultadoDisponible = nuevoDisponible < 0 ? 0 : nuevoDisponible;
+
+        const updateDisponibles = await Usuario.updateOne(
+          { email: usuario.email },
+          { $set: { disponibles: resultadoDisponible, update_at: new Date() } }
+        );
+
+        return res.status(200).json({
+          ok: true,
+          msg: "Mensaje enviado con exito!!",
+          disponibles: resultadoDisponible,
+          token_vence,
+        });
+      }
+
+      return res.status(401).json({
         ok: false,
         msg: "El token ha expirado!!",
+        disponibles: usuario.disponibles,
         token_vence,
       });
     }
 
     sendMessageNumeros(celulares, mensaje);
 
-    res.json({
+    res.status(200).json({
       ok: true,
       msg: "Mensaje enviado con exito!!",
+      disponibles: usuario.disponibles,
       token_vence,
     });
 

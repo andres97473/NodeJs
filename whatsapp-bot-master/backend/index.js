@@ -421,6 +421,12 @@ const sendRecordatorioFijoToken = async (req, res) => {
         msg: "Usuario no existe",
       });
     }
+    if (celulares.length === 0) {
+      return res.status(404).json({
+        ok: false,
+        msg: "No hay numeros para enviar mensaje",
+      });
+    }
 
     // validar fecha de vencimiento
     const token_vence = usuario.vence;
@@ -431,7 +437,14 @@ const sendRecordatorioFijoToken = async (req, res) => {
     const diferencia = fechaVencimiento.diff(fechaActual, "days");
 
     if (diferencia < 0) {
-      if (usuario.disponibles > 0) {
+      if (usuario.disponibles < celulares.length) {
+        return res.status(404).json({
+          ok: false,
+          msg: "No hay suficientes mensajes disponibles",
+          disponibles: usuario.disponibles,
+          token_vence,
+        });
+      } else {
         sendMessageNumeros(celulares, mensaje);
 
         for (const celular of celulares) {

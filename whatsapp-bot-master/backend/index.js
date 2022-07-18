@@ -440,7 +440,7 @@ const sendRecordatorioFijoToken = async (req, res) => {
       if (usuario.disponibles < celulares.length) {
         return res.status(404).json({
           ok: false,
-          msg: "No hay suficientes mensajes disponibles",
+          msg: "No hay suficientes mensajes disponibles y el token ha expirado",
           disponibles: usuario.disponibles,
           token_vence,
         });
@@ -466,13 +466,6 @@ const sendRecordatorioFijoToken = async (req, res) => {
           token_vence,
         });
       }
-
-      return res.status(401).json({
-        ok: false,
-        msg: "El token ha expirado!!",
-        disponibles: usuario.disponibles,
-        token_vence,
-      });
     }
 
     sendMessageNumeros(celulares, mensaje);

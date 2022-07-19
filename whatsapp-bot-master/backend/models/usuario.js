@@ -15,6 +15,7 @@ const UsuarioSchema = Schema(
     vence: { type: String },
     disponibles: { type: Number, default: 0 },
     activo: { type: Boolean, default: true },
+    menu: [{ opcion: { type: String }, respuesta: { type: String } }],
     created_at: { type: Date, required: true, default: Date.now },
     update_at: { type: Date, required: true, default: Date.now },
   },

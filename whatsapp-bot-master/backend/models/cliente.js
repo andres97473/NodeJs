@@ -13,6 +13,7 @@ const ClienteSchema = Schema(
     mensaje: { type: String, default: "SIN MENSAJE" },
     longitud: { type: String },
     latitud: { type: String },
+    user_id: { type: String },
     created_at: { type: Date, required: true, default: Date.now },
     update_at: { type: Date, required: true, default: Date.now },
   },

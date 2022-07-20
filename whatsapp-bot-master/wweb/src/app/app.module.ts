@@ -15,6 +15,8 @@ import { MapboxComponent } from './components/mapbox/mapbox.component';
 import { MapComponent } from './components/map/map.component';
 import { TableComponent } from './components/table/table.component';
 import { CsvFijoComponent } from './components/csv-fijo/csv-fijo.component';
+import { LoginComponent } from './auth/login/login.component';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
 
 @NgModule({
   declarations: [
@@ -27,6 +29,8 @@ import { CsvFijoComponent } from './components/csv-fijo/csv-fijo.component';
     MapComponent,
     TableComponent,
     CsvFijoComponent,
+    LoginComponent,
+    DashboardComponent,
   ],
   imports: [
     BrowserModule,

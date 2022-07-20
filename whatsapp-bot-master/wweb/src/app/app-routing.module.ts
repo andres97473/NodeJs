@@ -5,14 +5,27 @@ import { CsvMessagesComponent } from './components/csv-messages/csv-messages.com
 import { MapComponent } from './components/map/map.component';
 import { TableComponent } from './components/table/table.component';
 import { CsvFijoComponent } from './components/csv-fijo/csv-fijo.component';
+import { LoginComponent } from './auth/login/login.component';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { AuthGuard } from './guards/auth.guard';
 
 const routes: Routes = [
-  { path: 'clientes', component: ClientesComponent },
-  { path: 'csvmessage', component: CsvMessagesComponent },
-  { path: 'csvfijo', component: CsvFijoComponent },
-  { path: 'map', component: MapComponent },
-  { path: 'table', component: TableComponent },
-  { path: '**', redirectTo: '/clientes' },
+  { path: 'login', component: LoginComponent },
+  { path: '', redirectTo: 'login', pathMatch: 'full' },
+  {
+    path: 'dashboard',
+    canActivate: [AuthGuard],
+    canLoad: [AuthGuard],
+    component: DashboardComponent,
+    children: [
+      { path: 'clientes', component: ClientesComponent },
+      { path: '', redirectTo: 'clientes', pathMatch: 'full' },
+      { path: 'csvmessage', component: CsvMessagesComponent },
+      { path: 'csvfijo', component: CsvFijoComponent },
+      { path: 'map', component: MapComponent },
+      { path: 'table', component: TableComponent },
+    ],
+  },
 ];
 
 @NgModule({

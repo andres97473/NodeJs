@@ -17,6 +17,7 @@ export interface ClienteI {
   mensaje?: string;
   latitud?: string;
   longitud?: string;
+  user_id?: string;
   created_at?: Date | string;
   update_at?: Date | string;
 }

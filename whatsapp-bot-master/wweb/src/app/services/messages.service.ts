@@ -35,7 +35,8 @@ export class MessagesService {
     apellido2: any,
     nombre1: any,
     nombre2: any,
-    celular: any
+    celular: any,
+    user_id: any
   ) {
     //console.log(this.to, this.message);
 
@@ -47,6 +48,7 @@ export class MessagesService {
       nombre1,
       nombre2,
       celular,
+      user_id,
     });
   }
   sendRecordatorioFijo(

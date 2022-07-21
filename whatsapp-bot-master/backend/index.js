@@ -311,7 +311,8 @@ const saveRecordatorioMongo = async (
   nombre1,
   nombre2,
   celular,
-  mensaje
+  mensaje,
+  user_id
 ) => {
   const recordatorio = new Cliente({
     num_doc_usr,
@@ -322,6 +323,7 @@ const saveRecordatorioMongo = async (
     nombre2,
     celular,
     mensaje,
+    user_id,
   });
 
   try {
@@ -542,6 +544,7 @@ const sendRecordatorio = (req, res) => {
     nombre1,
     nombre2,
     celular,
+    user_id,
   } = req.body;
   const newNumber = `${number_code}${celular}@c.us`;
   const message = `${nombre1} ${nombre2} ${apellido1} ${apellido2}, su numero de documento es: ${num_doc_usr}?, si su informacion es correcta por favor seleccione una de las siguientes opciones`;
@@ -580,7 +583,8 @@ const sendRecordatorio = (req, res) => {
     nombre1,
     nombre2,
     celular,
-    txt1 + " " + message
+    txt1 + " " + message,
+    user_id
   );
 };
 

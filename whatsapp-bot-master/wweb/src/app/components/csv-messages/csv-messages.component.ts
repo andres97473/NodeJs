@@ -1,17 +1,19 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import * as XLSX from 'xlsx';
 import { RecordatorioModel, Respuesta } from '../../models/recordatorio.model';
 import { MessagesService } from '../../services/messages.service';
 import Swal from 'sweetalert2';
 import { NgForm } from '@angular/forms';
+import { UsuarioService } from '../../services/usuario.service';
 
 @Component({
   selector: 'app-csv-messages',
   templateUrl: './csv-messages.component.html',
   styleUrls: ['./csv-messages.component.scss'],
 })
-export class CsvMessagesComponent {
+export class CsvMessagesComponent implements OnInit {
+  usuario: any;
   // cargar archivo csv
   csvRecords: RecordatorioModel[] = [];
   // csvRecordsFilter: RecordatorioModel[] = [];
@@ -45,7 +47,24 @@ export class CsvMessagesComponent {
 
   @ViewChild('fileImportInput') fileImportInput: any;
 
-  constructor(private _sms: MessagesService, private router: Router) {}
+  constructor(
+    private _sms: MessagesService,
+    private router: Router,
+    private _usuarioService: UsuarioService
+  ) {}
+
+  ngOnInit(): void {
+    this.usuario = this.getUsuarioStorage();
+  }
+
+  getUsuarioStorage() {
+    const usuario = localStorage.getItem('usuario');
+
+    if (usuario) {
+      return JSON.parse(usuario);
+    }
+    return null;
+  }
 
   fileUpload(event: any) {
     this.recordatorios = [];
@@ -90,9 +109,10 @@ export class CsvMessagesComponent {
             celular,
             estado: this.estado,
             fecha_proceso,
+            user_id: this.usuario.uid,
           });
         });
-        // console.log(this.recordatorios);
+        console.log(this.recordatorios);
         this.csvRecords = this.recordatorios;
         // this.csvRecordsFilter = this.recordatorios;
       });
@@ -126,6 +146,7 @@ export class CsvMessagesComponent {
           nombre1,
           nombre2,
           celular,
+          user_id,
         } = message;
         //const recordatorio = `Estimado sr(a) ${nombre1} ${nombre2} ${apellido1} ${apellido2}, su numero de documento es: ${num_doc_usr}`;
         //console.log(recordatorio);
@@ -137,7 +158,8 @@ export class CsvMessagesComponent {
             apellido2,
             nombre1,
             nombre2,
-            celular
+            celular,
+            user_id
           )
           .subscribe(
             (res: any) => {

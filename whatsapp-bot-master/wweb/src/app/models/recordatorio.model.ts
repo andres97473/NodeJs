@@ -10,6 +10,7 @@ export class RecordatorioModel {
   fecha_proceso?: Date;
   estado?: string;
   mensaje?: string;
+  user_id?: string;
 }
 
 export class Respuesta {

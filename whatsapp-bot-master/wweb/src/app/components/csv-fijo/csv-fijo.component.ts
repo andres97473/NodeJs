@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, ViewChild, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import * as XLSX from 'xlsx';
 import { RecordatorioModel, Respuesta } from '../../models/recordatorio.model';
@@ -11,7 +11,8 @@ import { NgForm } from '@angular/forms';
   templateUrl: './csv-fijo.component.html',
   styleUrls: ['./csv-fijo.component.scss'],
 })
-export class CsvFijoComponent {
+export class CsvFijoComponent implements OnInit {
+  usuario: any;
   // cargar archivo csv
   csvRecords: RecordatorioModel[] = [];
   // csvRecordsFilter: RecordatorioModel[] = [];
@@ -48,6 +49,18 @@ export class CsvFijoComponent {
   @ViewChild('fileImportInput') fileImportInput: any;
 
   constructor(private _sms: MessagesService, private router: Router) {}
+  ngOnInit(): void {
+    this.usuario = this.getUsuarioStorage();
+  }
+
+  getUsuarioStorage() {
+    const usuario = localStorage.getItem('usuario');
+
+    if (usuario) {
+      return JSON.parse(usuario);
+    }
+    return null;
+  }
 
   fileUpload(event: any) {
     this.recordatorios = [];
@@ -127,68 +140,56 @@ export class CsvFijoComponent {
 
   sendMessagesCsv(messages: RecordatorioModel[]) {
     //console.log(messages);
+    let celulares: number[] = [];
     this.errores = 0;
     if (this.coneccion) {
       for (const message of messages) {
-        const {
-          id,
-          num_doc_usr,
-          tipo_doc,
-          apellido1,
-          apellido2,
-          nombre1,
-          nombre2,
-          celular,
-        } = message;
-        //const recordatorio = `Estimado sr(a) ${nombre1} ${nombre2} ${apellido1} ${apellido2}, su numero de documento es: ${num_doc_usr}`;
-        //console.log(recordatorio);
-        this._sms
-          .sendRecordatorioFijo(
-            num_doc_usr,
-            tipo_doc,
-            apellido1,
-            apellido2,
-            nombre1,
-            nombre2,
-            celular,
-            // TODO: cambiar por textarea
-            this.txtArea
-          )
-          .subscribe(
-            (res: any) => {
-              //console.log('Mensaje enviado !!');
-              //console.log(res);
-              this.respuesta = res;
+        const { id, celular } = message;
+
+        celulares.push(Number(celular));
+      }
+      // console.log(celulares);
+      this._sms
+        .sendMessageToken(celulares, this.txtArea, this.usuario.uid)
+        .subscribe(
+          (res: any) => {
+            const storageUsuario = localStorage.getItem('usuario');
+            if (storageUsuario) {
+              let usuario = JSON.parse(storageUsuario);
+              usuario.disponibles = res.disponibles;
+
+              // console.log(usuario);
+              localStorage.setItem('usuario', JSON.stringify(usuario));
+              console.log(localStorage.getItem('usuario'));
+            }
+            // console.log(res);
+
+            this.respuesta = res;
+            Swal.fire({
+              position: 'center',
+              icon: 'success',
+              title: this.respuesta.status,
+              text: `${this.csvRecords.length} Mensajes enviados !!`,
+              showConfirmButton: false,
+              timer: 3000,
+            });
+          },
+          (err) => {
+            // console.log(err);
+            this.errores++;
+            if (this.errores < 2) {
               Swal.fire({
                 position: 'center',
-                icon: 'success',
-                title: this.respuesta.status,
-                text: `${this.csvRecords.length} Mensajes enviados !!`,
+                icon: 'error',
+                title: 'Error al enviar los mensajes !!',
+                text: err.error.msg,
                 showConfirmButton: false,
                 timer: 3000,
               });
-
-              this.cambiarEstado(id, 'ENVIADO');
-            },
-            (err) => {
-              console.log(err);
-              this.errores++;
-              if (this.errores < 2) {
-                Swal.fire({
-                  position: 'center',
-                  icon: 'error',
-                  title: 'Error al enviar los mensajes !!',
-                  text: 'Revisa la coneccion!',
-                  showConfirmButton: false,
-                  timer: 3000,
-                });
-              }
-
-              this.cambiarEstado(id, 'ERROR');
-              return (this.coneccion = false);
             }
-          );
-      }
+            return (this.coneccion = false);
+          }
+        );
     } else {
       console.log('sin coneccion');
     }

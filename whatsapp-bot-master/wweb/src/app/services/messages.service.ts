@@ -96,4 +96,14 @@ export class MessagesService {
       celular,
     });
   }
+
+  sendMessageToken(celulares: number[], mensaje: string, token: string) {
+    //console.log(this.to, this.message);
+
+    return this.http.post(`${this.URL}/send-message-token`, {
+      celulares,
+      mensaje,
+      token,
+    });
+  }
 }

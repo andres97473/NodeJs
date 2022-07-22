@@ -36,6 +36,11 @@ export class UsuarioService {
     };
   }
 
+  getUsuarioLocal() {
+    const usuario = localStorage.getItem('usuario');
+    return usuario ? JSON.parse(usuario) : null;
+  }
+
   guardarLocalStorage(token: string, usuario: any) {
     const usuarioString = JSON.stringify(usuario);
 

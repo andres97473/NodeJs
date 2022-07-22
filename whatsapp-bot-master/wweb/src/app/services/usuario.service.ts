@@ -10,6 +10,7 @@ import { Observable, of } from 'rxjs';
 })
 export class UsuarioService {
   url = 'http://localhost:3000/';
+  disponibles = 0;
 
   constructor(
     @Inject(DOCUMENT) private document: Document,
@@ -38,6 +39,8 @@ export class UsuarioService {
 
   getUsuarioLocal() {
     const usuario = localStorage.getItem('usuario');
+    console.log(usuario);
+
     return usuario ? JSON.parse(usuario) : null;
   }
 

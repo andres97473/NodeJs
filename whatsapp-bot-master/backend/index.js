@@ -327,7 +327,7 @@ const saveRecordatorioMongo = async (
   });
 
   try {
-    const clienteDB = await Cliente.findOne({ num_doc_usr });
+    const clienteDB = await Cliente.findOne({ num_doc_usr, user_id });
     if (clienteDB) {
       return "Usuario ya existe";
     }

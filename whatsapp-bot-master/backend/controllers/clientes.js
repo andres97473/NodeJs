@@ -15,9 +15,39 @@ const getClientes = async (req, res) => {
     // uid: req.uid,
   });
 };
+const getClientesToken = async (req, res) => {
+  const uid = req.uid;
+
+  try {
+    const [clientes, total] = await Promise.all([
+      // Cliente.find({}, "nombre email role google img"),
+      Cliente.find({ user_id: uid }),
+      Cliente.count({ user_id: uid }),
+    ]);
+    if (!clientes) {
+      return res.status(404).json({
+        ok: false,
+        msg: "no existen clientes para ese usuario",
+      });
+    }
+
+    res.json({
+      ok: true,
+      total,
+      clientes,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      ok: false,
+      msg: "Error inesperado, revisar logs ",
+    });
+  }
+};
 
 const crearCliente = async (req, res = response) => {
   const { num_doc_usr } = req.body;
+  console.log(req.body);
 
   try {
     const existeDocumento = await Cliente.findOne({ num_doc_usr });
@@ -123,6 +153,7 @@ const borrarCliente = async (req, res = response) => {
 
 module.exports = {
   getClientes,
+  getClientesToken,
   crearCliente,
   actualizarCliente,
   borrarCliente,

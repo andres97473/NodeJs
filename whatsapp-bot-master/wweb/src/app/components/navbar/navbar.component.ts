@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { UsuarioService } from '../../services/usuario.service';
 import { Router } from '@angular/router';
 
@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./navbar.component.scss'],
 })
 export class NavbarComponent implements OnInit {
+  @Input() disponibles = 0;
   usuario: any;
   constructor(
     private _usuarioService: UsuarioService,
@@ -17,6 +18,7 @@ export class NavbarComponent implements OnInit {
   ngOnInit(): void {
     // TODO: obtener usuario
     this.usuario = this._usuarioService.getUsuarioLocal();
+    this.disponibles = this.usuario.disponibles;
   }
 
   logout() {

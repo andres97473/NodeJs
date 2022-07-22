@@ -10,16 +10,25 @@ export class ClientesService {
 
   constructor(private http: HttpClient) {}
 
+  get getToken(): string {
+    return localStorage.getItem('token') || '';
+  }
+
   get getHeaders() {
     return {
       headers: {
         'Content-Type': 'application/json',
+        'x-token': this.getToken,
       },
     };
   }
 
   getClientes() {
-    return this.http.get<GetClientesI>(`${this.URL}/api/clientes`);
+    return this.http.get<GetClientesI>(`${this.URL}/api/clientes/token`, {
+      headers: {
+        'x-token': this.getToken,
+      },
+    });
   }
 
   crearCliente(data: any) {

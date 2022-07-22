@@ -4,9 +4,17 @@ const Usuario = require("../models/usuario");
 const { generarJWT } = require("../helpers/jwt");
 
 const getUsuarios = async (req, res = response) => {
+  const [usuarios, total] = await Promise.all([
+    Usuario.find({}),
+    Usuario.count(),
+  ]);
+
   res.json({
     ok: true,
-    msg: "Usuarios",
+    total,
+    usuarios,
+    // se puede obtener del req los parametros q se defina
+    // uid: req.uid,
   });
 };
 

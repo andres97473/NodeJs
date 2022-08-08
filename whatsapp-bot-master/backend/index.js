@@ -19,9 +19,12 @@ const { dbConnection } = require("./database/config");
 const Message = require("./models/message");
 const Cliente = require("./models/cliente");
 const Usuario = require("./models/usuario");
-const { response } = require("express");
+const { request, response } = require("express");
+const bodyParser = require("body-parser");
+const multer = require("multer");
 const jwt = require("jsonwebtoken");
 
+const upload = multer({ dest: "uploads/" });
 // const bodyParser = require("body-parser");
 
 // Environment variables
@@ -38,6 +41,7 @@ const inicioFech = msg + " " + fech;
 const app = express();
 
 app.use(cors());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(express.json());
 
@@ -245,6 +249,19 @@ const sendMedia = (to, file) => {
   client.sendMessage(to, mediaFile);
 };
 
+// TODO: revisar
+const sendMediaApi = (to, message, file, mimetype, filename) => {
+  let mediaFile = MessageMedia.fromFilePath(`${file}`);
+  mediaFile.mimetype = mimetype;
+  mediaFile.filename = filename;
+  // console.log(mediaFile);
+  for (const celular of to) {
+    const newNumber = `${number_code}${celular}@c.us`;
+    client.sendMessage(newNumber, message);
+    client.sendMessage(newNumber, mediaFile);
+  }
+};
+
 /**
  * Guardar historial de conversacion
  * @param {*} number
@@ -447,6 +464,7 @@ const sendRecordatorioFijoToken = async (req, res) => {
           token_vence,
         });
       } else {
+        // enviar mensajes
         sendMessageNumeros(celulares, mensaje);
 
         for (const celular of celulares) {
@@ -470,7 +488,106 @@ const sendRecordatorioFijoToken = async (req, res) => {
       }
     }
 
+    // enviar mensajes
     sendMessageNumeros(celulares, mensaje);
+
+    res.status(200).json({
+      ok: true,
+      msg: "Mensaje enviado con exito!!",
+      disponibles: usuario.disponibles,
+      token_vence,
+    });
+
+    for (const celular of celulares) {
+      saveChatMongo(celular, mensaje, token);
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      ok: false,
+      msg: "Error inesperado, revisar logs ",
+    });
+  }
+};
+// TODO: enviar mensaje con imagen
+// enviar mensaje con inm y token
+const sendMessageImg = async (req = request, res = response) => {
+  let { celulares, mensaje, token } = req.body;
+  // Validar que exista un archivo enviado por el req
+  if (!req.file || Object.keys(req.file).length === 0) {
+    return res.status(400).json({
+      ok: false,
+      msg: "No hay ningun archivo",
+    });
+  }
+
+  // definir imagen, tipo y nombre original
+  const imagen = req.file;
+  const mimetype = imagen.mimetype;
+  const filename = imagen.originalname;
+
+  // convertir a array de numeros
+  celulares = celulares.split(",");
+
+  try {
+    const usuario = await Usuario.findOne({ _id: token });
+
+    if (!usuario) {
+      return res.status(404).json({
+        ok: false,
+        msg: "Usuario no existe",
+      });
+    }
+    if (celulares.length === 0) {
+      return res.status(404).json({
+        ok: false,
+        msg: "No hay numeros para enviar mensaje",
+      });
+    }
+
+    // validar fecha de vencimiento
+    const token_vence = usuario.vence;
+
+    const fechaVencimiento = moment(token_vence);
+    const fechaActual = moment();
+
+    const diferencia = fechaVencimiento.diff(fechaActual, "days");
+
+    if (diferencia < 0) {
+      if (usuario.disponibles < celulares.length) {
+        return res.status(404).json({
+          ok: false,
+          msg: "No hay suficientes mensajes disponibles y el token ha expirado",
+          disponibles: usuario.disponibles,
+          token_vence,
+        });
+      } else {
+        // enviar imagen a celulares
+        sendMediaApi(celulares, mensaje, imagen.path, mimetype, filename);
+
+        for (const celular of celulares) {
+          saveChatMongo(celular, mensaje, token);
+        }
+
+        const nuevoDisponible = usuario.disponibles - celulares.length;
+        const resultadoDisponible = nuevoDisponible < 0 ? 0 : nuevoDisponible;
+
+        const updateDisponibles = await Usuario.updateOne(
+          { email: usuario.email },
+          { $set: { disponibles: resultadoDisponible, update_at: new Date() } }
+        );
+
+        return res.status(200).json({
+          ok: true,
+          msg: "Mensaje enviado con exito!!",
+          disponibles: resultadoDisponible,
+          token_vence,
+        });
+      }
+    }
+
+    // enviar imagen a celulares
+    sendMediaApi(celulares, mensaje, imagen.path, mimetype, filename);
 
     res.status(200).json({
       ok: true,
@@ -594,6 +711,7 @@ app.post("/recordatorio", sendRecordatorio);
 app.post("/recordatorio-app", sendRecordatorioApp);
 app.post("/recordatorio-fijo", sendRecordatorioFijo);
 app.post("/send-message-token", sendRecordatorioFijoToken);
+app.post("/send-message-img", upload.single("imagen"), sendMessageImg);
 // rutas de clientes
 app.use("/api/clientes", require("./routes/clientes"));
 // rutas de usuarios

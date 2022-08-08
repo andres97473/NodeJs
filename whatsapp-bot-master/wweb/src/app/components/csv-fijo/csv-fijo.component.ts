@@ -160,7 +160,7 @@ export class CsvFijoComponent implements OnInit {
 
               // console.log(usuario);
               localStorage.setItem('usuario', JSON.stringify(usuario));
-              console.log(localStorage.getItem('usuario'));
+              //console.log(localStorage.getItem('usuario'));
             }
             // console.log(res);
 

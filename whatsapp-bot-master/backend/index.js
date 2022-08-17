@@ -249,7 +249,9 @@ const sendMedia = (to, file) => {
   client.sendMessage(to, mediaFile);
 };
 
-// TODO: revisar
+/*
+Enviar media con API
+ */
 const sendMediaApi = (to, message, file, mimetype, filename) => {
   let mediaFile = MessageMedia.fromFilePath(`${file}`);
   mediaFile.mimetype = mimetype;
@@ -509,7 +511,6 @@ const sendRecordatorioFijoToken = async (req, res) => {
     });
   }
 };
-// TODO: enviar mensaje con imagen
 // enviar mensaje con inm y token
 const sendMessageImg = async (req = request, res = response) => {
   let { celulares, mensaje, token } = req.body;
@@ -717,6 +718,8 @@ app.use("/api/clientes", require("./routes/clientes"));
 // rutas de usuarios
 app.use("/api/usuarios", require("./routes/usuarios"));
 app.use("/api/login", require("./routes/auth"));
+// rutas de menus
+app.use("/api/menus", require("./routes/menus"));
 
 // LEVANTAR API
 app.listen(PORT, () => {

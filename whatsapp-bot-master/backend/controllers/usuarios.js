@@ -21,7 +21,7 @@ const getUsuarios = async (req, res = response) => {
 const crearUsuarios = async (req, res = response) => {
   //   console.log(req.body);
 
-  const { password, email, num_doc_usr } = req.body;
+  const { password, email, num_doc_usr, codigo } = req.body;
 
   try {
     const existeEmail = await Usuario.findOne({ email });
@@ -38,6 +38,14 @@ const crearUsuarios = async (req, res = response) => {
       return res.status(400).json({
         ok: false,
         msg: "El Numero de documento ya esta registrado",
+      });
+    }
+
+    const existeCodigo = await Usuario.findOne({ codigo });
+    if (existeCodigo) {
+      return res.status(400).json({
+        ok: false,
+        msg: "El Codigo ya esta esta registrado",
       });
     }
 

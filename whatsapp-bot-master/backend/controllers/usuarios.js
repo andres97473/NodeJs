@@ -106,7 +106,7 @@ const crearUsuarios = async (req, res = response) => {
     });
   } catch (error) {
     console.log(error);
-    res.status(500).json({
+    return res.status(500).json({
       ok: false,
       msg: "Error inesperado, revisar logs ",
     });
@@ -135,7 +135,7 @@ const actualizarFechaVencimiento = async (req, res = response) => {
     res.json({ ok: true, msg: "Fecha de vencimiento actualizada" });
   } catch (error) {
     console.log(error);
-    res.status(500).json({
+    return res.status(500).json({
       ok: false,
       msg: "Error inesperado, revisar logs ",
     });
@@ -164,7 +164,7 @@ const actualizarMensajesDisponibles = async (req, res = response) => {
     res.json({ ok: true, msg: "Mensajes disponibles actualizados" });
   } catch (error) {
     console.log(error);
-    res.status(500).json({
+    return res.status(500).json({
       ok: false,
       msg: "Error inesperado, revisar logs ",
     });

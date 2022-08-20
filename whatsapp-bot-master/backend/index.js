@@ -305,6 +305,7 @@ const saveChatExcel = async (number, message) => {
       })
       .catch((err) => {
         console.log("err", err);
+        return err;
       });
   }
 };
@@ -319,6 +320,7 @@ const saveChatMongo = async (number, message, user_id) => {
     // console.log(messageDB);
   } catch (error) {
     console.log(error);
+    return error;
   }
 };
 // guardar chat en mongo
@@ -355,6 +357,7 @@ const saveRecordatorioMongo = async (
     // console.log(messageDB);
   } catch (error) {
     console.log(error);
+    return error;
   }
 };
 
@@ -369,7 +372,7 @@ const findCliente = async (num_doc_usr) => {
     return clienteDB;
   } catch (error) {
     console.log(error);
-    res.status(500).json({
+    return res.status(500).json({
       ok: false,
       msg: "Error inesperado",
     });
@@ -505,7 +508,7 @@ const sendRecordatorioFijoToken = async (req, res) => {
     }
   } catch (error) {
     console.log(error);
-    res.status(500).json({
+    return res.status(500).json({
       ok: false,
       msg: "Error inesperado, revisar logs ",
     });
@@ -602,7 +605,7 @@ const sendMessageImg = async (req = request, res = response) => {
     }
   } catch (error) {
     console.log(error);
-    res.status(500).json({
+    return res.status(500).json({
       ok: false,
       msg: "Error inesperado, revisar logs ",
     });
@@ -711,6 +714,7 @@ app.post("/send", sendWithApi);
 app.post("/recordatorio", sendRecordatorio);
 app.post("/recordatorio-app", sendRecordatorioApp);
 app.post("/recordatorio-fijo", sendRecordatorioFijo);
+// rutas validadas
 app.post("/send-message-token", sendRecordatorioFijoToken);
 app.post("/send-message-img", upload.single("imagen"), sendMessageImg);
 // rutas de clientes

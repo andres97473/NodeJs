@@ -38,7 +38,7 @@ const getClientesToken = async (req, res) => {
     });
   } catch (error) {
     console.log(error);
-    res.status(500).json({
+    return res.status(500).json({
       ok: false,
       msg: "Error inesperado, revisar logs ",
     });
@@ -70,7 +70,7 @@ const crearCliente = async (req, res = response) => {
     });
   } catch (error) {
     console.log(error);
-    res.status(500).json({
+    return res.status(500).json({
       ok: false,
       msg: "Error inesperado, revisar logs ",
     });
@@ -116,7 +116,7 @@ const actualizarCliente = async (req, res = response) => {
     });
   } catch (error) {
     console.log(error);
-    res.status(500).json({
+    return res.status(500).json({
       ok: false,
       msg: "Error inesperado",
     });
@@ -144,7 +144,7 @@ const borrarCliente = async (req, res = response) => {
     });
   } catch (error) {
     console.log(error);
-    res.status(500).json({
+    return res.status(500).json({
       ok: false,
       msg: "Error inesperado",
     });

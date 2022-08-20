@@ -20,8 +20,8 @@ router.get("/", validarJWT, getUsuarios);
 router.post(
   "/",
   [
-    validarJWT,
-    validarADMIN_ROLE,
+    // validarJWT,
+    // validarADMIN_ROLE,
     check("nombre1", "El nombre es obligatorio").not().isEmpty(),
     check("apellido1", "El apellido es obligatorio").not().isEmpty(),
     check("password", "El password es obligatorio").not().isEmpty(),

@@ -21,7 +21,17 @@ const getUsuarios = async (req, res = response) => {
 const crearUsuarios = async (req, res = response) => {
   //   console.log(req.body);
 
-  const { password, email, num_doc_usr, codigo } = req.body;
+  const {
+    email,
+    password,
+    num_doc_usr,
+    tipo_doc,
+    apellido1,
+    apellido2,
+    nombre1,
+    nombre2,
+    celular,
+  } = req.body;
 
   try {
     const existeEmail = await Usuario.findOne({ email });
@@ -41,15 +51,46 @@ const crearUsuarios = async (req, res = response) => {
       });
     }
 
-    const existeCodigo = await Usuario.findOne({ codigo });
-    if (existeCodigo) {
-      return res.status(400).json({
-        ok: false,
-        msg: "El Codigo ya esta esta registrado",
+    // const existeCodigo = await Usuario.findOne({ codigo });
+    // if (existeCodigo) {
+    //   return res.status(400).json({
+    //     ok: false,
+    //     msg: "El Codigo ya esta esta registrado",
+    //   });
+    // }
+    const buscarCodigos = await Usuario.find(
+      { codigo: { $ne: null } },
+      { codigo: 1, _id: 0 }
+    );
+
+    let nCodigos = [];
+    let codigoMax = 100;
+
+    if (buscarCodigos.length > 0) {
+      buscarCodigos.forEach((element) => {
+        const nElement = String(element.codigo).replace("#", "");
+        nCodigos.push(Number(nElement));
       });
     }
 
-    const usuario = new Usuario(req.body);
+    if (nCodigos.length > 0) {
+      codigoMax = Math.max(...nCodigos) + 1;
+    }
+
+    // crear usuario solo con datos permitidos
+    const usuario = new Usuario({
+      email,
+      password,
+      num_doc_usr,
+      tipo_doc,
+      apellido1,
+      apellido2,
+      nombre1,
+      nombre2,
+      celular,
+      // generar codigo disponible
+      codigo: "#" + codigoMax,
+    });
 
     // Encriptar password
     const salt = bcrypt.genSaltSync();

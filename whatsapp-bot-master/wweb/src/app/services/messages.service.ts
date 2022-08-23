@@ -19,14 +19,14 @@ export class MessagesService {
 
   constructor(private http: HttpClient) {}
 
-  sendMessage(nTo: any, nMessage: any) {
-    //console.log(this.to, this.message);
+  // sendMessage(nTo: any, nMessage: any) {
+  //   //console.log(this.to, this.message);
 
-    return this.http.post(`${this.URL}/send`, {
-      to: nTo,
-      message: nMessage,
-    });
-  }
+  //   return this.http.post(`${this.URL}/send`, {
+  //     to: nTo,
+  //     message: nMessage,
+  //   });
+  // }
 
   sendRecordatorio(
     num_doc_usr: any,
@@ -38,8 +38,6 @@ export class MessagesService {
     celular: any,
     user_id: any
   ) {
-    //console.log(this.to, this.message);
-
     return this.http.post(`${this.URL}/recordatorio`, {
       num_doc_usr,
       tipo_doc,
@@ -51,6 +49,7 @@ export class MessagesService {
       user_id,
     });
   }
+
   sendRecordatorioFijo(
     num_doc_usr: any,
     tipo_doc: any,
@@ -86,7 +85,14 @@ export class MessagesService {
   ) {
     //console.log(this.to, this.message);
 
-    return this.http.post(`${this.URL}/recordatorio-app`, {
+    const usuario = localStorage.getItem('usuario') || null;
+    let nUsuario;
+
+    if (usuario) {
+      nUsuario = JSON.parse(usuario);
+    }
+
+    return this.http.post(`${this.URL}/recordatorio-app/${nUsuario.uid}`, {
       num_doc_usr,
       tipo_doc,
       apellido1,

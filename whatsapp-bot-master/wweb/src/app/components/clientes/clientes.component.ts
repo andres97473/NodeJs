@@ -297,20 +297,34 @@ export class ClientesComponent implements OnInit, AfterViewInit {
               nombre2,
               celular
             )
-            .subscribe((resp: any) => {
-              // console.log(resp);
-              this.respuesta = resp;
-              Swal.fire({
-                position: 'center',
-                icon: 'success',
-                title: this.respuesta.status,
-                text: `Mensaje enviado !!`,
-                showConfirmButton: false,
-                timer: 3000,
-              });
+            .subscribe(
+              (resp: any) => {
+                // console.log(resp);
+                this.respuesta = resp;
+                Swal.fire({
+                  position: 'center',
+                  icon: 'success',
+                  title: this.respuesta.status,
+                  text: `Mensaje enviado !!`,
+                  showConfirmButton: false,
+                  timer: 3000,
+                });
 
-              this.cambiarEstado(_id, 'ENVIADO');
-            });
+                this.cambiarEstado(_id, 'ENVIADO');
+              },
+              (err) => {
+                // console.log(err);
+
+                Swal.fire({
+                  position: 'center',
+                  icon: 'error',
+                  title: 'Error al enviar los mensajes !!',
+                  text: err.error.msg,
+                  showConfirmButton: false,
+                  timer: 3000,
+                });
+              }
+            );
         }
       });
     }

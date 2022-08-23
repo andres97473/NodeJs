@@ -451,6 +451,12 @@ const sendRecordatorioFijoToken = async (req, res) => {
         msg: "No hay numeros para enviar mensaje",
       });
     }
+    if (mensaje.length === 0) {
+      return res.status(404).json({
+        ok: false,
+        msg: "No hay mensaje para enviar",
+      });
+    }
 
     // validar fecha de vencimiento
     const token_vence = usuario.vence;
@@ -614,6 +620,7 @@ const sendMessageImg = async (req = request, res = response) => {
 
 // enviar recordatorio desde app
 const sendRecordatorioApp = async (req, res) => {
+  const { token } = req.params;
   const {
     num_doc_usr,
     tipo_doc,
@@ -623,37 +630,100 @@ const sendRecordatorioApp = async (req, res) => {
     nombre2,
     celular,
   } = req.body;
-  const newNumber = `${number_code}${celular}@c.us`;
-  const message = `${nombre1} ${nombre2} ${apellido1} ${apellido2}, su numero de documento es: ${num_doc_usr}?, si su informacion es correcta por favor seleccione una de las siguientes opciones`;
+  const celulares = [];
+  try {
+    // TODO: validaciones
+    const usuario = await Usuario.findOne({ _id: token });
 
-  // Crear lista
-  let sections = [
-    {
-      title: "Seleccione una Respuesta y presione Enviar",
-      rows: [
-        { title: `${num_doc_usr},confirmar` },
-        { title: `${num_doc_usr},cancelar` },
-      ],
-    },
-  ];
-  let list = new List(
-    message,
-    "Opciones",
-    sections,
-    "Estimado sr(a)",
-    "gracias por su tiempo"
-  );
+    if (!usuario) {
+      return res.status(404).json({
+        ok: false,
+        msg: "Usuario no existe",
+      });
+    }
+    if (celular.length === 0) {
+      return res.status(404).json({
+        ok: false,
+        msg: "No hay numeros para enviar mensaje",
+      });
+    }
 
-  sendMessage(newNumber, list);
+    // enviar mensaje a celulares
+    const newNumber = `${number_code}${celular}@c.us`;
+    const message = `${nombre1} ${nombre2} ${apellido1} ${apellido2}, su numero de documento es: ${num_doc_usr}?, si su informacion es correcta por favor seleccione una de las siguientes opciones`;
 
-  // respuesta de api
-  res.send({ status: "Mensaje Enviado v2..", send: true });
+    // Crear lista
+    let sections = [
+      {
+        title: "Seleccione una Respuesta y presione Enviar",
+        rows: [
+          { title: `${num_doc_usr},confirmar` },
+          { title: `${num_doc_usr},cancelar` },
+        ],
+      },
+    ];
+    let list = new List(
+      message,
+      "Opciones",
+      sections,
+      "Estimado sr(a)",
+      "gracias por su tiempo"
+    );
 
-  // cambiar Estado del Cliente
-  const updateEstado = await Cliente.updateOne(
-    { num_doc_usr },
-    { $set: { estado: "ENVIADO", update_at: new Date() } }
-  );
+    celulares.push(celular);
+
+    // validar fecha de vencimiento
+    const token_vence = usuario.vence;
+
+    const fechaVencimiento = moment(token_vence);
+    const fechaActual = moment();
+
+    const diferencia = fechaVencimiento.diff(fechaActual, "days");
+
+    if (diferencia < 0) {
+      if (usuario.disponibles < celulares.length) {
+        return res.status(404).json({
+          ok: false,
+          msg: "No hay suficientes mensajes disponibles y el token ha expirado",
+          disponibles: usuario.disponibles,
+          token_vence,
+        });
+      } else {
+        // enviar mensaje a celular
+        sendMessage(newNumber, list);
+
+        const nuevoDisponible = usuario.disponibles - celulares.length;
+        const resultadoDisponible = nuevoDisponible < 0 ? 0 : nuevoDisponible;
+
+        const updateDisponibles = await Usuario.updateOne(
+          { email: usuario.email },
+          { $set: { disponibles: resultadoDisponible, update_at: new Date() } }
+        );
+
+        // cambiar Estado del Cliente
+        const updateEstado = await Cliente.updateOne(
+          { num_doc_usr },
+          { $set: { estado: "ENVIADO", update_at: new Date() } }
+        );
+        res.send({ status: "Mensaje Enviado v2..", send: true });
+      }
+    }
+    // enviar mensaje a celular
+    sendMessage(newNumber, list);
+
+    // cambiar Estado del Cliente
+    const updateEstado = await Cliente.updateOne(
+      { num_doc_usr },
+      { $set: { estado: "ENVIADO", update_at: new Date() } }
+    );
+    res.send({ status: "Mensaje Enviado v2..", send: true });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      ok: false,
+      msg: "Error inesperado, revisar logs ",
+    });
+  }
 };
 // enviar recordatorio desde app mensaje fijo
 const sendRecordatorio = (req, res) => {
@@ -683,13 +753,6 @@ const sendRecordatorio = (req, res) => {
   ];
   let list = new List(message, "Opciones", sections, txt1);
 
-  // console.log(message, celular);
-  // enviar mensaje y boton
-  // sendMessage(newNumber, message);
-  // sendMessage(
-  //   newNumber,
-  //   `https://wa.me/57${number}?text=${num_doc_usr},confirmar`
-  // );
   sendMessage(newNumber, list);
 
   // respuesta de api
@@ -710,10 +773,11 @@ const sendRecordatorio = (req, res) => {
 };
 
 // Rutas de mensajes
-app.post("/send", sendWithApi);
-app.post("/recordatorio", sendRecordatorio);
-app.post("/recordatorio-app", sendRecordatorioApp);
-app.post("/recordatorio-fijo", sendRecordatorioFijo);
+// app.post("/send", sendWithApi);
+// app.post("/recordatorio", sendRecordatorio);
+app.post("/recordatorio-app/:token", sendRecordatorioApp);
+// app.post("/recordatorio-fijo", sendRecordatorioFijo);
+
 // rutas validadas
 app.post("/send-message-token", sendRecordatorioFijoToken);
 app.post("/send-message-img", upload.single("imagen"), sendMessageImg);

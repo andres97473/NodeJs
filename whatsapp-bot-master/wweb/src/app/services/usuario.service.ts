@@ -39,7 +39,6 @@ export class UsuarioService {
 
   getUsuarioLocal() {
     const usuario = localStorage.getItem('usuario');
-    console.log(usuario);
 
     return usuario ? JSON.parse(usuario) : null;
   }
@@ -65,7 +64,7 @@ export class UsuarioService {
       })
       .pipe(
         map((resp: any) => {
-          console.log(resp);
+          // console.log(resp);
 
           // this.usuario.imprimirUsuario();
 

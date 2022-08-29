@@ -1,0 +1,6 @@
+# Dependency directories
+node_modules/
+
+### session whatsapp web ###
+.wwebjs_auth
+

@@ -1,10 +1,11 @@
 const { response } = require("express");
 const Hospital = require("../models/hospital");
 
-const getHospitales = (req, res = response) => {
+const getHospitales = async (req, res = response) => {
+  const hospitales = await Hospital.find().populate("usuario", "nombre");
   res.json({
     ok: true,
-    msg: "getHospitales",
+    hospitales,
   });
 };
 
@@ -28,13 +29,13 @@ const crearHospital = async (req, res = response) => {
   }
 };
 
-const actualizarHospital = (req, res = response) => {
+const actualizarHospital = async (req, res = response) => {
   res.json({
     ok: true,
     msg: "actualizarHospital",
   });
 };
-const borrarHospital = (req, res = response) => {
+const borrarHospital = async (req, res = response) => {
   res.json({
     ok: true,
     msg: "borrarHospital",

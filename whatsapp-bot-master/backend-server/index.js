@@ -8,8 +8,11 @@ const { dbConnection } = require("./database/config");
 // Crear el servidor express
 const app = express();
 
-// configurar cors
+// Configurar CORS
 app.use(cors());
+
+// Carpeta publica
+app.use(express.static("public"));
 
 // Lectura y parseo del body
 app.use(express.json());

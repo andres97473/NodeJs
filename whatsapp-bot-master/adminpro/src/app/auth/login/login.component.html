@@ -9,9 +9,11 @@
   <div class="login-box card">
     <div class="card-body">
       <form
+        id="loginform"
+        autocomplete="off"
+        [formGroup]="loginForm"
         class="form-horizontal form-material"
         (submit)="login()"
-        id="loginform"
       >
         <a href="javascript:void(0)" class="text-center db"
           ><img src="./assets/images/logo-icon.png" alt="Home" /><br /><img
@@ -22,9 +24,9 @@
           <div class="col-xs-12">
             <input
               class="form-control"
-              type="text"
-              required=""
-              placeholder="Username"
+              type="email"
+              placeholder="Email"
+              formControlName="email"
             />
           </div>
         </div>
@@ -33,8 +35,8 @@
             <input
               class="form-control"
               type="password"
-              required=""
               placeholder="Password"
+              formControlName="password"
             />
           </div>
         </div>
@@ -45,6 +47,7 @@
                 id="checkbox-signup"
                 type="checkbox"
                 class="filled-in chk-col-light-blue"
+                formControlName="remember"
               />
               <label for="checkbox-signup"> Remember me </label>
             </div>

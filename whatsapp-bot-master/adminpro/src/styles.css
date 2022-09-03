@@ -5,6 +5,7 @@
   animation-fill-mode: both;
 }
 
-#themecolors .selector {
+#themecolors .selector,
+.cursor {
   cursor: pointer;
 }

@@ -63,6 +63,7 @@ export class LoginComponent implements AfterViewInit {
     // console.log(this.loginForm.value);
     this.usuarioService.login(this.loginForm.value).subscribe(
       (resp) => {
+        this.router.navigateByUrl('/');
         // console.log(resp);
         if (this.loginForm.get('remember')?.value) {
           localStorage.setItem('email', this.loginForm.get('email')?.value);

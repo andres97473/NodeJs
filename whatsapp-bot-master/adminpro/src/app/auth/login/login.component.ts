@@ -1,15 +1,19 @@
-import { Component } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, Validators } from '@angular/forms';
 import { UsuarioService } from '../../services/usuario.service';
 import Swal from 'sweetalert2';
+
+declare const google: any;
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
 })
-export class LoginComponent {
+export class LoginComponent implements AfterViewInit {
+  @ViewChild('googleBtn') googleBtn!: ElementRef;
+
   public formSubmitted = false;
 
   public checkRemember = localStorage.getItem('email') ? true : false;
@@ -28,6 +32,31 @@ export class LoginComponent {
     private fb: FormBuilder,
     private usuarioService: UsuarioService
   ) {}
+  ngAfterViewInit(): void {
+    this.googleInit();
+  }
+
+  googleInit() {
+    google.accounts.id.initialize({
+      client_id:
+        '857780671996-i6doqclt4a9itsnsc67mv0assvpmki02.apps.googleusercontent.com',
+      callback: (response: any) => this.handleCredentialResponse(response),
+    });
+    google.accounts.id.renderButton(
+      // document.getElementById('buttonDiv'),
+      this.googleBtn.nativeElement,
+      { theme: 'outline', size: 'large' } // customization attributes
+    );
+  }
+
+  async handleCredentialResponse(response: any) {
+    // console.log({ esto: this });
+    console.log('Encoded JWT ID token: ' + response.credential);
+    this.usuarioService.loginGoogle(response.credential).subscribe((resp) => {
+      // console.log(resp);
+      this.router.navigateByUrl('/');
+    });
+  }
 
   login() {
     // this.router.navigateByUrl('/');

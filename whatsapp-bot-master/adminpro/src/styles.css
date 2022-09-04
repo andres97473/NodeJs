@@ -9,3 +9,11 @@
 .cursor {
   cursor: pointer;
 }
+
+.menu-ancho {
+  width: 400px;
+}
+
+.img-avatar {
+  width: 200px;
+}

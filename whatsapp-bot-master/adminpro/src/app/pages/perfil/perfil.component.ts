@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import Swal from 'sweetalert2';
+
 import { UsuarioService } from '../../services/usuario.service';
 import { FileUploadService } from '../../services/file-upload.service';
+
 import { Usuario } from '../../models/usuario.model';
 
 @Component({
@@ -35,14 +38,20 @@ export class PerfilComponent implements OnInit {
   }
 
   actualizarPerfil() {
-    this.usuarioService
-      .actualizarPerfil(this.perfilForm.value)
-      .subscribe((resp: any) => {
+    this.usuarioService.actualizarPerfil(this.perfilForm.value).subscribe(
+      (resp: any) => {
         // console.log(resp);
         const { nombre, email } = resp.usuario;
         this.usuario.nombre = nombre;
         this.usuario.email = email;
-      });
+
+        Swal.fire('Guardado', 'Los cambios fueron guardados', 'success');
+      },
+      (err) => {
+        // console.log(err.error.msg);
+        Swal.fire('Error', err.error.msg, 'error');
+      }
+    );
   }
 
   cambiarImagen(event: any): any {
@@ -67,7 +76,14 @@ export class PerfilComponent implements OnInit {
     if (this.imagenSubir && this.usuario.uid) {
       this.fileUploadService
         .actualizarFoto(this.imagenSubir, 'usuarios', this.usuario.uid)
-        .then((img) => (this.usuario.img = img));
+        .then((img) => {
+          this.usuario.img = img;
+          Swal.fire('Guardado', 'Imagen de usuario actualizada', 'success');
+        })
+        .catch((err) => {
+          console.log(err);
+          Swal.fire('Error', 'No se pudo subir la imagen', 'error');
+        });
     }
   }
 }

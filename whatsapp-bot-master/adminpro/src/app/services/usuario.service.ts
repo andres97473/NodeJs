@@ -9,6 +9,7 @@ import { RegisterForm } from '../interface/register-form.interface';
 
 import { LoginForm } from '../interface/login-form.interface';
 import { Usuario } from '../models/usuario.model';
+import { CargarUsuario } from '../interface/cargar-usuarios.interface';
 
 declare const google: any;
 
@@ -34,6 +35,14 @@ export class UsuarioService {
 
   get getUid(): string {
     return this.usuario.uid || '';
+  }
+
+  get getHeaders() {
+    return {
+      headers: {
+        'x-token': this.getToken,
+      },
+    };
   }
 
   googleInit() {
@@ -111,5 +120,10 @@ export class UsuarioService {
         localStorage.setItem('token', resp.token);
       })
     );
+  }
+
+  cargarUsuarios(desde: number = 0) {
+    const url = `${base_url}/usuarios?desde=${desde}`;
+    return this.http.get<CargarUsuario>(url, this.getHeaders);
   }
 }

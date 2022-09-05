@@ -22,7 +22,9 @@ export class Usuario {
   }
 
   get getImagenUrl() {
-    if (this.img?.includes('https')) {
+    if (!this.img) {
+      return `${base_url}/upload/usuarios/no-image`;
+    } else if (this.img?.includes('https')) {
       return this.img;
     } else if (this.img) {
       return `${base_url}/upload/usuarios/${this.img}`;

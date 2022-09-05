@@ -17,3 +17,12 @@
 .img-avatar {
   width: 200px;
 }
+
+.avatar {
+  border-radius: 100%;
+  width: 40px;
+}
+
+.w100 {
+  width: 100px;
+}

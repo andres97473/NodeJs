@@ -123,7 +123,32 @@ export class UsuarioService {
   }
 
   cargarUsuarios(desde: number = 0) {
+    // si queremos cargar la imagen debemos trasformar la data a instancias de usuario
+    // para esto usamos el pipe y el metodo map
+
     const url = `${base_url}/usuarios?desde=${desde}`;
-    return this.http.get<CargarUsuario>(url, this.getHeaders);
+    return this.http.get<CargarUsuario>(url, this.getHeaders).pipe(
+      map((resp) => {
+        // console.log(resp);
+        // debemos cambiar el arreglo de objetos a un arreglo de usuarios
+        const usuarios = resp.usuarios.map(
+          (user) =>
+            new Usuario(
+              user.nombre,
+              user.email,
+              '',
+              user.img,
+              user.google,
+              user.role,
+              user.uid
+            )
+        );
+
+        return {
+          total: resp.total,
+          usuarios,
+        };
+      })
+    );
   }
 }

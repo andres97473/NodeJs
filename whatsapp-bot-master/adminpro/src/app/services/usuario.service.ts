@@ -99,11 +99,11 @@ export class UsuarioService {
       role: this.usuario.role || '',
     };
 
-    return this.http.put(`${base_url}/usuarios/${this.getUid}`, data, {
-      headers: {
-        'x-token': this.getToken,
-      },
-    });
+    return this.http.put(
+      `${base_url}/usuarios/${this.getUid}`,
+      data,
+      this.getHeaders
+    );
   }
 
   login(formData: LoginForm) {
@@ -149,6 +149,20 @@ export class UsuarioService {
           usuarios,
         };
       })
+    );
+  }
+
+  eliminarUsuario(usuario: Usuario) {
+    // http://localhost:3000/api/usuarios/630c047fdc09bf074a34d344
+    const url = `${base_url}/usuarios/${usuario.uid}`;
+    return this.http.delete(url, this.getHeaders);
+  }
+
+  guardarUsuario(usuario: Usuario) {
+    return this.http.put(
+      `${base_url}/usuarios/${usuario.uid}`,
+      usuario,
+      this.getHeaders
     );
   }
 }

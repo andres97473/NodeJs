@@ -39,7 +39,7 @@
                 <th>Nombre</th>
                 <th>Role</th>
                 <th>Auth</th>
-                <th class="text-nowrap">Acciones</th>
+                <th class="text-nowrap text-center">Acciones</th>
               </tr>
             </thead>
             <tbody>

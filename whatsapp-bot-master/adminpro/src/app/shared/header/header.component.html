@@ -76,11 +76,12 @@
             href="javascript:void(0)"
             ><i class="ti-search"></i
           ></a>
-          <form class="app-search">
+          <form class="app-search" (ngSubmit)="buscar(txtTermino.value)">
             <input
               type="text"
               class="form-control"
-              placeholder="Search & enter"
+              placeholder="Buscar medicos, hospitales o usuarios"
+              #txtTermino
             />
             <a class="srh-btn"><i class="ti-close"></i></a>
           </form>

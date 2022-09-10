@@ -33,6 +33,10 @@ export class UsuarioService {
     return localStorage.getItem('token') || '';
   }
 
+  get getRole() {
+    return this.usuario.role || 'USER_ROLE';
+  }
+
   get getUid(): string {
     return this.usuario.uid || '';
   }
@@ -52,8 +56,14 @@ export class UsuarioService {
     });
   }
 
+  guardarLocalStorage(resp: any) {
+    localStorage.setItem('token', resp.token);
+    localStorage.setItem('menu', JSON.stringify(resp.menu));
+  }
+
   logout() {
     localStorage.removeItem('token');
+    localStorage.removeItem('menu');
 
     // cambiar correo por this.usuario.email
     if (this.usuario.google) {
@@ -77,7 +87,8 @@ export class UsuarioService {
         map((resp: any) => {
           const { email, google, nombre, role, img = '', uid } = resp.usuario;
           this.usuario = new Usuario(nombre, email, '', img, google, role, uid);
-          localStorage.setItem('token', resp.token);
+          // guardar propiedades en el local storage
+          this.guardarLocalStorage(resp);
           return true;
         }),
         catchError((err) => of(false))
@@ -88,7 +99,7 @@ export class UsuarioService {
     return this.http.post(`${base_url}/usuarios`, formData).pipe(
       tap((resp: any) => {
         // console.log(resp)
-        localStorage.setItem('token', resp.token);
+        this.guardarLocalStorage(resp);
       })
     );
   }
@@ -109,7 +120,7 @@ export class UsuarioService {
   login(formData: LoginForm) {
     return this.http.post(`${base_url}/login`, formData).pipe(
       tap((resp: any) => {
-        localStorage.setItem('token', resp.token);
+        this.guardarLocalStorage(resp);
       })
     );
   }
@@ -117,7 +128,7 @@ export class UsuarioService {
   loginGoogle(token: string) {
     return this.http.post(`${base_url}/login/google`, { token }).pipe(
       tap((resp: any) => {
-        localStorage.setItem('token', resp.token);
+        this.guardarLocalStorage(resp);
       })
     );
   }

@@ -1,7 +1,11 @@
 import { Routes, RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { PagesComponent } from './pages.component';
+
+// Guards
 import { AuthGuard } from '../guards/auth.guard';
+import { AdminGuard } from '../guards/admin.guard';
+
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ProgressComponent } from './progress/progress.component';
 import { Grafica1Component } from './grafica1/grafica1.component';
@@ -61,11 +65,7 @@ const routes: Routes = [
       },
 
       // Mantenimientos
-      {
-        path: 'usuarios',
-        component: UsuariosComponent,
-        data: { titulo: 'Mantenimiento de Usuarios' },
-      },
+
       {
         path: 'hospitales',
         component: HospitalesComponent,
@@ -80,6 +80,13 @@ const routes: Routes = [
         path: 'medico/:id',
         component: MedicoComponent,
         data: { titulo: 'Mantenimiento de Medicos' },
+      },
+      // Rutas de Admin
+      {
+        path: 'usuarios',
+        canActivate: [AdminGuard],
+        component: UsuariosComponent,
+        data: { titulo: 'Mantenimiento de Usuarios' },
       },
     ],
   },

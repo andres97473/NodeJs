@@ -1,6 +1,9 @@
 # Dependency directories
 node_modules/
 
+# Public
+public/**
+
 ### carpeta de imagenes ###
 uploads/hospitales/**.jpg
 uploads/hospitales/**.jepg

@@ -7,6 +7,8 @@ const {
   crearUsuario,
   actualizarUsuario,
   deleteUsuario,
+  actualizarFechaVencimiento,
+  actualizarMensajesDisponibles,
 } = require("../controllers/usuarios");
 const {
   validarJWT,
@@ -42,5 +44,29 @@ router.put(
 );
 
 router.delete("/:id", [validarJWT, validarADMIN_ROLE], deleteUsuario);
+
+// actualizar datos de mensajes
+router.put(
+  "/mensajes-fecha/:email",
+  [
+    validarJWT,
+    validarADMIN_ROLE,
+    check("vence", "La nueva fecha de vencimiento es obligatoria")
+      .not()
+      .isEmpty(),
+    validarCampos,
+  ],
+  actualizarFechaVencimiento
+);
+router.put(
+  "/mensajes-disponibles/:email",
+  [
+    validarJWT,
+    validarADMIN_ROLE,
+    check("disponibles", "Es necesario indicar un valor").not().isEmpty(),
+    validarCampos,
+  ],
+  actualizarMensajesDisponibles
+);
 
 module.exports = router;

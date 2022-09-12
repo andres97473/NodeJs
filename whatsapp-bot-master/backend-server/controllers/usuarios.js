@@ -37,6 +37,12 @@ const crearUsuario = async (req, res = response) => {
     const salt = bcrypt.genSaltSync();
     usuario.password = bcrypt.hashSync(password, salt);
 
+    // eliminar propiedades
+    delete usuario.vence;
+    usuario.role = "USER_ROLE";
+    usuario.disponibles = 0;
+    usuario.vence = "1990-01-01";
+
     // Guardar usuario
     const usuarioDB = await usuario.save();
 
@@ -139,9 +145,69 @@ const deleteUsuario = async (req, res) => {
   }
 };
 
+const actualizarFechaVencimiento = async (req, res = response) => {
+  const { email } = req.params;
+
+  try {
+    const existeEmail = await Usuario.findOne({ email });
+    if (!existeEmail) {
+      return res.status(404).json({
+        ok: false,
+        msg: "El correo no esta registrado",
+      });
+    }
+
+    // Actualizaciones
+    const { vence } = req.body;
+    const updateFecha = await Usuario.updateOne(
+      { email },
+      { $set: { vence, update_at: new Date() } }
+    );
+
+    res.json({ ok: true, msg: "Fecha de vencimiento actualizada" });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      ok: false,
+      msg: "Error inesperado, revisar logs ",
+    });
+  }
+};
+
+const actualizarMensajesDisponibles = async (req, res = response) => {
+  const { email } = req.params;
+
+  try {
+    const existeEmail = await Usuario.findOne({ email });
+    if (!existeEmail) {
+      return res.status(404).json({
+        ok: false,
+        msg: "El correo no esta registrado",
+      });
+    }
+
+    // Actualizaciones
+    const { disponibles } = req.body;
+    const updateDisponibles = await Usuario.updateOne(
+      { email },
+      { $set: { disponibles, update_at: new Date() } }
+    );
+
+    res.json({ ok: true, msg: "Mensajes disponibles actualizados" });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      ok: false,
+      msg: "Error inesperado, revisar logs ",
+    });
+  }
+};
+
 module.exports = {
   getUsuarios,
   crearUsuario,
   actualizarUsuario,
   deleteUsuario,
+  actualizarFechaVencimiento,
+  actualizarMensajesDisponibles,
 };

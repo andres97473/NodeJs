@@ -520,7 +520,7 @@ const sendRecordatorioFijoToken = async (req, res) => {
     });
   }
 };
-// enviar mensaje con inm y token
+// enviar mensaje con img y token
 const sendMessageImg = async (req = request, res = response) => {
   let { celulares, mensaje, token } = req.body;
   // Validar que exista un archivo enviado por el req

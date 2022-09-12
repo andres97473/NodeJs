@@ -12,7 +12,10 @@ const bodyParser = require("body-parser");
 
 const { dbConnection } = require("./database/config");
 const { check } = require("express-validator");
-const { validarToken } = require("./middlewares/validar-token");
+const {
+  validarToken,
+  validarTokenPrueba,
+} = require("./middlewares/validar-token");
 const { validarCampos } = require("./middlewares/validar-campos");
 
 // constantes
@@ -126,6 +129,32 @@ const sendMessage = (to, message) => {
 };
 
 // controladores mensajes
+
+const sendMessagesPrueba = async (req, res = response) => {
+  const numPrueba = req.numprueba;
+
+  const { repeticiones, mensaje, token } = req.body;
+
+  try {
+    for (let index = 0; index < Number(repeticiones); index++) {
+      const newNumber = `${process.env.NUMBER_CODE}${numPrueba}@c.us`;
+      client.sendMessage(newNumber, mensaje);
+    }
+
+    res.json({
+      ok: true,
+      msg: `Mensajes enviado ${repeticiones}`,
+      celular: numPrueba,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      ok: false,
+      msg: "Error inesperado, revisar logs",
+    });
+  }
+};
+
 const sendMessagesToken = async (req, res = response) => {
   const { celulares, mensaje } = req.body;
   const disponibles = req.disponibles;
@@ -170,6 +199,17 @@ app.post(
     validarToken,
   ],
   sendMessagesToken
+);
+
+app.post(
+  "/api/send-message-prueba",
+  [
+    check("token", "El token debe ser valido").isMongoId(),
+    check("mensaje", "El mensaje es obligatorio").not().isEmpty(),
+    validarCampos,
+    validarTokenPrueba,
+  ],
+  sendMessagesPrueba
 );
 
 // Validar error de diferentes rutas

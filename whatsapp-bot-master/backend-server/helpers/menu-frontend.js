@@ -11,19 +11,18 @@ const getMenuFrontEnd = (role = "USER_ROLE") => {
         { titulo: "Rxjs", url: "rxjs" },
       ],
     },
-    {
-      titulo: "Mantenimientos",
-      icono: "mdi mdi-folder-lock-open",
-      submenu: [
-        // { titulo: 'Usuarios', url: 'usuarios' },
-        { titulo: "Hospitales", url: "hospitales" },
-        { titulo: "Medicos", url: "medicos" },
-      ],
-    },
   ];
 
   if (role === "ADMIN_ROLE") {
-    menu[1].submenu.unshift({ titulo: "Usuarios", url: "usuarios" });
+    menu.push({
+      titulo: "Mantenimientos",
+      icono: "mdi mdi-folder-lock-open",
+      submenu: [
+        { titulo: "Usuarios", url: "usuarios" },
+        { titulo: "Hospitales", url: "hospitales" },
+        { titulo: "Medicos", url: "medicos" },
+      ],
+    });
   }
 
   return menu;

@@ -62,6 +62,36 @@ const validarToken = async (req, res, next) => {
   }
 };
 
+const validarTokenPrueba = async (req, res, next) => {
+  const { token } = req.body;
+
+  try {
+    const usuario = await Usuario.findById(token);
+
+    if (!usuario) {
+      return res.status(404).json({
+        ok: false,
+        msg: "Token no encontrado",
+      });
+    } else if (!usuario.celular) {
+      return res.status(404).json({
+        ok: false,
+        msg: "No tiene registrado un numero de celular en su organizacion",
+      });
+    } else {
+      req.numprueba = usuario.celular;
+      next();
+    }
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      ok: false,
+      msg: "Hable con el administrador",
+    });
+  }
+};
+
 module.exports = {
   validarToken,
+  validarTokenPrueba,
 };

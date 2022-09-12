@@ -7,6 +7,7 @@ const UsuarioSchema = Schema({
   img: { type: String },
   role: { type: String, required: true, default: "USER_ROLE" },
   google: { type: Boolean, default: false },
+  celular: { type: String },
   vence: { type: String, default: "1990-01-01" },
   disponibles: { type: Number, default: 0 },
   activo: { type: Boolean, default: true },

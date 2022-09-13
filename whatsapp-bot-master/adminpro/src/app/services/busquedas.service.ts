@@ -33,11 +33,17 @@ export class BusquedasService {
         new Usuario(
           user.nombre,
           user.email,
+          user.uid,
           '',
           user.img,
           user.google,
           user.role,
-          user.uid
+          user.celular,
+          user.vence,
+          user.disponibles,
+          user.activo,
+          user.created_at,
+          user.update_at
         )
     );
   }

@@ -85,8 +85,35 @@ export class UsuarioService {
       })
       .pipe(
         map((resp: any) => {
-          const { email, google, nombre, role, img = '', uid } = resp.usuario;
-          this.usuario = new Usuario(nombre, email, '', img, google, role, uid);
+          const {
+            email,
+            google,
+            nombre,
+            role,
+            img = '',
+            uid,
+            disponibles,
+            vence,
+            celular,
+            activo,
+            created_at,
+            update_at,
+          } = resp.usuario;
+          this.usuario = new Usuario(
+            nombre,
+            email,
+            uid,
+            '',
+            img,
+            google,
+            role,
+            celular,
+            vence,
+            disponibles,
+            activo,
+            created_at,
+            update_at
+          );
           // guardar propiedades en el local storage
           this.guardarLocalStorage(resp);
           return true;
@@ -140,18 +167,23 @@ export class UsuarioService {
     const url = `${base_url}/usuarios?desde=${desde}`;
     return this.http.get<CargarUsuario>(url, this.getHeaders).pipe(
       map((resp) => {
-        // console.log(resp);
         // debemos cambiar el arreglo de objetos a un arreglo de usuarios
         const usuarios = resp.usuarios.map(
           (user) =>
             new Usuario(
               user.nombre,
               user.email,
+              user.uid,
               '',
               user.img,
               user.google,
               user.role,
-              user.uid
+              user.celular,
+              user.vence,
+              user.disponibles,
+              user.activo,
+              user.created_at,
+              user.update_at
             )
         );
 

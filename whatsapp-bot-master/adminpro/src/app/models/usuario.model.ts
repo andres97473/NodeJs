@@ -6,11 +6,17 @@ export class Usuario {
   constructor(
     public nombre: string,
     public email: string,
+    public uid?: string,
     public password?: string,
     public img?: string,
     public google?: boolean,
     public role?: string,
-    public uid?: string
+    public celular?: string,
+    public vence?: string,
+    public disponibles?: number,
+    public activo?: boolean,
+    public created_at?: Date,
+    public update_at?: Date
   ) {}
 
   // imprimirUsuario() {
@@ -19,6 +25,14 @@ export class Usuario {
 
   get imprimirUsuario() {
     return console.log(this.nombre);
+  }
+
+  get getToken() {
+    return this.uid;
+  }
+
+  get getRole() {
+    return this.role;
   }
 
   get getImagenUrl() {

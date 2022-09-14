@@ -55,3 +55,11 @@ Login register and recover password Page
   position: absolute;
   height: 100%;
 }
+
+.scroll-container {
+  display: block;
+  width: 350px;
+  height: 200px;
+  overflow-y: scroll;
+  scroll-behavior: smooth;
+}

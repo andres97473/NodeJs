@@ -69,7 +69,7 @@ const crearUsuario = async (req, res = response) => {
 };
 
 const actualizarUsuario = async (req, res = response) => {
-  // TODO: Validar token y comprar si es el usuario correcto
+  // Validar token y comprar si es el usuario correcto
 
   const uid = req.params.id;
 
@@ -84,7 +84,8 @@ const actualizarUsuario = async (req, res = response) => {
     }
 
     // Actualizaciones
-    const { password, google, email, ...campos } = req.body;
+    const { password, google, email, vence, disponibles, activo, ...campos } =
+      req.body;
 
     if (usuarioDB.email !== email) {
       const existeEmail = await Usuario.findOne({ email });
@@ -96,14 +97,19 @@ const actualizarUsuario = async (req, res = response) => {
       }
     }
 
-    if (!usuarioDB.google) {
-      campos.email = email;
-    } else if (usuarioDB.email !== email) {
-      return res.status(400).json({
-        ok: false,
-        msg: "Los usuarios de google no pueden cambiar su correo",
-      });
-    }
+    // validar que los usuarios de google no puedan cambiar su correo
+
+    // if (!usuarioDB.google) {
+    //   campos.email = email;
+    // } else if (usuarioDB.email !== email) {
+    //   return res.status(400).json({
+    //     ok: false,
+    //     msg: "Los usuarios de google no pueden cambiar su correo",
+    //   });
+    // }
+
+    campos.email = email;
+    campos.update_at = new Date();
 
     const usuarioActualizado = await Usuario.findByIdAndUpdate(uid, campos, {
       new: true,
@@ -112,6 +118,42 @@ const actualizarUsuario = async (req, res = response) => {
     res.json({
       ok: true,
       usuario: usuarioActualizado,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      ok: false,
+      msg: "Error inesperado, revisar logs",
+    });
+  }
+};
+
+const actualizarUsuarioPassword = async (req, res = response) => {
+  const uid = req.params.id;
+  try {
+    const usuarioDB = await Usuario.findById(uid);
+
+    if (!usuarioDB) {
+      return res.status(404).json({
+        ok: false,
+        msg: "No existe un usuario por ese id",
+      });
+    }
+
+    // Actualizaciones
+    const { password } = req.body;
+
+    // Encriptar contraseña
+    const salt = bcrypt.genSaltSync();
+    const passwordEncriptado = bcrypt.hashSync(password, salt);
+
+    const updatePassword = await Usuario.findByIdAndUpdate(uid, {
+      $set: { password: passwordEncriptado },
+    });
+
+    res.json({
+      ok: true,
+      msg: "Contraseña actualizada",
     });
   } catch (error) {
     console.log(error);
@@ -212,6 +254,7 @@ module.exports = {
   getUsuarios,
   crearUsuario,
   actualizarUsuario,
+  actualizarUsuarioPassword,
   deleteUsuario,
   actualizarFechaVencimiento,
   actualizarMensajesDisponibles,

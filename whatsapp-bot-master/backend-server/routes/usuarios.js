@@ -9,6 +9,7 @@ const {
   deleteUsuario,
   actualizarFechaVencimiento,
   actualizarMensajesDisponibles,
+  actualizarUsuarioPassword,
 } = require("../controllers/usuarios");
 const {
   validarJWT,
@@ -41,6 +42,17 @@ router.put(
     validarCampos,
   ],
   actualizarUsuario
+);
+
+router.put(
+  "/password/:id",
+  [
+    validarJWT,
+    validarADMIN_ROLE_o_MismoUsuario,
+    check("password", "la contraseña es obligatoria").not().isEmpty(),
+    validarCampos,
+  ],
+  actualizarUsuarioPassword
 );
 
 router.delete("/:id", [validarJWT, validarADMIN_ROLE], deleteUsuario);

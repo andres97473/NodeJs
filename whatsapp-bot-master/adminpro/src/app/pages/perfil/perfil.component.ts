@@ -32,8 +32,12 @@ export class PerfilComponent implements OnInit {
 
   iniciarFormulario() {
     this.perfilForm = this.fb.group({
+      token: [this.usuario.uid],
       nombre: [this.usuario.nombre, [Validators.required]],
       email: [this.usuario.email, [Validators.required, Validators.email]],
+      celular: [this.usuario.celular],
+      vence: [this.usuario.vence || ''],
+      disponibles: [this.usuario.disponibles || ''],
     });
   }
 
@@ -85,5 +89,21 @@ export class PerfilComponent implements OnInit {
           Swal.fire('Error', 'No se pudo subir la imagen', 'error');
         });
     }
+  }
+
+  cambiarPassword() {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire('Deleted!', 'Your file has been deleted.', 'success');
+      }
+    });
   }
 }

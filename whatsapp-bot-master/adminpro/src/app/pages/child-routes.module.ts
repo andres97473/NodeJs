@@ -30,11 +30,6 @@ const childRoutes: Routes = [
     data: { titulo: 'Ajustes' },
   },
   {
-    path: 'buscar/:termino',
-    component: BusquedaComponent,
-    data: { titulo: 'Busquedas' },
-  },
-  {
     path: 'grafica1',
     component: Grafica1Component,
     data: { titulo: 'Grafica #1' },
@@ -79,6 +74,12 @@ const childRoutes: Routes = [
     canActivate: [AdminGuard],
     component: UsuariosComponent,
     data: { titulo: 'Mantenimiento de Usuarios' },
+  },
+  {
+    path: 'buscar/:termino',
+    canActivate: [AdminGuard],
+    component: BusquedaComponent,
+    data: { titulo: 'Busquedas' },
   },
 ];
 

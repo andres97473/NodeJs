@@ -154,14 +154,28 @@
         </button>
         <hr />
         <h4 class="card-title">Seguridad</h4>
-        <button
-          type="button"
-          class="btn btn-primary btn-block waves-effect waves-light m-r-10"
-          (click)="cambiarPassword()"
-        >
-          <i class="ti-lock"></i>
-          Cambiar Contraseña
-        </button>
+
+        <!-- incio -->
+        <p>
+          <button
+            class="btn btn-primary"
+            type="button"
+            data-toggle="collapse"
+            data-target="#collapseExample"
+            aria-expanded="false"
+            aria-controls="collapseExample"
+          >
+            Desea cambiar su contraseña?
+          </button>
+        </p>
+        <div class="collapse" id="collapseExample">
+          <div class="card card-body">
+            Some placeholder content for the collapse component. This panel is
+            hidden by default but revealed when the user activates the relevant
+            trigger.
+          </div>
+        </div>
+        <!--  fin -->
       </div>
     </div>
   </div>

@@ -4,12 +4,15 @@ import { Routes, RouterModule } from '@angular/router';
 import { AdminGuard } from '../guards/admin.guard';
 
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { ProgressComponent } from './progress/progress.component';
-import { Grafica1Component } from './grafica1/grafica1.component';
 import { AccountSettingsComponent } from './account-settings/account-settings.component';
-import { PromesasComponent } from './promesas/promesas.component';
-import { RxjsComponent } from './rxjs/rxjs.component';
 import { PerfilComponent } from './perfil/perfil.component';
+
+// Mensajes
+import { MensajesPruebaComponent } from './mensajes-prueba/mensajes-prueba.component';
+import { MensajesEnvioComponent } from './mensajes-envio/mensajes-envio.component';
+import { MensajesArchivoComponent } from './mensajes-archivo/mensajes-archivo.component';
+import { ClientesComponent } from './clientes/clientes.component';
+import { EnviadosComponent } from './enviados/enviados.component';
 
 // Mantenimientos
 import { UsuariosComponent } from './mantenimientos/usuarios/usuarios.component';
@@ -22,7 +25,7 @@ const childRoutes: Routes = [
   {
     path: '',
     component: DashboardComponent,
-    data: { titulo: 'Dashboard' },
+    data: { titulo: 'Inicio' },
   },
   {
     path: 'account-settings',
@@ -30,25 +33,34 @@ const childRoutes: Routes = [
     data: { titulo: 'Ajustes' },
   },
   {
-    path: 'grafica1',
-    component: Grafica1Component,
-    data: { titulo: 'Grafica #1' },
-  },
-  {
-    path: 'progress',
-    component: ProgressComponent,
-    data: { titulo: 'ProgressBar' },
-  },
-  {
-    path: 'promesas',
-    component: PromesasComponent,
-    data: { titulo: 'Promesas' },
-  },
-  { path: 'rxjs', component: RxjsComponent, data: { titulo: 'Rxjs' } },
-  {
     path: 'perfil',
     component: PerfilComponent,
     data: { titulo: 'Perfil de Usuario' },
+  },
+  {
+    path: 'mensajes-prueba',
+    component: MensajesPruebaComponent,
+    data: { titulo: 'Prueba de envio a mi Propio Whatsapp' },
+  },
+  {
+    path: 'mensajes-envio',
+    component: MensajesEnvioComponent,
+    data: { titulo: 'Envio de mensajes a Whatsapp' },
+  },
+  {
+    path: 'mensajes-archivo',
+    component: MensajesArchivoComponent,
+    data: { titulo: 'Envio de archivos a Whatsapp' },
+  },
+  {
+    path: 'clientes',
+    component: ClientesComponent,
+    data: { titulo: 'Clientes registrados en la aplicacion' },
+  },
+  {
+    path: 'enviados',
+    component: EnviadosComponent,
+    data: { titulo: 'Mensajes envidos a Whatsapp' },
   },
 
   // Mantenimientos

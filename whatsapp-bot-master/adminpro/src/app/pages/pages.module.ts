@@ -24,6 +24,11 @@ import { HospitalesComponent } from './mantenimientos/hospitales/hospitales.comp
 import { MedicosComponent } from './mantenimientos/medicos/medicos.component';
 import { MedicoComponent } from './mantenimientos/medicos/medico.component';
 import { BusquedaComponent } from './busqueda/busqueda.component';
+import { MensajesPruebaComponent } from './mensajes-prueba/mensajes-prueba.component';
+import { MensajesEnvioComponent } from './mensajes-envio/mensajes-envio.component';
+import { MensajesArchivoComponent } from './mensajes-archivo/mensajes-archivo.component';
+import { ClientesComponent } from './clientes/clientes.component';
+import { EnviadosComponent } from './enviados/enviados.component';
 
 @NgModule({
   declarations: [
@@ -40,6 +45,11 @@ import { BusquedaComponent } from './busqueda/busqueda.component';
     MedicosComponent,
     MedicoComponent,
     BusquedaComponent,
+    MensajesPruebaComponent,
+    MensajesEnvioComponent,
+    MensajesArchivoComponent,
+    ClientesComponent,
+    EnviadosComponent,
   ],
   imports: [
     CommonModule,

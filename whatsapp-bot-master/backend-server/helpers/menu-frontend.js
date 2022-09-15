@@ -4,11 +4,11 @@ const getMenuFrontEnd = (role = "USER_ROLE") => {
       titulo: "MensajesApp",
       icono: "mdi mdi-message-text-outline",
       submenu: [
-        { titulo: "Main", url: "/" },
-        { titulo: "Graficas", url: "grafica1" },
-        { titulo: "ProgressBar", url: "progress" },
-        { titulo: "Promesas", url: "promesas" },
-        { titulo: "Rxjs", url: "rxjs" },
+        { titulo: "Prueba de envio", url: "mensajes-prueba" },
+        { titulo: "Envio de Mensajes", url: "mensajes-envio" },
+        { titulo: "Envio de Archivo", url: "mensajes-archivo" },
+        { titulo: "Clientes", url: "clientes" },
+        { titulo: "Mensajes Enviados", url: "enviados" },
       ],
     },
   ];

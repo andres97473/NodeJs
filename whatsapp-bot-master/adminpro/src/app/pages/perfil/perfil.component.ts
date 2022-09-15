@@ -142,6 +142,7 @@ export class PerfilComponent implements OnInit {
         .actualizarPassword(password)
         .subscribe((resp: any) => {
           // console.log(resp);
+          this.passwordForm.reset();
           Swal.fire({
             position: 'top-end',
             icon: 'success',

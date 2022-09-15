@@ -1,1 +1,80 @@
-<p>mensajes-prueba works!</p>
+<h3>
+  En esta pagina puede enviar mensajes de prueba a su propio numero de Whatsapp
+  sin gastar su saldo
+</h3>
+<div class="col-md-6">
+  <div class="card">
+    <div class="card-body">
+      <h4 class="card-title">Envio de mensajes de prueba</h4>
+      <h6 class="card-subtitle">Debes tener tu numero de Whatsapp regitrado</h6>
+      <form
+        class="form-horizontal p-t-20"
+        [formGroup]="pruebaForm"
+        (ngSubmit)="sendPrueba()"
+      >
+        <div class="form-group row">
+          <label class="col-sm-3 control-label">Token</label>
+          <div class="col-sm-9">
+            <div class="input-group">
+              <div class="input-group-addon">
+                <i class="mdi mdi-security"></i>
+              </div>
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Token"
+                [placeholder]="usuario.getToken"
+                formControlName="token"
+                readonly
+              />
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label class="col-sm-3 control-label">Celular</label>
+          <div class="col-sm-9">
+            <div class="input-group">
+              <div class="input-group-addon">
+                <i class="mdi mdi-whatsapp"></i>
+              </div>
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Debe registrar de Whatsapp"
+                formControlName="celular"
+                readonly
+              />
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label class="col-sm-3 control-label">Numero de Repeticiones</label>
+          <div class="col-sm-9">
+            <div class="input-group">
+              <div class="input-group-addon">
+                <i class="mdi mdi-whatsapp"></i>
+              </div>
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Numero de repeticiones"
+                formControlName="repeticiones"
+              />
+            </div>
+          </div>
+        </div>
+
+        <button
+          type="submit"
+          class="btn btn-success btn-block waves-effect waves-light m-r-10"
+          [disabled]="pruebaForm.invalid"
+        >
+          <i class="fa fa-save"></i>
+          Enviar Mensajes de prueba
+        </button>
+      </form>
+    </div>
+  </div>
+</div>

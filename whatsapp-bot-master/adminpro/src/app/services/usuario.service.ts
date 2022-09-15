@@ -144,6 +144,14 @@ export class UsuarioService {
     );
   }
 
+  actualizarPassword(password: string) {
+    return this.http.put(
+      `${base_url}/usuarios/password/${this.getUid}`,
+      { password },
+      this.getHeaders
+    );
+  }
+
   login(formData: LoginForm) {
     return this.http.post(`${base_url}/login`, formData).pipe(
       tap((resp: any) => {

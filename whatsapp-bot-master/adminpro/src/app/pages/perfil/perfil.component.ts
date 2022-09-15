@@ -17,6 +17,18 @@ export class PerfilComponent implements OnInit {
   public perfilForm!: FormGroup;
   public imagenSubir?: File;
   public imgTemp: any = null;
+  public formSubmitted = false;
+  public errorPassword = '';
+
+  public passwordForm = this.fb.group(
+    {
+      password: [''],
+      password2: [''],
+    },
+    {
+      validators: this.passwordsIguales('password', 'password2'),
+    }
+  );
 
   constructor(
     private fb: FormBuilder,
@@ -91,19 +103,53 @@ export class PerfilComponent implements OnInit {
     }
   }
 
-  cambiarPassword() {
-    Swal.fire({
-      title: 'Are you sure?',
-      text: "You won't be able to revert this!",
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, delete it!',
-    }).then((result) => {
-      if (result.isConfirmed) {
-        Swal.fire('Deleted!', 'Your file has been deleted.', 'success');
+  passwordsIguales(pass1Name: string, pass2Name: string) {
+    return (formGroup: FormGroup) => {
+      const pass1Control = formGroup.get(pass1Name);
+      const pass2Control = formGroup.get(pass2Name);
+
+      if (pass1Control?.value === pass2Control?.value) {
+        pass2Control?.setErrors(null);
+      } else {
+        pass2Control?.setErrors({ noEsIgual: true });
       }
-    });
+    };
+  }
+
+  contrasenasNoValidas() {
+    const pass1 = this.passwordForm.get('password')?.value;
+    const pass2 = this.passwordForm.get('password2')?.value;
+
+    if (pass1 !== pass2 && this.formSubmitted) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  cambiarPassword() {
+    this.formSubmitted = true;
+    const { password, password2 } = this.passwordForm.value;
+    if (password.length < 5) {
+      this.errorPassword = '*Las contraseña debe tener al menos 5 caracteres';
+      this.passwordForm.invalid;
+    } else if (password !== password2) {
+      this.errorPassword = '*Las contraseñas deben ser iguales';
+      this.passwordForm.invalid;
+    } else {
+      // TODO:
+      this.usuarioService
+        .actualizarPassword(password)
+        .subscribe((resp: any) => {
+          // console.log(resp);
+          Swal.fire({
+            position: 'top-end',
+            icon: 'success',
+            title: resp.msg,
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        });
+    }
   }
 }

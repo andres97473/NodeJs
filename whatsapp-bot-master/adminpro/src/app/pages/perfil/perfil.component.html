@@ -170,9 +170,53 @@
         </p>
         <div class="collapse" id="collapseExample">
           <div class="card card-body">
-            Some placeholder content for the collapse component. This panel is
-            hidden by default but revealed when the user activates the relevant
-            trigger.
+            <form
+              class="form-horizontal form-material"
+              id="loginform"
+              autocomplete="off"
+              [formGroup]="passwordForm"
+              (ngSubmit)="cambiarPassword()"
+            >
+              <div class="form-group">
+                <div class="col-xs-12">
+                  <input
+                    class="form-control"
+                    type="password"
+                    placeholder="Contraseña"
+                    formControlName="password"
+                  />
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="col-xs-12">
+                  <input
+                    class="form-control"
+                    type="password"
+                    placeholder="Confirmar Contraseña"
+                    formControlName="password2"
+                  />
+                </div>
+              </div>
+              <div class="form-group text-center m-t-20">
+                <div class="col-xs-12">
+                  <button
+                    class="btn btn-primary btn-block waves-effect waves-light m-r-10"
+                    type="submit"
+                  >
+                    Cambiar Contraseña
+                  </button>
+                  <br />
+                  <br />
+                  <div class="row">
+                    <div class="col text-danger">
+                      <p *ngIf="contrasenasNoValidas()">
+                        {{ errorPassword }}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
           </div>
         </div>
         <!--  fin -->

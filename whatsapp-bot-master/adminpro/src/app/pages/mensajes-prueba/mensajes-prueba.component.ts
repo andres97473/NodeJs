@@ -17,6 +17,8 @@ export class MensajesPruebaComponent implements OnInit {
   public formSubmitted = false;
   public errorPrueba = '';
 
+  public maximo = 50;
+
   constructor(
     private fb: FormBuilder,
     private mensajesService: MensajesService,
@@ -54,8 +56,8 @@ export class MensajesPruebaComponent implements OnInit {
     const { repeticiones } = this.pruebaForm.value;
     if (repeticiones < 1) {
       this.errorPrueba = '*Debe enviar al menos un mensaje';
-    } else if (repeticiones > 100) {
-      this.errorPrueba = '*No puede enviar mas de 100 mensajes en esta prueba';
+    } else if (repeticiones > this.maximo) {
+      this.errorPrueba = `*No puede enviar mas de ${this.maximo} mensajes en esta prueba`;
     } else {
       // console.log(this.pruebaForm.value);
       this.mensajesService.sendMessagePrueba(this.pruebaForm.value).subscribe(

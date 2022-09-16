@@ -21,6 +21,10 @@ const {
 } = require("./middlewares/validar-token");
 const { validarCampos } = require("./middlewares/validar-campos");
 
+// modelos
+const Usuario = require("./models/usuario");
+const Mensaje = require("./models/mensaje");
+
 // constantes
 const msg = "Chat iniciado!";
 const formatDate = "DD/MM/YYYY hh:mm a";
@@ -134,7 +138,7 @@ const sendMessage = (to, message) => {
 /*
 Enviar media con API
  */
-const sendMediaApi = (to, message, file, mimetype, filename) => {
+const sendMediaApi = (to, message, file, mimetype, filename, token) => {
   let mediaFile = MessageMedia.fromFilePath(`${file}`);
   mediaFile.mimetype = mimetype;
   mediaFile.filename = filename;
@@ -143,6 +147,23 @@ const sendMediaApi = (to, message, file, mimetype, filename) => {
     const newNumber = `${process.env.NUMBER_CODE}${celular}@c.us`;
     client.sendMessage(newNumber, message);
     client.sendMessage(newNumber, mediaFile);
+    saveChatMongo(celular, message, "archivo", token);
+  }
+};
+
+// almacenar mensajes en mongo
+const saveChatMongo = async (celular, mensaje, tipo, uid) => {
+  try {
+    const usuario = await Usuario.findById(uid);
+
+    if (!usuario) {
+      console.log("usuario no encontrado");
+    } else {
+      const message = new Mensaje({ celular, mensaje, tipo, usuario: uid });
+      const mensajeDB = await message.save();
+    }
+  } catch (error) {
+    console.log(error);
   }
 };
 
@@ -157,6 +178,7 @@ const sendMessagesPrueba = async (req, res = response) => {
     for (let index = 0; index < Number(repeticiones); index++) {
       const newNumber = `${process.env.NUMBER_CODE}${numPrueba}@c.us`;
       client.sendMessage(newNumber, mensaje);
+      saveChatMongo(numPrueba, mensaje, "prueba", token);
     }
 
     res.json({
@@ -174,7 +196,7 @@ const sendMessagesPrueba = async (req, res = response) => {
 };
 
 const sendMessagesToken = async (req, res = response) => {
-  let { celulares, mensaje } = req.body;
+  let { celulares, mensaje, token } = req.body;
   const disponibles = req.disponibles;
   const token_vence = req.vence;
 
@@ -185,11 +207,12 @@ const sendMessagesToken = async (req, res = response) => {
     for (const celular of celulares) {
       const newNumber = `${process.env.NUMBER_CODE}${celular}@c.us`;
       client.sendMessage(newNumber, mensaje);
+      saveChatMongo(celular, mensaje, "mensaje", token);
     }
 
     res.json({
       ok: true,
-      msg: "Mensajes enviado",
+      msg: "Mensajes enviados",
       disponibles,
       token_vence,
     });
@@ -202,7 +225,7 @@ const sendMessagesToken = async (req, res = response) => {
   }
 };
 
-// TODO: enviar mensaje con img y token
+// enviar mensaje con img y token
 const sendMessageImg = async (req = request, res = response) => {
   const disponibles = req.disponibles;
   const token_vence = req.vence;
@@ -225,7 +248,7 @@ const sendMessageImg = async (req = request, res = response) => {
 
   try {
     // enviar imagen a celulares
-    sendMediaApi(celulares, mensaje, imagen.path, mimetype, filename);
+    sendMediaApi(celulares, mensaje, imagen.path, mimetype, filename, token);
 
     res.status(200).json({
       ok: true,

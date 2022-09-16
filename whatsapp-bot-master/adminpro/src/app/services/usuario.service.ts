@@ -67,6 +67,8 @@ export class UsuarioService {
 
     // cambiar correo por this.usuario.email
     if (this.usuario.google) {
+      // console.log(this.usuario.email);
+
       google.accounts.id.revoke(this.usuario.email, () => {
         this.ngZone.run(() => {
           this.router.navigateByUrl('/login');

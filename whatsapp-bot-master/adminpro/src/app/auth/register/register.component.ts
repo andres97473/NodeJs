@@ -32,6 +32,12 @@ export class RegisterComponent {
     private usuarioService: UsuarioService
   ) {}
 
+  verTerminos() {
+    Swal.fire({
+      text: 'Este aplicacion utiliza whatsapp web para el envio de mensajes, nos regimos a los terminos de uso de whatsapp',
+    });
+  }
+
   crearUsuario() {
     this.formSubmitted = true;
     // console.log(this.registerForm.value);

@@ -2,7 +2,7 @@ const Usuario = require("../models/usuario");
 const moment = require("moment");
 
 const validarToken = async (req, res, next) => {
-  const { token, celulares } = req.body;
+  let { token, celulares } = req.body;
 
   try {
     const usuario = await Usuario.findById(token);
@@ -27,6 +27,7 @@ const validarToken = async (req, res, next) => {
         msg: "Token no encontrado",
       });
     } else if (diferencia < 0) {
+      celulares = celulares.split(",");
       if (usuario.disponibles < celulares.length) {
         return res.status(404).json({
           ok: false,

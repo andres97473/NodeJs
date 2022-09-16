@@ -12,6 +12,7 @@
 
 .hover-route:hover {
   color: white !important;
+  background-color: rgb(189, 64, 64) !important;
 }
 
 .menu-ancho {

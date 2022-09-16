@@ -174,9 +174,12 @@ const sendMessagesPrueba = async (req, res = response) => {
 };
 
 const sendMessagesToken = async (req, res = response) => {
-  const { celulares, mensaje } = req.body;
+  let { celulares, mensaje } = req.body;
   const disponibles = req.disponibles;
   const token_vence = req.vence;
+
+  // convertir a array de numeros
+  celulares = celulares.split(",");
 
   try {
     for (const celular of celulares) {

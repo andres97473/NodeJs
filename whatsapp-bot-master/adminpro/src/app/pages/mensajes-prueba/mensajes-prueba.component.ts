@@ -3,6 +3,8 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 import { Usuario } from '../../models/usuario.model';
 import { UsuarioService } from '../../services/usuario.service';
+import Swal from 'sweetalert2';
+import { MensajesService } from '../../services/mensajes.service';
 
 @Component({
   selector: 'app-mensajes-prueba',
@@ -15,7 +17,11 @@ export class MensajesPruebaComponent implements OnInit {
   public formSubmitted = false;
   public errorPrueba = '';
 
-  constructor(private fb: FormBuilder, private usuarioService: UsuarioService) {
+  constructor(
+    private fb: FormBuilder,
+    private mensajesService: MensajesService,
+    private usuarioService: UsuarioService
+  ) {
     this.usuario = usuarioService.usuario;
     this.iniciarFormulario();
   }
@@ -25,14 +31,22 @@ export class MensajesPruebaComponent implements OnInit {
   iniciarFormulario() {
     this.pruebaForm = this.fb.group({
       token: [this.usuario.uid, [Validators.required]],
-      mensaje: ['', [Validators.required]],
+      mensaje: [localStorage.getItem('smsprueba') || '', [Validators.required]],
       celular: [this.usuario.celular],
       repeticiones: [1],
     });
   }
 
   guardarEnMemoria() {
-    console.log('memoria');
+    const { mensaje } = this.pruebaForm.value;
+    localStorage.setItem('smsprueba', mensaje);
+    Swal.fire({
+      position: 'top-end',
+      icon: 'success',
+      title: 'Mensaje almacenado en Memoria',
+      showConfirmButton: false,
+      timer: 2000,
+    });
   }
 
   sendPrueba() {
@@ -43,7 +57,17 @@ export class MensajesPruebaComponent implements OnInit {
     } else if (repeticiones > 100) {
       this.errorPrueba = '*No puede enviar mas de 100 mensajes en esta prueba';
     } else {
-      console.log(this.pruebaForm.value);
+      // console.log(this.pruebaForm.value);
+      this.mensajesService.sendMessagePrueba(this.pruebaForm.value).subscribe(
+        (resp: any) => {
+          // console.log(resp);
+          Swal.fire(`Envio exitoso a ${resp.celular}`, resp.msg, 'success');
+        },
+        (err) => {
+          // console.log(err);
+          Swal.fire(`Error`, err.error.msg, 'error');
+        }
+      );
     }
   }
 }

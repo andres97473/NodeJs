@@ -137,7 +137,7 @@ const validarTokenPrueba = async (req, res, next) => {
     } else if (!usuario.celular) {
       return res.status(404).json({
         ok: false,
-        msg: "No tiene registrado un numero de celular en su organizacion",
+        msg: "No tiene registrado un numero de Whatsapp en su Cuenta",
       });
     } else {
       req.numprueba = usuario.celular;

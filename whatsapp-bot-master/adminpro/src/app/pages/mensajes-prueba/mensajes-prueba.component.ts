@@ -12,6 +12,8 @@ import { UsuarioService } from '../../services/usuario.service';
 export class MensajesPruebaComponent implements OnInit {
   public usuario: Usuario;
   public pruebaForm!: FormGroup;
+  public formSubmitted = false;
+  public errorPrueba = '';
 
   constructor(private fb: FormBuilder, private usuarioService: UsuarioService) {
     this.usuario = usuarioService.usuario;
@@ -23,13 +25,25 @@ export class MensajesPruebaComponent implements OnInit {
   iniciarFormulario() {
     this.pruebaForm = this.fb.group({
       token: [this.usuario.uid, [Validators.required]],
+      mensaje: ['', [Validators.required]],
       celular: [this.usuario.celular],
       repeticiones: [1],
-      mensaje: [this.usuario.nombre, [Validators.required]],
     });
   }
 
+  guardarEnMemoria() {
+    console.log('memoria');
+  }
+
   sendPrueba() {
-    console.log(this.pruebaForm.value);
+    this.errorPrueba = '';
+    const { repeticiones } = this.pruebaForm.value;
+    if (repeticiones < 1) {
+      this.errorPrueba = '*Debe enviar al menos un mensaje';
+    } else if (repeticiones > 100) {
+      this.errorPrueba = '*No puede enviar mas de 100 mensajes en esta prueba';
+    } else {
+      console.log(this.pruebaForm.value);
+    }
   }
 }

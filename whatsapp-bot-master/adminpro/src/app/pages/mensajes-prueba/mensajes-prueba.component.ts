@@ -9,7 +9,7 @@ import { MensajesService } from '../../services/mensajes.service';
 @Component({
   selector: 'app-mensajes-prueba',
   templateUrl: './mensajes-prueba.component.html',
-  styleUrls: ['./mensajes-prueba.component.css'],
+  styles: [],
 })
 export class MensajesPruebaComponent implements OnInit {
   public usuario: Usuario;

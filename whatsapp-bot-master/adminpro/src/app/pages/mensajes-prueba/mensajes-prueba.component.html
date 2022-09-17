@@ -1,4 +1,8 @@
 <div class="alert alert-success">
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">×</span>
+  </button>
+  <h3 class="text-success"><i class="fa fa-check-circle"></i> Bienvenido</h3>
   En esta pagina puedes enviar mensajes de prueba a tu propio numero de Whatsapp
   sin gastar tu saldo, debes tener registrado tu numero de Whatsapp para poder
   utilizar esta funcion!
@@ -29,6 +33,7 @@
                         <i class="mdi mdi-security"></i>
                       </div>
                       <input
+                        id="tokentxt"
                         type="text"
                         class="form-control"
                         placeholder="Token"
@@ -36,6 +41,18 @@
                         formControlName="token"
                         readonly
                       />
+                      <div class="tooltip2">
+                        <span class="input-group-btn">
+                          <button
+                            class="btn btn-info"
+                            type="button"
+                            (click)="copyToClipBoard()"
+                          >
+                            <i class="mdi mdi-content-copy"> </i>
+                          </button>
+                        </span>
+                        <span class="tooltiptext">Copiar a Portapapeles</span>
+                      </div>
                     </div>
                   </div>
                 </div>

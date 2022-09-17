@@ -51,6 +51,13 @@ export class MensajesPruebaComponent implements OnInit {
     });
   }
 
+  copyToClipBoard() {
+    let content: any = document.getElementById('tokentxt');
+
+    content.select();
+    document.execCommand('copy');
+  }
+
   sendPrueba() {
     this.errorPrueba = '';
     const { repeticiones } = this.pruebaForm.value;

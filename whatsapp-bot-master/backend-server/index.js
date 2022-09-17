@@ -212,7 +212,7 @@ const sendMessagesToken = async (req, res = response) => {
 
     res.json({
       ok: true,
-      msg: "Mensajes enviados",
+      msg: `Mensajes enviados: ${celulares.length}`,
       disponibles,
       token_vence,
     });

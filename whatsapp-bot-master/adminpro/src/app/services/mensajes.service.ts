@@ -13,4 +13,8 @@ export class MensajesService {
   sendMessagePrueba(formData: any) {
     return this.http.post(`${base_url}/send-message-prueba`, formData);
   }
+
+  sendMessageToken(formData: any) {
+    return this.http.post(`${base_url}/send-message-token`, formData);
+  }
 }

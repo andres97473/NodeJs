@@ -8,6 +8,7 @@ import { RouterModule } from '@angular/router';
 // modulos
 import { SharedModule } from '../shared/shared.module';
 import { ComponentsModule } from '../components/components.module';
+import { MaterialModule } from '../material/material.module';
 
 import { PipesModule } from '../pipes/pipes.module';
 
@@ -59,6 +60,7 @@ import { EnviadosComponent } from './enviados/enviados.component';
     RouterModule,
     ComponentsModule,
     PipesModule,
+    MaterialModule,
   ],
   exports: [
     DashboardComponent,

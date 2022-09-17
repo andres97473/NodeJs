@@ -1,1 +1,19 @@
-<p>mensajes-archivo works!</p>
+<mat-form-field class="example-chip-list" appearance="fill">
+  <mat-label>Registre los numeros de Whatsapp</mat-label>
+  <mat-chip-list #chipList aria-label="Fruit selection">
+    <mat-chip *ngFor="let celular of celulares" (removed)="remove(celular)">
+      {{ celular.numero }}
+      <button matChipRemove>x</button>
+    </mat-chip>
+    <input
+      placeholder="Nuevo numero..."
+      [matChipInputFor]="chipList"
+      [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+      [matChipInputAddOnBlur]="addOnBlur"
+      (matChipInputTokenEnd)="add($event)"
+      autocomplete="off"
+    />
+  </mat-chip-list>
+</mat-form-field>
+
+<button (click)="verCelulares()">ver celulares</button>

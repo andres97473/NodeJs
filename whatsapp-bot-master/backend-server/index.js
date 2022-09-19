@@ -196,12 +196,12 @@ const sendMessagesPrueba = async (req, res = response) => {
 };
 
 const sendMessagesToken = async (req, res = response) => {
-  let { celulares, mensaje, token } = req.body;
+  let { mensaje, token } = req.body;
   const disponibles = req.disponibles;
   const token_vence = req.vence;
+  const celulares = req.celulares;
 
   // convertir a array de numeros
-  celulares = celulares.split(",");
 
   try {
     for (const celular of celulares) {
@@ -229,7 +229,8 @@ const sendMessagesToken = async (req, res = response) => {
 const sendMessageImg = async (req = request, res = response) => {
   const disponibles = req.disponibles;
   const token_vence = req.vence;
-  let { celulares, mensaje, token } = req.body;
+  const celulares = req.celulares;
+  let { mensaje, token } = req.body;
   // Validar que exista un archivo enviado por el req
   if (!req.file || Object.keys(req.file).length === 0) {
     return res.status(400).json({
@@ -242,9 +243,6 @@ const sendMessageImg = async (req = request, res = response) => {
   const imagen = req.file;
   const mimetype = imagen.mimetype;
   const filename = imagen.originalname;
-
-  // convertir a array de numeros
-  celulares = celulares.split(",");
 
   try {
     // enviar imagen a celulares

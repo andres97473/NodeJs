@@ -3,7 +3,7 @@
     <span aria-hidden="true">X</span>
   </button>
   <h3 class="text-warning">
-    <i class="fa fa-exclamation-triangle"></i> Advertencia!!
+    <i class="fa fa-exclamation-triangle"></i> Atencion!!
   </h3>
   En esta pagina puedes enviar mensajes a los numeros de Whatsapp que registres,
   debes tener en cuenta que solo podras enviar mensajes si tienes un plan activo
@@ -194,11 +194,13 @@
                   <div class="card-body">
                     <h4 class="card-title">
                       Numeros a los que se envia el mensaje:
-                      {{ celulares.length }}
+                      <span class="label label-success label-rounded">{{
+                        celulares.length
+                      }}</span>
                     </h4>
                     <h6 class="card-subtitle">
-                      El campo con los numeros de Whatsapp se debe llamar
-                      celular o celulares
+                      Para cargar un archivo de excel es necesario que el campo
+                      con los numeros de Whatsapp se llame celular o celulares
                     </h6>
                     <button
                       type="button"

@@ -1,10 +1,26 @@
 const Usuario = require("../models/usuario");
 const moment = require("moment");
 
+const validarCelulares = (celulares) => {
+  let nCel = [];
+  for (const cel of celulares) {
+    if (cel.length >= 7) {
+      nCel.push(cel);
+    }
+  }
+
+  console.log(nCel);
+
+  return nCel;
+};
+
 const validarToken = async (req, res, next) => {
   let { token, celulares } = req.body;
 
   try {
+    celulares = validarCelulares(celulares.split(","));
+    req.celulares = celulares;
+
     const usuario = await Usuario.findById(token);
     let diferencia = 0;
     let nuevoDisponibles = 0;
@@ -27,7 +43,6 @@ const validarToken = async (req, res, next) => {
         msg: "Token no encontrado",
       });
     } else if (diferencia < 0) {
-      celulares = celulares.split(",");
       if (usuario.disponibles < celulares.length) {
         return res.status(404).json({
           ok: false,
@@ -66,6 +81,9 @@ const validarTokenImg = async (req, res, next) => {
   let { token, celulares } = req.body;
 
   try {
+    celulares = validarCelulares(celulares.split(","));
+    req.celulares = celulares;
+
     const usuario = await Usuario.findById(token);
     let diferencia = 0;
     let nuevoDisponibles = 0;
@@ -88,7 +106,6 @@ const validarTokenImg = async (req, res, next) => {
         msg: "Token no encontrado",
       });
     } else if (diferencia < 0) {
-      celulares = celulares.split(",");
       if (usuario.disponibles < celulares.length) {
         return res.status(404).json({
           ok: false,

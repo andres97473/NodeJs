@@ -127,13 +127,123 @@
                 </div>
               </div>
               <!-- col 2 -->
+
+              <!-- col 3 -->
+              <div class="col-md-6">
+                <div class="card">
+                  <div class="card-body">
+                    <h4 class="card-title">Cargar archivo Excel</h4>
+                    <input
+                      type="file"
+                      class="form-control"
+                      id="exampleInputFile"
+                      aria-describedby="fileHelp"
+                      accept=".xls, .xlsx"
+                      (change)="readExcel($event)"
+                    />
+                    <div class="border">
+                      <!-- table -->
+                      <div
+                        *ngIf="displayedColumns.length > 0"
+                        class="example-container"
+                      >
+                        <table mat-table [dataSource]="dataSource" matSort>
+                          <!-- Position Column -->
+                          <ng-container
+                            *ngFor="let columna of columnas"
+                            [matColumnDef]="columna.name"
+                          >
+                            <th
+                              mat-header-cell
+                              *matHeaderCellDef
+                              mat-sort-header
+                            >
+                              {{ columna.titulo }}
+                            </th>
+                            <td mat-cell *matCellDef="let row">
+                              {{ row[columna.name] }}
+                            </td>
+                          </ng-container>
+
+                          <tr
+                            mat-header-row
+                            *matHeaderRowDef="displayedColumns"
+                          ></tr>
+                          <tr
+                            mat-row
+                            *matRowDef="let row; columns: displayedColumns"
+                          ></tr>
+                        </table>
+                      </div>
+                      <mat-paginator
+                        *ngIf="displayedColumns.length > 0"
+                        [pageSizeOptions]="[5, 10, 20]"
+                        showFirstLastButtons
+                        aria-label="Select page of periodic elements"
+                      >
+                      </mat-paginator>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- col 3 -->
+
+              <!-- col 4 -->
+              <div class="col">
+                <div class="card">
+                  <div class="card-body">
+                    <h4 class="card-title">
+                      Numeros a los que se envia el mensaje:
+                      {{ celulares.length }}
+                    </h4>
+                    <h6 class="card-subtitle">
+                      El campo con los numeros de Whatsapp se debe llamar
+                      celular o celulares
+                    </h6>
+                    <button
+                      type="button"
+                      class="btn btn-info btn-block waves-effect waves-light m-r-10"
+                      (click)="importarCelulares()"
+                      [disabled]="displayedColumns.length == 0"
+                    >
+                      <i class="mdi mdi-import"></i>
+                      Importar numeros desde la tabla
+                    </button>
+
+                    <mat-form-field class="example-chip-list" appearance="fill">
+                      <div class="scrollStyle">
+                        <mat-label>Registre los numeros de Whatsapp</mat-label>
+                        <mat-chip-list #chipList aria-label="Fruit selection">
+                          <mat-chip
+                            *ngFor="let celular of celulares"
+                            (removed)="remove(celular)"
+                          >
+                            {{ celular.numero }}
+                            <button matChipRemove>x</button>
+                          </mat-chip>
+                          <input
+                            placeholder="Nuevo numero..."
+                            [matChipInputFor]="chipList"
+                            [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                            [matChipInputAddOnBlur]="addOnBlur"
+                            (matChipInputTokenEnd)="add($event)"
+                            autocomplete="off"
+                          />
+                        </mat-chip-list>
+                      </div>
+                    </mat-form-field>
+                  </div>
+                </div>
+              </div>
+              <!-- col 4 -->
+
               <button
                 type="submit"
                 class="btn btn-success btn-block waves-effect waves-light m-r-10"
                 [disabled]="mensajeForm.invalid"
               >
                 <i class="mdi mdi-send"></i>
-                Enviar Mensajes de prueba
+                Enviar Mensajes
               </button>
             </div>
           </div>

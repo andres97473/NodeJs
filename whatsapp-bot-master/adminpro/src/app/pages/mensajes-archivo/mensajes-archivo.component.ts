@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 //chips
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { MatChipInputEvent } from '@angular/material/chips';
@@ -6,21 +6,17 @@ import { MatChipInputEvent } from '@angular/material/chips';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
-
+// xlsx js
 import * as XLSX from 'xlsx';
-import { Columna } from '../../interface/columna.interface';
-
 // interfaces
-export interface Celular {
-  numero: string;
-}
+import { Columna, Celular } from '../../interface/mensajes.interface';
 
 @Component({
   selector: 'app-mensajes-archivo',
   templateUrl: './mensajes-archivo.component.html',
   styleUrls: ['./mensajes-archivo.component.css'],
 })
-export class MensajesArchivoComponent implements AfterViewInit {
+export class MensajesArchivoComponent {
   // propiedades
   celulares: Celular[] = [];
   excelData: any;
@@ -37,8 +33,6 @@ export class MensajesArchivoComponent implements AfterViewInit {
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
-
-  ngAfterViewInit() {}
 
   add(event: MatChipInputEvent): void {
     const value = (event.value || '').trim().replace(/ /g, '');

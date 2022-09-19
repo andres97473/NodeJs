@@ -17,4 +17,8 @@ export class MensajesService {
   sendMessageToken(formData: any) {
     return this.http.post(`${base_url}/send-message-token`, formData);
   }
+
+  sendMessageImg(formData: any) {
+    return this.http.post(`${base_url}/send-message-img`, formData);
+  }
 }

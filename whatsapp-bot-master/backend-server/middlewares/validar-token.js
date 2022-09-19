@@ -9,8 +9,6 @@ const validarCelulares = (celulares) => {
     }
   }
 
-  console.log(nCel);
-
   return nCel;
 };
 

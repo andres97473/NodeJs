@@ -2,22 +2,18 @@
   <div class="col-md-6">
     <div class="card">
       <div class="card-body">
+        <h4 class="card-title">Cargar archivo Excel</h4>
+        <input
+          type="file"
+          class="form-control"
+          id="exampleInputFile"
+          aria-describedby="fileHelp"
+          accept=".xls, .xlsx"
+          (change)="readExcel($event)"
+        />
         <div class="border">
-          <h4 class="card-title">Cargar archivo Excel</h4>
-          <input
-            type="file"
-            class="form-control"
-            id="exampleInputFile"
-            aria-describedby="fileHelp"
-            accept=".xls, .xlsx"
-            (change)="readExcel($event)"
-          />
-
           <!-- table -->
-          <div
-            *ngIf="displayedColumns.length > 0"
-            class="example-container mat-elevation-z8"
-          >
+          <div *ngIf="displayedColumns.length > 0" class="example-container">
             <table mat-table [dataSource]="dataSource" matSort>
               <!-- Position Column -->
               <ng-container

@@ -60,7 +60,7 @@ export class MensajesArchivoComponent implements AfterViewInit {
     }
   }
 
-  verCelulares() {
+  importarCelulares() {
     const celulares = this.dataSource.data;
 
     if (celulares.length > 0) {

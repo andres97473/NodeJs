@@ -2,6 +2,7 @@
   <div class="col-md-6">
     <div class="card">
       <div class="card-body">
+        <h4 class="card-title">Cargar archivo Excel</h4>
         <input
           type="file"
           class="form-control"
@@ -41,7 +42,19 @@
   <div class="col">
     <div class="card">
       <div class="card-body">
-        <button (click)="verCelulares()">ver celulares</button>
+        <h4 class="card-title">
+          Numeros a los que se envia el mensaje: {{ celulares.length }}
+        </h4>
+        <button
+          type="button"
+          class="btn btn-info btn-block waves-effect waves-light m-r-10"
+          (click)="importarCelulares()"
+          [disabled]="displayedColumns.length == 0"
+        >
+          <i class="mdi mdi-import"></i>
+          Importar numeros desde la tabla
+        </button>
+
         <mat-form-field class="example-chip-list" appearance="fill">
           <div class="ScrollStyle">
             <mat-label>Registre los numeros de Whatsapp</mat-label>

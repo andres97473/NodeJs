@@ -1,9 +1,16 @@
 const Usuario = require("../models/usuario");
 const moment = require("moment");
 
+const validarNumeroCel = (cel) => {
+  const regex = new RegExp(/[A-Z.;: ]/, "g");
+  const nCel = cel.toUpperCase().trim().replace(regex, "");
+  return nCel;
+};
+
 const validarCelulares = (celulares) => {
   let nCel = [];
-  for (const cel of celulares) {
+  for (let cel of celulares) {
+    cel = validarNumeroCel(String(cel));
     if (cel.length >= 7) {
       nCel.push(cel);
     }

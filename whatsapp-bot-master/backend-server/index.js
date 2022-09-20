@@ -212,7 +212,8 @@ const sendMessagesToken = async (req, res = response) => {
 
     res.json({
       ok: true,
-      msg: `Mensajes enviados: ${celulares.length}`,
+      msg: `Mensajes enviados con exito!!`,
+      enviados: celulares.length,
       disponibles,
       token_vence,
     });
@@ -250,7 +251,8 @@ const sendMessageImg = async (req = request, res = response) => {
 
     res.status(200).json({
       ok: true,
-      msg: "Mensaje enviado con exito!!",
+      msg: "Mensajes enviado con exito!!",
+      enviados: celulares.length,
       disponibles,
       token_vence,
     });

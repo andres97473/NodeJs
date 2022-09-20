@@ -226,6 +226,20 @@ export class MensajesArchivoComponent {
     });
   }
 
+  limpiarCelulares() {
+    this.celulares = [];
+    let { token, mensaje, vence, disponibles, imagen } = this.archivoForm.value;
+
+    this.archivoForm.setValue({
+      token,
+      mensaje,
+      celulares: this.celulares,
+      vence,
+      disponibles,
+      imagen,
+    });
+  }
+
   // enviar mensaje
   sendMessageImg() {
     this.errorMessage = '';

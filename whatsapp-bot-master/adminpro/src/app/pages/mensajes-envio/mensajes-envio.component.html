@@ -234,6 +234,15 @@
                         </mat-chip-list>
                       </div>
                     </mat-form-field>
+                    <button
+                      *ngIf="celulares.length > 0"
+                      type="button"
+                      class="btn btn-danger btn-block waves-effect waves-light m-r-10"
+                      (click)="limpiarCelulares()"
+                    >
+                      <i class="fa fa-trash-o"></i>
+                      Borrar todos los numeros a enviar
+                    </button>
                   </div>
                 </div>
               </div>

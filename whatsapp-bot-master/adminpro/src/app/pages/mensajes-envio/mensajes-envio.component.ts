@@ -89,9 +89,14 @@ export class MensajesEnvioComponent {
     document.execCommand('copy');
   }
 
+  validarNumeroCel(cel: string) {
+    const regex = new RegExp(/[A-Z.;: ]/, 'g');
+    return cel.toUpperCase().trim().replace(regex, '');
+  }
+
   // leer archivo
   add(event: MatChipInputEvent): void {
-    const value = (event.value || '').trim().replace(/ /g, '');
+    const value = this.validarNumeroCel(event.value || '');
 
     // Add our fruit
     if (value.length >= 7) {
@@ -119,16 +124,16 @@ export class MensajesEnvioComponent {
     if (celulares.length > 0) {
       for (const iterator of celulares) {
         if (iterator.celular) {
-          const nCelular = (String(iterator.celular) || '')
-            .trim()
-            .replace(/ /g, '');
+          const nCelular = this.validarNumeroCel(
+            String(iterator.celular) || ''
+          );
           if (nCelular.length >= 7) {
             this.celulares.push({ numero: nCelular });
           }
         } else if (iterator.celulares) {
-          const nCelulares = (String(iterator.celulares) || '')
-            .trim()
-            .replace(/ /g, '');
+          const nCelulares = this.validarNumeroCel(
+            String(iterator.celulares) || ''
+          );
           if (nCelulares.length >= 7) {
             this.celulares.push({ numero: nCelulares });
           }
@@ -168,6 +173,19 @@ export class MensajesEnvioComponent {
       }
       // console.log(this.dataSource);
     };
+  }
+
+  limpiarCelulares() {
+    this.celulares = [];
+    let { token, mensaje, vence, disponibles } = this.mensajeForm.value;
+
+    this.mensajeForm.setValue({
+      token,
+      mensaje,
+      celulares: this.celulares,
+      vence,
+      disponibles,
+    });
   }
 
   // enviar mensaje

@@ -197,6 +197,18 @@ export class MensajesArchivoComponent {
     });
   }
 
+  calcSize(size: number): string {
+    let kb = size / 1024;
+    let resultado = '';
+
+    if (kb <= 1000) {
+      return (resultado = kb.toFixed(2) + ' KB');
+    } else {
+      let mb = kb / 1024;
+      return (resultado = mb.toFixed(2) + ' MB');
+    }
+  }
+
   cambiarArchivo(event: any): any {
     const file = event.target.files[0];
     this.archivoSubir = file;

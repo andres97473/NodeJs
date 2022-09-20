@@ -142,6 +142,26 @@
                       aria-describedby="fileHelp"
                       (change)="cambiarArchivo($event)"
                     />
+                    <!-- table -->
+                    <div *ngIf="archivoSubir" class="table-responsive border">
+                      <table class="table table-striped">
+                        <thead>
+                          <tr>
+                            <th>Nombre archivo</th>
+                            <th>Tamaño</th>
+                            <th>Tipo</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td>{{ archivoSubir.name }}</td>
+                            <td>{{ calcSize(archivoSubir.size) }}</td>
+                            <td>{{ archivoSubir.type }}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                    <!-- table -->
                   </div>
                 </div>
               </div>

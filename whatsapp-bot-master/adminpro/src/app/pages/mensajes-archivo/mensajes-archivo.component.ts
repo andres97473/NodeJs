@@ -53,6 +53,7 @@ export class MensajesArchivoComponent {
   // archivo
   public archivoSubir?: File;
   public archivoTemp: any = null;
+  public extension = '';
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -215,7 +216,7 @@ export class MensajesArchivoComponent {
     const file = event.target.files[0];
     this.archivoSubir = file;
 
-    let { token, mensaje, celulares, vence, disponibles, imagen } =
+    let { token, mensaje, celulares, vence, disponibles } =
       this.archivoForm.value;
 
     this.archivoForm.setValue({
@@ -226,6 +227,27 @@ export class MensajesArchivoComponent {
       imagen: this.archivoSubir,
       mensaje,
     });
+
+    if (this.archivoSubir) {
+      const nExt = this.archivoSubir.name.split('.');
+      const extIcono = nExt[nExt.length - 1];
+      if (
+        extIcono === 'png' ||
+        extIcono === 'jpg' ||
+        extIcono === 'jpeg' ||
+        extIcono === 'jpe'
+      ) {
+        this.extension = 'fa fa-file-image-o text-success';
+      } else if (extIcono === 'pdf') {
+        this.extension = 'fa fa-file-pdf-o text-danger';
+      } else if (extIcono === 'xlsx' || extIcono === 'xls') {
+        this.extension = 'fa fa-file-excel-o text-success';
+      } else if (extIcono === 'docx' || extIcono === 'doc') {
+        this.extension = 'fa fa-file-word-o text-info';
+      } else {
+        this.extension = 'fa fa-file';
+      }
+    }
   }
 
   limpiarCelulares() {

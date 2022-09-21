@@ -155,7 +155,10 @@
                         </thead>
                         <tbody>
                           <tr>
-                            <td>{{ archivoSubir.name }}</td>
+                            <td>
+                              <i [class]="extension"></i>
+                              {{ archivoSubir.name }}
+                            </td>
                             <td>{{ calcSize(archivoSubir.size) }}</td>
                             <td>{{ archivoSubir.type }}</td>
                           </tr>

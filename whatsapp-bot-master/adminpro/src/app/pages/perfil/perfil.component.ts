@@ -48,6 +48,7 @@ export class PerfilComponent implements OnInit {
       nombre: [this.usuario.nombre, [Validators.required]],
       email: [this.usuario.email, [Validators.required, Validators.email]],
       celular: [this.usuario.celular],
+      codigo: [this.usuario.codigo],
       vence: [this.usuario.vence || ''],
       disponibles: [this.usuario.disponibles || ''],
     });

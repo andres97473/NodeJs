@@ -12,6 +12,7 @@ export class Usuario {
     public google?: boolean,
     public role?: string,
     public celular?: string,
+    public codigo?: string,
     public vence?: string,
     public disponibles?: number,
     public activo?: boolean,
@@ -33,6 +34,9 @@ export class Usuario {
 
   get getRole() {
     return this.role;
+  }
+  get getCodigo() {
+    return this.codigo;
   }
 
   get getImagenUrl() {

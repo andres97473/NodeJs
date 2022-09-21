@@ -49,6 +49,26 @@ const googleSignIn = async (req, res = response) => {
   try {
     const { email, name, picture } = await googleVerify(req.body.token);
 
+    // generar codigo unico
+    const buscarCodigos = await Usuario.find(
+      { codigo: { $ne: null } },
+      { codigo: 1, _id: 0 }
+    );
+
+    let nCodigos = [];
+    let codigoMax = 101;
+
+    if (buscarCodigos.length > 0) {
+      buscarCodigos.forEach((element) => {
+        const nElement = String(element.codigo).replace("#", "");
+        nCodigos.push(Number(nElement));
+      });
+    }
+
+    if (nCodigos.length > 0) {
+      codigoMax = Math.max(...nCodigos) + 1;
+    }
+
     const usuarioDB = await Usuario.findOne({ email });
     let usuario;
 
@@ -59,6 +79,7 @@ const googleSignIn = async (req, res = response) => {
         password: "@@@",
         img: picture,
         google: true,
+        codigo: "#" + codigoMax,
       });
     } else {
       (usuario = usuarioDB), (usuario.google = true);

@@ -8,6 +8,7 @@ const UsuarioSchema = Schema({
   role: { type: String, required: true, default: "USER_ROLE" },
   google: { type: Boolean, default: false },
   celular: { type: String },
+  codigo: { type: String, unique: true },
   vence: { type: String, default: "1990-01-01" },
   disponibles: { type: Number, default: 0 },
   activo: { type: Boolean, default: true },

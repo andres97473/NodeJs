@@ -9,7 +9,7 @@ const getUsuarios = async (req, res) => {
   const [usuarios, total] = await Promise.all([
     Usuario.find(
       {},
-      "nombre email role google img celular vence disponibles activo  created_at update_at"
+      "nombre email role google img celular vence disponibles activo codigo created_at update_at"
     )
       .skip(desde)
       .limit(5),
@@ -42,11 +42,34 @@ const crearUsuario = async (req, res = response) => {
     const salt = bcrypt.genSaltSync();
     usuario.password = bcrypt.hashSync(password, salt);
 
+    // generar codigo unico
+    const buscarCodigos = await Usuario.find(
+      { codigo: { $ne: null } },
+      { codigo: 1, _id: 0 }
+    );
+
+    let nCodigos = [];
+    let codigoMax = 101;
+
+    if (buscarCodigos.length > 0) {
+      buscarCodigos.forEach((element) => {
+        const nElement = String(element.codigo).replace("#", "");
+        nCodigos.push(Number(nElement));
+      });
+    }
+
+    if (nCodigos.length > 0) {
+      codigoMax = Math.max(...nCodigos) + 1;
+    }
+
     // eliminar propiedades
     delete usuario.vence;
+    // definir propiedades por defecto
     usuario.role = "USER_ROLE";
     usuario.disponibles = 0;
     usuario.vence = "1990-01-01";
+    // asignar codigo disponible
+    usuario.codigo = "#" + codigoMax;
 
     // Guardar usuario
     const usuarioDB = await usuario.save();

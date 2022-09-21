@@ -320,7 +320,8 @@
                     <h5 class="m-b-0 font-medium">
                       Mensajes enviados: {{ enviados }}
                       <span class="text-muted font-14 m-l-10"
-                        >| &nbsp; {{ fechaEnvio | date: "short" }}</span
+                        >| &nbsp;
+                        {{ fechaEnvio | date: "dd/MM/yyyy hh:mm a" }}</span
                       >
                     </h5>
                   </div>

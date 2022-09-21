@@ -270,6 +270,7 @@ app.use("/api/usuarios", require("./routes/usuarios"));
 app.use("/api/login", require("./routes/auth"));
 app.use("/api/todo", require("./routes/busquedas"));
 app.use("/api/upload", require("./routes/uploads"));
+app.use("/api/mensajes", require("./routes/mensajes"));
 
 // Rutas Mensajes
 app.post(

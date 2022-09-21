@@ -19,7 +19,7 @@ const {
 
 const router = Router();
 
-router.get("/", validarJWT, getUsuarios);
+router.get("/", [validarJWT, validarADMIN_ROLE], getUsuarios);
 router.post(
   "/",
   [

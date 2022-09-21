@@ -11,9 +11,9 @@ const UsuarioSchema = Schema({
   codigo: { type: String, unique: true },
   vence: { type: String, default: "1990-01-01" },
   disponibles: { type: Number, default: 0 },
-  activo: { type: Boolean, default: true },
   created_at: { type: Date, required: true, default: Date.now },
   update_at: { type: Date, required: true, default: Date.now },
+  activo: { type: Boolean, default: true },
 });
 
 UsuarioSchema.method("toJSON", function () {

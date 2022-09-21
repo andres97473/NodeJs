@@ -7,6 +7,7 @@ const MensajeSchema = Schema(
     tipo: { type: String },
     usuario: { required: true, type: Schema.Types.ObjectId, ref: "Usuario" },
     created_at: { type: Date, required: true, default: Date.now },
+    activo: { type: Boolean, default: true },
   },
   { collection: "mensajes" }
 );

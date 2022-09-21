@@ -31,6 +31,8 @@ export class MensajesEnvioComponent {
   public mensajeForm!: FormGroup;
   public formSubmitted = false;
   public errorMessage = '';
+  public enviados = 0;
+  public fechaEnvio?: Date;
 
   public maximo = 50;
 
@@ -188,37 +190,6 @@ export class MensajesEnvioComponent {
     });
   }
 
-  // enviar mensaje
-  sendMessage() {
-    this.errorMessage = '';
-    let { token, mensaje, celulares, vence, disponibles } =
-      this.mensajeForm.value;
-    const nCelulares: string[] = celulares.split(',');
-    if (nCelulares.length < 1) {
-      this.errorMessage = '*Debe enviar al menos un mensaje';
-    } else if (nCelulares.length > this.maximo) {
-      this.errorMessage = `*No puede enviar mas de ${this.maximo} mensajes en esta prueba`;
-    } else {
-      this.mensajesService.sendMessageToken(this.mensajeForm.value).subscribe(
-        (resp: any) => {
-          this.usuarioService.usuario.disponibles = resp.disponibles;
-          this.mensajeForm.setValue({
-            token,
-            mensaje,
-            celulares,
-            vence,
-            disponibles: resp.disponibles,
-          });
-          Swal.fire(`Envio exitoso`, resp.msg, 'success');
-        },
-        (err) => {
-          // console.log(err);
-          Swal.fire(`Error`, err.error.msg, 'error');
-        }
-      );
-    }
-  }
-
   stringCelulares() {
     let { token, mensaje, vence, disponibles } = this.mensajeForm.value;
     let stringCel = '';
@@ -235,5 +206,42 @@ export class MensajesEnvioComponent {
       disponibles,
       mensaje,
     });
+  }
+
+  // enviar mensaje
+  sendMessage() {
+    this.errorMessage = '';
+    let { token, mensaje, celulares, vence, disponibles } =
+      this.mensajeForm.value;
+    const nCelulares: string[] = celulares.split(',');
+    if (nCelulares.length < 1) {
+      this.errorMessage = '*Debe enviar al menos un mensaje';
+    } else if (nCelulares.length > this.maximo) {
+      this.errorMessage = `*No puede enviar mas de ${this.maximo} mensajes en esta prueba`;
+    } else {
+      this.mensajesService.sendMessageToken(this.mensajeForm.value).subscribe(
+        (resp: any) => {
+          this.enviados = resp.enviados;
+          this.fechaEnvio = new Date();
+          this.usuarioService.usuario.disponibles = resp.disponibles;
+          this.mensajeForm.setValue({
+            token,
+            mensaje,
+            celulares,
+            vence,
+            disponibles: resp.disponibles,
+          });
+          Swal.fire(
+            `Envio exitoso`,
+            `Numero de Mensajes enviados: ${resp.enviados}`,
+            'success'
+          );
+        },
+        (err) => {
+          // console.log(err);
+          Swal.fire(`Error`, err.error.msg, 'error');
+        }
+      );
+    }
   }
 }

@@ -248,14 +248,37 @@
               </div>
               <!-- col 4 -->
 
-              <button
-                type="submit"
-                class="btn btn-success btn-block waves-effect waves-light m-r-10"
-                [disabled]="mensajeForm.invalid"
-              >
-                <i class="mdi mdi-send"></i>
-                Enviar Mensajes
-              </button>
+              <!-- col 5 -->
+              <div class="col-md-12">
+                <div class="card">
+                  <div class="card-body">
+                    <button
+                      type="submit"
+                      class="btn btn-success btn-block waves-effect waves-light m-r-10"
+                      [disabled]="mensajeForm.invalid"
+                    >
+                      <i class="mdi mdi-send"></i>
+                      Enviar Mensajes
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <!-- col 5 -->
+
+              <!-- col 6 -->
+              <div *ngIf="enviados > 0" class="col-md-12">
+                <div class="card">
+                  <div class="card-body">
+                    <h5 class="m-b-0 font-medium">
+                      Mensajes enviados: {{ enviados }}
+                      <span class="text-muted font-14 m-l-10"
+                        >| &nbsp; {{ fechaEnvio | date: "short" }}</span
+                      >
+                    </h5>
+                  </div>
+                </div>
+              </div>
+              <!-- col 6 -->
             </div>
           </div>
         </form>

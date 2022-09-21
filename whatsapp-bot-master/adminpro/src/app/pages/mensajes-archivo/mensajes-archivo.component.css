@@ -28,3 +28,17 @@ table {
 th.mat-sort-header-sorted {
   color: black;
 }
+
+/* file upload */
+.upload {
+  border: 4px dashed rgb(185, 185, 185);
+}
+
+.upload input:hover {
+  background-color: rgb(235, 232, 232);
+}
+
+.upload input {
+  border-radius: 0;
+  height: 80px;
+}

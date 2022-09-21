@@ -31,6 +31,8 @@ export class MensajesArchivoComponent {
   public archivoForm!: FormGroup;
   public formSubmitted = false;
   public errorMessage = '';
+  public enviados = 0;
+  public fechaEnvio?: Date;
 
   public maximo = 50;
 
@@ -257,6 +259,8 @@ export class MensajesArchivoComponent {
       formData.append('token', token);
       this.mensajesService.sendMessageImg(formData).subscribe(
         (resp: any) => {
+          this.enviados = resp.enviados;
+          this.fechaEnvio = new Date();
           this.usuarioService.usuario.disponibles = resp.disponibles;
           this.archivoForm.setValue({
             token,
@@ -266,7 +270,11 @@ export class MensajesArchivoComponent {
             imagen,
             disponibles: resp.disponibles,
           });
-          Swal.fire(`Envio exitoso`, resp.msg, 'success');
+          Swal.fire(
+            `Envio exitoso`,
+            `Numero de Mensajes enviados: ${resp.enviados}`,
+            'success'
+          );
         },
         (err) => {
           // console.log(err);

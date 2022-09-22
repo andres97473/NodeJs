@@ -147,7 +147,7 @@ const sendMediaApi = (to, message, file, mimetype, filename, token) => {
     const newNumber = `${process.env.NUMBER_CODE}${celular}@c.us`;
     client.sendMessage(newNumber, message);
     client.sendMessage(newNumber, mediaFile);
-    saveChatMongo(celular, message, "archivo", token);
+    saveChatMongo(celular, message, "ARCHIVO", token);
   }
 };
 
@@ -178,7 +178,7 @@ const sendMessagesPrueba = async (req, res = response) => {
     for (let index = 0; index < Number(repeticiones); index++) {
       const newNumber = `${process.env.NUMBER_CODE}${numPrueba}@c.us`;
       client.sendMessage(newNumber, mensaje);
-      saveChatMongo(numPrueba, mensaje, "prueba", token);
+      saveChatMongo(numPrueba, mensaje, "PRUEBA", token);
     }
 
     res.json({
@@ -207,7 +207,7 @@ const sendMessagesToken = async (req, res = response) => {
     for (const celular of celulares) {
       const newNumber = `${process.env.NUMBER_CODE}${celular}@c.us`;
       client.sendMessage(newNumber, mensaje);
-      saveChatMongo(celular, mensaje, "mensaje", token);
+      saveChatMongo(celular, mensaje, "MENSAJE", token);
     }
 
     res.json({

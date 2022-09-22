@@ -4,7 +4,7 @@ export interface Mensaje {
   mensaje: string;
   tipo: string;
   activo: boolean;
-  created_at: Date;
+  created_at: Date | string;
 }
 
 export interface Columna {

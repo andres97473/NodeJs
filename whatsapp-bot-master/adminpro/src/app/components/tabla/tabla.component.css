@@ -31,11 +31,15 @@ table {
 }
 
 /* Column Widths */
-.mat-column-number,
-.mat-column-state {
+.mat-column-celular,
+.mat-column-state,
+.mat-column-tipo {
   max-width: 64px;
 }
+.mat-column-mensaje {
+  max-width: 200px;
+}
 
-.mat-column-created {
+.mat-column-created_at {
   max-width: 124px;
 }

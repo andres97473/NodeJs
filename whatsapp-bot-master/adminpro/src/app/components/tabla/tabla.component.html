@@ -19,8 +19,9 @@
       >
         {{ columna.titulo }}
       </th>
-      <td mat-cell *matCellDef="let element">
+      <td mat-cell *matCellDef="let element" class="tooltip2 cursor">
         {{ element[columna.name] }}
+        <span class="container tooltiptext">{{ element[columna.name] }}</span>
       </td>
     </ng-container>
 

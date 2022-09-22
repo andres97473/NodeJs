@@ -9,7 +9,6 @@ import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort, Sort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
-import { Columna } from '../../interface/mensajes.interface';
 
 @Component({
   selector: 'app-tabla',
@@ -33,7 +32,6 @@ export class TablaComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     this.dataSource.sort = this.sort;
-    this.dataSource.paginator = this.paginator;
   }
 
   announceSortChange(sortState: Sort) {

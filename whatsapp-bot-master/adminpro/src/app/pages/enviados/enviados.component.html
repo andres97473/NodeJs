@@ -8,9 +8,9 @@
   </div>
 </div>
 
-<app-tabla
+<app-table2
   *ngIf="mensajes.length > 0"
-  [displayedColumns]="nombres"
-  [columnas]="columnas"
+  [columns]="columnas"
   [datatable]="mensajes"
-></app-tabla>
+>
+</app-table2>

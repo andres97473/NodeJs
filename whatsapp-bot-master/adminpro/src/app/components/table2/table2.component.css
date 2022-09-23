@@ -15,7 +15,6 @@ table th:hover .resize-handle {
 }
 
 .resize-handle {
-  margin-right: 10px !important;
   display: inline-block;
   border-right: 2px solid lightgrey;
   position: absolute;
@@ -30,4 +29,32 @@ table th:hover .resize-handle {
 .resize-handle:hover {
   width: 20px;
   z-index: 999;
+}
+
+td {
+  font-size: 12px;
+  vertical-align: middle;
+}
+
+th {
+  text-align: center !important;
+}
+
+/* Column Widths */
+.mat-column-celular,
+.mat-column-tipo {
+  text-align: center;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+.mat-column-mensaje {
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+.mat-column-created_at {
+  text-align: center;
+  padding-left: 5px;
+  padding-right: 5px;
 }

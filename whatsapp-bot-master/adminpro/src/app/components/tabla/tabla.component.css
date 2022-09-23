@@ -17,14 +17,14 @@ table {
   text-align: center;
 }
 
-td {
+td,
+th {
   font-size: 12px;
   vertical-align: middle;
 }
 
 /* Column Widths */
 .mat-column-celular,
-.mat-column-state,
 .mat-column-tipo {
   width: 80px;
   text-align: center;

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Mensaje, Columna } from '../../interface/mensajes.interface';
+import { Mensaje, Columna, Columna2 } from '../../interface/mensajes.interface';
 import { MensajesService } from '../../services/mensajes.service';
 
 @Component({
@@ -10,11 +10,11 @@ import { MensajesService } from '../../services/mensajes.service';
 export class EnviadosComponent implements OnInit {
   mensajes: Mensaje[] = [];
   nombres: string[] = ['celular', 'mensaje', 'tipo', 'created_at'];
-  columnas: Columna[] = [
-    { titulo: 'Celular', name: 'celular' },
-    { titulo: 'Mensaje', name: 'mensaje' },
-    { titulo: 'Tipo', name: 'tipo' },
-    { titulo: 'Enviado', name: 'created_at' },
+  columnas: Columna2[] = [
+    { titulo: 'Celular', field: 'celular', width: 20 },
+    { titulo: 'Mensaje', field: 'mensaje', width: 60 },
+    { titulo: 'Tipo', field: 'tipo', width: 20 },
+    { titulo: 'Enviado', field: 'created_at', width: 20 },
   ];
 
   constructor(private mensajesService: MensajesService) {}

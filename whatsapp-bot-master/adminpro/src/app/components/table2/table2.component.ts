@@ -43,10 +43,10 @@ export class Table2Component implements OnInit, AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   columns: any[] = [
-    { field: 'position', width: 20 },
-    { field: 'name', width: 40 },
-    { field: 'weight', width: 20 },
-    { field: 'symbol', width: 20 },
+    { titulo: 'Posicion', field: 'position', width: 20 },
+    { titulo: 'Nombre', field: 'name', width: 40 },
+    { titulo: 'Peso', field: 'weight', width: 20 },
+    { titulo: 'Simbolo', field: 'symbol', width: 20 },
   ];
   displayedColumns: string[] = [];
   dataSource: any;

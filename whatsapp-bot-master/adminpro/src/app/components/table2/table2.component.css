@@ -6,6 +6,8 @@ table th {
   position: relative;
 }
 
+/* sort */
+
 table th:hover .resize-handle {
   opacity: 1;
   transition: 0.3s ease-in-out;

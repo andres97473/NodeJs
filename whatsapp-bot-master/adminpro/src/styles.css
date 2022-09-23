@@ -97,3 +97,7 @@
 .tooltip2:hover .tooltiptext {
   visibility: visible;
 }
+
+.mat-sort-header-container {
+  display: contents !important;
+}

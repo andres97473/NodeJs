@@ -59,3 +59,14 @@ td {
   padding-left: 5px;
   padding-right: 5px;
 }
+
+/* TIPOS */
+.demo-row-is-prueba {
+  background-color: rgb(212, 215, 248);
+}
+.demo-row-is-mensaje {
+  background-color: rgb(243, 248, 212);
+}
+.demo-row-is-archivo {
+  background-color: rgb(218, 255, 204);
+}

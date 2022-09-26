@@ -8,7 +8,7 @@ const getMenuFrontEnd = (role = "USER_ROLE") => {
         { titulo: "Envio de Mensajes", url: "mensajes-envio" },
         { titulo: "Envio de Archivo", url: "mensajes-archivo" },
         { titulo: "Mensajes Enviados", url: "enviados" },
-        { titulo: "Mis Clientes", url: "clientes" },
+        // { titulo: "Mis Clientes", url: "clientes" },
       ],
     },
   ];

@@ -6,17 +6,23 @@ const getMensajes = async (req, res = response) => {
   const uid = req.uid;
 
   try {
-    const [mensajes, total] = await Promise.all([
+    const [mensajes, total, archivo, prueba, mensaje] = await Promise.all([
       Mensaje.find(
         { usuario: uid },
         "celular mensaje tipo activo created_at"
       ).sort({ created_at: "desc" }),
-      Mensaje.count(),
+      Mensaje.find({ usuario: uid }).count(),
+      Mensaje.find({ usuario: uid, tipo: "ARCHIVO" }).count(),
+      Mensaje.find({ usuario: uid, tipo: "PRUEBA" }).count(),
+      Mensaje.find({ usuario: uid, tipo: "MENSAJE" }).count(),
     ]);
 
     res.json({
       ok: true,
       total,
+      archivo,
+      prueba,
+      mensaje,
       mensajes,
     });
   } catch (error) {

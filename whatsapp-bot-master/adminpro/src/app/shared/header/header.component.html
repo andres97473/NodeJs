@@ -67,6 +67,25 @@
       <!-- User profile and search -->
       <!-- ============================================================== -->
       <ul class="navbar-nav my-lg-0">
+        <!-- datos de mensajes del usuario -->
+        <li class="nav-item dropdown">
+          <a class="nav-link">
+            <span class="label label-mensaje"
+              >Mensajes disponibles:
+              <span class="negrita">{{ usuario.getDisponibles }}</span></span
+            >
+          </a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link">
+            <span class="label label-mensaje"
+              >Plan vence:
+              <span class="negrita">{{ usuario.getVence }}</span></span
+            >
+          </a>
+        </li>
+        <!-- datos de mensajes del usuario -->
+
         <!-- ============================================================== -->
         <!-- Search -->
         <!-- ============================================================== -->

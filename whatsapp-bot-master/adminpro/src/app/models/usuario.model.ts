@@ -38,6 +38,12 @@ export class Usuario {
   get getCodigo() {
     return this.codigo;
   }
+  get getVence() {
+    return this.vence;
+  }
+  get getDisponibles() {
+    return this.disponibles;
+  }
 
   get getImagenUrl() {
     if (!this.img) {

@@ -5,6 +5,15 @@
   animation-fill-mode: both;
 }
 
+.negrita {
+  font-weight: bold;
+}
+
+.label-mensaje {
+  color: #1c3042;
+  background-color: #d1fae0;
+}
+
 #themecolors .selector,
 .cursor {
   cursor: pointer;

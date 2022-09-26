@@ -36,8 +36,9 @@ td {
   vertical-align: middle;
 }
 
-th {
-  text-align: center !important;
+.mat-header-row {
+  height: 15px;
+  text-align: right !important;
 }
 
 /* Column Widths */

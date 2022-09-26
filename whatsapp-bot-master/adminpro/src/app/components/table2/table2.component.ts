@@ -12,6 +12,7 @@ import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { MatSort, Sort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
+import { DecimalPipe } from '@angular/common';
 
 @Component({
   selector: 'app-table2',
@@ -28,6 +29,8 @@ export class Table2Component implements OnInit, AfterViewInit {
 
   dataSource: any;
   displayedColumns: string[] = [];
+
+  decimalPipe = new DecimalPipe(navigator.language);
 
   pressed = false;
   currentResizeIndex!: number;
@@ -51,6 +54,9 @@ export class Table2Component implements OnInit, AfterViewInit {
     this.setTableResize(this.matTableRef.nativeElement.clientWidth);
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
+    // paginator labels
+
+    this.dataSource.paginator._intl.itemsPerPageLabel = 'Items Por pagina';
   }
 
   announceSortChange(sortState: Sort) {

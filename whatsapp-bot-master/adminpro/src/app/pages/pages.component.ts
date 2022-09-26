@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { SettingsService } from '../services/settings.service';
 import { SidebarService } from '../services/sidebar.service';
+import { environment } from '../../environments/environment';
 
 declare function customInitFunctions(): any;
 
@@ -10,6 +11,7 @@ declare function customInitFunctions(): any;
   styles: [],
 })
 export class PagesComponent implements OnInit {
+  public nombre_app = environment.titulo_app;
   constructor(
     private settingsService: SettingsService,
     private sidebarService: SidebarService

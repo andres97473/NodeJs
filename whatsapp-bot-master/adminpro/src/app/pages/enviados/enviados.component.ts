@@ -9,12 +9,12 @@ import { MensajesService } from '../../services/mensajes.service';
 })
 export class EnviadosComponent implements OnInit {
   mensajes: Mensaje[] = [];
-  nombres: string[] = ['celular', 'mensaje', 'tipo', 'created_at'];
+  nombres: string[] = ['created_at', 'celular', 'mensaje', 'tipo'];
   columnas: Columna2[] = [
+    { titulo: 'Enviado', field: 'created_at', width: 20 },
     { titulo: 'Celular', field: 'celular', width: 20 },
     { titulo: 'Mensaje', field: 'mensaje', width: 60 },
     { titulo: 'Tipo', field: 'tipo', width: 20 },
-    { titulo: 'Enviado', field: 'created_at', width: 20 },
   ];
 
   constructor(private mensajesService: MensajesService) {}

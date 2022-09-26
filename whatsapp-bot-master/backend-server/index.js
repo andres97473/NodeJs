@@ -184,6 +184,7 @@ const sendMessagesPrueba = async (req, res = response) => {
     res.json({
       ok: true,
       msg: `Numero de Mensajes enviados: ${repeticiones}`,
+      enviados: repeticiones,
       celular: numPrueba,
     });
   } catch (error) {

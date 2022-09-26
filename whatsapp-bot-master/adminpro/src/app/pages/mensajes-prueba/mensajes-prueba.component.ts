@@ -16,6 +16,8 @@ export class MensajesPruebaComponent implements OnInit {
   public pruebaForm!: FormGroup;
   public formSubmitted = false;
   public errorPrueba = '';
+  public enviados = 0;
+  public fechaEnvio?: Date;
 
   public maximo = 50;
 
@@ -69,6 +71,8 @@ export class MensajesPruebaComponent implements OnInit {
       // console.log(this.pruebaForm.value);
       this.mensajesService.sendMessagePrueba(this.pruebaForm.value).subscribe(
         (resp: any) => {
+          this.enviados = resp.enviados;
+          this.fechaEnvio = new Date();
           // console.log(resp);
           Swal.fire(`Envio exitoso a ${resp.celular}`, resp.msg, 'success');
         },

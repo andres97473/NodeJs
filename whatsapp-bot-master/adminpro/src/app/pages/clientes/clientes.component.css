@@ -1,3 +1,37 @@
 .mat-form-field + .mat-form-field {
   margin-left: 8px;
 }
+
+mat-expansion-panel-header {
+  background-color: #ebf3fb;
+  border: #a4e4c7 2px solid;
+}
+
+.disable_ripple:hover {
+  border: #a4e4c7 2px solid !important;
+  background: #ebf3fb !important;
+}
+
+.mat-expansion-panel-header.mat-expanded {
+  background-color: #ebf3fb !important;
+}
+
+.mat-expansion-panel:not([class*="mat-elevation-z"]) {
+  box-shadow: none;
+}
+
+.opblock-summary-method {
+  font-size: 14px;
+  font-weight: 700;
+  min-width: 80px;
+  padding: 6px 15px;
+  text-align: center;
+  border-radius: 3px;
+  text-shadow: 0 1px 0 rgb(0 0 0 / 10%);
+  font-family: sans-serif;
+  color: #fff;
+}
+
+.opblock-post {
+  background: #49cc90;
+}

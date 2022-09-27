@@ -3,12 +3,14 @@
     (opened)="panelOpenState = true"
     (closed)="panelOpenState = false"
   >
-    <mat-expansion-panel-header>
-      <mat-panel-title> Self aware panel </mat-panel-title>
+    <mat-expansion-panel-header class="disable_ripple">
+      <mat-panel-title>
+        <span class="opblock-summary-method opblock-post">POST</span>
+      </mat-panel-title>
       <mat-panel-description>
         Currently I am {{ panelOpenState ? "open" : "closed" }}
       </mat-panel-description>
     </mat-expansion-panel-header>
-    <p>I'm visible because I am open</p>
+    <div>este es el contenido</div>
   </mat-expansion-panel>
 </mat-accordion>

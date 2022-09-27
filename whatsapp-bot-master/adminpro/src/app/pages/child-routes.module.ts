@@ -13,6 +13,7 @@ import { MensajesEnvioComponent } from './mensajes-envio/mensajes-envio.componen
 import { MensajesArchivoComponent } from './mensajes-archivo/mensajes-archivo.component';
 import { ClientesComponent } from './clientes/clientes.component';
 import { EnviadosComponent } from './enviados/enviados.component';
+import { ApisComponent } from './apis/apis.component';
 
 // Mantenimientos
 import { UsuariosComponent } from './mantenimientos/usuarios/usuarios.component';
@@ -33,6 +34,11 @@ const childRoutes: Routes = [
     path: 'perfil',
     component: PerfilComponent,
     data: { titulo: 'Perfil de Usuario' },
+  },
+  {
+    path: 'apis-mensajes',
+    component: ApisComponent,
+    data: { titulo: 'API para envio de mensajes a Whatsapp' },
   },
   {
     path: 'mensajes-prueba',

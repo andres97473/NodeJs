@@ -11,6 +11,14 @@ const getMenuFrontEnd = (role = "USER_ROLE") => {
         // { titulo: "Mis Clientes", url: "clientes" },
       ],
     },
+    {
+      titulo: "APIs",
+      icono: "fa fa-cogs",
+      submenu: [
+        { titulo: "Ver APIs", url: "apis-mensajes" },
+        // { titulo: "Mis Clientes", url: "clientes" },
+      ],
+    },
   ];
 
   if (role === "ADMIN_ROLE") {

@@ -2,96 +2,206 @@
   <div class="col-12">
     <div class="card">
       <div class="card-body">
-        <h3>apis</h3>
+        <h3>Api para enviar mensaje de prueba a su propio numero</h3>
 
-        <!-- acording -->
-        <div class="accordion" id="accordionExample">
-          <div class="card">
-            <div class="card-header" id="headingOne">
-              <h2 class="mb-0">
-                <button
-                  class="btn btn-link btn-block text-left"
-                  type="button"
-                  data-toggle="collapse"
-                  data-target="#collapseOne"
-                  aria-expanded="true"
-                  aria-controls="collapseOne"
-                >
-                  {{ url.origin }}/api/send-message-prueba
-                </button>
-              </h2>
+        <mat-accordion>
+          <mat-expansion-panel hideToggle>
+            <mat-expansion-panel-header class="disable_ripple">
+              <mat-panel-title>
+                <span class="opblock-summary-method opblock-post">POST</span>
+              </mat-panel-title>
+              <mat-panel-description class="panel-desc">
+                {{ url.origin }}/api/send-message-prueba
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+            <div class="row">
+              <h5 class="mt-2 negrita">Parametros</h5>
             </div>
-
-            <div
-              id="collapseOne"
-              class="collapse show"
-              aria-labelledby="headingOne"
-              data-parent="#accordionExample"
-            >
-              <div class="card-body">
-                Some placeholder content for the first accordion panel. This
-                panel is shown by default, thanks to the
-                <code>.show</code> class.
+            <hr />
+            <div class="row">
+              <div class="col">Request body</div>
+              <div class="col">
+                <span class="form-control">application/json</span>
               </div>
             </div>
-          </div>
-          <div class="card">
-            <div class="card-header" id="headingTwo">
-              <h2 class="mb-0">
-                <button
-                  class="btn btn-link btn-block text-left collapsed"
-                  type="button"
-                  data-toggle="collapse"
-                  data-target="#collapseTwo"
-                  aria-expanded="false"
-                  aria-controls="collapseTwo"
-                >
-                  {{ url.origin }}/api/send-message-token
-                </button>
-              </h2>
-            </div>
-            <div
-              id="collapseTwo"
-              class="collapse"
-              aria-labelledby="headingTwo"
-              data-parent="#accordionExample"
-            >
-              <div class="card-body">
-                Some placeholder content for the second accordion panel. This
-                panel is hidden by default.
+            <div class="row">
+              <div class="col">
+                <div class="cod-body">
+                  <div class="cod-body-text">
+                    <ul class="text-ul">
+                      <li>{{ "{" }}</li>
+                      <ul class="text-ul">
+                        <li>
+                          "token" : "{{ usuarioService.usuario.getToken }}",
+                        </li>
+                        <li>
+                          "mensaje" : "MENSAJE DE PRUEBA A MI MISMO NUMERO",
+                        </li>
+                        <li>"repeticiones" : "6"</li>
+                      </ul>
+                      <li>{{ "}" }}</li>
+                    </ul>
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
-          <div class="card">
-            <div class="card-header" id="headingThree">
-              <h2 class="mb-0">
-                <button
-                  class="btn btn-link btn-block text-left collapsed"
-                  type="button"
-                  data-toggle="collapse"
-                  data-target="#collapseThree"
-                  aria-expanded="false"
-                  aria-controls="collapseThree"
-                >
-                  {{ url.origin }}/api/send-message-img
-                </button>
-              </h2>
-            </div>
-            <div
-              id="collapseThree"
-              class="collapse"
-              aria-labelledby="headingThree"
-              data-parent="#accordionExample"
-            >
-              <div class="card-body">
-                And lastly, the placeholder content for the third and final
-                accordion panel. This panel is hidden by default.
-              </div>
-            </div>
-          </div>
-        </div>
+          </mat-expansion-panel>
+        </mat-accordion>
 
-        <!-- acording -->
+        <hr />
+
+        <h3>
+          Api para enviar mensajes, los numeros deben estar separador por coma
+        </h3>
+        <mat-accordion>
+          <mat-expansion-panel hideToggle>
+            <mat-expansion-panel-header class="disable_ripple">
+              <mat-panel-title>
+                <span class="opblock-summary-method opblock-post">POST</span>
+              </mat-panel-title>
+              <mat-panel-description class="panel-desc">
+                {{ url.origin }}/api/send-message-token
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+            <div class="row">
+              <h5 class="mt-2 negrita">Parametros</h5>
+            </div>
+            <hr />
+            <div class="row">
+              <div class="col">Request body</div>
+              <div class="col">
+                <span class="form-control">application/json</span>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <div class="cod-body">
+                  <div class="cod-body-text">
+                    <ul class="text-ul">
+                      <li>{{ "{" }}</li>
+                      <ul class="text-ul">
+                        <li>
+                          "token" : "{{ usuarioService.usuario.getToken }}",
+                        </li>
+                        <li>
+                          "mensaje" : "PRUEBA DESDE API ARRAY DE NUMEROS",
+                        </li>
+                        <li>
+                          "celulares" : "XXXXXXXXXX,YYYYYYYYYY,ZZZZZZZZZZ"
+                        </li>
+                      </ul>
+                      <li>{{ "}" }}</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </mat-expansion-panel>
+        </mat-accordion>
+
+        <hr />
+
+        <h3>
+          Api para enviar mensajes con archivos, los datos se deben enviar
+          mediante un form data
+        </h3>
+        <mat-accordion>
+          <mat-expansion-panel hideToggle>
+            <mat-expansion-panel-header class="disable_ripple">
+              <mat-panel-title>
+                <span class="opblock-summary-method opblock-post">POST</span>
+              </mat-panel-title>
+              <mat-panel-description class="panel-desc">
+                {{ url.origin }}/api/send-message-img
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+            <div class="row">
+              <h5 class="mt-2 negrita">Parametros</h5>
+            </div>
+            <hr />
+            <div class="row">
+              <div class="col">Request body</div>
+              <div class="col">
+                <span class="form-control">multipart/form-data</span>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <div class="body-form">
+                  <form class="form">
+                    <div class="form-group">
+                      <label
+                        class="col-sm-3 form-control-label"
+                        for="example-input-small"
+                        >imagen</label
+                      >
+                      <div class="col-sm-6">
+                        <input
+                          type="file"
+                          id="example-input-small"
+                          name="example-input-small"
+                          class="form-control form-control-sm"
+                          placeholder="form-control-sm"
+                        />
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label
+                        class="col-sm-3 form-control-label"
+                        for="example-input-small"
+                        >token</label
+                      >
+                      <div class="col-sm-6">
+                        <input
+                          type="text"
+                          id="example-input-small"
+                          name="example-input-small"
+                          class="form-control form-control-sm"
+                          placeholder="form-control-sm"
+                          [value]="usuarioService.usuario.getToken"
+                        />
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label
+                        class="col-sm-3 form-control-label"
+                        for="example-input-small"
+                        >mensaje</label
+                      >
+                      <div class="col-sm-6">
+                        <input
+                          type="text"
+                          id="example-input-small"
+                          name="example-input-small"
+                          class="form-control form-control-sm"
+                          placeholder="form-control-sm"
+                          value="PRUEBA DESDE API CON ARCHIVO"
+                        />
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label
+                        class="col-sm-3 form-control-label"
+                        for="example-input-small"
+                        >celulares</label
+                      >
+                      <div class="col-sm-6">
+                        <input
+                          type="text"
+                          id="example-input-small"
+                          name="example-input-small"
+                          class="form-control form-control-sm"
+                          placeholder="form-control-sm"
+                          value="XXXXXXXXXX,YYYYYYYYYY,ZZZZZZZZZZ"
+                        />
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </mat-expansion-panel>
+        </mat-accordion>
       </div>
     </div>
   </div>

@@ -3,14 +3,14 @@ import { Component, OnInit } from '@angular/core';
 @Component({
   selector: 'app-apis',
   templateUrl: './apis.component.html',
-  styles: [
-  ]
+  styles: [],
 })
 export class ApisComponent implements OnInit {
+  public url = window.location;
 
-  constructor() { }
+  constructor() {}
 
   ngOnInit(): void {
+    // console.log(this.url);
   }
-
 }

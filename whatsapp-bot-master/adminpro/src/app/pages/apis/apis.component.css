@@ -35,7 +35,7 @@ mat-expansion-panel-header {
   background-color: #3b4151;
   color: #f9fffe;
   border-radius: 4px;
-  font-family: "monospace", "Helvetica", "Verdana", "Monaco", sans-serif;
+  font-family: "Monospace", "Helvetica", "Verdana", "Monaco", sans-serif;
 }
 
 .cod-body-text {

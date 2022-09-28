@@ -147,7 +147,9 @@ const validarTokenImg = async (req, res, next) => {
 };
 
 const validarTokenPrueba = async (req, res, next) => {
-  const { token } = req.body;
+  let { token, repeticiones } = req.body;
+
+  const nRepeticiones = Math.round(Number(repeticiones));
 
   try {
     const usuario = await Usuario.findById(token);
@@ -161,6 +163,21 @@ const validarTokenPrueba = async (req, res, next) => {
       return res.status(404).json({
         ok: false,
         msg: "No tiene registrado un numero de Whatsapp en su Cuenta",
+      });
+    } else if (isNaN(nRepeticiones)) {
+      return res.status(401).json({
+        ok: false,
+        msg: "Repeticiones Debe ser un numero entero",
+      });
+    } else if (nRepeticiones <= 0) {
+      return res.status(401).json({
+        ok: false,
+        msg: "Debe enviar al menos un mensaje",
+      });
+    } else if (nRepeticiones > 50) {
+      return res.status(401).json({
+        ok: false,
+        msg: "No puede enviar mas de 50 mensajes en esta prueba",
       });
     } else {
       req.numprueba = usuario.celular;

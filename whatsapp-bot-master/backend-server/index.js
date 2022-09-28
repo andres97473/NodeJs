@@ -279,6 +279,7 @@ app.post(
   [
     check("token", "El token debe ser valido").isMongoId(),
     check("mensaje", "El mensaje es obligatorio").not().isEmpty(),
+    check("repeticiones", "El mensaje es obligatorio").not().isEmpty(),
     validarCampos,
     validarTokenPrueba,
   ],

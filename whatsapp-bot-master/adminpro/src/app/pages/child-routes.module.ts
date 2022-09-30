@@ -15,6 +15,7 @@ import { ClientesComponent } from './clientes/clientes.component';
 import { EnviadosComponent } from './enviados/enviados.component';
 import { ApisComponent } from './apis/apis.component';
 import { PlanesComponent } from './planes/planes.component';
+import { SolicitudesComponent } from './solicitudes/solicitudes.component';
 
 // Mantenimientos
 import { UsuariosComponent } from './mantenimientos/usuarios/usuarios.component';
@@ -40,6 +41,11 @@ const childRoutes: Routes = [
     path: 'planes',
     component: PlanesComponent,
     data: { titulo: 'Planes para comprar saldo' },
+  },
+  {
+    path: 'solicitudes',
+    component: SolicitudesComponent,
+    data: { titulo: 'Solicitudes Realizadas' },
   },
   {
     path: 'apis-mensajes',

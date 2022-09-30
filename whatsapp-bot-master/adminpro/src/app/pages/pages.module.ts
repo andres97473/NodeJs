@@ -25,6 +25,7 @@ import { ClientesComponent } from './clientes/clientes.component';
 import { EnviadosComponent } from './enviados/enviados.component';
 import { ApisComponent } from './apis/apis.component';
 import { PlanesComponent } from './planes/planes.component';
+import { SolicitudesComponent } from './solicitudes/solicitudes.component';
 
 @NgModule({
   declarations: [
@@ -41,6 +42,7 @@ import { PlanesComponent } from './planes/planes.component';
     EnviadosComponent,
     ApisComponent,
     PlanesComponent,
+    SolicitudesComponent,
   ],
   imports: [
     CommonModule,

@@ -1,6 +1,15 @@
 const getMenuFrontEnd = (role = "USER_ROLE") => {
   const menu = [
     {
+      titulo: "Compras",
+      icono: "mdi mdi-cart-outline",
+      submenu: [
+        { titulo: "Planes Disponibles", url: "planes" },
+        { titulo: "Solicitudes Realizadas", url: "solicitudes" },
+        // { titulo: "Mis Clientes", url: "clientes" },
+      ],
+    },
+    {
       titulo: "MensajesApp",
       icono: "mdi mdi-message-text-outline",
       submenu: [

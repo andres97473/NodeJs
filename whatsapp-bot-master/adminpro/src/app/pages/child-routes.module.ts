@@ -14,6 +14,7 @@ import { MensajesArchivoComponent } from './mensajes-archivo/mensajes-archivo.co
 import { ClientesComponent } from './clientes/clientes.component';
 import { EnviadosComponent } from './enviados/enviados.component';
 import { ApisComponent } from './apis/apis.component';
+import { PlanesComponent } from './planes/planes.component';
 
 // Mantenimientos
 import { UsuariosComponent } from './mantenimientos/usuarios/usuarios.component';
@@ -34,6 +35,11 @@ const childRoutes: Routes = [
     path: 'perfil',
     component: PerfilComponent,
     data: { titulo: 'Perfil de Usuario' },
+  },
+  {
+    path: 'planes',
+    component: PlanesComponent,
+    data: { titulo: 'Planes para comprar saldo' },
   },
   {
     path: 'apis-mensajes',

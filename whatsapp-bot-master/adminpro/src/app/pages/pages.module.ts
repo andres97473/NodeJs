@@ -24,6 +24,7 @@ import { MensajesArchivoComponent } from './mensajes-archivo/mensajes-archivo.co
 import { ClientesComponent } from './clientes/clientes.component';
 import { EnviadosComponent } from './enviados/enviados.component';
 import { ApisComponent } from './apis/apis.component';
+import { PlanesComponent } from './planes/planes.component';
 
 @NgModule({
   declarations: [
@@ -39,6 +40,7 @@ import { ApisComponent } from './apis/apis.component';
     ClientesComponent,
     EnviadosComponent,
     ApisComponent,
+    PlanesComponent,
   ],
   imports: [
     CommonModule,

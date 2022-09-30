@@ -16,6 +16,15 @@
   border: 1px solid #ddd;
 }
 
+.price-table-content .price-row {
+  padding: 20px 0;
+  border-top: 1px solid rgba(120, 130, 140, 0.13);
+}
+
+.no-padding {
+  padding-top: 20px;
+}
+
 .price-lable {
   position: absolute;
   top: -10px;

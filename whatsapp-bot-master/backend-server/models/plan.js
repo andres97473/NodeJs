@@ -8,6 +8,7 @@ const PlanSchema = Schema(
     tipo: { type: Number, required: true },
     vence: { type: Number },
     disponibles: { type: Number },
+    popular: { type: Boolean, default: false },
     orden: { type: Number, required: true },
     created_at: { type: Date, required: true, default: Date.now },
     activo: { type: Boolean, default: true },

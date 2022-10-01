@@ -1,6 +1,11 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { UsuarioService } from '../../services/usuario.service';
 import { PlanesService } from '../../services/planes.service';
+import { SolicitudService } from '../../services/solicitud.service';
 import { Plan } from '../../interface/plan.interface';
+import { Solicitud } from '../../interface/solicitud.interface';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-planes',
@@ -10,7 +15,12 @@ import { Plan } from '../../interface/plan.interface';
 export class PlanesComponent implements OnInit {
   planes: Plan[] = [];
 
-  constructor(private planesService: PlanesService) {}
+  constructor(
+    private planesService: PlanesService,
+    private solicitudService: SolicitudService,
+    private usuarioService: UsuarioService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.cargarPlanes();
@@ -18,12 +28,40 @@ export class PlanesComponent implements OnInit {
 
   cargarPlanes() {
     this.planesService.getPlanes().subscribe((resp: any) => {
-      console.log(resp.planes);
+      // console.log(resp.planes);
       this.planes = resp.planes;
     });
   }
 
   solicitarPlan(plan: Plan) {
-    console.log(plan);
+    Swal.fire({
+      title: 'Esta seguro que desea Solicitar este plan?',
+      text: plan.nombre,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Si, Realizar Solicitud ',
+      cancelButtonText: 'Cancelar',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        let solicitud: Solicitud = {
+          usuario: this.usuarioService.usuario.getToken || '0',
+          nombre: plan.nombre,
+          descripcion: plan.descripcion,
+          valor: plan.valor,
+          tipo: plan.tipo,
+        };
+        if (plan.tipo === 1) {
+          solicitud.disponibles = plan.disponibles;
+        } else {
+          solicitud.vence = plan.vence;
+        }
+        this.solicitudService.crearSolicitud(solicitud).subscribe((resp) => {
+          // console.log(resp);
+          this.router.navigateByUrl('/dashboard/solicitudes');
+        });
+      }
+    });
   }
 }

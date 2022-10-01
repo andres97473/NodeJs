@@ -273,6 +273,7 @@ app.use("/api/todo", require("./routes/busquedas"));
 app.use("/api/upload", require("./routes/uploads"));
 app.use("/api/mensajes", require("./routes/mensajes"));
 app.use("/api/planes", require("./routes/planes"));
+app.use("/api/solicitudes", require("./routes/solicitudes"));
 
 // Rutas Mensajes
 app.post(

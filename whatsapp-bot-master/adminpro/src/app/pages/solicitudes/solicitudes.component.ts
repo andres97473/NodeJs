@@ -7,6 +7,7 @@ import { Solicitud } from '../../models/solicitud.model';
 import { ModalImagenService } from 'src/app/services/modal-imagen.service';
 import Swal from 'sweetalert2';
 import { environment } from '../../../environments/environment';
+import { MensajesService } from '../../services/mensajes.service';
 
 @Component({
   selector: 'app-solicitudes',
@@ -22,7 +23,8 @@ export class SolicitudesComponent implements OnInit, OnDestroy {
   constructor(
     private solicitudService: SolicitudService,
     private usuarioService: UsuarioService,
-    private modalImagenService: ModalImagenService
+    private modalImagenService: ModalImagenService,
+    private mensajesService: MensajesService
   ) {}
   ngOnDestroy(): void {
     this.imgSubs?.unsubscribe();
@@ -68,9 +70,23 @@ export class SolicitudesComponent implements OnInit, OnDestroy {
       cancelButtonText: 'Cancelar',
     }).then((result) => {
       if (result.isConfirmed) {
-        this.solicitudService.enviarSoportePago(solicitud).subscribe((resp) => {
-          this.cargarSolicitudesID();
-        });
+        this.solicitudService
+          .enviarSoportePago(solicitud)
+          .subscribe((sol: any) => {
+            const nUrl = `${this.base_url}/upload/solicitudes/${sol.soporte}`;
+            console.log(nUrl);
+
+            this.cargarSolicitudesID();
+
+            // construir mensaje de notificacion a los admins
+            const notificacion = `Soporte enviado\n${nUrl}\nusuario: ${this.usuarioService.usuario.email}`;
+
+            this.mensajesService
+              .sendMessageAdmin(notificacion)
+              .subscribe((resp) => {
+                // console.log(resp);
+              });
+          });
       }
     });
   }

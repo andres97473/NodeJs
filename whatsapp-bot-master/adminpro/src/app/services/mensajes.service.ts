@@ -48,4 +48,12 @@ export class MensajesService {
   sendMessageImg(formData: any) {
     return this.http.post(`${base_url}/send-message-img`, formData);
   }
+
+  sendMessageAdmin(mensaje: string) {
+    return this.http.post(
+      `${base_url}/send-message-admin`,
+      { mensaje },
+      this.getHeaders
+    );
+  }
 }

@@ -62,12 +62,13 @@ const enviarSoportePago = async (req, res = response) => {
       const { estado } = req.body;
 
       const updateEstado = await Solicitud.findByIdAndUpdate(id, {
-        $set: { estado },
+        $set: { estado, update_at: new Date() },
       });
 
       res.json({
         ok: true,
         msg: "Soporte enviado con exito",
+        soporte: updateEstado.soporte_pago,
       });
     }
   } catch (error) {

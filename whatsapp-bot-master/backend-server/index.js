@@ -24,6 +24,7 @@ const { validarCampos } = require("./middlewares/validar-campos");
 // modelos
 const Usuario = require("./models/usuario");
 const Mensaje = require("./models/mensaje");
+const { validarJWT } = require("./middlewares/validar-jwt");
 
 // constantes
 const msg = "Chat iniciado!";
@@ -266,6 +267,36 @@ const sendMessageImg = async (req = request, res = response) => {
   }
 };
 
+const sendMessagesAdmin = async (req, res = response) => {
+  const { mensaje } = req.body;
+
+  try {
+    const admins = await Usuario.find(
+      {
+        role: "ADMIN_ROLE",
+      },
+      { celular: 1, _id: 0 }
+    );
+
+    for (const admin of admins) {
+      const newNumber = `${process.env.NUMBER_CODE}${admin.celular}@c.us`;
+      client.sendMessage(newNumber, mensaje);
+    }
+
+    res.status(200).json({
+      ok: true,
+      msg: mensaje,
+      admins,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      ok: false,
+      msg: "Error inesperado, revisar logs",
+    });
+  }
+};
+
 // Rutas
 app.use("/api/usuarios", require("./routes/usuarios"));
 app.use("/api/login", require("./routes/auth"));
@@ -304,6 +335,16 @@ app.post(
   "/api/send-message-img",
   [upload.single("imagen"), validarTokenImg],
   sendMessageImg
+);
+
+app.post(
+  "/api/send-message-admin",
+  [
+    validarJWT,
+    check("mensaje", "El mensaje es obligatorio").not().isEmpty(),
+    validarCampos,
+  ],
+  sendMessagesAdmin
 );
 
 // Validar error de diferentes rutas

@@ -89,10 +89,7 @@
                       class="btn btn-info"
                       type="button"
                       (click)="EnviarSoportePago(solicitud)"
-                      [disabled]="
-                        !solicitud.soporte_pago ||
-                        solicitud.estado === 'ENVIADO'
-                      "
+                      [disabled]="!solicitud.soporte_pago"
                     >
                       <i class="fa fa-file-image-o"> </i>
                     </button>

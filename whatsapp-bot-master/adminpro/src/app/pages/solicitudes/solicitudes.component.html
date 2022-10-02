@@ -13,10 +13,11 @@
             <thead>
               <tr>
                 <th class="w100">Soporte</th>
+                <th>Actualizado</th>
                 <th>Plan</th>
                 <th>Descripcion</th>
                 <th>Valor</th>
-                <th>tipo</th>
+                <th>Estado</th>
                 <th class="text-nowrap w100">Acciones</th>
               </tr>
             </thead>
@@ -39,20 +40,46 @@
                     (click)="abrirModal(solicitud)"
                   />
                 </td>
+                <td>{{ solicitud.update_at | date: "yyyy/M/dd h:mm a" }}</td>
                 <td>{{ solicitud.nombre }}</td>
                 <td>{{ solicitud.descripcion }}</td>
-                <td>{{ solicitud.valor }}</td>
-                <td>{{ solicitud.tipo }}</td>
+                <td>{{ solicitud.valor | currency: "COL$ " }}</td>
+                <td>
+                  <span
+                    *ngIf="solicitud.estado === 'PENDIENTE'"
+                    class="label label-inverse"
+                    >PENDIENTE</span
+                  >
+                  <span
+                    *ngIf="solicitud.estado === 'CANCELADA'"
+                    class="label label-danger"
+                    >CANCELADA</span
+                  >
+                  <span
+                    *ngIf="solicitud.estado === 'ENVIADO'"
+                    class="label label-warning"
+                    >ENVIADO</span
+                  >
+                  <span
+                    *ngIf="solicitud.estado === 'APROBADA'"
+                    class="label label-success"
+                    >APROBADA</span
+                  >
+                </td>
 
                 <td class="text-nowrap text-center">
-                  <a
-                    class="cursor"
-                    data-toggle="tooltip"
-                    data-original-title="Borrar"
-                    (click)="cancelarSolicitud(solicitud)"
-                  >
-                    <i class="fa fa-close text-danger"></i>
-                  </a>
+                  <div class="tooltip2">
+                    <span class="input-group-btn">
+                      <button
+                        class="btn btn-danger"
+                        type="button"
+                        (click)="cancelarSolicitud(solicitud)"
+                      >
+                        <i class="mdi mdi-cart-off"> </i>
+                      </button>
+                    </span>
+                    <span class="tooltiptext">Cancelar Solicitud</span>
+                  </div>
                 </td>
               </tr>
             </tbody>

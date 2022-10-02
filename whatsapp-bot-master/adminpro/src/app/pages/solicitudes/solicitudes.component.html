@@ -34,7 +34,10 @@
                   </button>
                   <img
                     *ngIf="
-                      solicitud.soporte_pago && solicitud.estado !== 'ENVIADO'
+                      (solicitud.soporte_pago &&
+                        solicitud.estado === 'PENDIENTE') ||
+                      (solicitud.soporte_pago &&
+                        solicitud.estado === 'NO_APROBADA')
                     "
                     class="w100 cursor"
                     [src]="solicitud.soporte_pago | imagen: 'solicitudes'"
@@ -42,13 +45,19 @@
                     (click)="abrirModal(solicitud)"
                   />
                   <img
-                    *ngIf="solicitud.estado === 'ENVIADO'"
+                    *ngIf="
+                      solicitud.estado === 'ENVIADO' ||
+                      solicitud.estado === 'APROBADA'
+                    "
                     class="w100 cursor overflow"
                     [src]="solicitud.soporte_pago | imagen: 'solicitudes'"
                     alt="Soporte de Pago"
                   />
                   <button
-                    *ngIf="solicitud.estado === 'ENVIADO'"
+                    *ngIf="
+                      solicitud.estado === 'ENVIADO' ||
+                      solicitud.estado === 'APROBADA'
+                    "
                     type="button"
                     class="btn waves-effect waves-light btn-block btn-sm btn-success"
                     (click)="verSoporte(solicitud)"
@@ -67,9 +76,9 @@
                     >PENDIENTE</span
                   >
                   <span
-                    *ngIf="solicitud.estado === 'CANCELADA'"
+                    *ngIf="solicitud.estado === 'NO_APROBADA'"
                     class="label label-danger"
-                    >CANCELADA</span
+                    >NO_APROBADA</span
                   >
                   <span
                     *ngIf="solicitud.estado === 'ENVIADO'"
@@ -91,7 +100,8 @@
                       (click)="EnviarSoportePago(solicitud)"
                       [disabled]="
                         !solicitud.soporte_pago ||
-                        solicitud.estado === 'ENVIADO'
+                        solicitud.estado === 'ENVIADO' ||
+                        solicitud.estado === 'APROBADA'
                       "
                     >
                       <i class="fa fa-file-image-o"> </i>
@@ -103,6 +113,7 @@
                       class="btn btn-danger"
                       type="button"
                       (click)="cancelarSolicitud(solicitud)"
+                      [disabled]="solicitud.estado === 'APROBADA'"
                     >
                       <i class="mdi mdi-cart-off"> </i>
                     </button>

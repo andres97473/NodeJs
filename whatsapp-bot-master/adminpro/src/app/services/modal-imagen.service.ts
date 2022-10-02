@@ -13,7 +13,7 @@ export class ModalImagenService {
     return this._ocultarModal;
   }
 
-  public tipo!: 'usuarios';
+  public tipo!: 'usuarios' | 'solicitudes';
   public id!: string;
   public img?: string;
 
@@ -21,7 +21,11 @@ export class ModalImagenService {
 
   constructor() {}
 
-  abrirModal(tipo: 'usuarios', id: string, img: string = 'no-img') {
+  abrirModal(
+    tipo: 'usuarios' | 'solicitudes',
+    id: string,
+    img: string = 'no-img'
+  ) {
     this._ocultarModal = false;
     this.tipo = tipo;
     this.id = id;

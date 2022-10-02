@@ -1,3 +1,55 @@
 <div class="row animated fadeIn">
-  <h3>solicitudes</h3>
+  <div class="col-12">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title animated fadeIn fast">
+          Total de usuarios de Solicitudes Realizadas
+        </h4>
+        <h6 class="card-subtitle">
+          Debe subir el soporte de pago para aprovar la solicitud
+        </h6>
+        <div class="table-responsive">
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th class="w100">Soporte</th>
+                <th>Plan</th>
+                <th>Descripcion</th>
+                <th>Valor</th>
+                <th>tipo</th>
+                <th class="text-nowrap w100">Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let solicitud of solicitudes">
+                <td class="text-center">
+                  <img
+                    class="w100 cursor"
+                    [src]="solicitud.soporte_pago | imagen: 'solicitudes'"
+                    alt="Soporte de Pago"
+                    (click)="abrirModal(solicitud)"
+                  />
+                </td>
+                <td>{{ solicitud.nombre }}</td>
+                <td>{{ solicitud.descripcion }}</td>
+                <td>{{ solicitud.valor }}</td>
+                <td>{{ solicitud.tipo }}</td>
+
+                <td class="text-nowrap text-center">
+                  <a
+                    class="cursor"
+                    data-toggle="tooltip"
+                    data-original-title="Borrar"
+                    (click)="cancelarSolicitud(solicitud)"
+                  >
+                    <i class="fa fa-close text-danger"></i>
+                  </a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

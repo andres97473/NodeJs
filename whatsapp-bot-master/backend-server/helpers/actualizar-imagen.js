@@ -1,6 +1,7 @@
 const fs = require("fs");
 
 const Usuario = require("../models/usuario");
+const Solicitud = require("../models/solicitud");
 
 const borrarImagen = (path) => {
   if (fs.existsSync(path)) {
@@ -24,6 +25,19 @@ const actualiarImagen = async (tipo, id, nombreArchivo) => {
 
       usuario.img = nombreArchivo;
       usuario.save();
+      return true;
+      break;
+    case "solicitudes":
+      const solicitud = await Solicitud.findById(id);
+      if (!solicitud) {
+        return false;
+      }
+
+      pathViejo = `./uploads/solicitudes/${solicitud.soporte_pago}`;
+      borrarImagen(pathViejo);
+
+      solicitud.soporte_pago = nombreArchivo;
+      solicitud.save();
       return true;
       break;
   }

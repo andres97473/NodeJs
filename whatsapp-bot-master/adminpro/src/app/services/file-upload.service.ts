@@ -9,7 +9,11 @@ const base_url = environment.base_url;
 export class FileUploadService {
   constructor() {}
 
-  async actualizarFoto(archivo: File, tipo: 'usuarios', id: string) {
+  async actualizarFoto(
+    archivo: File,
+    tipo: 'usuarios' | 'solicitudes',
+    id: string
+  ) {
     try {
       const url = `${base_url}/upload/${tipo}/${id}`;
 

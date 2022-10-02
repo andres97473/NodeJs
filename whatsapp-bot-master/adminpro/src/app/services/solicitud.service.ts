@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { Usuario } from '../models/usuario.model';
-import { Solicitud } from '../interface/solicitud.interface';
+import { Solicitud } from '../models/solicitud.model';
 
 const base_url = environment.base_url;
 
@@ -28,6 +28,10 @@ export class SolicitudService {
         'x-token': this.getToken,
       },
     };
+  }
+
+  getSolicitudID(id: string) {
+    return this.http.get(`${base_url}/solicitudes/${id}`, this.getHeaders);
   }
 
   crearSolicitud(data: Solicitud) {

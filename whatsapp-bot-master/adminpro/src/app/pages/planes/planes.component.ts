@@ -3,8 +3,9 @@ import { Router } from '@angular/router';
 import { UsuarioService } from '../../services/usuario.service';
 import { PlanesService } from '../../services/planes.service';
 import { SolicitudService } from '../../services/solicitud.service';
+import { Solicitud } from '../../models/solicitud.model';
 import { Plan } from '../../interface/plan.interface';
-import { Solicitud } from '../../interface/solicitud.interface';
+
 import Swal from 'sweetalert2';
 
 @Component({
@@ -34,6 +35,13 @@ export class PlanesComponent implements OnInit {
   }
 
   solicitarPlan(plan: Plan) {
+    let solicitud: Solicitud = {
+      usuario: this.usuarioService.usuario.getToken || '',
+      nombre: plan.nombre,
+      descripcion: plan.descripcion,
+      valor: plan.valor,
+      tipo: plan.tipo,
+    };
     Swal.fire({
       title: 'Esta seguro que desea Solicitar este plan?',
       text: plan.nombre,
@@ -45,13 +53,6 @@ export class PlanesComponent implements OnInit {
       cancelButtonText: 'Cancelar',
     }).then((result) => {
       if (result.isConfirmed) {
-        let solicitud: Solicitud = {
-          usuario: this.usuarioService.usuario.getToken || '0',
-          nombre: plan.nombre,
-          descripcion: plan.descripcion,
-          valor: plan.valor,
-          tipo: plan.tipo,
-        };
         if (plan.tipo === 1) {
           solicitud.disponibles = plan.disponibles;
         } else {

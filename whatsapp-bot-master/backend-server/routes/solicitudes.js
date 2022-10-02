@@ -2,9 +2,14 @@ const { Router } = require("express");
 const { validarCampos } = require("../middlewares/validar-campos");
 const { validarJWT, validarADMIN_ROLE } = require("../middlewares/validar-jwt");
 const { check } = require("express-validator");
-const { crearSolicitud } = require("../controllers/solicitudes");
+const {
+  crearSolicitud,
+  getSolicitudID,
+} = require("../controllers/solicitudes");
 
 const router = Router();
+
+router.get("/:id", [validarJWT], getSolicitudID);
 
 router.post(
   "/",

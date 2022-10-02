@@ -10,7 +10,7 @@ const fileUpload = (req, res = response) => {
   const id = req.params.id;
 
   // Validar tipo
-  const tiposValidos = ["usuarios"];
+  const tiposValidos = ["usuarios", "solicitudes"];
   if (!tiposValidos.includes(tipo)) {
     return res.status(400).json({
       ok: false,
@@ -34,7 +34,7 @@ const fileUpload = (req, res = response) => {
   const extensionArchivo = nombreCortado[nombreCortado.length - 1];
 
   // Validar extension - imagen
-  const extensionesValidas = ["png", "jpg", "jpeg", "gif"];
+  const extensionesValidas = ["png", "jpg", "jpeg", "gif", "pdf"];
   if (!extensionesValidas.includes(extensionArchivo)) {
     return res.status(400).json({
       ok: false,

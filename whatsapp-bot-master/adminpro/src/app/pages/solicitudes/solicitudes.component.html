@@ -33,12 +33,28 @@
                     Cargar soporte de pago
                   </button>
                   <img
-                    *ngIf="solicitud.soporte_pago"
+                    *ngIf="
+                      solicitud.soporte_pago && solicitud.estado !== 'ENVIADO'
+                    "
                     class="w100 cursor"
                     [src]="solicitud.soporte_pago | imagen: 'solicitudes'"
                     alt="Soporte de Pago"
                     (click)="abrirModal(solicitud)"
                   />
+                  <img
+                    *ngIf="solicitud.estado === 'ENVIADO'"
+                    class="w100 cursor overflow"
+                    [src]="solicitud.soporte_pago | imagen: 'solicitudes'"
+                    alt="Soporte de Pago"
+                  />
+                  <button
+                    *ngIf="solicitud.estado === 'ENVIADO'"
+                    type="button"
+                    class="btn waves-effect waves-light btn-block btn-sm btn-success"
+                    (click)="verSoporte(solicitud)"
+                  >
+                    ver soporte
+                  </button>
                 </td>
                 <td>{{ solicitud.update_at | date: "yyyy/M/dd h:mm a" }}</td>
                 <td>{{ solicitud.nombre }}</td>
@@ -67,19 +83,31 @@
                   >
                 </td>
 
-                <td class="text-nowrap text-center">
-                  <div class="tooltip2">
-                    <span class="input-group-btn">
-                      <button
-                        class="btn btn-danger"
-                        type="button"
-                        (click)="cancelarSolicitud(solicitud)"
-                      >
-                        <i class="mdi mdi-cart-off"> </i>
-                      </button>
-                    </span>
+                <td class="text-nowrap">
+                  <a class="tooltip2 mr-1">
+                    <button
+                      class="btn btn-info"
+                      type="button"
+                      (click)="EnviarSoportePago(solicitud)"
+                      [disabled]="
+                        !solicitud.soporte_pago ||
+                        solicitud.estado === 'ENVIADO'
+                      "
+                    >
+                      <i class="fa fa-file-image-o"> </i>
+                    </button>
+                    <span class="tooltiptext">Enviar soporte de Pago</span>
+                  </a>
+                  <a class="tooltip2 mr-2">
+                    <button
+                      class="btn btn-danger"
+                      type="button"
+                      (click)="cancelarSolicitud(solicitud)"
+                    >
+                      <i class="mdi mdi-cart-off"> </i>
+                    </button>
                     <span class="tooltiptext">Cancelar Solicitud</span>
-                  </div>
+                  </a>
                 </td>
               </tr>
             </tbody>

@@ -5,6 +5,7 @@ const { check } = require("express-validator");
 const {
   crearSolicitud,
   getSolicitudID,
+  enviarSoportePago,
 } = require("../controllers/solicitudes");
 
 const router = Router();
@@ -23,6 +24,16 @@ router.post(
     validarCampos,
   ],
   crearSolicitud
+);
+
+router.put(
+  "/enviado/:id",
+  [
+    validarJWT,
+    check("estado", "El estado es obligatorio").not().isEmpty(),
+    validarCampos,
+  ],
+  enviarSoportePago
 );
 
 module.exports = router;

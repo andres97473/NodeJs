@@ -48,6 +48,11 @@
   width: 40px;
 }
 
+.overflow {
+  height: 80px;
+  overflow: hidden;
+}
+
 .w75 {
   width: 75px;
 }
@@ -80,6 +85,7 @@
 /* Tooltip container */
 .tooltip2 {
   position: relative;
+  z-index: 9999;
 }
 
 .tooltip2 .tooltiptext {
@@ -97,6 +103,7 @@
   bottom: 130%;
   left: 40%;
   margin-left: -60px;
+  z-index: 9999;
 }
 
 .tooltip2 .tooltiptext::after {
@@ -108,10 +115,13 @@
   border-width: 5px;
   border-style: solid;
   border-color: black transparent transparent transparent;
+  z-index: 9999;
 }
 
 .tooltip2:hover .tooltiptext {
+  padding: 5px;
   visibility: visible;
+  z-index: 9999;
 }
 
 .mat-sort-header-container {

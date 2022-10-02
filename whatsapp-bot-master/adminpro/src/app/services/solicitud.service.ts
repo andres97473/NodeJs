@@ -37,4 +37,12 @@ export class SolicitudService {
   crearSolicitud(data: Solicitud) {
     return this.http.post(`${base_url}/solicitudes`, data, this.getHeaders);
   }
+
+  enviarSoportePago(data: Solicitud) {
+    return this.http.put(
+      `${base_url}/solicitudes/enviado/${data._id}`,
+      { estado: 'ENVIADO' },
+      this.getHeaders
+    );
+  }
 }

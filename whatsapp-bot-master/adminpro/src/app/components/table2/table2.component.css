@@ -6,6 +6,10 @@ table th {
   position: relative;
 }
 
+.mat-sort-header-container {
+  display: contents !important;
+}
+
 /* sort */
 
 table th:hover .resize-handle {

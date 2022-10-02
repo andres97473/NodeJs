@@ -5,7 +5,7 @@ const getSolicitudID = async (req, res = response) => {
   const uid = req.params.id;
   try {
     const [solicitudes, total] = await Promise.all([
-      Solicitud.find({ usuario: uid }).sort({ created_at: "desc" }),
+      Solicitud.find({ usuario: uid }).sort({ update_at: "desc" }),
       Solicitud.find({ usuario: uid }).count(),
     ]);
 

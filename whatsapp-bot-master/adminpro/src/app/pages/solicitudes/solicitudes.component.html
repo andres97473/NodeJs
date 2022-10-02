@@ -23,7 +23,16 @@
             <tbody>
               <tr *ngFor="let solicitud of solicitudes">
                 <td class="text-center">
+                  <button
+                    *ngIf="!solicitud.soporte_pago"
+                    type="button"
+                    class="cargar-soporte btn waves-effect waves-light btn-primary"
+                    (click)="abrirModal(solicitud)"
+                  >
+                    Cargar soporte de pago
+                  </button>
                   <img
+                    *ngIf="solicitud.soporte_pago"
                     class="w100 cursor"
                     [src]="solicitud.soporte_pago | imagen: 'solicitudes'"
                     alt="Soporte de Pago"

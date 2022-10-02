@@ -10,6 +10,8 @@ export class Solicitud {
     public vence?: number,
     public disponibles?: number,
     public soporte_pago?: string,
-    public usr_aprueba?: string
+    public usr_aprueba?: string,
+    public created_at?: Date,
+    public update_at?: Date
   ) {}
 }

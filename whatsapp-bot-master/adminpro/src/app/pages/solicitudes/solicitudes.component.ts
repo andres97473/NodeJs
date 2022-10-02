@@ -41,6 +41,7 @@ export class SolicitudesComponent implements OnInit, OnDestroy {
       .getSolicitudID(this.usuarioService.usuario.getToken || '')
       .subscribe((resp: any) => {
         this.solicitudes = resp.solicitudes;
+        console.log(this.solicitudes);
       });
   }
 

@@ -36,7 +36,11 @@
             <img *ngIf="imgTemp" class="img-avatar" [src]="imgTemp" />
           </div>
 
-          <input type="file" (change)="cambiarImagen($event)" />
+          <input
+            type="file"
+            (change)="cambiarImagen($event)"
+            accept=".png,.jpg,.jpeg,.gif"
+          />
         </div>
         <div class="modal-footer">
           <button

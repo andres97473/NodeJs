@@ -100,6 +100,10 @@
                       class="btn btn-info"
                       type="button"
                       (click)="aprobarSolicitud(solicitud, solicitud.usuario)"
+                      [disabled]="
+                        solicitud.estado === 'APROBADA' ||
+                        solicitud.estado === 'NO_APROBADA'
+                      "
                     >
                       <i class="mdi mdi-thumb-up"> </i>
                     </button>
@@ -110,6 +114,10 @@
                       class="btn btn-danger"
                       type="button"
                       (click)="denegarSolicitud(solicitud)"
+                      [disabled]="
+                        solicitud.estado === 'APROBADA' ||
+                        solicitud.estado === 'NO_APROBADA'
+                      "
                     >
                       <i class="mdi mdi-thumb-down"> </i>
                     </button>

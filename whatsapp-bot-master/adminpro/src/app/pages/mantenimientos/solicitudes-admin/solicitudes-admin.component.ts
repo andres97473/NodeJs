@@ -45,7 +45,6 @@ export class SolicitudesAdminComponent implements OnInit, OnDestroy {
   cargarSolicitudes() {
     this.solicitudService.getSolicitudes().subscribe((resp: any) => {
       this.solicitudes = resp.solicitudes;
-      console.log(this.solicitudes);
     });
   }
 
@@ -81,7 +80,6 @@ export class SolicitudesAdminComponent implements OnInit, OnDestroy {
         this.solicitudService
           .cambiarEstadoSolicitud(solicitud, 'APROBADA')
           .subscribe((sol: any) => {
-            console.log(sol);
             if (solicitud.vence) {
               // comparar fechas de vencimiento
               const usuarioVence = new Date(usuario.vence);
@@ -144,20 +142,27 @@ export class SolicitudesAdminComponent implements OnInit, OnDestroy {
 
   denegarSolicitud(solicitud: Solicitud) {
     Swal.fire({
-      title: 'Enviar Soporte de Pago',
-      text: `Esta seguro que desea enviar el soporte de pago para el siguiente plan? : ${solicitud.nombre}`,
+      title: 'Denegar Solicitud',
+      text: `Esta seguro que desea denegar esta solicitud? : ${solicitud.nombre}`,
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
-      confirmButtonText: 'Si, Enviar Soporte de pago',
+      confirmButtonText: 'Si, Denegar Solicitud',
       cancelButtonText: 'Cancelar',
     }).then((result) => {
       if (result.isConfirmed) {
         this.solicitudService
-          .enviarSoportePago(solicitud)
-          .subscribe((sol: any) => {
-            console.log(sol);
+          .cambiarEstadoSolicitud(solicitud, 'NO_APROBADA')
+          .subscribe((resp: any) => {
+            Swal.fire({
+              position: 'top-end',
+              icon: 'success',
+              title: resp.msg,
+              showConfirmButton: false,
+              timer: 1500,
+            });
+            this.cargarSolicitudes();
           });
       }
     });

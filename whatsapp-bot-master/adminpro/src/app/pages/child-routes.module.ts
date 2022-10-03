@@ -20,6 +20,7 @@ import { SolicitudesComponent } from './solicitudes/solicitudes.component';
 // Mantenimientos
 import { UsuariosComponent } from './mantenimientos/usuarios/usuarios.component';
 import { BusquedaComponent } from './busqueda/busqueda.component';
+import { SolicitudesAdminComponent } from './mantenimientos/solicitudes-admin/solicitudes-admin.component';
 
 const childRoutes: Routes = [
   {
@@ -86,6 +87,12 @@ const childRoutes: Routes = [
     canActivate: [AdminGuard],
     component: UsuariosComponent,
     data: { titulo: 'Mantenimiento de Usuarios' },
+  },
+  {
+    path: 'solicitudes-admin',
+    canActivate: [AdminGuard],
+    component: SolicitudesAdminComponent,
+    data: { titulo: 'Mantenimiento de Solicitudes' },
   },
   {
     path: 'buscar/:termino',

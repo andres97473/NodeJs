@@ -74,7 +74,6 @@ export class SolicitudesComponent implements OnInit, OnDestroy {
           .enviarSoportePago(solicitud)
           .subscribe((sol: any) => {
             const nUrl = `${this.base_url}/upload/solicitudes/${sol.soporte}`;
-            console.log(nUrl);
 
             this.cargarSolicitudesID();
 

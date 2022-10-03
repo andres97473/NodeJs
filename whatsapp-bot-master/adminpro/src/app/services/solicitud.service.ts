@@ -30,6 +30,10 @@ export class SolicitudService {
     };
   }
 
+  getSolicitudes() {
+    return this.http.get(`${base_url}/solicitudes`, this.getHeaders);
+  }
+
   getSolicitudID(id: string) {
     return this.http.get(`${base_url}/solicitudes/${id}`, this.getHeaders);
   }

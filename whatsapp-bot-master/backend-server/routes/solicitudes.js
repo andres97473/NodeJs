@@ -7,9 +7,13 @@ const {
   getSolicitudID,
   enviarSoportePago,
   cancelarSolicitud,
+  cambiarEstadoSolicitud,
+  getSolicitudes,
 } = require("../controllers/solicitudes");
 
 const router = Router();
+
+router.get("/", [validarJWT, validarADMIN_ROLE], getSolicitudes);
 
 router.get("/:id", [validarJWT], getSolicitudID);
 
@@ -35,6 +39,17 @@ router.put(
     validarCampos,
   ],
   enviarSoportePago
+);
+
+router.put(
+  "/estado/:id",
+  [
+    validarJWT,
+    validarADMIN_ROLE,
+    check("estado", "El estado es obligatorio").not().isEmpty(),
+    validarCampos,
+  ],
+  cambiarEstadoSolicitud
 );
 
 router.delete("/enviado/:id", [validarJWT], cancelarSolicitud);

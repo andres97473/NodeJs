@@ -34,7 +34,10 @@ const getMenuFrontEnd = (role = "USER_ROLE") => {
     menu.push({
       titulo: "Mantenimientos",
       icono: "mdi mdi-folder-lock-open",
-      submenu: [{ titulo: "Usuarios", url: "usuarios" }],
+      submenu: [
+        { titulo: "Usuarios", url: "usuarios" },
+        { titulo: "Solicitudes Admin", url: "solicitudes-admin" },
+      ],
     });
   }
 

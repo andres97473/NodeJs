@@ -9,6 +9,27 @@ const borrarImagen = (path) => {
   }
 };
 
+const getSolicitudes = async (req, res = response) => {
+  try {
+    const [solicitudes, total] = await Promise.all([
+      Solicitud.find().sort({ update_at: "desc" }),
+      Solicitud.find().count(),
+    ]);
+
+    res.json({
+      ok: true,
+      total,
+      solicitudes,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      ok: false,
+      msg: "Error inesperado, revisar logs",
+    });
+  }
+};
+
 const getSolicitudID = async (req, res = response) => {
   const uid = req.params.id;
   try {
@@ -89,6 +110,40 @@ const enviarSoportePago = async (req, res = response) => {
   }
 };
 
+const cambiarEstadoSolicitud = async (req, res = response) => {
+  const id = req.params.id;
+
+  try {
+    const solicitud = await Solicitud.findById(id);
+
+    if (!solicitud) {
+      return res.status(404).json({
+        ok: false,
+        msg: "No existe una Solicitud por ese id",
+      });
+    } else {
+      // Actualizaciones
+      const { estado } = req.body;
+
+      const updateEstado = await Solicitud.findByIdAndUpdate(id, {
+        $set: { estado, update_at: new Date() },
+      });
+
+      res.json({
+        ok: true,
+        msg: "Estado de solicitud cambiado",
+        solicitud,
+      });
+    }
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      ok: false,
+      msg: "Error inesperado, revisar logs",
+    });
+  }
+};
+
 const cancelarSolicitud = async (req, res = response) => {
   const id = req.params.id;
   try {
@@ -121,8 +176,10 @@ const cancelarSolicitud = async (req, res = response) => {
 };
 
 module.exports = {
+  getSolicitudes,
   getSolicitudID,
   crearSolicitud,
   enviarSoportePago,
+  cambiarEstadoSolicitud,
   cancelarSolicitud,
 };

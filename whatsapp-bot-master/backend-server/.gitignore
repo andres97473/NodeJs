@@ -8,20 +8,18 @@ node_modules/
 public/**
 
 ### carpeta de imagenes ###
-uploads/hospitales/**.jpg
-uploads/hospitales/**.jepg
-uploads/hospitales/**.png
-uploads/hospitales/**.gif
-
-uploads/medicos/**.jpg
-uploads/medicos/**.jepg
-uploads/medicos/**.png
-uploads/medicos/**.gif
 
 uploads/usuarios/**.jpg
 uploads/usuarios/**.jepg
 uploads/usuarios/**.png
 uploads/usuarios/**.gif
+uploads/usuarios/**.pdf
+
+uploads/solicitudes/**.jpg
+uploads/solicitudes/**.jepg
+uploads/solicitudes/**.png
+uploads/solicitudes/**.gif
+uploads/solicitudes/**.pdf
 
 ### session whatsapp web ###
 .wwebjs_auth

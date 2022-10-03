@@ -1,5 +1,13 @@
+const fs = require("fs");
 const { response } = require("express");
 const Solicitud = require("../models/solicitud");
+
+const borrarImagen = (path) => {
+  if (fs.existsSync(path)) {
+    // borrar la imagen anterior
+    fs.unlinkSync(path);
+  }
+};
 
 const getSolicitudID = async (req, res = response) => {
   const uid = req.params.id;
@@ -42,6 +50,7 @@ const crearSolicitud = async (req, res = response) => {
     });
   }
 };
+
 const enviarSoportePago = async (req, res = response) => {
   const id = req.params.id;
   try {
@@ -80,4 +89,40 @@ const enviarSoportePago = async (req, res = response) => {
   }
 };
 
-module.exports = { getSolicitudID, crearSolicitud, enviarSoportePago };
+const cancelarSolicitud = async (req, res = response) => {
+  const id = req.params.id;
+  try {
+    const solicitud = await Solicitud.findById(id);
+
+    if (!solicitud) {
+      return res.status(404).json({
+        ok: false,
+        msg: "No existe una Solicitud por ese id",
+      });
+    }
+
+    if (solicitud.soporte_pago) {
+      pathViejo = `./uploads/solicitudes/${solicitud.soporte_pago}`;
+      borrarImagen(pathViejo);
+    }
+    await Solicitud.findByIdAndDelete(id);
+
+    res.json({
+      ok: true,
+      msg: "Solicitud eliminada",
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      ok: false,
+      msg: "Error inesperado, revisar logs",
+    });
+  }
+};
+
+module.exports = {
+  getSolicitudID,
+  crearSolicitud,
+  enviarSoportePago,
+  cancelarSolicitud,
+};

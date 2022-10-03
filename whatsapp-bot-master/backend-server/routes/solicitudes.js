@@ -6,6 +6,7 @@ const {
   crearSolicitud,
   getSolicitudID,
   enviarSoportePago,
+  cancelarSolicitud,
 } = require("../controllers/solicitudes");
 
 const router = Router();
@@ -35,5 +36,7 @@ router.put(
   ],
   enviarSoportePago
 );
+
+router.delete("/enviado/:id", [validarJWT], cancelarSolicitud);
 
 module.exports = router;

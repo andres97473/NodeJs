@@ -114,7 +114,18 @@ export class SolicitudesComponent implements OnInit, OnDestroy {
       cancelButtonText: 'Cancelar',
     }).then((result) => {
       if (result.isConfirmed) {
-        console.log(solicitud);
+        this.solicitudService
+          .cancelarSolicitud(solicitud)
+          .subscribe((resp: any) => {
+            this.cargarSolicitudesID();
+            Swal.fire({
+              position: 'top-end',
+              icon: 'success',
+              title: resp.msg,
+              showConfirmButton: false,
+              timer: 1500,
+            });
+          });
       }
     });
   }

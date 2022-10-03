@@ -45,4 +45,11 @@ export class SolicitudService {
       this.getHeaders
     );
   }
+
+  cancelarSolicitud(data: Solicitud) {
+    return this.http.delete(
+      `${base_url}/solicitudes/enviado/${data._id}`,
+      this.getHeaders
+    );
+  }
 }

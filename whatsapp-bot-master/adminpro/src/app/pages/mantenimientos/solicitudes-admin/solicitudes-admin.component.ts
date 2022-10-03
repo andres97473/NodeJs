@@ -119,6 +119,7 @@ export class SolicitudesAdminComponent implements OnInit, OnDestroy {
                   });
                 });
             } else if (solicitud.disponibles) {
+              solicitud.disponibles += usuario.disponibles;
               this.usuarioService
                 .actualizarMensajesDisponibles(
                   solicitud.usuario.email,

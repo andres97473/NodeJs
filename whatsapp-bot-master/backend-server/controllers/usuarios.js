@@ -258,7 +258,6 @@ const actualizarMensajesDisponibles = async (req, res = response) => {
 
     // Actualizaciones
     let { disponibles } = req.body;
-    disponibles += existeEmail.disponibles;
     const updateDisponibles = await Usuario.updateOne(
       { email },
       { $set: { disponibles, update_at: new Date() } }

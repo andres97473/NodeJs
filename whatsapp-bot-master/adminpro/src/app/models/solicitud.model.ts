@@ -1,6 +1,6 @@
 export class Solicitud {
   constructor(
-    public usuario: string,
+    public usuario: any,
     public nombre: string,
     public descripcion: string,
     public valor: number,

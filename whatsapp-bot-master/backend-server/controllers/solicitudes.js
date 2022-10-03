@@ -12,7 +12,9 @@ const borrarImagen = (path) => {
 const getSolicitudes = async (req, res = response) => {
   try {
     const [solicitudes, total] = await Promise.all([
-      Solicitud.find().sort({ update_at: "desc" }),
+      Solicitud.find()
+        .populate("usuario", "nombre email vence disponibles")
+        .sort({ update_at: "desc" }),
       Solicitud.find().count(),
     ]);
 
@@ -112,6 +114,7 @@ const enviarSoportePago = async (req, res = response) => {
 
 const cambiarEstadoSolicitud = async (req, res = response) => {
   const id = req.params.id;
+  const uid = req.uid;
 
   try {
     const solicitud = await Solicitud.findById(id);
@@ -126,7 +129,7 @@ const cambiarEstadoSolicitud = async (req, res = response) => {
       const { estado } = req.body;
 
       const updateEstado = await Solicitud.findByIdAndUpdate(id, {
-        $set: { estado, update_at: new Date() },
+        $set: { estado, update_at: new Date(), usr_aprueba: uid },
       });
 
       res.json({

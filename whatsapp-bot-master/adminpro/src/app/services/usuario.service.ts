@@ -221,4 +221,20 @@ export class UsuarioService {
       this.getHeaders
     );
   }
+
+  actualizarMensajesFecha(email: string, vence: string) {
+    return this.http.put(
+      `${base_url}/usuarios/mensajes-fecha/${email}`,
+      { vence },
+      this.getHeaders
+    );
+  }
+
+  actualizarMensajesDisponibles(email: string, disponibles: number) {
+    return this.http.put(
+      `${base_url}/usuarios/mensajes-disponibles/${email}`,
+      { disponibles },
+      this.getHeaders
+    );
+  }
 }

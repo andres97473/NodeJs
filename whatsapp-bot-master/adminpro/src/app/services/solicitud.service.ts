@@ -56,4 +56,12 @@ export class SolicitudService {
       this.getHeaders
     );
   }
+
+  cambiarEstadoSolicitud(data: Solicitud, estado: string) {
+    return this.http.put(
+      `${base_url}/solicitudes/estado/${data._id}`,
+      { estado },
+      this.getHeaders
+    );
+  }
 }

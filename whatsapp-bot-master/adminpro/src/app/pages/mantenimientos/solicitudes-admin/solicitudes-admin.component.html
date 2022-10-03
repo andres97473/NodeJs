@@ -18,6 +18,7 @@
                 <th>Descripcion</th>
                 <th>Valor</th>
                 <th>Estado</th>
+                <th>Usuario</th>
                 <th class="text-nowrap w100">Acciones</th>
               </tr>
             </thead>
@@ -91,33 +92,28 @@
                     >APROBADA</span
                   >
                 </td>
+                <td>{{ solicitud.usuario.email }}</td>
 
                 <td class="text-nowrap">
                   <a class="tooltip2 mr-1">
                     <button
                       class="btn btn-info"
                       type="button"
-                      (click)="EnviarSoportePago(solicitud)"
-                      [disabled]="
-                        !solicitud.soporte_pago ||
-                        solicitud.estado === 'ENVIADO' ||
-                        solicitud.estado === 'APROBADA'
-                      "
+                      (click)="aprobarSolicitud(solicitud, solicitud.usuario)"
                     >
-                      <i class="fa fa-file-image-o"> </i>
+                      <i class="mdi mdi-thumb-up"> </i>
                     </button>
-                    <span class="tooltiptext">Enviar soporte de Pago</span>
+                    <span class="tooltiptext">Aprobar Solicitud</span>
                   </a>
                   <a class="tooltip2 mr-2">
                     <button
                       class="btn btn-danger"
                       type="button"
-                      (click)="cancelarSolicitud(solicitud)"
-                      [disabled]="solicitud.estado === 'APROBADA'"
+                      (click)="denegarSolicitud(solicitud)"
                     >
-                      <i class="mdi mdi-cart-off"> </i>
+                      <i class="mdi mdi-thumb-down"> </i>
                     </button>
-                    <span class="tooltiptext">Cancelar Solicitud</span>
+                    <span class="tooltiptext">No Aprobar Solicitud</span>
                   </a>
                 </td>
               </tr>

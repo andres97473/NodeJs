@@ -44,9 +44,8 @@ export class SolicitudesAdminComponent implements OnInit, OnDestroy {
 
   cargarSolicitudes() {
     this.solicitudService.getSolicitudes().subscribe((resp: any) => {
-      console.log(resp);
-
       this.solicitudes = resp.solicitudes;
+      console.log(this.solicitudes);
     });
   }
 
@@ -58,7 +57,92 @@ export class SolicitudesAdminComponent implements OnInit, OnDestroy {
     );
   }
 
-  EnviarSoportePago(solicitud: Solicitud) {
+  aprobarSolicitud(
+    solicitud: Solicitud,
+    usuario: {
+      disponibles: number;
+      email: string;
+      nombre: string;
+      vence: string;
+      _id: string;
+    }
+  ) {
+    Swal.fire({
+      title: 'Aprobar Solicitud',
+      text: `Esta seguro que desea aprobar la solicitud? : ${solicitud.nombre}`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Si, Aprobar solicitud',
+      cancelButtonText: 'Cancelar',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.solicitudService
+          .cambiarEstadoSolicitud(solicitud, 'APROBADA')
+          .subscribe((sol: any) => {
+            console.log(sol);
+            if (solicitud.vence) {
+              // comparar fechas de vencimiento
+              const usuarioVence = new Date(usuario.vence);
+              const hoy = new Date();
+
+              let resta = usuarioVence.getTime() - hoy.getTime();
+
+              console.log(resta);
+
+              let nVence = '';
+
+              if (resta < 0) {
+                let e = new Date();
+                e.setMonth(e.getMonth() + solicitud.vence);
+
+                nVence = String(
+                  e.getFullYear() + '-' + (e.getMonth() + 1) + '-' + e.getDate()
+                );
+              } else {
+                let e = new Date(usuario.vence);
+                e.setMonth(e.getMonth() + solicitud.vence);
+
+                nVence = String(
+                  e.getFullYear() + '-' + (e.getMonth() + 1) + '-' + e.getDate()
+                );
+              }
+
+              this.usuarioService
+                .actualizarMensajesFecha(solicitud.usuario.email, nVence)
+                .subscribe((resp: any) => {
+                  Swal.fire({
+                    position: 'top-end',
+                    icon: 'success',
+                    title: resp.msg,
+                    showConfirmButton: false,
+                    timer: 1500,
+                  });
+                });
+            } else if (solicitud.disponibles) {
+              this.usuarioService
+                .actualizarMensajesDisponibles(
+                  solicitud.usuario.email,
+                  solicitud.disponibles
+                )
+                .subscribe((resp: any) => {
+                  Swal.fire({
+                    position: 'top-end',
+                    icon: 'success',
+                    title: resp.msg,
+                    showConfirmButton: false,
+                    timer: 1500,
+                  });
+                });
+            }
+            this.cargarSolicitudes();
+          });
+      }
+    });
+  }
+
+  denegarSolicitud(solicitud: Solicitud) {
     Swal.fire({
       title: 'Enviar Soporte de Pago',
       text: `Esta seguro que desea enviar el soporte de pago para el siguiente plan? : ${solicitud.nombre}`,
@@ -73,18 +157,7 @@ export class SolicitudesAdminComponent implements OnInit, OnDestroy {
         this.solicitudService
           .enviarSoportePago(solicitud)
           .subscribe((sol: any) => {
-            const nUrl = `${this.base_url}/upload/solicitudes/${sol.soporte}`;
-
-            this.cargarSolicitudes();
-
-            // construir mensaje de notificacion a los admins
-            const notificacion = `Soporte enviado\n${nUrl}\nusuario: ${this.usuarioService.usuario.email}`;
-
-            this.mensajesService
-              .sendMessageAdmin(notificacion)
-              .subscribe((resp) => {
-                // console.log(resp);
-              });
+            console.log(sol);
           });
       }
     });
@@ -99,33 +172,5 @@ export class SolicitudesAdminComponent implements OnInit, OnDestroy {
       // Cambiar el foco al nuevo tab (punto opcional)
       win.focus();
     }
-  }
-
-  cancelarSolicitud(solicitud: Solicitud) {
-    Swal.fire({
-      title: 'Cancelar Solicitud',
-      text: `Esta seguro que desea Cancelar la solicitud para el siguiente plan? : ${solicitud.nombre}`,
-      icon: 'error',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Si, Cancelar Solicitud ',
-      cancelButtonText: 'Cancelar',
-    }).then((result) => {
-      if (result.isConfirmed) {
-        this.solicitudService
-          .cancelarSolicitud(solicitud)
-          .subscribe((resp: any) => {
-            this.cargarSolicitudes();
-            Swal.fire({
-              position: 'top-end',
-              icon: 'success',
-              title: resp.msg,
-              showConfirmButton: false,
-              timer: 1500,
-            });
-          });
-      }
-    });
   }
 }

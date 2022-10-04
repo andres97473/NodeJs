@@ -305,6 +305,7 @@ app.use("/api/upload", require("./routes/uploads"));
 app.use("/api/mensajes", require("./routes/mensajes"));
 app.use("/api/planes", require("./routes/planes"));
 app.use("/api/solicitudes", require("./routes/solicitudes"));
+app.use("/api/paises", require("./routes/paises"));
 
 // Rutas Mensajes
 app.post(

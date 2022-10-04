@@ -10,6 +10,7 @@ import { RegisterForm } from '../interface/register-form.interface';
 import { LoginForm } from '../interface/login-form.interface';
 import { Usuario } from '../models/usuario.model';
 import { CargarUsuario } from '../interface/cargar-usuarios.interface';
+import { PaisI } from '../interface/pais.interface';
 
 declare const google: any;
 
@@ -96,6 +97,7 @@ export class UsuarioService {
             uid,
             disponibles,
             vence,
+            cod_pais,
             celular,
             codigo,
             activo,
@@ -110,6 +112,7 @@ export class UsuarioService {
             img,
             google,
             role,
+            cod_pais,
             celular,
             codigo,
             vence,
@@ -190,6 +193,7 @@ export class UsuarioService {
               user.img,
               user.google,
               user.role,
+              user.cod_pais,
               user.celular,
               user.codigo,
               user.vence,
@@ -235,6 +239,12 @@ export class UsuarioService {
       `${base_url}/usuarios/mensajes-disponibles/${email}`,
       { disponibles },
       this.getHeaders
+    );
+  }
+
+  getPaises() {
+    return this.http.get<{ ok: Boolean; paises: PaisI[] }>(
+      `${base_url}/paises`
     );
   }
 }

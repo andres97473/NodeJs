@@ -6,6 +6,7 @@ import { UsuarioService } from '../../services/usuario.service';
 import { FileUploadService } from '../../services/file-upload.service';
 
 import { Usuario } from '../../models/usuario.model';
+import { PaisI } from '../../interface/pais.interface';
 
 @Component({
   selector: 'app-perfil',
@@ -19,6 +20,8 @@ export class PerfilComponent implements OnInit {
   public imgTemp: any = null;
   public formSubmitted = false;
   public errorPassword = '';
+  public paises: PaisI[] = [];
+  public codPais = '';
 
   public passwordForm = this.fb.group(
     {
@@ -40,13 +43,19 @@ export class PerfilComponent implements OnInit {
     this.iniciarFormulario();
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.usuarioService.getPaises().subscribe((resp) => {
+      this.paises = resp.paises;
+    });
+    this.codPais = this.usuario.cod_pais || '';
+  }
 
   iniciarFormulario() {
     this.perfilForm = this.fb.group({
       token: [this.usuario.uid],
       nombre: [this.usuario.nombre, [Validators.required]],
       email: [this.usuario.email, [Validators.required, Validators.email]],
+      cod_pais: [this.usuario.cod_pais],
       celular: [this.usuario.celular],
       codigo: [this.usuario.codigo],
       vence: [this.usuario.vence || ''],
@@ -58,9 +67,10 @@ export class PerfilComponent implements OnInit {
     this.usuarioService.actualizarPerfil(this.perfilForm.value).subscribe(
       (resp: any) => {
         // console.log(resp);
-        const { nombre, email, celular } = resp.usuario;
+        const { nombre, email, celular, cod_pais } = resp.usuario;
         this.usuario.nombre = nombre;
         this.usuario.email = email;
+        this.usuario.cod_pais = cod_pais;
         this.usuario.celular = celular;
 
         Swal.fire('Guardado', 'Los cambios fueron guardados', 'success');

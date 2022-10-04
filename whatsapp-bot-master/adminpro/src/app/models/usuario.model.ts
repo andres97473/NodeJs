@@ -11,6 +11,7 @@ export class Usuario {
     public img?: string,
     public google?: boolean,
     public role?: string,
+    public cod_pais?: string,
     public celular?: string,
     public codigo?: string,
     public vence?: string,

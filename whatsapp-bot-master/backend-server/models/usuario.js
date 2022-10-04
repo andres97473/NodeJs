@@ -7,6 +7,7 @@ const UsuarioSchema = Schema({
   img: { type: String },
   role: { type: String, required: true, default: "USER_ROLE" },
   google: { type: Boolean, default: false },
+  cod_pais: { type: String, default: "+57" },
   celular: { type: String },
   codigo: { type: String, unique: true },
   vence: { type: String, default: "1990-01-01" },

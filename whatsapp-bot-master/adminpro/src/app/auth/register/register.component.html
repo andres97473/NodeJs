@@ -42,6 +42,17 @@
           </div>
         </div>
         <div class="form-group">
+          <select
+            class="custom-select col-12"
+            id="inlineFormCustomSelect"
+            formControlName="cod_pais"
+          >
+            <option *ngFor="let pais of paises" [value]="pais.codigo">
+              {{ pais.nombre }}
+            </option>
+          </select>
+        </div>
+        <div class="form-group">
           <div class="col-xs-12">
             <input
               class="form-control"

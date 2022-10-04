@@ -36,6 +36,7 @@ export class BusquedasService {
           user.img,
           user.google,
           user.role,
+          user.cod_pais,
           user.celular,
           user.codigo,
           user.vence,

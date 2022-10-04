@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, OnInit } from '@angular/core';
 // forms
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
@@ -20,19 +20,22 @@ import { MensajesService } from '../../services/mensajes.service';
 import { UsuarioService } from '../../services/usuario.service';
 // externos
 import Swal from 'sweetalert2';
+import { PaisI } from '../../interface/pais.interface';
 
 @Component({
   selector: 'app-mensajes-envio',
   templateUrl: './mensajes-envio.component.html',
   styleUrls: ['./mensajes-envio.component.css'],
 })
-export class MensajesEnvioComponent {
+export class MensajesEnvioComponent implements OnInit {
   public usuario: Usuario;
   public mensajeForm!: FormGroup;
   public formSubmitted = false;
   public errorMessage = '';
   public enviados = 0;
   public fechaEnvio?: Date;
+  public paises: PaisI[] = [];
+  public codPais!: string;
 
   public maximo = 50;
 
@@ -62,10 +65,18 @@ export class MensajesEnvioComponent {
     this.iniciarFormulario();
   }
 
+  ngOnInit(): void {
+    this.codPais = this.usuario.cod_pais || '';
+    this.usuarioService.getPaises().subscribe((resp) => {
+      this.paises = resp.paises;
+    });
+  }
+
   iniciarFormulario() {
     this.mensajeForm = this.fb.group({
       token: [this.usuario.uid, [Validators.required]],
       mensaje: [localStorage.getItem('smsenvio') || '', [Validators.required]],
+      cod_pais: [this.usuario.cod_pais || ''],
       celulares: ['', [Validators.required]],
       vence: [this.usuario.vence || ''],
       disponibles: [this.usuario.disponibles || ''],
@@ -179,11 +190,13 @@ export class MensajesEnvioComponent {
 
   limpiarCelulares() {
     this.celulares = [];
-    let { token, mensaje, vence, disponibles } = this.mensajeForm.value;
+    let { token, mensaje, vence, disponibles, cod_pais } =
+      this.mensajeForm.value;
 
     this.mensajeForm.setValue({
       token,
       mensaje,
+      cod_pais,
       celulares: this.celulares,
       vence,
       disponibles,
@@ -191,7 +204,8 @@ export class MensajesEnvioComponent {
   }
 
   stringCelulares() {
-    let { token, mensaje, vence, disponibles } = this.mensajeForm.value;
+    let { token, mensaje, cod_pais, vence, disponibles } =
+      this.mensajeForm.value;
     let stringCel = '';
     for (const cel of this.celulares) {
       stringCel = stringCel + cel.numero + ',';
@@ -201,6 +215,7 @@ export class MensajesEnvioComponent {
 
     this.mensajeForm.setValue({
       token,
+      cod_pais,
       celulares: exportCel,
       vence,
       disponibles,
@@ -211,7 +226,7 @@ export class MensajesEnvioComponent {
   // enviar mensaje
   sendMessage() {
     this.errorMessage = '';
-    let { token, mensaje, celulares, vence, disponibles } =
+    let { token, mensaje, cod_pais, celulares, vence, disponibles } =
       this.mensajeForm.value;
     const nCelulares: string[] = celulares.split(',');
     if (nCelulares.length < 1) {
@@ -227,6 +242,7 @@ export class MensajesEnvioComponent {
           this.mensajeForm.setValue({
             token,
             mensaje,
+            cod_pais,
             celulares,
             vence,
             disponibles: resp.disponibles,

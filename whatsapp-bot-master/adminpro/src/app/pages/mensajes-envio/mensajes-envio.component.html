@@ -108,25 +108,68 @@
               <!-- col 2 -->
               <div class="col-md-6">
                 <div class="form-group">
-                  <div class="form-group">
-                    <label>Registre su Mensaje</label>
-                    <textarea
-                      class="form-control"
-                      rows="4"
-                      formControlName="mensaje"
-                    ></textarea>
-                    <button
-                      type="button"
-                      class="btn btn-info btn-block waves-effect waves-light m-r-10"
-                      (click)="guardarEnMemoria()"
-                    >
-                      <i class="fa fa-save"></i>
-                      Guargar Mensaje en Memoria
-                    </button>
-                  </div>
+                  <label>Registre su Mensaje</label>
+                  <textarea
+                    class="form-control"
+                    rows="4"
+                    formControlName="mensaje"
+                  ></textarea>
+                  <button
+                    type="button"
+                    class="btn btn-info btn-block waves-effect waves-light m-r-10"
+                    (click)="guardarEnMemoria()"
+                  >
+                    <i class="fa fa-save"></i>
+                    Guargar Mensaje en Memoria
+                  </button>
                 </div>
               </div>
               <!-- col 2 -->
+
+              <!-- col 3 -->
+              <div class="col-md-6">
+                <div class="form-group row">
+                  <label class="col-sm-3 control-label">Codigo Pais</label>
+                  <div class="col-sm-9">
+                    <div class="input-group">
+                      <div class="input-group-addon">
+                        <i class="ti-world"></i>
+                      </div>
+                      <select
+                        class="custom-select col-8"
+                        id="inlineFormCustomSelect"
+                        formControlName="cod_pais"
+                        (ngModelChange)="codPais = $event"
+                      >
+                        <option
+                          *ngFor="let pais of paises"
+                          [value]="pais.codigo"
+                        >
+                          {{ pais.nombre }}
+                        </option>
+                      </select>
+
+                      <input
+                        type="text"
+                        class="form-control"
+                        placeholder="Ingrese el codigo del pais"
+                        formControlName="cod_pais"
+                        [ngModel]="codPais"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- col 3 -->
+
+              <!-- col 4 -->
+              <div class="col-md-6">
+                <div>
+                  Si no selecciona un pais se tomara por defecto el codigo del
+                  pais registrado en su perfil de usuario
+                </div>
+              </div>
+              <!-- col 4 -->
 
               <!-- col 3 -->
               <div class="col-md-6">

@@ -139,13 +139,22 @@ const sendMessage = (to, message) => {
 /*
 Enviar media con API
  */
-const sendMediaApi = (to, message, file, mimetype, filename, token) => {
+const sendMediaApi = (
+  codpais,
+  to,
+  message,
+  file,
+  mimetype,
+  filename,
+  token
+) => {
   let mediaFile = MessageMedia.fromFilePath(`${file}`);
+  const codPais = codpais.replace("+", "");
   mediaFile.mimetype = mimetype;
   mediaFile.filename = filename;
   // console.log(mediaFile);
   for (const celular of to) {
-    const newNumber = `${process.env.NUMBER_CODE}${celular}@c.us`;
+    const newNumber = `${codPais}${celular}@c.us`;
     client.sendMessage(newNumber, message);
     client.sendMessage(newNumber, mediaFile);
     saveChatMongo(celular, message, "ARCHIVO", token);
@@ -172,12 +181,13 @@ const saveChatMongo = async (celular, mensaje, tipo, uid) => {
 
 const sendMessagesPrueba = async (req, res = response) => {
   const numPrueba = req.numprueba;
+  const codpais = req.codpais.replace("+", "");
 
   const { repeticiones, mensaje, token } = req.body;
 
   try {
     for (let index = 0; index < Number(repeticiones); index++) {
-      const newNumber = `${process.env.NUMBER_CODE}${numPrueba}@c.us`;
+      const newNumber = `${codpais}${numPrueba}@c.us`;
       client.sendMessage(newNumber, mensaje);
       saveChatMongo(numPrueba, mensaje, "PRUEBA", token);
     }
@@ -198,16 +208,17 @@ const sendMessagesPrueba = async (req, res = response) => {
 };
 
 const sendMessagesToken = async (req, res = response) => {
-  let { mensaje, token } = req.body;
+  let { mensaje, token, cod_pais } = req.body;
   const disponibles = req.disponibles;
   const token_vence = req.vence;
   const celulares = req.celulares;
+  let codpais = cod_pais || req.codpais;
 
   // convertir a array de numeros
 
   try {
     for (const celular of celulares) {
-      const newNumber = `${process.env.NUMBER_CODE}${celular}@c.us`;
+      const newNumber = `${codpais.replace("+", "")}${celular}@c.us`;
       client.sendMessage(newNumber, mensaje);
       saveChatMongo(celular, mensaje, "MENSAJE", token);
     }
@@ -233,7 +244,8 @@ const sendMessageImg = async (req = request, res = response) => {
   const disponibles = req.disponibles;
   const token_vence = req.vence;
   const celulares = req.celulares;
-  let { mensaje, token } = req.body;
+  let { mensaje, token, cod_pais } = req.body;
+  let codpais = cod_pais || req.codpais;
   // Validar que exista un archivo enviado por el req
   if (!req.file || Object.keys(req.file).length === 0) {
     return res.status(400).json({
@@ -249,7 +261,15 @@ const sendMessageImg = async (req = request, res = response) => {
 
   try {
     // enviar imagen a celulares
-    sendMediaApi(celulares, mensaje, imagen.path, mimetype, filename, token);
+    sendMediaApi(
+      codpais,
+      celulares,
+      mensaje,
+      imagen.path,
+      mimetype,
+      filename,
+      token
+    );
 
     res.status(200).json({
       ok: true,

@@ -35,6 +35,7 @@ const validarToken = async (req, res, next) => {
     // validar fecha de vencimiento
     if (usuario) {
       token_vence = usuario.vence;
+      req.codpais = usuario.cod_pais;
 
       fechaVencimiento = moment(token_vence);
       fechaActual = moment();
@@ -98,6 +99,7 @@ const validarTokenImg = async (req, res, next) => {
     // validar fecha de vencimiento
     if (usuario) {
       token_vence = usuario.vence;
+      req.codpais = usuario.cod_pais;
 
       fechaVencimiento = moment(token_vence);
       fechaActual = moment();
@@ -181,6 +183,7 @@ const validarTokenPrueba = async (req, res, next) => {
       });
     } else {
       req.numprueba = usuario.celular;
+      req.codpais = usuario.cod_pais;
       next();
     }
   } catch (error) {

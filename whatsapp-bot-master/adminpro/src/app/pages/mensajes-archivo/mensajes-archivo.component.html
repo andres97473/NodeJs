@@ -173,6 +173,51 @@
 
               <!-- col 3 -->
               <div class="col-md-6">
+                <div class="form-group row">
+                  <label class="col-sm-3 control-label">Codigo Pais</label>
+                  <div class="col-sm-9">
+                    <div class="input-group">
+                      <div class="input-group-addon">
+                        <i class="ti-world"></i>
+                      </div>
+                      <select
+                        class="custom-select col-8"
+                        id="inlineFormCustomSelect"
+                        formControlName="cod_pais"
+                        (ngModelChange)="codPais = $event"
+                      >
+                        <option
+                          *ngFor="let pais of paises"
+                          [value]="pais.codigo"
+                        >
+                          {{ pais.nombre }}
+                        </option>
+                      </select>
+
+                      <input
+                        type="text"
+                        class="form-control"
+                        placeholder="Ingrese el codigo del pais"
+                        formControlName="cod_pais"
+                        [ngModel]="codPais"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- col 3 -->
+
+              <!-- col 4 -->
+              <div class="col-md-6">
+                <div>
+                  Si no selecciona un pais se tomara por defecto el codigo del
+                  pais registrado en su perfil de usuario
+                </div>
+              </div>
+              <!-- col 4 -->
+
+              <!-- col 3 -->
+              <div class="col-md-6">
                 <div class="card">
                   <div class="card-body">
                     <h4 class="card-title">Importar numeros desde Excel</h4>
@@ -296,6 +341,22 @@
               </div>
               <!-- col 4 -->
 
+              <!-- col 6 -->
+              <div *ngIf="enviados > 0" class="col-md-12">
+                <div class="card">
+                  <div class="card-body">
+                    <h5 class="m-b-0 font-medium">
+                      Mensajes enviados: {{ enviados }}
+                      <span class="text-muted font-14 m-l-10"
+                        >| &nbsp;
+                        {{ fechaEnvio | date: "dd/MM/yyyy hh:mm a" }}</span
+                      >
+                    </h5>
+                  </div>
+                </div>
+              </div>
+              <!-- col 6 -->
+
               <!-- col 5 -->
               <div class="col-md-12">
                 <div class="card">
@@ -312,22 +373,6 @@
                 </div>
               </div>
               <!-- col 5 -->
-
-              <!-- col 6 -->
-              <div *ngIf="enviados > 0" class="col-md-12">
-                <div class="card">
-                  <div class="card-body">
-                    <h5 class="m-b-0 font-medium">
-                      Mensajes enviados: {{ enviados }}
-                      <span class="text-muted font-14 m-l-10"
-                        >| &nbsp;
-                        {{ fechaEnvio | date: "dd/MM/yyyy hh:mm a" }}</span
-                      >
-                    </h5>
-                  </div>
-                </div>
-              </div>
-              <!-- col 6 -->
             </div>
           </div>
         </form>

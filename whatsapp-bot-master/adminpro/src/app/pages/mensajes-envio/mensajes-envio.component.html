@@ -291,6 +291,22 @@
               </div>
               <!-- col 4 -->
 
+              <!-- col 6 -->
+              <div *ngIf="enviados > 0" class="col-md-12">
+                <div class="card">
+                  <div class="card-body">
+                    <h5 class="m-b-0 font-medium">
+                      Mensajes enviados: {{ enviados }}
+                      <span class="text-muted font-14 m-l-10"
+                        >| &nbsp;
+                        {{ fechaEnvio | date: "dd/MM/yyyy hh:mm a" }}</span
+                      >
+                    </h5>
+                  </div>
+                </div>
+              </div>
+              <!-- col 6 -->
+
               <!-- col 5 -->
               <div class="col-md-12">
                 <div class="card">
@@ -307,22 +323,6 @@
                 </div>
               </div>
               <!-- col 5 -->
-
-              <!-- col 6 -->
-              <div *ngIf="enviados > 0" class="col-md-12">
-                <div class="card">
-                  <div class="card-body">
-                    <h5 class="m-b-0 font-medium">
-                      Mensajes enviados: {{ enviados }}
-                      <span class="text-muted font-14 m-l-10"
-                        >| &nbsp;
-                        {{ fechaEnvio | date: "dd/MM/yyyy hh:mm a" }}</span
-                      >
-                    </h5>
-                  </div>
-                </div>
-              </div>
-              <!-- col 6 -->
             </div>
           </div>
         </form>

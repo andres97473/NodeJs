@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, OnInit } from '@angular/core';
 // forms
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
@@ -20,19 +20,22 @@ import { MensajesService } from '../../services/mensajes.service';
 import { UsuarioService } from '../../services/usuario.service';
 // externos
 import Swal from 'sweetalert2';
+import { PaisI } from '../../interface/pais.interface';
 
 @Component({
   selector: 'app-mensajes-archivo',
   templateUrl: './mensajes-archivo.component.html',
   styleUrls: ['./mensajes-archivo.component.css'],
 })
-export class MensajesArchivoComponent {
+export class MensajesArchivoComponent implements OnInit {
   public usuario: Usuario;
   public archivoForm!: FormGroup;
   public formSubmitted = false;
   public errorMessage = '';
   public enviados = 0;
   public fechaEnvio?: Date;
+  public paises: PaisI[] = [];
+  public codPais!: string;
 
   public maximo = 50;
 
@@ -67,6 +70,13 @@ export class MensajesArchivoComponent {
     this.iniciarFormulario();
   }
 
+  ngOnInit(): void {
+    this.codPais = this.usuario.cod_pais || '';
+    this.usuarioService.getPaises().subscribe((resp) => {
+      this.paises = resp.paises;
+    });
+  }
+
   iniciarFormulario() {
     this.archivoForm = this.fb.group({
       token: [this.usuario.uid, [Validators.required]],
@@ -74,6 +84,7 @@ export class MensajesArchivoComponent {
         localStorage.getItem('smsarchivo') || '',
         [Validators.required],
       ],
+      cod_pais: [this.usuario.cod_pais || ''],
       celulares: ['', [Validators.required]],
       vence: [this.usuario.vence || ''],
       disponibles: [this.usuario.disponibles || ''],
@@ -182,7 +193,8 @@ export class MensajesArchivoComponent {
   }
 
   stringCelulares() {
-    let { token, mensaje, vence, disponibles, imagen } = this.archivoForm.value;
+    let { token, mensaje, cod_pais, vence, disponibles, imagen } =
+      this.archivoForm.value;
     let stringCel = '';
     for (const cel of this.celulares) {
       stringCel = stringCel + cel.numero + ',';
@@ -192,6 +204,7 @@ export class MensajesArchivoComponent {
 
     this.archivoForm.setValue({
       token,
+      cod_pais,
       celulares: exportCel,
       vence,
       disponibles,
@@ -216,11 +229,12 @@ export class MensajesArchivoComponent {
     const file = event.target.files[0];
     this.archivoSubir = file;
 
-    let { token, mensaje, celulares, vence, disponibles } =
+    let { token, mensaje, cod_pais, celulares, vence, disponibles } =
       this.archivoForm.value;
 
     this.archivoForm.setValue({
       token,
+      cod_pais,
       celulares,
       vence,
       disponibles,
@@ -252,11 +266,13 @@ export class MensajesArchivoComponent {
 
   limpiarCelulares() {
     this.celulares = [];
-    let { token, mensaje, vence, disponibles, imagen } = this.archivoForm.value;
+    let { token, mensaje, cod_pais, vence, disponibles, imagen } =
+      this.archivoForm.value;
 
     this.archivoForm.setValue({
       token,
       mensaje,
+      cod_pais,
       celulares: this.celulares,
       vence,
       disponibles,
@@ -267,7 +283,8 @@ export class MensajesArchivoComponent {
   // enviar mensaje
   sendMessageImg() {
     this.errorMessage = '';
-    let { token, mensaje, celulares, vence, imagen } = this.archivoForm.value;
+    let { token, mensaje, cod_pais, celulares, vence, imagen } =
+      this.archivoForm.value;
     const nCelulares: string[] = celulares.split(',');
     if (nCelulares.length < 1) {
       this.errorMessage = '*Debe enviar al menos un mensaje';
@@ -287,6 +304,7 @@ export class MensajesArchivoComponent {
           this.archivoForm.setValue({
             token,
             mensaje,
+            cod_pais,
             celulares,
             vence,
             imagen,

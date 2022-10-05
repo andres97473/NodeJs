@@ -7,6 +7,7 @@ const qrcode = require("qrcode-terminal");
 const { Client, LocalAuth, MessageMedia } = require("whatsapp-web.js");
 const moment = require("moment");
 const multer = require("multer");
+const fs = require("fs");
 
 const { request, response } = require("express");
 const bodyParser = require("body-parser");
@@ -245,6 +246,13 @@ const sendMessagesToken = async (req, res = response) => {
   }
 };
 
+const borrarImagen = (path) => {
+  if (fs.existsSync(path)) {
+    // borrar la imagen anterior
+    fs.unlinkSync(path);
+  }
+};
+
 // enviar mensaje con img y token
 const sendMessageImg = async (req = request, res = response) => {
   const disponibles = req.disponibles;
@@ -284,6 +292,9 @@ const sendMessageImg = async (req = request, res = response) => {
       disponibles,
       token_vence,
     });
+
+    const pathViejo = `./uploads/${imagen.filename}`;
+    borrarImagen(pathViejo);
   } catch (error) {
     console.log(error);
     return res.status(500).json({

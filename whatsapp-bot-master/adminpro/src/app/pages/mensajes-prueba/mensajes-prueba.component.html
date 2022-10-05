@@ -135,14 +135,6 @@
                 </div>
               </div>
               <!-- col 2 -->
-              <button
-                type="submit"
-                class="btn btn-success btn-block waves-effect waves-light m-r-10"
-                [disabled]="pruebaForm.invalid"
-              >
-                <i class="mdi mdi-send"></i>
-                Enviar Mensajes de prueba
-              </button>
 
               <!-- col 6 -->
               <div *ngIf="enviados > 0" class="col-md-12">
@@ -159,6 +151,15 @@
                 </div>
               </div>
               <!-- col 6 -->
+
+              <button
+                type="submit"
+                class="btn btn-success btn-block waves-effect waves-light m-r-10"
+                [disabled]="pruebaForm.invalid"
+              >
+                <i class="mdi mdi-send"></i>
+                Enviar Mensajes de prueba
+              </button>
             </div>
           </div>
         </form>

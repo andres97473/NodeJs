@@ -9,8 +9,9 @@ import { MensajesService } from '../../services/mensajes.service';
 })
 export class EnviadosComponent implements OnInit {
   mensajes: Mensaje[] = [];
-  nombres: string[] = ['created_at', 'celular', 'mensaje', 'tipo'];
+  nombres: string[] = ['cod_pais', 'created_at', 'celular', 'mensaje', 'tipo'];
   columnas: Columna2[] = [
+    { titulo: 'Codigo Pais', field: 'cod_pais', width: 20 },
     { titulo: 'Enviado', field: 'created_at', width: 20 },
     { titulo: 'Celular', field: 'celular', width: 20 },
     { titulo: 'Mensaje', field: 'mensaje', width: 60 },
@@ -26,7 +27,7 @@ export class EnviadosComponent implements OnInit {
   ngOnInit(): void {
     this.mensajesService.getMensajes().subscribe(
       (resp: any) => {
-        // console.log(resp);
+        console.log(resp);
         const formateador = new Intl.DateTimeFormat('es-MX', {
           dateStyle: 'short',
           timeStyle: 'short',

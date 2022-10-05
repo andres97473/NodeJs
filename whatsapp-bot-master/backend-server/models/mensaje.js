@@ -2,6 +2,7 @@ const { Schema, model } = require("mongoose");
 
 const MensajeSchema = Schema(
   {
+    cod_pais: { type: String },
     celular: { type: String, required: true },
     mensaje: { type: String, required: true },
     tipo: { type: String },

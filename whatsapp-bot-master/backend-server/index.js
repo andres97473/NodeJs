@@ -136,6 +136,28 @@ const sendMessage = (to, message) => {
   client.sendMessage(to, message);
 };
 
+// almacenar mensajes en mongo
+const saveChatMongo = async (cod_pais, celular, mensaje, tipo, uid) => {
+  try {
+    const usuario = await Usuario.findById(uid);
+
+    if (!usuario) {
+      console.log("usuario no encontrado");
+    } else {
+      const message = new Mensaje({
+        cod_pais,
+        celular,
+        mensaje,
+        tipo,
+        usuario: uid,
+      });
+      const mensajeDB = await message.save();
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 /*
 Enviar media con API
  */
@@ -149,31 +171,15 @@ const sendMediaApi = (
   token
 ) => {
   let mediaFile = MessageMedia.fromFilePath(`${file}`);
-  const codPais = codpais.replace("+", "");
+  let codPais = codpais;
   mediaFile.mimetype = mimetype;
   mediaFile.filename = filename;
   // console.log(mediaFile);
   for (const celular of to) {
-    const newNumber = `${codPais}${celular}@c.us`;
+    const newNumber = `${codPais.replace("+", "")}${celular}@c.us`;
     client.sendMessage(newNumber, message);
     client.sendMessage(newNumber, mediaFile);
-    saveChatMongo(celular, message, "ARCHIVO", token);
-  }
-};
-
-// almacenar mensajes en mongo
-const saveChatMongo = async (celular, mensaje, tipo, uid) => {
-  try {
-    const usuario = await Usuario.findById(uid);
-
-    if (!usuario) {
-      console.log("usuario no encontrado");
-    } else {
-      const message = new Mensaje({ celular, mensaje, tipo, usuario: uid });
-      const mensajeDB = await message.save();
-    }
-  } catch (error) {
-    console.log(error);
+    saveChatMongo(codPais, celular, message, "ARCHIVO", token);
   }
 };
 
@@ -181,15 +187,15 @@ const saveChatMongo = async (celular, mensaje, tipo, uid) => {
 
 const sendMessagesPrueba = async (req, res = response) => {
   const numPrueba = req.numprueba;
-  const codpais = req.codpais.replace("+", "");
+  let codpais = req.codpais;
 
   const { repeticiones, mensaje, token } = req.body;
 
   try {
     for (let index = 0; index < Number(repeticiones); index++) {
-      const newNumber = `${codpais}${numPrueba}@c.us`;
+      const newNumber = `${codpais.replace("+", "")}${numPrueba}@c.us`;
       client.sendMessage(newNumber, mensaje);
-      saveChatMongo(numPrueba, mensaje, "PRUEBA", token);
+      saveChatMongo(codpais, numPrueba, mensaje, "PRUEBA", token);
     }
 
     res.json({
@@ -220,7 +226,7 @@ const sendMessagesToken = async (req, res = response) => {
     for (const celular of celulares) {
       const newNumber = `${codpais.replace("+", "")}${celular}@c.us`;
       client.sendMessage(newNumber, mensaje);
-      saveChatMongo(celular, mensaje, "MENSAJE", token);
+      saveChatMongo(codpais, celular, mensaje, "MENSAJE", token);
     }
 
     res.json({

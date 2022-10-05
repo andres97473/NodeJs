@@ -1,5 +1,6 @@
 export interface Mensaje {
   _id: string;
+  cod_pais: string;
   celular: string;
   mensaje: string;
   tipo: string;

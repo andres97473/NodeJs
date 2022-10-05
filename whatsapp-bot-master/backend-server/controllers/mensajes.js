@@ -9,7 +9,7 @@ const getMensajes = async (req, res = response) => {
     const [mensajes, total, archivo, prueba, mensaje] = await Promise.all([
       Mensaje.find(
         { usuario: uid },
-        "celular mensaje tipo activo created_at"
+        "cod_pais celular mensaje tipo activo created_at"
       ).sort({ created_at: "desc" }),
       Mensaje.find({ usuario: uid }).count(),
       Mensaje.find({ usuario: uid, tipo: "ARCHIVO" }).count(),

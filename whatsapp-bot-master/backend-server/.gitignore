@@ -9,17 +9,7 @@ public/**
 
 ### carpeta de imagenes ###
 
-uploads/usuarios/**.jpg
-uploads/usuarios/**.jepg
-uploads/usuarios/**.png
-uploads/usuarios/**.gif
-uploads/usuarios/**.pdf
 
-uploads/solicitudes/**.jpg
-uploads/solicitudes/**.jepg
-uploads/solicitudes/**.png
-uploads/solicitudes/**.gif
-uploads/solicitudes/**.pdf
 
 ### session whatsapp web ###
 .wwebjs_auth

@@ -229,7 +229,7 @@ export class MensajesArchivoComponent implements OnInit {
     let file = event.target.files[0];
 
     if (file) {
-      if (file.size / 1024 / 1024 > 10) {
+      if (file.size / 1024 / 1024 > 15) {
         const nFile: any = document.getElementById('uploadFile');
         if (nFile.value) {
           nFile.value = '';

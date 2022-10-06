@@ -226,45 +226,58 @@ export class MensajesArchivoComponent implements OnInit {
   }
 
   cambiarArchivo(event: any): any {
-    const file = event.target.files[0];
+    let file = event.target.files[0];
 
-    this.archivoSubir = file;
+    if (file) {
+      if (file.size / 1024 / 1024 > 10) {
+        const nFile: any = document.getElementById('uploadFile');
+        if (nFile.value) {
+          nFile.value = '';
+          this.archivoSubir = undefined;
+          Swal.fire('El arhivo pesa mas de 15 Megabytes');
 
-    let { token, mensaje, cod_pais, celulares, vence, disponibles } =
-      this.archivoForm.value;
+          return;
+        }
+      }
 
-    this.archivoForm.setValue({
-      token,
-      cod_pais,
-      celulares,
-      vence,
-      disponibles,
-      imagen: this.archivoSubir,
-      mensaje,
-    });
+      this.archivoSubir = file;
 
-    if (this.archivoSubir) {
-      const nExt = this.archivoSubir.name.split('.');
-      const extIcono = nExt[nExt.length - 1];
-      if (
-        extIcono === 'png' ||
-        extIcono === 'jpg' ||
-        extIcono === 'jpeg' ||
-        extIcono === 'jpe'
-      ) {
-        this.extension = 'fa fa-file-image-o text-success';
-      } else if (extIcono === 'pdf') {
-        this.extension = 'fa fa-file-pdf-o text-danger';
-      } else if (
-        extIcono === 'xlsx' ||
-        extIcono === 'xls' ||
-        extIcono === 'csv'
-      ) {
-        this.extension = 'fa fa-file-excel-o text-success';
-      } else if (extIcono === 'docx' || extIcono === 'doc') {
-        this.extension = 'fa fa-file-word-o text-info';
-      } else {
-        this.extension = 'fa fa-file';
+      let { token, mensaje, cod_pais, celulares, vence, disponibles } =
+        this.archivoForm.value;
+
+      this.archivoForm.setValue({
+        token,
+        cod_pais,
+        celulares,
+        vence,
+        disponibles,
+        imagen: this.archivoSubir,
+        mensaje,
+      });
+
+      if (this.archivoSubir) {
+        const nExt = this.archivoSubir.name.split('.');
+        const extIcono = nExt[nExt.length - 1];
+        if (
+          extIcono === 'png' ||
+          extIcono === 'jpg' ||
+          extIcono === 'jpeg' ||
+          extIcono === 'jpe'
+        ) {
+          this.extension = 'fa fa-file-image-o text-success';
+        } else if (extIcono === 'pdf') {
+          this.extension = 'fa fa-file-pdf-o text-danger';
+        } else if (
+          extIcono === 'xlsx' ||
+          extIcono === 'xls' ||
+          extIcono === 'csv'
+        ) {
+          this.extension = 'fa fa-file-excel-o text-success';
+        } else if (extIcono === 'docx' || extIcono === 'doc') {
+          this.extension = 'fa fa-file-word-o text-info';
+        } else {
+          this.extension = 'fa fa-file';
+        }
       }
     }
   }

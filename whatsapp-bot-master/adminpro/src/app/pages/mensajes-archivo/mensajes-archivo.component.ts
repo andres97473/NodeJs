@@ -57,6 +57,7 @@ export class MensajesArchivoComponent implements OnInit {
   public archivoSubir?: File;
   public archivoTemp: any = null;
   public extension = '';
+  public maxMegas = 15;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -229,12 +230,12 @@ export class MensajesArchivoComponent implements OnInit {
     let file = event.target.files[0];
 
     if (file) {
-      if (file.size / 1024 / 1024 > 15) {
+      if (file.size / 1024 / 1024 > this.maxMegas) {
         const nFile: any = document.getElementById('uploadFile');
         if (nFile.value) {
           nFile.value = '';
           this.archivoSubir = undefined;
-          Swal.fire('El arhivo pesa mas de 15 Megabytes');
+          Swal.fire(`El arhivo pesa mas de ${this.maxMegas} Megabytes`);
 
           return;
         }

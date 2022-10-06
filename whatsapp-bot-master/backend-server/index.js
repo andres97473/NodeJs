@@ -32,6 +32,7 @@ const msg = "Chat iniciado!";
 const formatDate = "DD/MM/YYYY hh:mm a";
 const fech = moment().format(formatDate);
 const inicioFech = msg + " " + fech;
+const maxMegas = process.env.MAX_MEGAS;
 
 // Crear el servidor express
 const app = express();
@@ -272,12 +273,12 @@ const sendMessageImg = async (req = request, res = response) => {
       ok: false,
       msg: "No hay ningun archivo",
     });
-  } else if (req.file.size / 1024 / 1024 > 15) {
+  } else if (req.file.size / 1024 / 1024 > maxMegas) {
     const pathViejo = `./uploads/${imagen.filename}`;
     borrarImagen(pathViejo);
     return res.status(400).json({
       ok: false,
-      msg: "El archivo supera los 15 Megabytes",
+      msg: `El archivo supera los ${maxMegas} Megabytes`,
     });
   }
 

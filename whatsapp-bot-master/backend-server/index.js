@@ -260,18 +260,26 @@ const sendMessageImg = async (req = request, res = response) => {
   const celulares = req.celulares;
   let { mensaje, token, cod_pais } = req.body;
   let codpais = cod_pais || req.codpais;
+
+  // definir imagen, tipo y nombre original
+  const imagen = req.file;
+  const mimetype = imagen.mimetype;
+  const filename = imagen.originalname;
+
   // Validar que exista un archivo enviado por el req
   if (!req.file || Object.keys(req.file).length === 0) {
     return res.status(400).json({
       ok: false,
       msg: "No hay ningun archivo",
     });
+  } else if (req.file.size / 1024 / 1024 > 15) {
+    const pathViejo = `./uploads/${imagen.filename}`;
+    borrarImagen(pathViejo);
+    return res.status(400).json({
+      ok: false,
+      msg: "El archivo supera los 15 Megabytes",
+    });
   }
-
-  // definir imagen, tipo y nombre original
-  const imagen = req.file;
-  const mimetype = imagen.mimetype;
-  const filename = imagen.originalname;
 
   try {
     // enviar imagen a celulares

@@ -227,6 +227,7 @@ export class MensajesArchivoComponent implements OnInit {
 
   cambiarArchivo(event: any): any {
     const file = event.target.files[0];
+
     this.archivoSubir = file;
 
     let { token, mensaje, cod_pais, celulares, vence, disponibles } =
@@ -254,7 +255,11 @@ export class MensajesArchivoComponent implements OnInit {
         this.extension = 'fa fa-file-image-o text-success';
       } else if (extIcono === 'pdf') {
         this.extension = 'fa fa-file-pdf-o text-danger';
-      } else if (extIcono === 'xlsx' || extIcono === 'xls') {
+      } else if (
+        extIcono === 'xlsx' ||
+        extIcono === 'xls' ||
+        extIcono === 'csv'
+      ) {
         this.extension = 'fa fa-file-excel-o text-success';
       } else if (extIcono === 'docx' || extIcono === 'doc') {
         this.extension = 'fa fa-file-word-o text-info';

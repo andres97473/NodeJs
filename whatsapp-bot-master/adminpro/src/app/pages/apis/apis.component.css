@@ -69,3 +69,12 @@ mat-expansion-panel-header {
 .opblock-post {
   background: #49cc90;
 }
+
+.tableW {
+  margin: auto;
+  max-width: 96%;
+}
+
+.tableHead {
+  background: #ebf3fb;
+}

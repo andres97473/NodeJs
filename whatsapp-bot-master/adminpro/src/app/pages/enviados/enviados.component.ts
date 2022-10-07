@@ -27,7 +27,6 @@ export class EnviadosComponent implements OnInit {
   ngOnInit(): void {
     this.mensajesService.getMensajes().subscribe(
       (resp: any) => {
-        console.log(resp);
         const formateador = new Intl.DateTimeFormat('es-MX', {
           dateStyle: 'short',
           timeStyle: 'short',

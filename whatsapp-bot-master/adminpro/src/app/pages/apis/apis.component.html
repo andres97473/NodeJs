@@ -87,6 +87,11 @@
                           "mensaje" : "PRUEBA DESDE API ARRAY DE NUMEROS",
                         </li>
                         <li>
+                          "cod_pais" : "{{
+                            usuarioService.usuario.getCodigoPais
+                          }}",
+                        </li>
+                        <li>
                           "celulares" : "XXXXXXXXXX,YYYYYYYYYY,ZZZZZZZZZZ"
                         </li>
                       </ul>
@@ -176,6 +181,23 @@
                           class="form-control form-control-sm"
                           placeholder="form-control-sm"
                           value="PRUEBA DESDE API CON ARCHIVO"
+                        />
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label
+                        class="col-sm-3 form-control-label"
+                        for="example-input-small"
+                        >cod_pais</label
+                      >
+                      <div class="col-sm-6">
+                        <input
+                          type="text"
+                          id="example-input-small"
+                          name="example-input-small"
+                          class="form-control form-control-sm"
+                          placeholder="form-control-sm"
+                          [value]="usuarioService.usuario.getCodigoPais"
                         />
                       </div>
                     </div>

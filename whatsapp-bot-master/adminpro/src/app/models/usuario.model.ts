@@ -36,12 +36,19 @@ export class Usuario {
   get getRole() {
     return this.role;
   }
+
   get getCodigo() {
     return this.codigo;
   }
+
+  get getCodigoPais() {
+    return this.cod_pais;
+  }
+
   get getVence() {
     return this.vence;
   }
+
   get getDisponibles() {
     return this.disponibles;
   }

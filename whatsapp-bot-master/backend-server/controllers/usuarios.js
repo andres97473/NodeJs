@@ -1,7 +1,15 @@
+const fs = require("fs");
 const { response } = require("express");
 const bcrypt = require("bcryptjs");
 const Usuario = require("../models/usuario");
 const { generarJWT } = require("../helpers/jwt");
+
+const borrarImagen = (path) => {
+  if (fs.existsSync(path)) {
+    // borrar la imagen anterior
+    fs.unlinkSync(path);
+  }
+};
 
 const getUsuarios = async (req, res) => {
   const desde = Number(req.query.desde) || 0;
@@ -201,6 +209,11 @@ const deleteUsuario = async (req, res) => {
     }
 
     await Usuario.findByIdAndDelete(uid);
+
+    if (usuarioDB.img) {
+      pathViejo = `./uploads/usuarios/${usuarioDB.img}`;
+      borrarImagen(pathViejo);
+    }
 
     res.json({
       ok: true,

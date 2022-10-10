@@ -1,13 +1,23 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
+import { DOCUMENT } from '@angular/common';
 
-const base_url = environment.base_url;
+let base_url = 'http://localhost:3000/api';
+const produccion = environment.produccion;
 
 @Injectable({
   providedIn: 'root',
 })
 export class FileUploadService {
-  constructor() {}
+  constructor(@Inject(DOCUMENT) private document: Document) {
+    this.getUrl();
+  }
+
+  getUrl() {
+    if (produccion) {
+      base_url = this.document.location.href.split('api')[0] + 'api';
+    }
+  }
 
   async actualizarFoto(
     archivo: File,

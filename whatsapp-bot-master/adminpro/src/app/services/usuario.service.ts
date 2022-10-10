@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable, NgZone } from '@angular/core';
+import { Inject, Injectable, NgZone } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { Router } from '@angular/router';
 import { tap, map, catchError } from 'rxjs/operators';
@@ -11,10 +11,12 @@ import { LoginForm } from '../interface/login-form.interface';
 import { Usuario } from '../models/usuario.model';
 import { CargarUsuario } from '../interface/cargar-usuarios.interface';
 import { PaisI } from '../interface/pais.interface';
+import { DOCUMENT } from '@angular/common';
 
 declare const google: any;
 
-const base_url = environment.base_url;
+let base_url = 'http://localhost:3000/api';
+const produccion = environment.produccion;
 
 @Injectable({
   providedIn: 'root',
@@ -25,9 +27,17 @@ export class UsuarioService {
   constructor(
     private http: HttpClient,
     private router: Router,
-    private ngZone: NgZone
+    private ngZone: NgZone,
+    @Inject(DOCUMENT) private document: Document
   ) {
+    this.getUrl();
     this.googleInit();
+  }
+
+  getUrl() {
+    if (produccion) {
+      base_url = this.document.location.href.split('api')[0] + 'api';
+    }
   }
 
   get getToken(): string {

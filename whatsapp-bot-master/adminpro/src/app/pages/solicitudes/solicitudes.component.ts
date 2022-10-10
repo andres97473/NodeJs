@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { delay } from 'rxjs/operators';
 import { SolicitudService } from '../../services/solicitud.service';
@@ -8,6 +8,7 @@ import { ModalImagenService } from '../../services/modal-imagen.service';
 import Swal from 'sweetalert2';
 import { environment } from '../../../environments/environment';
 import { MensajesService } from '../../services/mensajes.service';
+import { DOCUMENT } from '@angular/common';
 
 @Component({
   selector: 'app-solicitudes',
@@ -18,14 +19,26 @@ export class SolicitudesComponent implements OnInit, OnDestroy {
   public solicitudes: Solicitud[] = [];
   public solicitud?: Solicitud;
   private imgSubs?: Subscription;
-  private base_url = environment.base_url;
+
+  base_url = 'http://localhost:3000/api';
+  produccion = environment.produccion;
 
   constructor(
     private solicitudService: SolicitudService,
     private usuarioService: UsuarioService,
     private modalImagenService: ModalImagenService,
-    private mensajesService: MensajesService
-  ) {}
+    private mensajesService: MensajesService,
+    @Inject(DOCUMENT) private document: Document
+  ) {
+    this.getUrl();
+  }
+
+  getUrl() {
+    if (this.produccion) {
+      this.base_url = this.document.location.href.split('api')[0] + 'api';
+    }
+  }
+
   ngOnDestroy(): void {
     this.imgSubs?.unsubscribe();
   }

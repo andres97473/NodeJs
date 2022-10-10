@@ -1,7 +1,9 @@
-import { Injectable, EventEmitter } from '@angular/core';
+import { Injectable, EventEmitter, Inject } from '@angular/core';
 import { environment } from '../../environments/environment';
+import { DOCUMENT } from '@angular/common';
 
-const base_url = environment.base_url;
+let base_url = 'http://localhost:3000/api';
+const produccion = environment.produccion;
 
 @Injectable({
   providedIn: 'root',
@@ -19,7 +21,15 @@ export class ModalImagenService {
 
   public nuevaImagen: EventEmitter<string> = new EventEmitter<string>();
 
-  constructor() {}
+  constructor(@Inject(DOCUMENT) private document: Document) {
+    this.getUrl();
+  }
+
+  getUrl() {
+    if (produccion) {
+      base_url = this.document.location.href.split('api')[0] + 'api';
+    }
+  }
 
   abrirModal(
     tipo: 'usuarios' | 'solicitudes',

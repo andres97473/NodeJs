@@ -1,9 +1,11 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { Usuario } from '../models/usuario.model';
+import { DOCUMENT } from '@angular/common';
 
-const base_url = environment.base_url;
+let base_url = 'http://localhost:3000/api';
+const produccion = environment.produccion;
 
 @Injectable({
   providedIn: 'root',
@@ -11,7 +13,18 @@ const base_url = environment.base_url;
 export class MensajesService {
   public usuario!: Usuario;
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    @Inject(DOCUMENT) private document: Document
+  ) {
+    this.getUrl();
+  }
+
+  getUrl() {
+    if (produccion) {
+      base_url = this.document.location.href.split('api')[0] + 'api';
+    }
+  }
 
   get getToken(): string {
     return localStorage.getItem('token') || '';

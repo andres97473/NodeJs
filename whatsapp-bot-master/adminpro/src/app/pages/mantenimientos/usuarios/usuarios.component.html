@@ -53,7 +53,7 @@
                 <td class="text-center">
                   <img
                     class="avatar cursor"
-                    [src]="usuario.getImagenUrl"
+                    [src]="usuario.img | imagen: 'usuarios'"
                     alt="Avatar de usaurio"
                     (click)="abrirModal(usuario)"
                   />

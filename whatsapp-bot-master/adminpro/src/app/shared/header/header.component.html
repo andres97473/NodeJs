@@ -119,7 +119,10 @@
             data-toggle="dropdown"
             aria-haspopup="true"
             aria-expanded="false"
-            ><img [src]="usuario.getImagenUrl" alt="user" class="profile-pic"
+            ><img
+              [src]="usuario.img | imagen: 'usuarios'"
+              alt="user"
+              class="profile-pic"
           /></a>
           <div
             class="dropdown-menu dropdown-menu-right menu-ancho animated fadeIn fast"
@@ -128,7 +131,7 @@
               <li>
                 <div class="dw-user-box">
                   <div class="u-img">
-                    <img [src]="usuario.getImagenUrl" alt="user" />
+                    <img [src]="usuario.img | imagen: 'usuarios'" alt="user" />
                   </div>
                   <div class="u-text">
                     <h4>{{ usuario.nombre }}</h4>

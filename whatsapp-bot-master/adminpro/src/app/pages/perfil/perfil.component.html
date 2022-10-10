@@ -178,7 +178,7 @@
           <img
             *ngIf="!imgTemp"
             class="img-avatar"
-            [src]="usuario.getImagenUrl"
+            [src]="usuario.img | imagen: 'usuarios'"
           />
           <img *ngIf="imgTemp" class="img-avatar" [src]="imgTemp" />
         </div>

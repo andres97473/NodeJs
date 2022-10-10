@@ -12,7 +12,7 @@
             class="has-arrow waves-effect waves-dark"
             href="#"
             aria-expanded="false"
-            ><img [src]="usuario.getImagenUrl" alt="user" /><span
+            ><img [src]="usuario.img | imagen: 'usuarios'" alt="user" /><span
               class="hide-menu"
               >{{ usuario.nombre }}
             </span></a

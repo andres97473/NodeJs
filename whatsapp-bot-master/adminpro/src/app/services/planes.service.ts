@@ -22,7 +22,7 @@ export class PlanesService {
 
   getUrl() {
     if (produccion) {
-      base_url = this.document.location.href.split('api')[0] + 'api';
+      base_url = this.document.location.href.split('3000')[0] + '3000/api';
     }
   }
 

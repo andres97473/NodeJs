@@ -35,7 +35,7 @@ export class SolicitudesAdminComponent implements OnInit, OnDestroy {
 
   getUrl() {
     if (this.produccion) {
-      this.base_url = this.document.location.href.split('api')[0] + 'api';
+      this.base_url = this.document.location.href.split('3000')[0] + '3000/api';
     }
   }
 

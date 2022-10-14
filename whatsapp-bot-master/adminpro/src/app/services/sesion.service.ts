@@ -12,6 +12,6 @@ export class SesionService {
   }
 
   get getSegundos(): number {
-    return 15;
+    return 60 * 5;
   }
 }

@@ -25,7 +25,6 @@ export class ModalSesionComponent implements OnInit {
   permanecerConectado() {
     this.sesionService.ocultar = true;
     this.sesionService.time = this.sesionService.getSegundos;
-    console.log(this.sesionService.time);
   }
 
   logout() {

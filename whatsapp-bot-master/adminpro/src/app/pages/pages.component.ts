@@ -32,7 +32,7 @@ export class PagesComponent implements OnInit, AfterViewInit {
   }
 
   click() {
-    console.log('click');
+    // console.log('click');
 
     this.sesionService.time = this.sesionService.getSegundos;
   }
@@ -45,13 +45,13 @@ export class PagesComponent implements OnInit, AfterViewInit {
         this.usuarioService.logout();
         clearInterval(interval);
       } else if (this.sesionService.time === 10) {
-        console.log('abrir modal ', this.sesionService.time);
+        // console.log('abrir modal ', this.sesionService.time);
         this.sesionService.ocultar = false;
         this.pocentaje = 100;
       } else if (this.sesionService.time < 10) {
         this.pocentaje = this.pocentaje - 10;
       } else {
-        console.log('tick ', this.sesionService.time);
+        // console.log('tick ', this.sesionService.time);
       }
     }, 1000);
   }

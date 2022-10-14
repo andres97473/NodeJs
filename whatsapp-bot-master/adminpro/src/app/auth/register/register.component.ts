@@ -21,6 +21,7 @@ export class RegisterComponent implements OnInit {
       nombre: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       cod_pais: ['', [Validators.required]],
+      celular: ['', [Validators.minLength(7)]],
       password: ['', Validators.required],
       password2: ['', Validators.required],
       terminos: [, [Validators.required, Validators.requiredTrue]],
@@ -62,7 +63,7 @@ export class RegisterComponent implements OnInit {
     this.usuarioService.crearUsuario(this.registerForm.value).subscribe(
       (resp) => {
         // console.log(resp);
-        this.router.navigateByUrl('/dashboard/perfil');
+        this.router.navigateByUrl('/');
         this.sesionService.time = this.sesionService.getSegundos;
         this.sesionService.ocultar = true;
       },

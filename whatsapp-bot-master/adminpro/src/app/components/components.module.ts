@@ -7,7 +7,7 @@ import { ModalImagenComponent } from './modal-imagen/modal-imagen.component';
 import { TablaComponent } from './tabla/tabla.component';
 import { MaterialModule } from '../material/material.module';
 import { Table2Component } from './table2/table2.component';
-import { TimerComponent } from './timer/timer.component';
+import { ModalSesionComponent } from './modal-sesion/modal-sesion.component';
 
 @NgModule({
   declarations: [
@@ -15,7 +15,7 @@ import { TimerComponent } from './timer/timer.component';
     ModalImagenComponent,
     TablaComponent,
     Table2Component,
-    TimerComponent,
+    ModalSesionComponent,
   ],
   imports: [CommonModule, FormsModule, MaterialModule],
   exports: [
@@ -23,7 +23,7 @@ import { TimerComponent } from './timer/timer.component';
     ModalImagenComponent,
     TablaComponent,
     Table2Component,
-    TimerComponent,
+    ModalSesionComponent,
   ],
 })
 export class ComponentsModule {}

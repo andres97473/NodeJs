@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
 
 import { UsuarioService } from '../../services/usuario.service';
+import { SesionService } from '../../services/sesion.service';
 import { PaisI } from '../../interface/pais.interface';
 
 @Component({
@@ -32,7 +33,8 @@ export class RegisterComponent implements OnInit {
   constructor(
     private router: Router,
     private fb: FormBuilder,
-    private usuarioService: UsuarioService
+    private usuarioService: UsuarioService,
+    private sesionService: SesionService
   ) {}
 
   ngOnInit(): void {
@@ -61,6 +63,8 @@ export class RegisterComponent implements OnInit {
       (resp) => {
         // console.log(resp);
         this.router.navigateByUrl('/dashboard/perfil');
+        this.sesionService.time = this.sesionService.getSegundos;
+        this.sesionService.ocultar = true;
       },
       (err) => {
         console.warn(err.error);

@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
 import { FormBuilder, Validators } from '@angular/forms';
 import { UsuarioService } from '../../services/usuario.service';
 import Swal from 'sweetalert2';
+import { SesionService } from '../../services/sesion.service';
 
 declare const google: any;
 
@@ -37,7 +38,8 @@ export class LoginComponent implements AfterViewInit {
     private router: Router,
     private fb: FormBuilder,
     private usuarioService: UsuarioService,
-    private ngZone: NgZone
+    private ngZone: NgZone,
+    private sesionService: SesionService
   ) {}
   ngAfterViewInit(): void {
     this.googleInit();
@@ -63,6 +65,8 @@ export class LoginComponent implements AfterViewInit {
       // console.log(resp);
       this.ngZone.run(() => {
         this.router.navigateByUrl('/');
+        this.sesionService.time = this.sesionService.getSegundos;
+        this.sesionService.ocultar = true;
       });
     });
   }
@@ -73,6 +77,8 @@ export class LoginComponent implements AfterViewInit {
     this.usuarioService.login(this.loginForm.value).subscribe(
       (resp) => {
         this.router.navigateByUrl('/');
+        this.sesionService.time = this.sesionService.getSegundos;
+        this.sesionService.ocultar = true;
         // console.log(resp);
         if (this.loginForm.get('remember')?.value) {
           localStorage.setItem('email', this.loginForm.get('email')?.value);

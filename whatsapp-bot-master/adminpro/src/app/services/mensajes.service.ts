@@ -59,7 +59,10 @@ export class MensajesService {
   }
 
   sendMessageImg(formData: any) {
-    return this.http.post(`${base_url}/send-message-img`, formData);
+    return this.http.post(`${base_url}/send-message-img`, formData, {
+      reportProgress: true,
+      observe: 'events',
+    });
   }
 
   sendMessageAdmin(mensaje: string) {

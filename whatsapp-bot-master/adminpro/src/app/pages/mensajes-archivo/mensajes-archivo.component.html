@@ -342,6 +342,24 @@
               </div>
               <!-- col 4 -->
 
+              <!-- col 5 -->
+              <div *ngIf="archivoSubir" class="col-md-12">
+                <div class="card">
+                  <div class="card-body">
+                    <h5 *ngIf="!message">Subiendo arhivo... {{ value }} %</h5>
+                    <h5 *ngIf="message">{{ message }}</h5>
+                    <div style="width: 100%">
+                      <mat-progress-bar
+                        mode="determinate"
+                        [value]="value"
+                      ></mat-progress-bar>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- col 5 -->
+
               <!-- col 6 -->
               <div *ngIf="enviados > 0" class="col-md-12">
                 <div class="card">

@@ -26,27 +26,6 @@ export class UploadComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  onDownload(): void {
-    let filename: any = null;
-    this.appService.download().subscribe((event: any) => {
-      console.log('res: ', event);
-      if (event['headers']) {
-        const [_, contentDisposition] = event['headers']
-          .get('Content-Disposition')
-          .split('filename=');
-        filename = contentDisposition.replace(/"/g, '');
-      }
-
-      if (event['loaded'] && event['total']) {
-        this.value = Math.round((event['loaded'] / event['total']) * 100);
-      }
-
-      if (event['body']) {
-        saveAs(event['body'], filename);
-      }
-    });
-  }
-
   upload(file: any): void {
     this.file = file.target.files[0];
   }
@@ -57,6 +36,8 @@ export class UploadComponent implements OnInit {
         .upload(this.file)
         .pipe()
         .subscribe((event: any) => {
+          console.log(event);
+
           this.message = null;
 
           if (event['loaded'] && event['total']) {

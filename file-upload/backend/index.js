@@ -31,7 +31,7 @@ app.get("/download", (req, res, next) => {
 app.post("/upload", upload.single("file"), (req, res, next) => {
   const { path, originalname: fileName } = req.file;
   res.send({
-    succes: true,
+    success: true,
     message: "file has been uploaded successfully",
     data: { path, fileName },
   });

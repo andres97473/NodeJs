@@ -38,6 +38,9 @@ export class MensajesArchivoComponent implements OnInit {
   public paises: PaisI[] = [];
   public codPais!: string;
 
+  private _value: number = 0;
+  message: any;
+
   public maximo = 50;
 
   // propiedades
@@ -62,6 +65,16 @@ export class MensajesArchivoComponent implements OnInit {
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
+
+  get value(): number {
+    return this._value;
+  }
+
+  set value(value: number) {
+    if (!isNaN(value) && value <= 100) {
+      this._value = value;
+    }
+  }
 
   constructor(
     private fb: FormBuilder,
@@ -242,6 +255,9 @@ export class MensajesArchivoComponent implements OnInit {
         }
       }
 
+      this.value = 0;
+      this.message = null;
+
       this.archivoSubir = file;
 
       let { token, mensaje, cod_pais, celulares, vence, disponibles } =
@@ -316,31 +332,44 @@ export class MensajesArchivoComponent implements OnInit {
       formData.append('celulares', celulares);
       formData.append('mensaje', mensaje);
       formData.append('token', token);
-      this.mensajesService.sendMessageImg(formData).subscribe(
-        (resp: any) => {
-          this.enviados = resp.enviados;
-          this.fechaEnvio = new Date();
-          this.usuarioService.usuario.disponibles = resp.disponibles;
-          this.archivoForm.setValue({
-            token,
-            mensaje,
-            cod_pais,
-            celulares,
-            vence,
-            imagen,
-            disponibles: resp.disponibles,
-          });
-          Swal.fire(
-            `Envio exitoso`,
-            `Numero de Mensajes enviados: ${resp.enviados}`,
-            'success'
-          );
-        },
-        (err) => {
-          // console.log(err);
-          Swal.fire(`Error`, err.error.msg, 'error');
-        }
-      );
+      this.mensajesService
+        .sendMessageImg(formData)
+        .pipe()
+        .subscribe(
+          (resp: any) => {
+            console.log(resp);
+
+            this.message = null;
+
+            if (resp['loaded'] && resp['total']) {
+              this.value = Math.round((resp['loaded'] / resp['total']) * 100);
+            }
+
+            if (resp['body']) {
+              this.message = resp['body'].msg;
+            }
+
+            if (this.value === 100) {
+              this.enviados = resp['body'].enviados;
+              this.fechaEnvio = new Date();
+              this.usuarioService.usuario.disponibles =
+                resp['body'].disponibles;
+              this.archivoForm.setValue({
+                token,
+                mensaje,
+                cod_pais,
+                celulares,
+                vence,
+                imagen,
+                disponibles: resp['body'].disponibles,
+              });
+            }
+          },
+          (err) => {
+            // console.log(err);
+            Swal.fire(`Error`, err.error.msg, 'error');
+          }
+        );
     }
   }
 }

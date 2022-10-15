@@ -255,7 +255,7 @@ const borrarImagen = (path) => {
 };
 
 // enviar mensaje con img y token
-const sendMessageImg = async (req = request, res = response) => {
+const sendMessageImg = async (req = request, res = response, next) => {
   const disponibles = req.disponibles;
   const token_vence = req.vence;
   const celulares = req.celulares;
@@ -296,7 +296,7 @@ const sendMessageImg = async (req = request, res = response) => {
 
     res.status(200).json({
       ok: true,
-      msg: "Mensajes enviado con exito!!",
+      msg: "Mensajes enviados con exito!!",
       enviados: celulares.length,
       disponibles,
       token_vence,

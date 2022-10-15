@@ -10,6 +10,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 @NgModule({
   declarations: [],
@@ -23,6 +24,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
     MatPaginatorModule,
     MatSortModule,
     MatExpansionModule,
+    MatProgressBarModule,
   ],
   exports: [
     MatChipsModule,
@@ -33,6 +35,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
     MatPaginatorModule,
     MatSortModule,
     MatExpansionModule,
+    MatProgressBarModule,
   ],
 })
 export class MaterialModule {}

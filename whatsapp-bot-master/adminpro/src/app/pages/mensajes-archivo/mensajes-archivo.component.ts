@@ -38,9 +38,6 @@ export class MensajesArchivoComponent implements OnInit {
   public paises: PaisI[] = [];
   public codPais!: string;
 
-  private _value: number = 0;
-  message: any;
-
   public maximo = 50;
 
   // propiedades
@@ -62,6 +59,10 @@ export class MensajesArchivoComponent implements OnInit {
   public archivoTemp: any = null;
   public extension = '';
   public maxMegas = 15;
+  public message: any;
+  public enviado = false;
+  public enviando = false;
+  private _value: number = 0;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -257,6 +258,7 @@ export class MensajesArchivoComponent implements OnInit {
 
       this.value = 0;
       this.message = null;
+      this.enviado = false;
 
       this.archivoSubir = file;
 
@@ -318,6 +320,10 @@ export class MensajesArchivoComponent implements OnInit {
 
   // enviar mensaje
   sendMessageImg() {
+    this.enviado = true;
+    this.enviando = true;
+    this.message = null;
+
     this.errorMessage = '';
     let { token, mensaje, cod_pais, celulares, vence, imagen } =
       this.archivoForm.value;
@@ -337,8 +343,6 @@ export class MensajesArchivoComponent implements OnInit {
         .pipe()
         .subscribe(
           (resp: any) => {
-            console.log(resp);
-
             this.message = null;
 
             if (resp['loaded'] && resp['total']) {
@@ -349,7 +353,9 @@ export class MensajesArchivoComponent implements OnInit {
               this.message = resp['body'].msg;
             }
 
-            if (this.value === 100) {
+            if (this.message) {
+              this.enviando = false;
+
               this.enviados = resp['body'].enviados;
               this.fechaEnvio = new Date();
               this.usuarioService.usuario.disponibles =
@@ -368,7 +374,8 @@ export class MensajesArchivoComponent implements OnInit {
           (err) => {
             // console.log(err);
             Swal.fire(`Error`, err.error.msg, 'error');
-          }
+          },
+          () => {}
         );
     }
   }

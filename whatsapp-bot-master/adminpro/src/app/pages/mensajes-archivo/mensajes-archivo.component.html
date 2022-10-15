@@ -346,7 +346,12 @@
               <div *ngIf="archivoSubir" class="col-md-12">
                 <div class="card">
                   <div class="card-body">
-                    <h5 *ngIf="!message">Subiendo arhivo... {{ value }} %</h5>
+                    <h5 *ngIf="!message && !enviado">
+                      Archivo listo para enviar
+                    </h5>
+                    <h5 *ngIf="!message && enviado">
+                      Subiendo archivo... {{ value }} %
+                    </h5>
                     <h5 *ngIf="message">{{ message }}</h5>
                     <div style="width: 100%">
                       <mat-progress-bar
@@ -383,7 +388,7 @@
                     <button
                       type="submit"
                       class="btn btn-success btn-block waves-effect waves-light m-r-10"
-                      [disabled]="archivoForm.invalid"
+                      [disabled]="archivoForm.invalid || enviando"
                     >
                       <i class="mdi mdi-send"></i>
                       Enviar Mensajes

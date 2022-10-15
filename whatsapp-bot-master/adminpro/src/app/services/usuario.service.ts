@@ -13,7 +13,7 @@ import { CargarUsuario } from '../interface/cargar-usuarios.interface';
 import { PaisI } from '../interface/pais.interface';
 import { DOCUMENT } from '@angular/common';
 
-declare const google: any;
+// declare const google: any;
 
 let base_url = 'http://localhost:3000/api';
 const produccion = environment.produccion;
@@ -31,7 +31,7 @@ export class UsuarioService {
     @Inject(DOCUMENT) private document: Document
   ) {
     this.getUrl();
-    this.googleInit();
+    // this.googleInit();
   }
 
   getUrl() {
@@ -60,12 +60,12 @@ export class UsuarioService {
     };
   }
 
-  googleInit() {
-    google.accounts.id.initialize({
-      client_id:
-        '857780671996-i6doqclt4a9itsnsc67mv0assvpmki02.apps.googleusercontent.com',
-    });
-  }
+  // googleInit() {
+  //   google.accounts.id.initialize({
+  //     client_id:
+  //       '857780671996-i6doqclt4a9itsnsc67mv0assvpmki02.apps.googleusercontent.com',
+  //   });
+  // }
 
   guardarLocalStorage(resp: any) {
     localStorage.setItem('token', resp.token);
@@ -76,16 +76,16 @@ export class UsuarioService {
     localStorage.removeItem('token');
     localStorage.removeItem('menu');
 
-    // cambiar correo por this.usuario.email
-    if (this.usuario.google) {
-      // console.log(this.usuario.email);
+    // google auth
+    // if (this.usuario.google) {
+    //   // console.log(this.usuario.email);
 
-      google.accounts.id.revoke(this.usuario.email, () => {
-        this.ngZone.run(() => {
-          this.router.navigateByUrl('/login');
-        });
-      });
-    }
+    //   google.accounts.id.revoke(this.usuario.email, () => {
+    //     this.ngZone.run(() => {
+    //       this.router.navigateByUrl('/login');
+    //     });
+    //   });
+    // }
     this.router.navigateByUrl('/login');
   }
 

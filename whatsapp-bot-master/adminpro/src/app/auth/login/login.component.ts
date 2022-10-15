@@ -11,7 +11,7 @@ import { UsuarioService } from '../../services/usuario.service';
 import Swal from 'sweetalert2';
 import { SesionService } from '../../services/sesion.service';
 
-declare const google: any;
+// declare const google: any;
 
 @Component({
   selector: 'app-login',
@@ -42,21 +42,21 @@ export class LoginComponent implements AfterViewInit {
     private sesionService: SesionService
   ) {}
   ngAfterViewInit(): void {
-    this.googleInit();
+    // this.googleInit();
   }
 
-  googleInit() {
-    google.accounts.id.initialize({
-      client_id:
-        '857780671996-i6doqclt4a9itsnsc67mv0assvpmki02.apps.googleusercontent.com',
-      callback: (response: any) => this.handleCredentialResponse(response),
-    });
-    google.accounts.id.renderButton(
-      // document.getElementById('buttonDiv'),
-      this.googleBtn.nativeElement,
-      { theme: 'outline', size: 'large' } // customization attributes
-    );
-  }
+  // googleInit() {
+  //   google.accounts.id.initialize({
+  //     client_id:
+  //       '857780671996-i6doqclt4a9itsnsc67mv0assvpmki02.apps.googleusercontent.com',
+  //     callback: (response: any) => this.handleCredentialResponse(response),
+  //   });
+  //   google.accounts.id.renderButton(
+  //     // document.getElementById('buttonDiv'),
+  //     this.googleBtn.nativeElement,
+  //     { theme: 'outline', size: 'large' } // customization attributes
+  //   );
+  // }
 
   async handleCredentialResponse(response: any) {
     // console.log({ esto: this });

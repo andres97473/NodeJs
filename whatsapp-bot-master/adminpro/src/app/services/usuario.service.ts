@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable, NgZone } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { Router } from '@angular/router';
 import { tap, map, catchError } from 'rxjs/operators';
+import { Router } from '@angular/router';
 
 import { environment } from '../../environments/environment';
 import { RegisterForm } from '../interface/register-form.interface';
@@ -142,7 +142,7 @@ export class UsuarioService {
   crearUsuario(formData: RegisterForm) {
     return this.http.post(`${base_url}/usuarios`, formData).pipe(
       tap((resp: any) => {
-        // console.log(resp)
+        // console.log(resp);
         this.guardarLocalStorage(resp);
       })
     );

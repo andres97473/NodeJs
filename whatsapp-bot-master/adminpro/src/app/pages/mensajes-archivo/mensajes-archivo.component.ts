@@ -21,6 +21,7 @@ import { UsuarioService } from '../../services/usuario.service';
 // externos
 import Swal from 'sweetalert2';
 import { PaisI } from '../../interface/pais.interface';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-mensajes-archivo',
@@ -40,7 +41,7 @@ export class MensajesArchivoComponent implements OnInit {
   public maximo = 50;
 
   // propiedades
-  celulares: Celular[] = [];
+  celulares: Celular[] = [{ numero: '3166651382' }];
   excelData: any;
   titulos: any;
   // chips

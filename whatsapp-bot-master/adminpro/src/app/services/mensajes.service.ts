@@ -1,8 +1,8 @@
 import { Inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { DOCUMENT } from '@angular/common';
 import { environment } from '../../environments/environment';
 import { Usuario } from '../models/usuario.model';
-import { DOCUMENT } from '@angular/common';
 
 let base_url = 'http://localhost:3000/api';
 const produccion = environment.produccion;

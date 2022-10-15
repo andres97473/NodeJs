@@ -1,0 +1,25 @@
+<div
+  style="
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  "
+>
+  <div style="width: 30%">
+    <h1 *ngIf="!message">File is Uploading... {{ value }}</h1>
+    <h1 *ngIf="message">{{ message }}</h1>
+    <div style="width: 100%">
+      <mat-progress-bar mode="determinate" [value]="value"></mat-progress-bar>
+    </div>
+    <div style="margin-top: 2rem; text-align: center">
+      <input type="file" (change)="upload($event)" />
+    </div>
+    <div style="margin-top: 2rem; text-align: center">
+      <button mat-raised-button color="primary" (click)="onUpload()">
+        Upload
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,22 @@
+<div
+  style="
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  "
+>
+  <div style="width: 30%">
+    <h1>File is Downloading... {{ value }}</h1>
+    <div style="width: 100%">
+      <mat-progress-bar mode="determinate" [value]="value"></mat-progress-bar>
+    </div>
+
+    <div style="margin-top: 2rem; text-align: center">
+      <button mat-raised-button color="primary" (click)="onDownload()">
+        Download
+      </button>
+    </div>
+  </div>
+</div>

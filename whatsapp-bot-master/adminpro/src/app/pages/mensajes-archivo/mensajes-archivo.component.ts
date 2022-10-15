@@ -41,7 +41,7 @@ export class MensajesArchivoComponent implements OnInit {
   public maximo = 50;
 
   // propiedades
-  celulares: Celular[] = [{ numero: '3166651382' }];
+  celulares: Celular[] = [];
   excelData: any;
   titulos: any;
   // chips

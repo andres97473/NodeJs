@@ -5,7 +5,7 @@
 export const environment = {
   production: false,
   titulo_app: 'MensajesApp',
-  produccion: false,
+  produccion: true,
 };
 
 /*

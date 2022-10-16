@@ -343,7 +343,10 @@
               <!-- col 4 -->
 
               <!-- col 5 -->
-              <div *ngIf="archivoSubir" class="col-md-12">
+              <div
+                *ngIf="archivoSubir && celulares.length > 0"
+                class="col-md-12"
+              >
                 <div class="card">
                   <div class="card-body">
                     <h5 *ngIf="!message && !enviado">

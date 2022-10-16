@@ -134,6 +134,8 @@ export class MensajesArchivoComponent implements OnInit {
     // Add our fruit
     if (value.length >= 7) {
       this.celulares.push({ numero: value });
+      this.message = null;
+      this.enviado = false;
     }
 
     // Clear the input value
@@ -153,6 +155,8 @@ export class MensajesArchivoComponent implements OnInit {
 
   importarCelulares() {
     const celulares = this.dataSource.data;
+    this.message = null;
+    this.enviado = false;
 
     if (celulares.length > 0) {
       for (const iterator of celulares) {
@@ -304,6 +308,8 @@ export class MensajesArchivoComponent implements OnInit {
 
   limpiarCelulares() {
     this.celulares = [];
+    this.message = null;
+    this.enviado = false;
     let { token, mensaje, cod_pais, vence, disponibles, imagen } =
       this.archivoForm.value;
 

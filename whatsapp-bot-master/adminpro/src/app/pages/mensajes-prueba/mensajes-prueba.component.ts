@@ -21,6 +21,21 @@ export class MensajesPruebaComponent implements OnInit {
 
   public maximo = 50;
 
+  public message: any;
+  public enviado = false;
+  public enviando = false;
+  private _value: number = 0;
+
+  get value(): number {
+    return this._value;
+  }
+
+  set value(value: number) {
+    if (!isNaN(value) && value <= 100) {
+      this._value = value;
+    }
+  }
+
   constructor(
     private fb: FormBuilder,
     private mensajesService: MensajesService,
@@ -61,6 +76,9 @@ export class MensajesPruebaComponent implements OnInit {
   }
 
   sendPrueba() {
+    this.enviado = true;
+    this.enviando = true;
+    this.message = null;
     this.errorPrueba = '';
     const { repeticiones } = this.pruebaForm.value;
     if (repeticiones < 1) {
@@ -69,18 +87,35 @@ export class MensajesPruebaComponent implements OnInit {
       this.errorPrueba = `*No puede enviar mas de ${this.maximo} mensajes en esta prueba`;
     } else {
       // console.log(this.pruebaForm.value);
-      this.mensajesService.sendMessagePrueba(this.pruebaForm.value).subscribe(
-        (resp: any) => {
-          this.enviados = resp.enviados;
-          this.fechaEnvio = new Date();
-          // console.log(resp);
-          Swal.fire(`Envio exitoso a ${resp.celular}`, resp.msg, 'success');
-        },
-        (err) => {
-          // console.log(err);
-          Swal.fire(`Error`, err.error.msg, 'error');
-        }
-      );
+      this.mensajesService
+        .sendMessagePrueba(this.pruebaForm.value)
+        .pipe()
+        .subscribe(
+          (resp: any) => {
+            this.message = null;
+
+            if (resp['loaded'] && resp['total']) {
+              this.value = Math.round((resp['loaded'] / resp['total']) * 100);
+            }
+
+            if (resp['body']) {
+              this.message = resp['body'].msg;
+            }
+
+            if (this.message) {
+              this.enviando = false;
+
+              this.enviados = resp['body'].enviados;
+              this.fechaEnvio = new Date();
+            }
+
+            // console.log(resp['body']);
+          },
+          (err) => {
+            // console.log(err);
+            Swal.fire(`Error`, err.error.msg, 'error');
+          }
+        );
     }
   }
 }

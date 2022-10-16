@@ -136,6 +136,7 @@ export class MensajesArchivoComponent implements OnInit {
       this.celulares.push({ numero: value });
       this.message = null;
       this.enviado = false;
+      this.value = 0;
     }
 
     // Clear the input value
@@ -149,6 +150,9 @@ export class MensajesArchivoComponent implements OnInit {
 
     if (index >= 0) {
       this.celulares.splice(index, 1);
+      this.value = 0;
+      this.message = null;
+      this.enviado = false;
     }
     this.stringCelulares();
   }
@@ -157,6 +161,7 @@ export class MensajesArchivoComponent implements OnInit {
     const celulares = this.dataSource.data;
     this.message = null;
     this.enviado = false;
+    this.value = 0;
 
     if (celulares.length > 0) {
       for (const iterator of celulares) {
@@ -310,6 +315,7 @@ export class MensajesArchivoComponent implements OnInit {
     this.celulares = [];
     this.message = null;
     this.enviado = false;
+    this.value = 0;
     let { token, mensaje, cod_pais, vence, disponibles, imagen } =
       this.archivoForm.value;
 
@@ -329,7 +335,7 @@ export class MensajesArchivoComponent implements OnInit {
     this.enviado = true;
     this.enviando = true;
     this.message = null;
-
+    this.value = 0;
     this.errorMessage = '';
     let { token, mensaje, cod_pais, celulares, vence, imagen } =
       this.archivoForm.value;

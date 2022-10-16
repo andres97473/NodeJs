@@ -51,11 +51,17 @@ export class MensajesService {
   }
 
   sendMessagePrueba(formData: any) {
-    return this.http.post(`${base_url}/send-message-prueba`, formData);
+    return this.http.post(`${base_url}/send-message-prueba`, formData, {
+      reportProgress: true,
+      observe: 'events',
+    });
   }
 
   sendMessageToken(formData: any) {
-    return this.http.post(`${base_url}/send-message-token`, formData);
+    return this.http.post(`${base_url}/send-message-token`, formData, {
+      reportProgress: true,
+      observe: 'events',
+    });
   }
 
   sendMessageImg(formData: any) {

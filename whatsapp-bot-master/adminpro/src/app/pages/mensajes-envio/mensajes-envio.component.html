@@ -291,6 +291,27 @@
               </div>
               <!-- col 4 -->
 
+              <!-- col 5 -->
+              <div *ngIf="celulares.length > 0" class="col-md-12">
+                <div class="card">
+                  <div class="card-body">
+                    <h5 *ngIf="!message && !enviado">Listo para enviar</h5>
+                    <h5 *ngIf="!message && enviado">
+                      Enviando mensajes... {{ value }} %
+                    </h5>
+                    <h5 *ngIf="message">{{ message }}</h5>
+                    <div style="width: 100%">
+                      <mat-progress-bar
+                        mode="determinate"
+                        [value]="value"
+                      ></mat-progress-bar>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- col 5 -->
+
               <!-- col 6 -->
               <div *ngIf="enviados > 0" class="col-md-12">
                 <div class="card">
@@ -314,7 +335,7 @@
                     <button
                       type="submit"
                       class="btn btn-success btn-block waves-effect waves-light m-r-10"
-                      [disabled]="mensajeForm.invalid"
+                      [disabled]="mensajeForm.invalid || enviando"
                     >
                       <i class="mdi mdi-send"></i>
                       Enviar Mensajes

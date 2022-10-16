@@ -39,6 +39,11 @@ export class MensajesEnvioComponent implements OnInit {
 
   public maximo = 50;
 
+  public message: any;
+  public enviado = false;
+  public enviando = false;
+  private _value: number = 0;
+
   // propiedades
   celulares: Celular[] = [];
   excelData: any;
@@ -50,11 +55,20 @@ export class MensajesEnvioComponent implements OnInit {
   dataSource: any;
   displayedColumns: string[] = [];
   columnas: Columna[] = [];
-
   excelColumnas: Columna[] = [];
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
+
+  get value(): number {
+    return this._value;
+  }
+
+  set value(value: number) {
+    if (!isNaN(value) && value <= 100) {
+      this._value = value;
+    }
+  }
 
   constructor(
     private fb: FormBuilder,
@@ -114,6 +128,8 @@ export class MensajesEnvioComponent implements OnInit {
     // Add our fruit
     if (value.length >= 7) {
       this.celulares.push({ numero: value });
+      this.message = null;
+      this.enviado = false;
     }
 
     // Clear the input value
@@ -133,6 +149,8 @@ export class MensajesEnvioComponent implements OnInit {
 
   importarCelulares() {
     const celulares = this.dataSource.data;
+    this.message = null;
+    this.enviado = false;
 
     if (celulares.length > 0) {
       for (const iterator of celulares) {
@@ -190,6 +208,8 @@ export class MensajesEnvioComponent implements OnInit {
 
   limpiarCelulares() {
     this.celulares = [];
+    this.message = null;
+    this.enviado = false;
     let { token, mensaje, vence, disponibles, cod_pais } =
       this.mensajeForm.value;
 
@@ -225,7 +245,11 @@ export class MensajesEnvioComponent implements OnInit {
 
   // enviar mensaje
   sendMessage() {
+    this.enviado = true;
+    this.enviando = true;
+    this.message = null;
     this.errorMessage = '';
+
     let { token, mensaje, cod_pais, celulares, vence, disponibles } =
       this.mensajeForm.value;
     const nCelulares: string[] = celulares.split(',');
@@ -234,30 +258,43 @@ export class MensajesEnvioComponent implements OnInit {
     } else if (nCelulares.length > this.maximo) {
       this.errorMessage = `*No puede enviar mas de ${this.maximo} mensajes en esta prueba`;
     } else {
-      this.mensajesService.sendMessageToken(this.mensajeForm.value).subscribe(
-        (resp: any) => {
-          this.enviados = resp.enviados;
-          this.fechaEnvio = new Date();
-          this.usuarioService.usuario.disponibles = resp.disponibles;
-          this.mensajeForm.setValue({
-            token,
-            mensaje,
-            cod_pais,
-            celulares,
-            vence,
-            disponibles: resp.disponibles,
-          });
-          Swal.fire(
-            `Envio exitoso`,
-            `Numero de Mensajes enviados: ${resp.enviados}`,
-            'success'
-          );
-        },
-        (err) => {
-          // console.log(err);
-          Swal.fire(`Error`, err.error.msg, 'error');
-        }
-      );
+      this.mensajesService
+        .sendMessageToken(this.mensajeForm.value)
+        .pipe()
+        .subscribe(
+          (resp: any) => {
+            this.message = null;
+
+            if (resp['loaded'] && resp['total']) {
+              this.value = Math.round((resp['loaded'] / resp['total']) * 100);
+            }
+
+            if (resp['body']) {
+              this.message = resp['body'].msg;
+            }
+
+            if (this.message) {
+              this.enviando = false;
+
+              this.enviados = resp['body'].enviados;
+              this.fechaEnvio = new Date();
+              this.usuarioService.usuario.disponibles =
+                resp['body'].disponibles;
+              this.mensajeForm.setValue({
+                token,
+                mensaje,
+                cod_pais,
+                celulares,
+                vence,
+                disponibles: resp['body'].disponibles,
+              });
+            }
+          },
+          (err) => {
+            // console.log(err);
+            Swal.fire(`Error`, err.error.msg, 'error');
+          }
+        );
     }
   }
 }

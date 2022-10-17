@@ -10,9 +10,14 @@ const produccion = environment.produccion;
 })
 export class ModalImagenService {
   private _ocultarModal = true;
+  private _abrirModal = false;
 
   get ocultarModal() {
     return this._ocultarModal;
+  }
+
+  get ModalAbrir() {
+    return this._abrirModal;
   }
 
   public tipo!: 'usuarios' | 'solicitudes';
@@ -37,6 +42,7 @@ export class ModalImagenService {
     img: string = 'no-img'
   ) {
     this._ocultarModal = false;
+    this._abrirModal = true;
     this.tipo = tipo;
     this.id = id;
     // http://localhost:3000/api/upload/usuarios/44159960-ddc2-4032-9b22-0e3c6283e711.jpg}

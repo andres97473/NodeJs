@@ -1,6 +1,7 @@
 import { Inject, Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { DOCUMENT } from '@angular/common';
+import { HttpClient } from '@angular/common/http';
 
 let base_url = 'http://localhost:3000/api';
 const produccion = environment.produccion;
@@ -9,7 +10,10 @@ const produccion = environment.produccion;
   providedIn: 'root',
 })
 export class FileUploadService {
-  constructor(@Inject(DOCUMENT) private document: Document) {
+  constructor(
+    @Inject(DOCUMENT) private document: Document,
+    private http: HttpClient
+  ) {
     this.getUrl();
   }
 
@@ -19,39 +23,17 @@ export class FileUploadService {
     }
   }
 
-  async actualizarFoto(
-    archivo: File,
-    tipo: 'usuarios' | 'solicitudes',
-    id: string
-  ) {
-    try {
-      const url = `${base_url}/upload/${tipo}/${id}`;
+  actualizarFoto(archivo: File, tipo: 'usuarios' | 'solicitudes', id: string) {
+    const url = `${base_url}/upload/${tipo}/${id}`;
 
-      // crear el form data con la imagen, se pueden enviar mas propiedasdes
-      const formData = new FormData();
-      formData.append('imagen', archivo);
+    // crear el form data con la imagen, se pueden enviar mas propiedasdes
+    const formData = new FormData();
+    formData.append('imagen', archivo);
 
-      const resp = await fetch(url, {
-        method: 'PUT',
-        headers: {
-          'x-token': localStorage.getItem('token') || '',
-        },
-        body: formData,
-      });
-
-      const data = await resp.json();
-      console.log(data);
-      if (data.ok) {
-        return data.nombreArchivo;
-      } else {
-        console.log(data.msg);
-
-        return false;
-      }
-    } catch (error) {
-      console.log(error);
-
-      return false;
-    }
+    return this.http.put(url, formData, {
+      headers: { 'x-token': localStorage.getItem('token') || '' },
+      reportProgress: true,
+      observe: 'events',
+    });
   }
 }

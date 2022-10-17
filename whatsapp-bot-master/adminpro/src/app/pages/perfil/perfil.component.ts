@@ -33,6 +33,21 @@ export class PerfilComponent implements OnInit {
     }
   );
 
+  public message: any;
+  public enviado = false;
+  public enviando = false;
+  private _value: number = 0;
+
+  get value(): number {
+    return this._value;
+  }
+
+  set value(value: number) {
+    if (!isNaN(value) && value <= 100) {
+      this._value = value;
+    }
+  }
+
   constructor(
     private fb: FormBuilder,
     private usuarioService: UsuarioService,
@@ -85,6 +100,9 @@ export class PerfilComponent implements OnInit {
   cambiarImagen(event: any): any {
     const file = event.target.files[0];
     this.imagenSubir = file;
+    this.message = null;
+    this.enviado = false;
+    this.value = 0;
     // console.log(this.imagenSubir);
 
     // si se selecciona imagen cambiar la vista por la nueva imagen
@@ -104,14 +122,30 @@ export class PerfilComponent implements OnInit {
     if (this.imagenSubir && this.usuario.uid) {
       this.fileUploadService
         .actualizarFoto(this.imagenSubir, 'usuarios', this.usuario.uid)
-        .then((img) => {
-          this.usuario.img = img;
-          Swal.fire('Guardado', 'Imagen de usuario actualizada', 'success');
-        })
-        .catch((err) => {
-          console.log(err);
-          Swal.fire('Error', 'No se pudo subir la imagen', 'error');
-        });
+        .pipe()
+        .subscribe(
+          (resp: any) => {
+            this.message = null;
+            this.enviado = true;
+
+            if (resp['loaded'] && resp['total']) {
+              this.value = Math.round((resp['loaded'] / resp['total']) * 100);
+            }
+
+            if (resp['body']) {
+              this.message = resp['body'].msg;
+            }
+
+            if (this.message) {
+              this.usuario.img = resp['body'].nombreArchivo;
+              Swal.fire('Guardado', 'Imagen de usuario actualizada', 'success');
+            }
+          },
+          (err) => {
+            console.log(err);
+            Swal.fire('Error', 'No se pudo subir la imagen', 'error');
+          }
+        );
     }
   }
 

@@ -188,10 +188,23 @@
         <br />
         <br />
 
+        <div *ngIf="imagenSubir" class="col-md-12">
+          <h5 *ngIf="!message && !enviado">Archivo listo para enviar</h5>
+          <h5 *ngIf="!message && enviado">Subiendo archivo... {{ value }} %</h5>
+          <h5 *ngIf="message">{{ message }}</h5>
+          <div style="width: 100%">
+            <mat-progress-bar
+              mode="determinate"
+              [value]="value"
+            ></mat-progress-bar>
+          </div>
+          <br />
+        </div>
+
         <button
           type="button"
           class="btn btn-success btn-block waves-effect waves-light m-r-10"
-          [disabled]="!imagenSubir"
+          [disabled]="enviando || !imagenSubir"
           (click)="subirImagen()"
         >
           <i class="fa fa-save"></i>

@@ -52,7 +52,7 @@ export class MensajesPruebaComponent implements OnInit {
       token: [this.usuario.uid, [Validators.required]],
       mensaje: [localStorage.getItem('smsprueba') || '', [Validators.required]],
       celular: [this.usuario.celular],
-      repeticiones: [1],
+      repeticiones: [1, [Validators.required]],
     });
   }
 
@@ -83,8 +83,12 @@ export class MensajesPruebaComponent implements OnInit {
     const { repeticiones } = this.pruebaForm.value;
     if (repeticiones < 1) {
       this.errorPrueba = '*Debe enviar al menos un mensaje';
+      this.enviando = false;
+      this.enviado = false;
     } else if (repeticiones > this.maximo) {
       this.errorPrueba = `*No puede enviar mas de ${this.maximo} mensajes en esta prueba`;
+      this.enviando = false;
+      this.enviado = false;
     } else {
       // console.log(this.pruebaForm.value);
       this.mensajesService

@@ -4,7 +4,7 @@ const path = require("path");
 const express = require("express");
 const cors = require("cors");
 const qrcode = require("qrcode-terminal");
-const { Client, LocalAuth, MessageMedia } = require("whatsapp-web.js");
+const { Client, LocalAuth, MessageMedia, List } = require("whatsapp-web.js");
 const moment = require("moment");
 const multer = require("multer");
 const fs = require("fs");
@@ -25,6 +25,7 @@ const { validarCampos } = require("./middlewares/validar-campos");
 // modelos
 const Usuario = require("./models/usuario");
 const Mensaje = require("./models/mensaje");
+const Opcion = require("./models/opcion");
 const { validarJWT } = require("./middlewares/validar-jwt");
 
 // constantes
@@ -124,6 +125,32 @@ const listenMessage = () => {
       if (msgRecibido.includes("ping")) {
         sendMessage(from, "pong!!");
         // saveChatMongo(from, body);
+      } else if (msgRecibido.includes("#")) {
+        if (msgRecibido.length == 4) {
+          const codigo = msgRecibido;
+
+          const opcion = await Opcion.findOne({ codigo });
+          opcionArray = [];
+
+          for (const menu of opcion.menu) {
+            opcionArray.push({ title: `${codigo}-${menu.opcion}` });
+          }
+
+          let sections = [
+            {
+              title: opcion.titulo,
+              rows: opcionArray,
+            },
+          ];
+          let list = new List(
+            opcion.descripcion,
+            opcion.boton,
+            sections,
+            opcion.titulo,
+            "footer"
+          );
+          client.sendMessage(from, list);
+        }
       }
     } else {
       //console.log("no es mensaje");
@@ -349,6 +376,7 @@ app.use("/api/login", require("./routes/auth"));
 app.use("/api/todo", require("./routes/busquedas"));
 app.use("/api/upload", require("./routes/uploads"));
 app.use("/api/mensajes", require("./routes/mensajes"));
+app.use("/api/opciones", require("./routes/opciones"));
 app.use("/api/planes", require("./routes/planes"));
 app.use("/api/solicitudes", require("./routes/solicitudes"));
 app.use("/api/paises", require("./routes/paises"));

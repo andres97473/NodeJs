@@ -27,6 +27,7 @@ const Usuario = require("./models/usuario");
 const Mensaje = require("./models/mensaje");
 const Opcion = require("./models/opcion");
 const { validarJWT } = require("./middlewares/validar-jwt");
+const { markAsUntransferable } = require("worker_threads");
 
 // constantes
 const msg = "Chat iniciado!";
@@ -116,17 +117,14 @@ const listenMessage = () => {
     const { from, to, body } = msg;
 
     if (from.includes("@c.us")) {
-      //console.log("es mensaje");
-
-      // sendMedia(from, "senado-vid.mp4");
-
       let msgRecibido = removeAccents(body);
 
       if (msgRecibido.includes("ping")) {
-        sendMessage(from, "pong!!");
-        // saveChatMongo(from, body);
+        // sendMessage(from, "pong!!");
+        // msg.reply("pong!!");
+        client.sendMessage(from, "Pong!!");
       } else if (msgRecibido.includes("#")) {
-        if (msgRecibido.length == 4) {
+        if (msgRecibido.length === 4) {
           const codigo = msgRecibido;
 
           const opcion = await Opcion.findOne({ codigo });
@@ -149,8 +147,36 @@ const listenMessage = () => {
             opcion.titulo,
             "footer"
           );
-          client.sendMessage(from, list);
+          // client.sendMessage(from, list);
+          await msg.reply(list);
         }
+      } else if (msgRecibido === "lista") {
+        let sections = [
+          {
+            title: "Titulo",
+            rows: [
+              {
+                id: "customId",
+                title: "secion 1",
+                description: "descripcion seccion 1",
+              },
+              {
+                id: "customId",
+                title: "secion 2",
+                description: "descripcion seccion 2",
+              },
+            ],
+          },
+        ];
+        let list = new List(
+          "Descripcion",
+          "boton",
+          sections,
+          "Titulo",
+          "footer"
+        );
+        // client.sendMessage(from, list);
+        client.sendMessage(from, list);
       }
     } else {
       //console.log("no es mensaje");

@@ -453,6 +453,37 @@ app.get("*", (req, res) => {
   res.sendFile(path.resolve(__dirname, "public/index.html"));
 });
 
-app.listen(process.env.PORT, () => {
+// start server
+const server = app.listen(process.env.PORT, () => {
   console.log("Servidor corriendo en el puerto ", process.env.PORT);
+});
+
+// inicializar socket.io pasando nuestro servior ya iniciado
+// websockets
+
+const SocketIO = require("socket.io");
+// io es la coneccion entera con todos los clientes conectados
+const io = SocketIO(server, {
+  cors: {
+    origin: "http://localhost:4200",
+    methods: ["GET", "POST", "PUT", "DELETE"],
+  },
+});
+
+io.on("connection", (socket) => {
+  const idHandShake = socket.id;
+  const { email } = socket.handshake.query;
+
+  socket.join(email);
+  console.log("new connection ", idHandShake, " email ", email);
+
+  socket.on("evento", (resp) => {
+    console.log(resp);
+    socket.to(email).emit("evento", resp);
+  });
+
+  socket.on("solicitud:admin", (resp) => {
+    console.log(resp);
+    socket.to(resp.email).emit("solicitud:admin", resp);
+  });
 });

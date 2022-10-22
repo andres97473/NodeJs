@@ -9,6 +9,7 @@ import { ModalImagenService } from '../../../services/modal-imagen.service';
 import { environment } from '../../../../environments/environment';
 import { MensajesService } from '../../../services/mensajes.service';
 import { DOCUMENT } from '@angular/common';
+import { SocketWebService } from '../../../services/socket-web.service';
 
 @Component({
   selector: 'app-solicitudes-admin',
@@ -28,6 +29,7 @@ export class SolicitudesAdminComponent implements OnInit, OnDestroy {
     private usuarioService: UsuarioService,
     private modalImagenService: ModalImagenService,
     private mensajesService: MensajesService,
+    private socketWebService: SocketWebService,
     @Inject(DOCUMENT) private document: Document
   ) {
     this.getUrl();
@@ -130,6 +132,10 @@ export class SolicitudesAdminComponent implements OnInit, OnDestroy {
                     showConfirmButton: false,
                     timer: 1500,
                   });
+                  this.socketWebService.emitSolicitutAdmin({
+                    email: solicitud.usuario.email,
+                    vence: nVence,
+                  });
                 });
             } else if (solicitud.disponibles) {
               solicitud.disponibles += usuario.disponibles;
@@ -145,6 +151,10 @@ export class SolicitudesAdminComponent implements OnInit, OnDestroy {
                     title: resp.msg,
                     showConfirmButton: false,
                     timer: 1500,
+                  });
+                  this.socketWebService.emitSolicitutAdmin({
+                    email: solicitud.usuario.email,
+                    disponibles: solicitud.disponibles,
                   });
                 });
             }

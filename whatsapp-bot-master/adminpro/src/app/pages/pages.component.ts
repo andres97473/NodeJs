@@ -4,6 +4,7 @@ import { SidebarService } from '../services/sidebar.service';
 import { environment } from '../../environments/environment';
 import { UsuarioService } from '../services/usuario.service';
 import { SesionService } from '../services/sesion.service';
+import { SocketWebService } from '../services/socket-web.service';
 
 declare function customInitFunctions(): any;
 
@@ -20,8 +21,23 @@ export class PagesComponent implements OnInit, AfterViewInit {
     private settingsService: SettingsService,
     private sidebarService: SidebarService,
     private usuarioService: UsuarioService,
-    public sesionService: SesionService
-  ) {}
+    public sesionService: SesionService,
+    private socketWebService: SocketWebService
+  ) {
+    socketWebService.callback.subscribe((resp) => {
+      console.log(resp);
+    });
+
+    // TODO: notificacion
+    socketWebService.callbackSol.subscribe((resp) => {
+      console.log(resp);
+      if (resp.disponibles) {
+        usuarioService.usuario.disponibles = resp.disponibles;
+      } else if (resp.vence) {
+        usuarioService.usuario.vence = resp.vence;
+      }
+    });
+  }
   ngAfterViewInit(): void {
     this.myTimer();
   }

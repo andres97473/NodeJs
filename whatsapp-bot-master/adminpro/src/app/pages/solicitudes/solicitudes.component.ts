@@ -9,6 +9,7 @@ import Swal from 'sweetalert2';
 import { environment } from '../../../environments/environment';
 import { MensajesService } from '../../services/mensajes.service';
 import { DOCUMENT } from '@angular/common';
+import { SocketWebService } from '../../services/socket-web.service';
 
 @Component({
   selector: 'app-solicitudes',
@@ -28,6 +29,7 @@ export class SolicitudesComponent implements OnInit, OnDestroy {
     private usuarioService: UsuarioService,
     private modalImagenService: ModalImagenService,
     private mensajesService: MensajesService,
+    private socketWebService: SocketWebService,
     @Inject(DOCUMENT) private document: Document
   ) {
     this.getUrl();
@@ -98,6 +100,7 @@ export class SolicitudesComponent implements OnInit, OnDestroy {
               .subscribe((resp) => {
                 // console.log(resp);
               });
+            this.socketWebService.emitEvent(sol);
           });
       }
     });

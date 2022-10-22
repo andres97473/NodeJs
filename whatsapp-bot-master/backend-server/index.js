@@ -475,15 +475,24 @@ io.on("connection", (socket) => {
   const { email } = socket.handshake.query;
 
   socket.join(email);
-  console.log("new connection ", idHandShake, " email ", email);
+  // console.log("new connection ", idHandShake, " email ", email);
 
-  socket.on("evento", (resp) => {
-    console.log(resp);
-    socket.to(email).emit("evento", resp);
+  socket.on("evento", async (resp) => {
+    const admins = await Usuario.find(
+      {
+        role: "ADMIN_ROLE",
+      },
+      { email: 1, _id: 0 }
+    );
+
+    // console.log(resp);
+    for (const admin of admins) {
+      socket.to(admin.email).emit("evento", resp);
+    }
   });
 
   socket.on("solicitud:admin", (resp) => {
-    console.log(resp);
+    // console.log(resp);
     socket.to(resp.email).emit("solicitud:admin", resp);
   });
 });

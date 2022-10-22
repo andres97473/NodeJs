@@ -24,11 +24,12 @@ export class PagesComponent implements OnInit, AfterViewInit {
     public sesionService: SesionService,
     private socketWebService: SocketWebService
   ) {
+    // TODO: notificacion admin
     socketWebService.callback.subscribe((resp) => {
       console.log(resp);
     });
 
-    // TODO: notificacion
+    // TODO: notificacion usuarios
     socketWebService.callbackSol.subscribe((resp) => {
       console.log(resp);
       if (resp.disponibles) {

@@ -134,7 +134,15 @@ export class SolicitudesAdminComponent implements OnInit, OnDestroy {
                   });
                   this.socketWebService.emitSolicitutAdmin({
                     email: solicitud.usuario.email,
+                    usuario: solicitud.usuario._id,
                     vence: nVence,
+                    nombre: solicitud.nombre,
+                    descripcion: solicitud.descripcion,
+                    valor: solicitud.valor,
+                    estado: 'APROBADA',
+                    icono: 'mdi mdi-calendar-multiple-check',
+                    color: 'btn-info',
+                    update_at: solicitud.update_at,
                   });
                 });
             } else if (solicitud.disponibles) {
@@ -154,7 +162,15 @@ export class SolicitudesAdminComponent implements OnInit, OnDestroy {
                   });
                   this.socketWebService.emitSolicitutAdmin({
                     email: solicitud.usuario.email,
+                    usuario: solicitud.usuario._id,
                     disponibles: solicitud.disponibles,
+                    nombre: solicitud.nombre,
+                    descripcion: solicitud.descripcion,
+                    valor: solicitud.valor,
+                    estado: 'APROBADA',
+                    icono: 'mdi mdi-briefcase-check',
+                    color: 'btn-info',
+                    update_at: solicitud.update_at,
                   });
                 });
             }
@@ -187,6 +203,17 @@ export class SolicitudesAdminComponent implements OnInit, OnDestroy {
               timer: 1500,
             });
             this.cargarSolicitudes();
+            this.socketWebService.emitSolicitutAdmin({
+              email: solicitud.usuario.email,
+              usuario: solicitud.usuario._id,
+              nombre: solicitud.nombre,
+              descripcion: solicitud.descripcion,
+              valor: solicitud.valor,
+              estado: 'NO_APROBADA',
+              icono: 'mdi mdi-calendar-remove',
+              color: 'btn-danger',
+              update_at: solicitud.update_at,
+            });
           });
       }
     });

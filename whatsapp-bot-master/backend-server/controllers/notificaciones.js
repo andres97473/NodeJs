@@ -18,8 +18,8 @@ const getNotificaciones = async (req, res = response) => {
       const [notificaciones, novistos] = await Promise.all([
         Notificacion.find(
           {},
-          "titulo descripcion icono visto usuario created_at update_at"
-        ).sort({ update_at: "asc" }),
+          "titulo descripcion icono color visto usuario created_at update_at"
+        ).sort({ update_at: "desc" }),
         Notificacion.find({ visto: false }).count(),
       ]);
 
@@ -32,8 +32,8 @@ const getNotificaciones = async (req, res = response) => {
       const [notificaciones, novistos] = await Promise.all([
         Notificacion.find(
           { usuario: uid },
-          "titulo descripcion icono visto usuario created_at update_at"
-        ).sort({ update_at: "asc" }),
+          "titulo descripcion icono color visto usuario created_at update_at"
+        ).sort({ update_at: "desc" }),
         Notificacion.find({ usuario: uid, visto: false }).count(),
       ]);
 
@@ -53,13 +53,12 @@ const getNotificaciones = async (req, res = response) => {
 };
 
 const crearNotificacion = async (req, res = response) => {
-  const uid = req.uid;
-  const { titulo, descripcion, icono } = req.body;
+  const { titulo, descripcion, icono, color, usuario } = req.body;
 
   try {
-    const usuario = await Usuario.findById(uid);
+    const usuarioDB = await Usuario.findById(usuario);
 
-    if (!usuario) {
+    if (!usuarioDB) {
       return res.status(404).json({
         ok: false,
         msg: "Usuario no encontrado",
@@ -70,7 +69,8 @@ const crearNotificacion = async (req, res = response) => {
       titulo,
       descripcion,
       icono,
-      usuario: uid,
+      color,
+      usuario,
     });
 
     // Guardar plan
@@ -89,7 +89,38 @@ const crearNotificacion = async (req, res = response) => {
   }
 };
 
+const verNotificacion = async (req, res = response) => {
+  const id = req.params.id;
+  try {
+    const notificacion = await Notificacion.findById(id);
+
+    if (!notificacion) {
+      return res.status(404).json({
+        ok: false,
+        msg: "No existe una notificacion con ese id",
+      });
+    } else {
+      const verNotificacion = await Notificacion.findByIdAndUpdate(id, {
+        $set: { visto: true },
+      });
+
+      res.json({
+        ok: true,
+        msg: "Notificacion vista",
+        notificacion: verNotificacion,
+      });
+    }
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      ok: false,
+      msg: "Error inesperado, revisar logs",
+    });
+  }
+};
+
 module.exports = {
   getNotificaciones,
   crearNotificacion,
+  verNotificacion,
 };

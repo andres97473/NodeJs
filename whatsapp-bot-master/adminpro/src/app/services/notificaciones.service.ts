@@ -2,6 +2,7 @@ import { Inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { DOCUMENT } from '@angular/common';
 import { environment } from '../../environments/environment';
+import { Notificacion } from '../models/notificacion.model';
 
 let base_url = 'http://localhost:3000/api';
 const produccion = environment.produccion;
@@ -41,5 +42,25 @@ export class NotificacionesService {
         'x-token': this.getToken,
       },
     });
+  }
+
+  postNotificacion(notificacion: Notificacion) {
+    return this.http.post(`${base_url}/notificaciones`, notificacion, {
+      headers: {
+        'x-token': this.getToken,
+      },
+    });
+  }
+
+  verNotificacion(id: string) {
+    return this.http.put(
+      `${base_url}/notificaciones/ver/${id}`,
+      {},
+      {
+        headers: {
+          'x-token': this.getToken,
+        },
+      }
+    );
   }
 }

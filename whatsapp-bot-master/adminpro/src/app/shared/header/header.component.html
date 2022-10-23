@@ -140,11 +140,12 @@
                   <!-- Message -->
                   <div
                     *ngFor="let notificacion of notificaciones"
+                    class="cursor"
                     [class.bg-light-info]="!notificacion.visto"
                     [class.font-bold]="!notificacion.visto"
                     (click)="verNotificacion(notificacion)"
                   >
-                    <a href="/dashboard/solicitudes">
+                    <a>
                       <div
                         class="btn btn-circle mr-1"
                         [class]="notificacion.color"

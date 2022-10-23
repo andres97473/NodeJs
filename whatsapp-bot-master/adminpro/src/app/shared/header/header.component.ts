@@ -26,7 +26,18 @@ export class HeaderComponent implements OnInit {
 
     // TODO: notificacion admin
     socketWebService.callback.subscribe((resp) => {
-      console.log(resp);
+      this.notificacionesService
+        .postNotificacion({
+          titulo: resp.nombre,
+          descripcion: `La Solicitud fue ${resp.estado}`,
+          icono: resp.icono,
+          color: resp.color,
+          usuario: resp.usuario,
+        })
+        .subscribe((resp: any) => {
+          this.notificaciones.unshift(resp.notificacion);
+          this.novistos = this.novistos + 1;
+        });
     });
 
     // TODO: notificacion usuarios
@@ -52,8 +63,11 @@ export class HeaderComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.cargarNotificaciones();
+  }
+
+  cargarNotificaciones() {
     this.notificacionesService.getNotificaciones().subscribe((resp: any) => {
-      console.log(resp);
       this.notificaciones = resp.notificaciones;
       this.novistos = resp.novistos;
     });
@@ -79,6 +93,20 @@ export class HeaderComponent implements OnInit {
           .subscribe((resp) => {
             this.novistos = this.novistos - 1;
             notificacion.visto = true;
+            if (notificacion.descripcion.includes('APROBADA')) {
+              this.router
+                .navigateByUrl('/dashboard/planes')
+                .then(() => this.router.navigate(['dashboard/solicitudes']));
+            } else if (
+              notificacion.descripcion.includes('ENVIADA') &&
+              this.usuario.getRole === 'ADMIN_ROLE'
+            ) {
+              this.router
+                .navigateByUrl('/dashboard/planes')
+                .then(() =>
+                  this.router.navigate(['dashboard/solicitudes-admin'])
+                );
+            }
           });
       }
     }

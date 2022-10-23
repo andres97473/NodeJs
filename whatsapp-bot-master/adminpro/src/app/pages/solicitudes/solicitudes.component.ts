@@ -100,7 +100,17 @@ export class SolicitudesComponent implements OnInit, OnDestroy {
               .subscribe((resp) => {
                 // console.log(resp);
               });
-            this.socketWebService.emitEvent(sol);
+
+            this.socketWebService.emitEvent({
+              usuario: solicitud.usuario,
+              nombre: solicitud.nombre,
+              descripcion: solicitud.descripcion,
+              valor: solicitud.valor,
+              estado: 'ENVIADA',
+              icono: 'mdi mdi-file-image',
+              color: 'btn-primary',
+              update_at: solicitud.created_at,
+            });
           });
       }
     });

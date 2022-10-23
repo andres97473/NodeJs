@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { DOCUMENT } from '@angular/common';
 import { environment } from '../../environments/environment';
 import { Notificacion } from '../models/notificacion.model';
+import { CargarNotificacion } from '../interface/cargar-notificaciones.interface';
 
 let base_url = 'http://localhost:3000/api';
 const produccion = environment.produccion;
@@ -37,11 +38,14 @@ export class NotificacionesService {
   }
 
   getNotificaciones(desde: number = 0) {
-    return this.http.get(`${base_url}/notificaciones?desde=${desde}`, {
-      headers: {
-        'x-token': this.getToken,
-      },
-    });
+    return this.http.get<CargarNotificacion>(
+      `${base_url}/notificaciones?desde=${desde}`,
+      {
+        headers: {
+          'x-token': this.getToken,
+        },
+      }
+    );
   }
 
   postNotificacion(notificacion: Notificacion) {

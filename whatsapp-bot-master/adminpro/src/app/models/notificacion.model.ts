@@ -4,7 +4,7 @@ export class Notificacion {
     public descripcion: string,
     public icono: string,
     public color: string,
-    public usuario: string,
+    public usuario: any,
     public visto?: boolean,
     public _id?: string,
     public created_at?: Date,

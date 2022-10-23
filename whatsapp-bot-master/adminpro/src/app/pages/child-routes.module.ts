@@ -6,6 +6,7 @@ import { AdminGuard } from '../guards/admin.guard';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { AccountSettingsComponent } from './account-settings/account-settings.component';
 import { PerfilComponent } from './perfil/perfil.component';
+import { NotificacionesComponent } from './notificaciones/notificaciones.component';
 
 // Mensajes
 import { MensajesPruebaComponent } from './mensajes-prueba/mensajes-prueba.component';
@@ -37,6 +38,11 @@ const childRoutes: Routes = [
     path: 'perfil',
     component: PerfilComponent,
     data: { titulo: 'Perfil de Usuario' },
+  },
+  {
+    path: 'notificaciones',
+    component: NotificacionesComponent,
+    data: { titulo: 'Panel de Notificaciones' },
   },
   {
     path: 'planes',

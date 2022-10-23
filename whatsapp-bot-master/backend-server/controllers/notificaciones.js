@@ -5,6 +5,7 @@ const Usuario = require("../models/usuario");
 
 const getNotificaciones = async (req, res = response) => {
   const uid = req.uid;
+  const desde = Number(req.query.desde) || 0;
 
   try {
     const usuario = await Usuario.findById(uid);
@@ -19,7 +20,11 @@ const getNotificaciones = async (req, res = response) => {
         Notificacion.find(
           {},
           "titulo descripcion icono color visto usuario created_at update_at"
-        ).sort({ update_at: "desc" }),
+        )
+          .populate("usuario")
+          .skip(desde)
+          .limit(5)
+          .sort({ update_at: "desc" }),
         Notificacion.find({ visto: false }).count(),
       ]);
 
@@ -33,7 +38,11 @@ const getNotificaciones = async (req, res = response) => {
         Notificacion.find(
           { usuario: uid },
           "titulo descripcion icono color visto usuario created_at update_at"
-        ).sort({ update_at: "desc" }),
+        )
+          .populate("usuario")
+          .skip(desde)
+          .limit(5)
+          .sort({ update_at: "desc" }),
         Notificacion.find({ usuario: uid, visto: false }).count(),
       ]);
 
@@ -79,6 +88,7 @@ const crearNotificacion = async (req, res = response) => {
     res.json({
       ok: true,
       notificacion: notificacionDB,
+      usuario: usuarioDB,
     });
   } catch (error) {
     console.log(error);

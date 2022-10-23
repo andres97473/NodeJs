@@ -35,7 +35,28 @@ export class HeaderComponent implements OnInit {
           usuario: resp.usuario,
         })
         .subscribe((resp: any) => {
-          this.notificaciones.unshift(resp.notificacion);
+          const {
+            color,
+            created_at,
+            descripcion,
+            icono,
+            titulo,
+            update_at,
+            visto,
+            _id,
+          } = resp.notificacion;
+
+          this.notificaciones.unshift({
+            color,
+            created_at,
+            descripcion,
+            icono,
+            titulo,
+            update_at,
+            visto,
+            _id,
+            usuario: resp.usuario,
+          });
           this.novistos = this.novistos + 1;
         });
     });
@@ -51,7 +72,28 @@ export class HeaderComponent implements OnInit {
           usuario: resp.usuario,
         })
         .subscribe((resp: any) => {
-          this.notificaciones.unshift(resp.notificacion);
+          const {
+            color,
+            created_at,
+            descripcion,
+            icono,
+            titulo,
+            update_at,
+            visto,
+            _id,
+          } = resp.notificacion;
+
+          this.notificaciones.unshift({
+            color,
+            created_at,
+            descripcion,
+            icono,
+            titulo,
+            update_at,
+            visto,
+            _id,
+            usuario: resp.usuario,
+          });
           this.novistos = this.novistos + 1;
         });
       if (resp.disponibles) {

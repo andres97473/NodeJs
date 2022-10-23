@@ -36,8 +36,8 @@ export class NotificacionesService {
     };
   }
 
-  getNotificaciones() {
-    return this.http.get(`${base_url}/notificaciones`, {
+  getNotificaciones(desde: number = 0) {
+    return this.http.get(`${base_url}/notificaciones?desde=${desde}`, {
       headers: {
         'x-token': this.getToken,
       },

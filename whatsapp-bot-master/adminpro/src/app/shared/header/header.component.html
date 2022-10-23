@@ -126,7 +126,7 @@
             </div>
           </a>
           <div
-            class="dropdown-menu dropdown-menu-right mailbox animated fadeIn"
+            class="dropdown-menu dropdown-menu-right mailbox animated fadeIn fast"
           >
             <ul>
               <li>
@@ -137,6 +137,10 @@
                   class="message-center ps ps--theme_default ps--active-y"
                   data-ps-id="7c8e1f46-76a6-3f31-b4f6-f9268abfde75"
                 >
+                  <div *ngIf="notificaciones.length == 0" class="ml-2 mt-2">
+                    No hay notificaciones
+                  </div>
+
                   <!-- Message -->
                   <div
                     *ngFor="let notificacion of notificaciones"
@@ -154,6 +158,9 @@
                       </div>
                       <div class="mail-contnet">
                         <h5>{{ notificacion.titulo }}</h5>
+                        <span class="mail-desc">{{
+                          notificacion.usuario.email
+                        }}</span>
                         <span class="mail-desc">{{
                           notificacion.descripcion
                         }}</span>
@@ -187,7 +194,7 @@
                 </div>
               </li>
               <li>
-                <a class="nav-link text-center" href="javascript:void(0);">
+                <a class="nav-link text-center" routerLink="notificaciones">
                   <strong>Ver todas las Notificaciones </strong>
                   <i class="fa fa-angle-right"></i>
                 </a>

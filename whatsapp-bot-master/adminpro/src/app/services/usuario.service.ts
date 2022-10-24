@@ -40,10 +40,6 @@ export class UsuarioService {
     }
   }
 
-  get getToken(): string {
-    return localStorage.getItem('token') || '';
-  }
-
   get getRole() {
     return this.usuario.role || 'USER_ROLE';
   }
@@ -67,14 +63,48 @@ export class UsuarioService {
   //   });
   // }
 
+  // leer cokkie
+  readCookie(name: string) {
+    return (
+      decodeURIComponent(
+        document.cookie.replace(
+          new RegExp(
+            '(?:(?:^|.*;)\\s*' +
+              name.replace(/[\-\.\+\*]/g, '\\$&') +
+              '\\s*\\=\\s*([^;]*).*$)|^.*$'
+          ),
+          '$1'
+        )
+      ) || null
+    );
+  }
+
+  // seters
+  setToken(token: string): void {
+    //localStorage.setItem('token', token);
+    document.cookie = `token=${token}`;
+  }
+
+  // geters
+
+  get getToken(): string {
+    //return localStorage.getItem('token');
+    const token = this.readCookie('token');
+    if (token) {
+      return token;
+    } else {
+      return '';
+    }
+  }
+
   guardarLocalStorage(resp: any) {
-    localStorage.setItem('token', resp.token);
     localStorage.setItem('menu', JSON.stringify(resp.menu));
   }
 
   logout() {
-    localStorage.removeItem('token');
     localStorage.removeItem('menu');
+
+    document.cookie = 'token=; expires=Thu, 01 Jan 1970 00:00:00 UTC';
 
     // google auth
     // if (this.usuario.google) {
@@ -133,6 +163,8 @@ export class UsuarioService {
           );
           // guardar propiedades en el local storage
           this.guardarLocalStorage(resp);
+          this.setToken(resp.token);
+
           return true;
         }),
         catchError((err) => of(false))
@@ -144,6 +176,7 @@ export class UsuarioService {
       tap((resp: any) => {
         // console.log(resp);
         this.guardarLocalStorage(resp);
+        this.setToken(resp.token);
       })
     );
   }
@@ -173,6 +206,7 @@ export class UsuarioService {
     return this.http.post(`${base_url}/login`, formData).pipe(
       tap((resp: any) => {
         this.guardarLocalStorage(resp);
+        this.setToken(resp.token);
       })
     );
   }
@@ -181,6 +215,7 @@ export class UsuarioService {
     return this.http.post(`${base_url}/login/google`, { token }).pipe(
       tap((resp: any) => {
         this.guardarLocalStorage(resp);
+        this.setToken(resp.token);
       })
     );
   }

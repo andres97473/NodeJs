@@ -15,10 +15,10 @@ export class NotificacionesComponent implements OnInit {
   constructor(public notificacionesService: NotificacionesService) {}
 
   ngOnInit(): void {
-    this.cargarNotificaiones();
+    this.cargarNotificaciones();
   }
 
-  cargarNotificaiones() {
+  cargarNotificaciones() {
     this.cargando = true;
 
     this.notificacionesService
@@ -44,5 +44,15 @@ export class NotificacionesComponent implements OnInit {
           });
       }
     }
+  }
+
+  cambiarPagina(valor: number) {
+    this.desde += valor;
+    if (this.desde < 0) {
+      this.desde = 0;
+    } else if (this.desde >= this.notificacionesService.total) {
+      this.desde -= valor;
+    }
+    this.cargarNotificaciones();
   }
 }

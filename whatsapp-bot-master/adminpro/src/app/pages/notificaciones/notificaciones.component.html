@@ -14,7 +14,9 @@
       <div class="card-body">
         <h4 class="card-title animated fadeIn fast">
           Total de Notificaciones ({{ notificacionesService.total }}) - No
-          vistas ({{ notificacionesService.novistos }})
+          vistas ({{ notificacionesService.novistos }}) - Mostrando de
+          {{ desde + 1 }} hasta
+          {{ desde + resultados }}
         </h4>
 
         <div class="table-responsive">
@@ -54,6 +56,15 @@
               </tr>
             </tbody>
           </table>
+        </div>
+        <div>
+          <button (click)="cambiarPagina(-5)" class="btn btn-secondary">
+            Anteriores
+          </button>
+          &nbsp;
+          <button (click)="cambiarPagina(5)" class="btn btn-secondary">
+            Siguientes
+          </button>
         </div>
       </div>
     </div>

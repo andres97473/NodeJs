@@ -46,7 +46,7 @@ const getNotificaciones = async (req, res = response) => {
           .limit(5)
           .sort({ update_at: "desc" }),
         Notificacion.find({ usuario: uid, visto: false }).count(),
-        Notificacion.find({}).count(),
+        Notificacion.find({ usuario: uid }).count(),
       ]);
 
       res.json({

@@ -29,8 +29,38 @@ export class NotificacionesService {
     }
   }
 
+  // leer cokkie
+  readCookie(name: string) {
+    return (
+      decodeURIComponent(
+        document.cookie.replace(
+          new RegExp(
+            '(?:(?:^|.*;)\\s*' +
+              name.replace(/[\-\.\+\*]/g, '\\$&') +
+              '\\s*\\=\\s*([^;]*).*$)|^.*$'
+          ),
+          '$1'
+        )
+      ) || null
+    );
+  }
+
+  // seters
+  setToken(token: string): void {
+    //localStorage.setItem('token', token);
+    document.cookie = `token=${token}`;
+  }
+
+  // geters
+
   get getToken(): string {
-    return localStorage.getItem('token') || '';
+    //return localStorage.getItem('token');
+    const token = this.readCookie('token');
+    if (token) {
+      return token;
+    } else {
+      return '';
+    }
   }
 
   get getHeaders() {

@@ -8,14 +8,11 @@ import { Notificacion } from '../../models/notificacion.model';
   styleUrls: ['./notificaciones.component.css'],
 })
 export class NotificacionesComponent implements OnInit {
-  public novistos = 0;
-  public notificaciones: Notificacion[] = [];
-  public notificacionesTemp: Notificacion[] = [];
   public cargando = true;
   public resultados = 0;
   public desde: number = 0;
 
-  constructor(private notificacionesService: NotificacionesService) {}
+  constructor(public notificacionesService: NotificacionesService) {}
 
   ngOnInit(): void {
     this.cargarNotificaiones();
@@ -26,16 +23,26 @@ export class NotificacionesComponent implements OnInit {
 
     this.notificacionesService
       .getNotificaciones(this.desde)
-      .subscribe(({ novistos, notificaciones }) => {
-        this.novistos = novistos;
-        this.notificaciones = notificaciones;
-        this.notificacionesTemp = notificaciones;
+      .subscribe(({ novistos, total, notificaciones }) => {
+        this.notificacionesService.novistos = novistos;
+        this.notificacionesService.total = total;
+        this.notificacionesService.notificaciones = notificaciones;
         this.cargando = false;
         this.resultados = notificaciones.length;
-
-        console.log(this.resultados);
-        console.log(this.novistos);
-        console.log(this.notificaciones);
       });
+  }
+
+  verNotificacion(notificacion: Notificacion) {
+    if (!notificacion.visto) {
+      if (notificacion._id) {
+        this.notificacionesService
+          .verNotificacion(notificacion._id)
+          .subscribe((resp) => {
+            this.notificacionesService.novistos =
+              this.notificacionesService.novistos - 1;
+            notificacion.visto = true;
+          });
+      }
+    }
   }
 }

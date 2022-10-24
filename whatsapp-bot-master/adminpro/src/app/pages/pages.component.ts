@@ -1,4 +1,10 @@
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  HostListener,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
 import { SettingsService } from '../services/settings.service';
 import { SidebarService } from '../services/sidebar.service';
 import { environment } from '../../environments/environment';
@@ -12,9 +18,14 @@ declare function customInitFunctions(): any;
   templateUrl: './pages.component.html',
   styles: [],
 })
-export class PagesComponent implements OnInit, AfterViewInit {
+export class PagesComponent implements OnInit, AfterViewInit, OnDestroy {
   public nombre_app = environment.titulo_app;
   pocentaje = 100;
+
+  @HostListener('window:beforeunload', ['$event'])
+  beforeunloadHandler(event: any) {
+    // this.usuarioService.logout();
+  }
 
   constructor(
     private settingsService: SettingsService,
@@ -22,13 +33,18 @@ export class PagesComponent implements OnInit, AfterViewInit {
     private usuarioService: UsuarioService,
     public sesionService: SesionService
   ) {}
-  ngAfterViewInit(): void {
-    this.myTimer();
-  }
 
   ngOnInit() {
     customInitFunctions();
     this.sidebarService.cargarMenu();
+  }
+
+  ngAfterViewInit(): void {
+    this.myTimer();
+  }
+
+  ngOnDestroy(): void {
+    console.log('cerrar');
   }
 
   click() {

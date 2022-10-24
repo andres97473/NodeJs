@@ -16,7 +16,7 @@ const getNotificaciones = async (req, res = response) => {
         msg: "Usuario no encontrado",
       });
     } else if (usuario.role === "ADMIN_ROLE") {
-      const [notificaciones, novistos] = await Promise.all([
+      const [notificaciones, novistos, total] = await Promise.all([
         Notificacion.find(
           {},
           "titulo descripcion icono color visto usuario created_at update_at"
@@ -26,15 +26,17 @@ const getNotificaciones = async (req, res = response) => {
           .limit(5)
           .sort({ update_at: "desc" }),
         Notificacion.find({ visto: false }).count(),
+        Notificacion.find({}).count(),
       ]);
 
       res.json({
         ok: true,
         novistos,
+        total,
         notificaciones,
       });
     } else {
-      const [notificaciones, novistos] = await Promise.all([
+      const [notificaciones, novistos, total] = await Promise.all([
         Notificacion.find(
           { usuario: uid },
           "titulo descripcion icono color visto usuario created_at update_at"
@@ -44,11 +46,13 @@ const getNotificaciones = async (req, res = response) => {
           .limit(5)
           .sort({ update_at: "desc" }),
         Notificacion.find({ usuario: uid, visto: false }).count(),
+        Notificacion.find({}).count(),
       ]);
 
       res.json({
         ok: true,
         novistos,
+        total,
         notificaciones,
       });
     }

@@ -12,6 +12,10 @@ const produccion = environment.produccion;
   providedIn: 'root',
 })
 export class NotificacionesService {
+  public novistos = 0;
+  public total = 0;
+  public notificaciones: Notificacion[] = [];
+
   constructor(
     private http: HttpClient,
     @Inject(DOCUMENT) private document: Document

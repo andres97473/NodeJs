@@ -13,13 +13,11 @@ import { SocketWebService } from 'src/app/services/socket-web.service';
 })
 export class HeaderComponent implements OnInit {
   public usuario: Usuario;
-  public notificaciones: Notificacion[] = [];
-  public novistos = 0;
 
   constructor(
     private router: Router,
     private usuarioService: UsuarioService,
-    private notificacionesService: NotificacionesService,
+    public notificacionesService: NotificacionesService,
     private socketWebService: SocketWebService
   ) {
     this.usuario = usuarioService.usuario;
@@ -46,7 +44,7 @@ export class HeaderComponent implements OnInit {
             _id,
           } = resp.notificacion;
 
-          this.notificaciones.unshift({
+          this.notificacionesService.notificaciones.unshift({
             color,
             created_at,
             descripcion,
@@ -57,7 +55,8 @@ export class HeaderComponent implements OnInit {
             _id,
             usuario: resp.usuario,
           });
-          this.novistos = this.novistos + 1;
+          this.notificacionesService.novistos =
+            this.notificacionesService.novistos + 1;
         });
     });
 
@@ -83,7 +82,7 @@ export class HeaderComponent implements OnInit {
             _id,
           } = resp.notificacion;
 
-          this.notificaciones.unshift({
+          this.notificacionesService.notificaciones.unshift({
             color,
             created_at,
             descripcion,
@@ -94,7 +93,8 @@ export class HeaderComponent implements OnInit {
             _id,
             usuario: resp.usuario,
           });
-          this.novistos = this.novistos + 1;
+          this.notificacionesService.novistos =
+            this.notificacionesService.novistos + 1;
         });
       if (resp.disponibles) {
         usuarioService.usuario.disponibles = resp.disponibles;
@@ -110,8 +110,8 @@ export class HeaderComponent implements OnInit {
 
   cargarNotificaciones() {
     this.notificacionesService.getNotificaciones().subscribe((resp: any) => {
-      this.notificaciones = resp.notificaciones;
-      this.novistos = resp.novistos;
+      this.notificacionesService.notificaciones = resp.notificaciones;
+      this.notificacionesService.novistos = resp.novistos;
     });
   }
 
@@ -133,7 +133,8 @@ export class HeaderComponent implements OnInit {
         this.notificacionesService
           .verNotificacion(notificacion._id)
           .subscribe((resp) => {
-            this.novistos = this.novistos - 1;
+            this.notificacionesService.novistos =
+              this.notificacionesService.novistos - 1;
             notificacion.visto = true;
             if (notificacion.descripcion.includes('APROBADA')) {
               this.router

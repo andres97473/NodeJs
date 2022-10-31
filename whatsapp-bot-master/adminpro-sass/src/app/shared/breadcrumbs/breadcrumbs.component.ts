@@ -2,6 +2,7 @@ import { Component, OnDestroy } from '@angular/core';
 import { ActivationEnd, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-breadcrumbs',
@@ -17,7 +18,7 @@ export class BreadcrumbsComponent implements OnDestroy {
       // console.log(data);
       this.titulo = titulo;
       // poner tirulo en el navegador
-      document.title = `AdminPro - ${titulo}`;
+      document.title = `${environment.titulo_app} - ${titulo}`;
     });
   }
   ngOnDestroy(): void {

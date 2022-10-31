@@ -1,9 +1,9 @@
-<div id="main-wrapper">
+<div (click)="click()" id="main-wrapper">
   <app-header></app-header>
   <app-sidebar></app-sidebar>
 
   <div class="page-wrapper">
-    <div class="container-fluid">
+    <div class="container-fluid animated fadeIn">
       <!-- Breadcrumbs -->
       <app-breadcrumbs></app-breadcrumbs>
 
@@ -14,7 +14,7 @@
       <router-outlet></router-outlet>
 
       <!-- 
-        <div class="row">
+        <div class="row animated fadeIn">
           <div class="col-12">
             <div class="card">
               <div class="card-body">
@@ -22,7 +22,7 @@
               </div>
             </div>
           </div>
-      </div>
+        </div>
        -->
 
       <!-- ============================================================== -->
@@ -32,7 +32,7 @@
     <!-- ============================================================== -->
     <!-- footer -->
     <!-- ============================================================== -->
-    <footer class="footer">© 2022 MensajesApp</footer>
+    <footer class="footer">© {{ nombre_app }} V. 20220920</footer>
     <!-- ============================================================== -->
     <!-- End footer -->
     <!-- ============================================================== -->
@@ -40,3 +40,8 @@
 </div>
 
 <app-modal-imagen></app-modal-imagen>
+
+<app-modal-sesion
+  [sesionTime]="sesionService.time"
+  [progreso]="pocentaje"
+></app-modal-sesion>

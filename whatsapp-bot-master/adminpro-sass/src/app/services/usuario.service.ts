@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable, NgZone } from '@angular/core';
+import { Inject, Injectable, NgZone } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { Router } from '@angular/router';
 import { tap, map, catchError } from 'rxjs/operators';
+import { Router } from '@angular/router';
 
 import { environment } from '../../environments/environment';
 import { RegisterForm } from '../interface/register-form.interface';
@@ -10,10 +10,13 @@ import { RegisterForm } from '../interface/register-form.interface';
 import { LoginForm } from '../interface/login-form.interface';
 import { Usuario } from '../models/usuario.model';
 import { CargarUsuario } from '../interface/cargar-usuarios.interface';
+import { PaisI } from '../interface/pais.interface';
+import { DOCUMENT } from '@angular/common';
 
-declare const google: any;
+// declare const google: any;
 
-const base_url = environment.base_url;
+let base_url = 'http://localhost:3000/api';
+const produccion = environment.produccion;
 
 @Injectable({
   providedIn: 'root',
@@ -24,13 +27,17 @@ export class UsuarioService {
   constructor(
     private http: HttpClient,
     private router: Router,
-    private ngZone: NgZone
+    private ngZone: NgZone,
+    @Inject(DOCUMENT) private document: Document
   ) {
-    this.googleInit();
+    this.getUrl();
+    // this.googleInit();
   }
 
-  get getToken(): string {
-    return localStorage.getItem('token') || '';
+  getUrl() {
+    if (produccion) {
+      base_url = this.document.location.href.split('3000')[0] + '3000/api';
+    }
   }
 
   get getRole() {
@@ -49,30 +56,66 @@ export class UsuarioService {
     };
   }
 
-  googleInit() {
-    google.accounts.id.initialize({
-      client_id:
-        '857780671996-i6doqclt4a9itsnsc67mv0assvpmki02.apps.googleusercontent.com',
-    });
+  // googleInit() {
+  //   google.accounts.id.initialize({
+  //     client_id:
+  //       '857780671996-i6doqclt4a9itsnsc67mv0assvpmki02.apps.googleusercontent.com',
+  //   });
+  // }
+
+  // leer cokkie
+  readCookie(name: string) {
+    return (
+      decodeURIComponent(
+        document.cookie.replace(
+          new RegExp(
+            '(?:(?:^|.*;)\\s*' +
+              name.replace(/[\-\.\+\*]/g, '\\$&') +
+              '\\s*\\=\\s*([^;]*).*$)|^.*$'
+          ),
+          '$1'
+        )
+      ) || null
+    );
+  }
+
+  // seters
+  setToken(token: string): void {
+    //localStorage.setItem('token', token);
+    document.cookie = `token=${token}`;
+  }
+
+  // geters
+
+  get getToken(): string {
+    //return localStorage.getItem('token');
+    const token = this.readCookie('token');
+    if (token) {
+      return token;
+    } else {
+      return '';
+    }
   }
 
   guardarLocalStorage(resp: any) {
-    localStorage.setItem('token', resp.token);
     localStorage.setItem('menu', JSON.stringify(resp.menu));
   }
 
   logout() {
-    localStorage.removeItem('token');
     localStorage.removeItem('menu');
 
-    // cambiar correo por this.usuario.email
-    if (this.usuario.google) {
-      google.accounts.id.revoke(this.usuario.email, () => {
-        this.ngZone.run(() => {
-          this.router.navigateByUrl('/login');
-        });
-      });
-    }
+    document.cookie = 'token=; expires=Thu, 01 Jan 1970 00:00:00 UTC';
+
+    // google auth
+    // if (this.usuario.google) {
+    //   // console.log(this.usuario.email);
+
+    //   google.accounts.id.revoke(this.usuario.email, () => {
+    //     this.ngZone.run(() => {
+    //       this.router.navigateByUrl('/login');
+    //     });
+    //   });
+    // }
     this.router.navigateByUrl('/login');
   }
 
@@ -85,10 +128,43 @@ export class UsuarioService {
       })
       .pipe(
         map((resp: any) => {
-          const { email, google, nombre, role, img = '', uid } = resp.usuario;
-          this.usuario = new Usuario(nombre, email, '', img, google, role, uid);
+          const {
+            email,
+            google,
+            nombre,
+            role,
+            img = '',
+            uid,
+            disponibles,
+            vence,
+            cod_pais,
+            celular,
+            codigo,
+            activo,
+            created_at,
+            update_at,
+          } = resp.usuario;
+          this.usuario = new Usuario(
+            nombre,
+            email,
+            uid,
+            '',
+            img,
+            google,
+            role,
+            cod_pais,
+            celular,
+            codigo,
+            vence,
+            disponibles,
+            activo,
+            created_at,
+            update_at
+          );
           // guardar propiedades en el local storage
           this.guardarLocalStorage(resp);
+          this.setToken(resp.token);
+
           return true;
         }),
         catchError((err) => of(false))
@@ -98,8 +174,9 @@ export class UsuarioService {
   crearUsuario(formData: RegisterForm) {
     return this.http.post(`${base_url}/usuarios`, formData).pipe(
       tap((resp: any) => {
-        // console.log(resp)
+        // console.log(resp);
         this.guardarLocalStorage(resp);
+        this.setToken(resp.token);
       })
     );
   }
@@ -117,10 +194,19 @@ export class UsuarioService {
     );
   }
 
+  actualizarPassword(password: string) {
+    return this.http.put(
+      `${base_url}/usuarios/password/${this.getUid}`,
+      { password },
+      this.getHeaders
+    );
+  }
+
   login(formData: LoginForm) {
     return this.http.post(`${base_url}/login`, formData).pipe(
       tap((resp: any) => {
         this.guardarLocalStorage(resp);
+        this.setToken(resp.token);
       })
     );
   }
@@ -129,6 +215,7 @@ export class UsuarioService {
     return this.http.post(`${base_url}/login/google`, { token }).pipe(
       tap((resp: any) => {
         this.guardarLocalStorage(resp);
+        this.setToken(resp.token);
       })
     );
   }
@@ -140,18 +227,25 @@ export class UsuarioService {
     const url = `${base_url}/usuarios?desde=${desde}`;
     return this.http.get<CargarUsuario>(url, this.getHeaders).pipe(
       map((resp) => {
-        // console.log(resp);
         // debemos cambiar el arreglo de objetos a un arreglo de usuarios
         const usuarios = resp.usuarios.map(
           (user) =>
             new Usuario(
               user.nombre,
               user.email,
+              user.uid,
               '',
               user.img,
               user.google,
               user.role,
-              user.uid
+              user.cod_pais,
+              user.celular,
+              user.codigo,
+              user.vence,
+              user.disponibles,
+              user.activo,
+              user.created_at,
+              user.update_at
             )
         );
 
@@ -174,6 +268,28 @@ export class UsuarioService {
       `${base_url}/usuarios/${usuario.uid}`,
       usuario,
       this.getHeaders
+    );
+  }
+
+  actualizarMensajesFecha(email: string, vence: string) {
+    return this.http.put(
+      `${base_url}/usuarios/mensajes-fecha/${email}`,
+      { vence },
+      this.getHeaders
+    );
+  }
+
+  actualizarMensajesDisponibles(email: string, disponibles: number) {
+    return this.http.put(
+      `${base_url}/usuarios/mensajes-disponibles/${email}`,
+      { disponibles },
+      this.getHeaders
+    );
+  }
+
+  getPaises() {
+    return this.http.get<{ ok: Boolean; paises: PaisI[] }>(
+      `${base_url}/paises`
     );
   }
 }

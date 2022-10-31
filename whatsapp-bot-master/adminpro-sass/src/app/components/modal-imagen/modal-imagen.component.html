@@ -36,7 +36,28 @@
             <img *ngIf="imgTemp" class="img-avatar" [src]="imgTemp" />
           </div>
 
-          <input type="file" (change)="cambiarImagen($event)" />
+          <input
+            type="file"
+            (change)="cambiarImagen($event)"
+            accept=".png,.jpg,.jpeg,.gif"
+          />
+        </div>
+        <div *ngIf="imagenSubir" class="col-md-12">
+          <div class="card">
+            <div class="card-body">
+              <h5 *ngIf="!message && !enviado">Archivo listo para enviar</h5>
+              <h5 *ngIf="!message && enviado">
+                Subiendo archivo... {{ value }} %
+              </h5>
+              <h5 *ngIf="message">{{ message }}</h5>
+              <div style="width: 100%">
+                <mat-progress-bar
+                  mode="determinate"
+                  [value]="value"
+                ></mat-progress-bar>
+              </div>
+            </div>
+          </div>
         </div>
         <div class="modal-footer">
           <button
@@ -47,7 +68,12 @@
           >
             Cancelar
           </button>
-          <button type="button" class="btn btn-primary" (click)="subirImagen()">
+          <button
+            type="button"
+            class="btn btn-primary"
+            (click)="subirImagen()"
+            [disabled]="enviando || !imagenSubir"
+          >
             Actualizar
           </button>
         </div>

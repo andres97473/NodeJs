@@ -9,8 +9,9 @@ import { Router } from '@angular/router';
 import { FormBuilder, Validators } from '@angular/forms';
 import { UsuarioService } from '../../services/usuario.service';
 import Swal from 'sweetalert2';
+import { SesionService } from '../../services/sesion.service';
 
-declare const google: any;
+// declare const google: any;
 
 @Component({
   selector: 'app-login',
@@ -37,24 +38,25 @@ export class LoginComponent implements AfterViewInit {
     private router: Router,
     private fb: FormBuilder,
     private usuarioService: UsuarioService,
-    private ngZone: NgZone
+    private ngZone: NgZone,
+    private sesionService: SesionService
   ) {}
   ngAfterViewInit(): void {
-    this.googleInit();
+    // this.googleInit();
   }
 
-  googleInit() {
-    google.accounts.id.initialize({
-      client_id:
-        '857780671996-i6doqclt4a9itsnsc67mv0assvpmki02.apps.googleusercontent.com',
-      callback: (response: any) => this.handleCredentialResponse(response),
-    });
-    google.accounts.id.renderButton(
-      // document.getElementById('buttonDiv'),
-      this.googleBtn.nativeElement,
-      { theme: 'outline', size: 'large' } // customization attributes
-    );
-  }
+  // googleInit() {
+  //   google.accounts.id.initialize({
+  //     client_id:
+  //       '857780671996-i6doqclt4a9itsnsc67mv0assvpmki02.apps.googleusercontent.com',
+  //     callback: (response: any) => this.handleCredentialResponse(response),
+  //   });
+  //   google.accounts.id.renderButton(
+  //     // document.getElementById('buttonDiv'),
+  //     this.googleBtn.nativeElement,
+  //     { theme: 'outline', size: 'large' } // customization attributes
+  //   );
+  // }
 
   async handleCredentialResponse(response: any) {
     // console.log({ esto: this });
@@ -63,6 +65,8 @@ export class LoginComponent implements AfterViewInit {
       // console.log(resp);
       this.ngZone.run(() => {
         this.router.navigateByUrl('/');
+        this.sesionService.time = this.sesionService.getSegundos;
+        this.sesionService.ocultar = true;
       });
     });
   }
@@ -73,6 +77,8 @@ export class LoginComponent implements AfterViewInit {
     this.usuarioService.login(this.loginForm.value).subscribe(
       (resp) => {
         this.router.navigateByUrl('/');
+        this.sesionService.time = this.sesionService.getSegundos;
+        this.sesionService.ocultar = true;
         // console.log(resp);
         if (this.loginForm.get('remember')?.value) {
           localStorage.setItem('email', this.loginForm.get('email')?.value);

@@ -1,0 +1,329 @@
+<div class="row animated fadeIn">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-body">
+        <h3>Api para enviar mensaje de prueba a su propio numero</h3>
+
+        <mat-accordion>
+          <mat-expansion-panel hideToggle>
+            <mat-expansion-panel-header class="disable_ripple">
+              <mat-panel-title>
+                <span class="opblock-summary-method opblock-post">POST</span>
+              </mat-panel-title>
+              <mat-panel-description class="panel-desc">
+                {{ url.origin }}/api/send-message-prueba
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+            <div class="row">
+              <h5 class="mt-2 negrita">Parametros</h5>
+              <div class="table-responsive">
+                <table class="table table-bordered tableW">
+                  <thead class="tableHead">
+                    <tr>
+                      <th class="negrita">Name</th>
+                      <th class="negrita">Type</th>
+                      <th class="negrita">Required</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>token</td>
+                      <td>String</td>
+                      <td>true</td>
+                    </tr>
+                    <tr>
+                      <td>mensaje</td>
+                      <td>String</td>
+                      <td>true</td>
+                    </tr>
+                    <tr>
+                      <td>repeticiones</td>
+                      <td>String</td>
+                      <td>true</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <hr />
+            <div class="row">
+              <div class="col">Request body</div>
+              <div class="col">
+                <span class="form-control">application/json</span>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <div class="cod-body">
+                  <div class="cod-body-text">
+                    <ul class="text-ul">
+                      <li>{{ "{" }}</li>
+                      <ul class="text-ul">
+                        <li>
+                          "token" : "{{ usuarioService.usuario.getToken }}",
+                        </li>
+                        <li>
+                          "mensaje" : "MENSAJE DE PRUEBA A MI MISMO NUMERO",
+                        </li>
+                        <li>"repeticiones" : "6"</li>
+                      </ul>
+                      <li>{{ "}" }}</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </mat-expansion-panel>
+        </mat-accordion>
+
+        <hr />
+
+        <h3>
+          Api para enviar mensajes, los numeros deben estar separador por coma
+        </h3>
+        <mat-accordion>
+          <mat-expansion-panel hideToggle>
+            <mat-expansion-panel-header class="disable_ripple">
+              <mat-panel-title>
+                <span class="opblock-summary-method opblock-post">POST</span>
+              </mat-panel-title>
+              <mat-panel-description class="panel-desc">
+                {{ url.origin }}/api/send-message-token
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+            <div class="row">
+              <h5 class="mt-2 negrita">Parametros</h5>
+              <div class="table-responsive">
+                <table class="table table-bordered tableW">
+                  <thead class="tableHead">
+                    <tr>
+                      <th class="negrita">Name</th>
+                      <th class="negrita">Type</th>
+                      <th class="negrita">Required</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>token</td>
+                      <td>String</td>
+                      <td>true</td>
+                    </tr>
+                    <tr>
+                      <td>mensaje</td>
+                      <td>String</td>
+                      <td>true</td>
+                    </tr>
+                    <tr>
+                      <td>cod_pais</td>
+                      <td>String</td>
+                      <td>false</td>
+                    </tr>
+                    <tr>
+                      <td>celulares</td>
+                      <td>String</td>
+                      <td>true</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <hr />
+            <div class="row">
+              <div class="col">Request body</div>
+              <div class="col">
+                <span class="form-control">application/json</span>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <div class="cod-body">
+                  <div class="cod-body-text">
+                    <ul class="text-ul">
+                      <li>{{ "{" }}</li>
+                      <ul class="text-ul">
+                        <li>
+                          "token" : "{{ usuarioService.usuario.getToken }}",
+                        </li>
+                        <li>
+                          "mensaje" : "PRUEBA DESDE API ARRAY DE NUMEROS",
+                        </li>
+                        <li>
+                          "cod_pais" : "{{
+                            usuarioService.usuario.getCodigoPais
+                          }}",
+                        </li>
+                        <li>
+                          "celulares" : "XXXXXXXXXX,YYYYYYYYYY,ZZZZZZZZZZ"
+                        </li>
+                      </ul>
+                      <li>{{ "}" }}</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </mat-expansion-panel>
+        </mat-accordion>
+
+        <hr />
+
+        <h3>
+          Api para enviar mensajes con archivos, los datos se deben enviar
+          mediante un form data
+        </h3>
+        <mat-accordion>
+          <mat-expansion-panel hideToggle>
+            <mat-expansion-panel-header class="disable_ripple">
+              <mat-panel-title>
+                <span class="opblock-summary-method opblock-post">POST</span>
+              </mat-panel-title>
+              <mat-panel-description class="panel-desc">
+                {{ url.origin }}/api/send-message-img
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+            <div class="row">
+              <h5 class="mt-2 negrita">Parametros</h5>
+              <div class="table-responsive">
+                <table class="table table-bordered tableW">
+                  <thead class="tableHead">
+                    <tr>
+                      <th class="negrita">Name</th>
+                      <th class="negrita">Type</th>
+                      <th class="negrita">Required</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>imagen</td>
+                      <td>File</td>
+                      <td>true</td>
+                    </tr>
+                    <tr>
+                      <td>token</td>
+                      <td>String</td>
+                      <td>true</td>
+                    </tr>
+                    <tr>
+                      <td>mensaje</td>
+                      <td>String</td>
+                      <td>true</td>
+                    </tr>
+                    <tr>
+                      <td>cod_pais</td>
+                      <td>String</td>
+                      <td>false</td>
+                    </tr>
+                    <tr>
+                      <td>celulares</td>
+                      <td>String</td>
+                      <td>true</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <hr />
+            <div class="row">
+              <div class="col">Request body</div>
+              <div class="col">
+                <span class="form-control">multipart/form-data</span>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <div class="body-form">
+                  <form class="form">
+                    <div class="form-group">
+                      <label
+                        class="col-sm-3 form-control-label"
+                        for="example-input-small"
+                        >imagen</label
+                      >
+                      <div class="col-sm-6">
+                        <input
+                          type="file"
+                          id="example-input-small"
+                          name="example-input-small"
+                          class="form-control form-control-sm"
+                          placeholder="form-control-sm"
+                        />
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label
+                        class="col-sm-3 form-control-label"
+                        for="example-input-small"
+                        >token</label
+                      >
+                      <div class="col-sm-6">
+                        <input
+                          type="text"
+                          id="example-input-small"
+                          name="example-input-small"
+                          class="form-control form-control-sm"
+                          placeholder="form-control-sm"
+                          [value]="usuarioService.usuario.getToken"
+                        />
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label
+                        class="col-sm-3 form-control-label"
+                        for="example-input-small"
+                        >mensaje</label
+                      >
+                      <div class="col-sm-6">
+                        <input
+                          type="text"
+                          id="example-input-small"
+                          name="example-input-small"
+                          class="form-control form-control-sm"
+                          placeholder="form-control-sm"
+                          value="PRUEBA DESDE API CON ARCHIVO"
+                        />
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label
+                        class="col-sm-3 form-control-label"
+                        for="example-input-small"
+                        >cod_pais</label
+                      >
+                      <div class="col-sm-6">
+                        <input
+                          type="text"
+                          id="example-input-small"
+                          name="example-input-small"
+                          class="form-control form-control-sm"
+                          placeholder="form-control-sm"
+                          [value]="usuarioService.usuario.getCodigoPais"
+                        />
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label
+                        class="col-sm-3 form-control-label"
+                        for="example-input-small"
+                        >celulares</label
+                      >
+                      <div class="col-sm-6">
+                        <input
+                          type="text"
+                          id="example-input-small"
+                          name="example-input-small"
+                          class="form-control form-control-sm"
+                          placeholder="form-control-sm"
+                          value="XXXXXXXXXX,YYYYYYYYYY,ZZZZZZZZZZ"
+                        />
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </mat-expansion-panel>
+        </mat-accordion>
+      </div>
+    </div>
+  </div>
+</div>

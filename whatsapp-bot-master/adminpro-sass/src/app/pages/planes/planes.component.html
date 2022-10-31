@@ -1,0 +1,82 @@
+<div class="row animated fadeIn">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-body">
+        <div class="row pricing-plan">
+          <!-- ngfor -->
+          <ng-container *ngFor="let plan of planes">
+            <div
+              *ngIf="!plan.popular"
+              class="col-md-3 col-xs-12 col-sm-6 no-padding"
+            >
+              <div class="pricing-box">
+                <div class="pricing-body b-l">
+                  <div class="pricing-header">
+                    <h4 class="text-center">{{ plan.nombre }}</h4>
+                    <h2 class="text-center">
+                      <span class="price-sign"></span
+                      >{{ plan.valor | currency: "COP$ " }}
+                    </h2>
+                    <p class="uppercase">{{ plan.descripcion }}</p>
+                  </div>
+                  <div class="price-table-content">
+                    <div class="price-row">
+                      <i class="icon-user"></i> 1 Miembro
+                    </div>
+
+                    <div class="price-row">
+                      <i class="icon-refresh"></i> Copias de Seguridad de
+                      Mensajes Enviados
+                    </div>
+                    <div class="price-row">
+                      <button
+                        class="btn btn-success waves-effect waves-light m-t-20 m-b-10"
+                        (click)="solicitarPlan(plan)"
+                      >
+                        Solicitar Plan
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- popular -->
+            <div *ngIf="plan.popular" class="col-md-3 col-xs-12 col-sm-6">
+              <div class="pricing-box featured-plan">
+                <div class="pricing-body">
+                  <div class="pricing-header">
+                    <h4 class="price-lable text-white bg-warning">Popular</h4>
+                    <h4 class="text-center m-t-20">{{ plan.nombre }}</h4>
+                    <h2 class="text-center">
+                      <span class="price-sign"></span
+                      >{{ plan.valor | currency: "COP$ " }}
+                    </h2>
+                    <p class="uppercase">{{ plan.descripcion }}</p>
+                  </div>
+                  <div class="price-table-content">
+                    <div class="price-row">
+                      <i class="icon-user"></i> 1 Miembro
+                    </div>
+
+                    <div class="price-row">
+                      <i class="icon-refresh"></i> Copias de Seguridad de
+                      Mensajes Enviados
+                    </div>
+                    <div class="price-row">
+                      <button
+                        class="btn btn-lg btn-info waves-effect waves-light m-t-20 m-b-10"
+                        (click)="solicitarPlan(plan)"
+                      >
+                        Solicitar Plan
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,45 @@
+.example-container {
+  position: relative;
+}
+
+.example-table-container {
+  position: relative;
+  max-width: 400px;
+  overflow: auto;
+}
+
+table {
+  width: 100%;
+}
+
+.example-rate-limit-reached {
+  max-width: 360px;
+  text-align: center;
+}
+
+td,
+th {
+  font-size: 12px;
+  vertical-align: middle;
+}
+
+/* Column Widths */
+.mat-column-celular,
+.mat-column-tipo {
+  width: 80px;
+  text-align: center;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+.mat-column-mensaje {
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+.mat-column-created_at {
+  width: 150px;
+  text-align: center;
+  padding-left: 5px;
+  padding-right: 5px;
+}

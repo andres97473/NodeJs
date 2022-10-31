@@ -175,7 +175,6 @@ const listenMessage = () => {
           "Titulo",
           "footer"
         );
-        // client.sendMessage(from, list);
         client.sendMessage(from, list);
       }
     } else {

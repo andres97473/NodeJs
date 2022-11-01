@@ -13,7 +13,7 @@ import { MatPaginator } from '@angular/material/paginator';
 @Component({
   selector: 'app-tabla',
   templateUrl: './tabla.component.html',
-  styleUrls: ['./tabla.component.css'],
+  styleUrls: ['./tabla.component.scss'],
 })
 export class TablaComponent implements OnInit, AfterViewInit {
   @Input('datatable') datatable!: any[];

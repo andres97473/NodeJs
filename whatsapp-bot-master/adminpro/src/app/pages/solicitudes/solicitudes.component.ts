@@ -14,7 +14,7 @@ import { SocketWebService } from '../../services/socket-web.service';
 @Component({
   selector: 'app-solicitudes',
   templateUrl: './solicitudes.component.html',
-  styleUrls: ['./solicitudes.component.css'],
+  styleUrls: ['./solicitudes.component.scss'],
 })
 export class SolicitudesComponent implements OnInit, OnDestroy {
   public solicitudes: Solicitud[] = [];

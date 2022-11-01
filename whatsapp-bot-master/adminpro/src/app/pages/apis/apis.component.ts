@@ -4,7 +4,7 @@ import { UsuarioService } from '../../services/usuario.service';
 @Component({
   selector: 'app-apis',
   templateUrl: './apis.component.html',
-  styleUrls: ['./apis.component.css'],
+  styleUrls: ['./apis.component.scss'],
 })
 export class ApisComponent implements OnInit {
   public url = window.location;

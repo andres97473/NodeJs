@@ -5,7 +5,7 @@ import { Notificacion } from '../../models/notificacion.model';
 @Component({
   selector: 'app-notificaciones',
   templateUrl: './notificaciones.component.html',
-  styleUrls: ['./notificaciones.component.css'],
+  styleUrls: ['./notificaciones.component.scss'],
 })
 export class NotificacionesComponent implements OnInit {
   public cargando = true;

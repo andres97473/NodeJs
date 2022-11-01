@@ -143,7 +143,7 @@ $(function () {
     // This is for the popup message while page load
     // ============================================================== 
         $.toast({
-            heading: 'Welcome to Mensajes',
+            heading: 'Welcome to Adminpro',
             text: 'Most powerfull and elegant design with tons of elements.',
             position: 'top-right',
             loaderBg: '#f33c49',

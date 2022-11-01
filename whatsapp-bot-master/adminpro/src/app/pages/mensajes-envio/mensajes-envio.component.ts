@@ -25,7 +25,7 @@ import { PaisI } from '../../interface/pais.interface';
 @Component({
   selector: 'app-mensajes-envio',
   templateUrl: './mensajes-envio.component.html',
-  styleUrls: ['./mensajes-envio.component.css'],
+  styleUrls: ['./mensajes-envio.component.scss'],
 })
 export class MensajesEnvioComponent implements OnInit {
   public usuario: Usuario;

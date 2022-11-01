@@ -11,7 +11,7 @@ import Swal from 'sweetalert2';
 @Component({
   selector: 'app-planes',
   templateUrl: './planes.component.html',
-  styleUrls: ['./planes.component.css'],
+  styleUrls: ['./planes.component.scss'],
 })
 export class PlanesComponent implements OnInit {
   planes: Plan[] = [];

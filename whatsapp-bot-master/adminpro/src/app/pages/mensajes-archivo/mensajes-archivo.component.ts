@@ -26,7 +26,7 @@ import { map } from 'rxjs/operators';
 @Component({
   selector: 'app-mensajes-archivo',
   templateUrl: './mensajes-archivo.component.html',
-  styleUrls: ['./mensajes-archivo.component.css'],
+  styleUrls: ['./mensajes-archivo.component.scss'],
 })
 export class MensajesArchivoComponent implements OnInit {
   public usuario: Usuario;

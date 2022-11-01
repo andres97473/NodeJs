@@ -5,7 +5,7 @@ import { SesionService } from '../../services/sesion.service';
 @Component({
   selector: 'app-modal-sesion',
   templateUrl: './modal-sesion.component.html',
-  styleUrls: ['./modal-sesion.component.css'],
+  styleUrls: ['./modal-sesion.component.scss'],
 })
 export class ModalSesionComponent implements OnInit {
   @Input() sesionTime: number = 10;

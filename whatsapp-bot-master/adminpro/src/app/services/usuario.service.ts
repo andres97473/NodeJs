@@ -292,4 +292,12 @@ export class UsuarioService {
       `${base_url}/paises`
     );
   }
+
+  verificarEmail(recoveryEmail: any) {
+    return this.http.post(
+      `${base_url}/usuarios/verificar-email`,
+      recoveryEmail,
+      {}
+    );
+  }
 }

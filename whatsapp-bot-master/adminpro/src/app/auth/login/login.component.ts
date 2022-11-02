@@ -10,6 +10,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { UsuarioService } from '../../services/usuario.service';
 import Swal from 'sweetalert2';
 import { SesionService } from '../../services/sesion.service';
+import { Usuario } from '../../models/usuario.model';
 
 // declare const google: any;
 
@@ -22,6 +23,14 @@ export class LoginComponent implements AfterViewInit {
   @ViewChild('googleBtn') googleBtn!: ElementRef;
 
   public formSubmitted = false;
+  public oculto = true;
+
+  public emailVerificado: any;
+  public codigoVerificado: any;
+  public celularVerificado: any;
+
+  public msg: any;
+  public okVerificado: any;
 
   public checkRemember = localStorage.getItem('email') ? true : false;
 
@@ -34,6 +43,13 @@ export class LoginComponent implements AfterViewInit {
     remember: [this.checkRemember],
   });
 
+  public recoveryform = this.fb.group({
+    recoveryEmail: [
+      'andres97473@gmail.com',
+      [Validators.required, Validators.email],
+    ],
+  });
+
   constructor(
     private router: Router,
     private fb: FormBuilder,
@@ -43,6 +59,16 @@ export class LoginComponent implements AfterViewInit {
   ) {}
   ngAfterViewInit(): void {
     // this.googleInit();
+  }
+
+  cambiarEstado() {
+    this.oculto = !this.oculto;
+
+    this.msg = null;
+    this.emailVerificado = null;
+    this.codigoVerificado = null;
+    this.celularVerificado = null;
+    this.okVerificado = null;
   }
 
   // googleInit() {
@@ -89,6 +115,22 @@ export class LoginComponent implements AfterViewInit {
       (err) => {
         // console.warn(err.error);
         Swal.fire('Error', err.error.msg, 'error');
+      }
+    );
+  }
+
+  validarEmail() {
+    this.usuarioService.verificarEmail(this.recoveryform.value).subscribe(
+      (resp: any) => {
+        this.msg = resp.msg;
+        this.emailVerificado = resp.usuario.email;
+        this.codigoVerificado = resp.usuario.codigo || '';
+        this.celularVerificado = resp.usuario.celular || '';
+        this.okVerificado = resp.ok;
+      },
+      (err) => {
+        this.msg = err.error.msg;
+        this.okVerificado = err.error.ok;
       }
     );
   }

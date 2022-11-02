@@ -257,6 +257,33 @@ const actualizarFechaVencimiento = async (req, res = response) => {
   }
 };
 
+const verificarEmail = async (req, res) => {
+  try {
+    const { recoveryEmail } = req.body;
+
+    const usuario = await Usuario.findOne({ email: recoveryEmail });
+
+    if (!usuario) {
+      return res.status(404).json({
+        ok: false,
+        msg: "No se encontro un Usuario con ese email",
+      });
+    }
+
+    res.json({
+      ok: true,
+      msg: "Se encontro un Usuario con ese email",
+      usuario,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      ok: false,
+      msg: "Error inesperado, revisar logs ",
+    });
+  }
+};
+
 const actualizarMensajesDisponibles = async (req, res = response) => {
   const { email } = req.params;
 
@@ -294,4 +321,5 @@ module.exports = {
   deleteUsuario,
   actualizarFechaVencimiento,
   actualizarMensajesDisponibles,
+  verificarEmail,
 };

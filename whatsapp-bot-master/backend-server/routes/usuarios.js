@@ -10,6 +10,7 @@ const {
   actualizarFechaVencimiento,
   actualizarMensajesDisponibles,
   actualizarUsuarioPassword,
+  verificarEmail,
 } = require("../controllers/usuarios");
 const {
   validarJWT,
@@ -80,5 +81,7 @@ router.put(
   ],
   actualizarMensajesDisponibles
 );
+
+router.post("/verificar-email", verificarEmail);
 
 module.exports = router;

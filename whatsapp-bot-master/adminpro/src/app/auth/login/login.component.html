@@ -134,6 +134,34 @@
           >
             {{ msg }}
           </div>
+
+          <div
+            *ngIf="celularVerificado"
+            class="form-material mt-2 row box bg-light-inverse"
+          >
+            <div class="form-group col-md-6 mt-2">
+              Celular: {{ celularVerificado }}
+            </div>
+            <div class="form-group col-md-6">
+              <input
+                class="form-control border"
+                type="text"
+                placeholder="ingrese su codigo"
+                formControlName="codigo"
+              />
+            </div>
+            <div *ngIf="msgErrorCelular" class="form-group col-md-12 negrita">
+              {{ msgErrorCelular }}
+            </div>
+            <div class="form-group col-md-12">
+              <button
+                class="btn btn-primary btn-block"
+                (click)="enviarCelular()"
+              >
+                Enviar a Celular
+              </button>
+            </div>
+          </div>
           <br />
           <a
             href="javascript:void(0)"

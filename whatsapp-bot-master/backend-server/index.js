@@ -8,6 +8,7 @@ const { Client, LocalAuth, MessageMedia, List } = require("whatsapp-web.js");
 const moment = require("moment");
 const multer = require("multer");
 const fs = require("fs");
+const bcrypt = require("bcryptjs");
 
 const { request, response } = require("express");
 const bodyParser = require("body-parser");
@@ -395,6 +396,52 @@ const sendMessagesAdmin = async (req, res = response) => {
   }
 };
 
+const sendPasswordCelular = async (req, res = response) => {
+  const { email } = req.body;
+
+  try {
+    const usuario = await Usuario.findOne({
+      email,
+    });
+
+    if (!usuario) {
+      return res.status(404).json({
+        ok: false,
+        msg: "Usuario no encontrado",
+      });
+    }
+
+    // TODO: generar paswword aleatorio
+    const password = "22222222";
+    const mensaje = `Su contraseña se ha cambiado con exito \nSu contraseña es: ${password}`;
+
+    // Encriptar contraseña
+    const salt = bcrypt.genSaltSync();
+    const passwordEncriptado = bcrypt.hashSync(password, salt);
+
+    // actualizar contraseña
+    const updatePassword = await Usuario.findByIdAndUpdate(usuario._id, {
+      $set: { password: passwordEncriptado },
+    });
+
+    const newNumber = `${usuario.cod_pais.replace("+", "")}${
+      usuario.celular
+    }@c.us`;
+    client.sendMessage(newNumber, mensaje);
+
+    res.status(200).json({
+      ok: true,
+      msg: mensaje,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      ok: false,
+      msg: "Error inesperado, revisar logs",
+    });
+  }
+};
+
 // Rutas
 app.use("/api/usuarios", require("./routes/usuarios"));
 app.use("/api/login", require("./routes/auth"));
@@ -448,6 +495,8 @@ app.post(
   sendMessagesAdmin
 );
 
+app.post("/api/send-message-password", sendPasswordCelular);
+
 // Validar error de diferentes rutas
 app.get("*", (req, res) => {
   res.sendFile(path.resolve(__dirname, "public/index.html"));
@@ -462,6 +511,7 @@ const server = app.listen(process.env.PORT, () => {
 // websockets
 
 const SocketIO = require("socket.io");
+const { log } = require("console");
 // io es la coneccion entera con todos los clientes conectados
 const io = SocketIO(server, {
   cors: {

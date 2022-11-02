@@ -30,6 +30,7 @@ export class LoginComponent implements AfterViewInit {
   public celularVerificado: any;
 
   public msg: any;
+  public msgErrorCelular: any;
   public okVerificado: any;
 
   public checkRemember = localStorage.getItem('email') ? true : false;
@@ -48,6 +49,7 @@ export class LoginComponent implements AfterViewInit {
       'andres97473@gmail.com',
       [Validators.required, Validators.email],
     ],
+    codigo: [''],
   });
 
   constructor(
@@ -65,10 +67,13 @@ export class LoginComponent implements AfterViewInit {
     this.oculto = !this.oculto;
 
     this.msg = null;
+    this.msgErrorCelular = null;
     this.emailVerificado = null;
     this.codigoVerificado = null;
     this.celularVerificado = null;
     this.okVerificado = null;
+
+    this.recoveryform.controls['codigo'].setValue('');
   }
 
   // googleInit() {
@@ -133,5 +138,15 @@ export class LoginComponent implements AfterViewInit {
         this.okVerificado = err.error.ok;
       }
     );
+  }
+
+  enviarCelular() {
+    console.log(this.recoveryform.value);
+    const { codigo } = this.recoveryform.value;
+    if (codigo === this.codigoVerificado) {
+      console.log('codigo correcto');
+    } else {
+      this.msgErrorCelular = 'El codigo no Coincide';
+    }
   }
 }

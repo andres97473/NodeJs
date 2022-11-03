@@ -300,4 +300,8 @@ export class UsuarioService {
       {}
     );
   }
+
+  cambiarPasswordCelular(email: string) {
+    return this.http.post(`${base_url}/send-message-password`, { email }, {});
+  }
 }

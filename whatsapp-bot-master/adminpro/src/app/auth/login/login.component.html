@@ -139,14 +139,18 @@
             *ngIf="celularVerificado"
             class="form-material mt-2 row box bg-light-inverse"
           >
-            <div class="form-group col-md-6 mt-2">
-              Celular: {{ celularVerificado }}
+            <div class="form-group col-md-12">
+              Ingrese el codigo que comienza por # que esta en su perfil de
+              usuario y presione el boton Enviar a Whatsapp
             </div>
-            <div class="form-group col-md-6">
+            <div class="form-group col-md-8 mt-2">
+              Whatsapp: {{ codigoPaisVerificado }} {{ celularVerificado }}
+            </div>
+            <div class="form-group col-md-4">
               <input
                 class="form-control border"
                 type="text"
-                placeholder="ingrese su codigo"
+                placeholder="codigo"
                 formControlName="codigo"
               />
             </div>
@@ -158,7 +162,7 @@
                 class="btn btn-primary btn-block"
                 (click)="enviarCelular()"
               >
-                Enviar a Celular
+                Enviar a Whatsapp
               </button>
             </div>
           </div>

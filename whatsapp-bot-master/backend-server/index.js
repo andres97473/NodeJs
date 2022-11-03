@@ -396,6 +396,17 @@ const sendMessagesAdmin = async (req, res = response) => {
   }
 };
 
+// generar password aleatorio
+function passAleatorio(length) {
+  var result = "";
+  var characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+  var charactersLength = characters.length;
+  for (var i = 0; i < length; i++) {
+    result += characters.charAt(Math.floor(Math.random() * charactersLength));
+  }
+  return result;
+}
+
 const sendPasswordCelular = async (req, res = response) => {
   const { email } = req.body;
 
@@ -412,7 +423,7 @@ const sendPasswordCelular = async (req, res = response) => {
     }
 
     // TODO: generar paswword aleatorio
-    const password = "22222222";
+    const password = passAleatorio(8);
     const mensaje = `Su contraseña se ha cambiado con exito \nSu contraseña es: ${password}`;
 
     // Encriptar contraseña
@@ -431,7 +442,7 @@ const sendPasswordCelular = async (req, res = response) => {
 
     res.status(200).json({
       ok: true,
-      msg: mensaje,
+      msg: "La contraseña se cambio con exito!",
     });
   } catch (error) {
     console.log(error);

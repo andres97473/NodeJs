@@ -27,6 +27,7 @@ export class LoginComponent implements AfterViewInit {
 
   public emailVerificado: any;
   public codigoVerificado: any;
+  public codigoPaisVerificado: any;
   public celularVerificado: any;
 
   public msg: any;
@@ -45,10 +46,7 @@ export class LoginComponent implements AfterViewInit {
   });
 
   public recoveryform = this.fb.group({
-    recoveryEmail: [
-      'andres97473@gmail.com',
-      [Validators.required, Validators.email],
-    ],
+    recoveryEmail: ['', [Validators.required, Validators.email]],
     codigo: [''],
   });
 
@@ -70,9 +68,11 @@ export class LoginComponent implements AfterViewInit {
     this.msgErrorCelular = null;
     this.emailVerificado = null;
     this.codigoVerificado = null;
+    this.codigoPaisVerificado = null;
     this.celularVerificado = null;
     this.okVerificado = null;
 
+    this.recoveryform.controls['recoveryEmail'].setValue('');
     this.recoveryform.controls['codigo'].setValue('');
   }
 
@@ -130,7 +130,12 @@ export class LoginComponent implements AfterViewInit {
         this.msg = resp.msg;
         this.emailVerificado = resp.usuario.email;
         this.codigoVerificado = resp.usuario.codigo || '';
-        this.celularVerificado = resp.usuario.celular || '';
+        this.codigoPaisVerificado = resp.usuario.cod_pais || '';
+        const celularResp = resp.usuario.celular;
+        this.celularVerificado =
+          celularResp.substr(0, 3) +
+            '*'.repeat(celularResp.length - 5) +
+            celularResp.substr(-2, 2) || '';
         this.okVerificado = resp.ok;
       },
       (err) => {
@@ -141,10 +146,30 @@ export class LoginComponent implements AfterViewInit {
   }
 
   enviarCelular() {
-    console.log(this.recoveryform.value);
     const { codigo } = this.recoveryform.value;
     if (codigo === this.codigoVerificado) {
-      console.log('codigo correcto');
+      this.usuarioService
+        .cambiarPasswordCelular(this.emailVerificado)
+        .subscribe((resp: any) => {
+          this.msg = null;
+          this.msgErrorCelular = null;
+          this.emailVerificado = null;
+          this.codigoVerificado = null;
+          this.codigoPaisVerificado = null;
+          this.celularVerificado = null;
+          this.okVerificado = null;
+
+          this.recoveryform.controls['recoveryEmail'].setValue('');
+          this.recoveryform.controls['codigo'].setValue('');
+
+          Swal.fire({
+            icon: 'info',
+            title: resp.msg,
+            text: 'Revise su Whatsapp para ver la nueva contraseña',
+            showConfirmButton: false,
+            footer: '<a class="btn btn-primary" href="/login">Ir al login?</a>',
+          });
+        });
     } else {
       this.msgErrorCelular = 'El codigo no Coincide';
     }

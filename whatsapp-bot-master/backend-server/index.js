@@ -522,7 +522,7 @@ const server = app.listen(process.env.PORT, () => {
 // websockets
 
 const SocketIO = require("socket.io");
-const { log } = require("console");
+
 // io es la coneccion entera con todos los clientes conectados
 const io = SocketIO(server, {
   cors: {

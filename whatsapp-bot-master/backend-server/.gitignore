@@ -5,7 +5,7 @@ node_modules/
 .wwebjs_auth
 
 # Public
-public/**
+public/**.**
 
 ### carpeta de imagenes ###
 uploads/usuarios/**.jpg

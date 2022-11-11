@@ -4,13 +4,13 @@
   class="mat-elevation-z8"
   matSort
   cdkDropListGroup
-  class="table table-bordered table-hover mat-elevation-z8 example-table"
+  class="table table-bordered table-hover example-table"
 >
   <ng-container
     *ngFor="let column of columns; let i = index"
     [matColumnDef]="column.field"
   >
-    <th mat-header-cell *matHeaderCellDef mat-sort-header>
+    <th mat-header-cell *matHeaderCellDef mat-sort-header class="hide-arrow">
       {{ column.titulo }}
       <span
         class="resize-handle"

@@ -40,9 +40,13 @@ td {
   vertical-align: middle;
 }
 
+th {
+  color: rgb(231, 231, 231);
+}
+
 .mat-header-row {
   height: 15px;
-  text-align: right !important;
+  background-color: rgb(10, 26, 201);
 }
 
 /* Column Widths */
@@ -73,4 +77,9 @@ td {
 }
 .demo-row-is-archivo {
   background-color: rgb(218, 255, 204);
+}
+
+::ng-deep .hide-arrow .mat-sort-header-arrow {
+  position: relative;
+  color: rgb(231, 231, 231);
 }

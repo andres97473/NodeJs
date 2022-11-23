@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { SelectionModel } from '@angular/cdk/collections';
+import { MatIconModule } from '@angular/material/icon';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { MatRow, MatTableDataSource } from '@angular/material/table';
 import { HistoriasService } from '../../services/historias.service';
 import { HistoriaI } from '../../interface/historia';
-
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-
-import { MatIconModule } from '@angular/material/icon';
 
 import {
   PdfMakeWrapper,
@@ -50,6 +50,7 @@ PdfMakeWrapper.useFont('tahoma');
 })
 export class HistoriaComponent implements OnInit {
   displayedColumns: string[] = [
+    'select',
     'tipo_atencion',
     'num_orden',
     'fecha_dig',
@@ -57,7 +58,8 @@ export class HistoriaComponent implements OnInit {
     'medico',
     'especialidad_historia',
   ];
-  dataSource: HistoriaI[] = [];
+  dataSource = new MatTableDataSource<HistoriaI>([]);
+  selection = new SelectionModel<HistoriaI>(true, []);
 
   // prueba de datos
   dataApi: HistoriaI[] = [];
@@ -67,6 +69,7 @@ export class HistoriaComponent implements OnInit {
   tipoAtencion = [];
 
   historia: any[] = [];
+  historiasCheck: HistoriaI[] = [];
   diagnostico = '';
   diagnosticoHist = 'Sin Diagnostico';
   firma_ruta = 'assets/Firmas/firma.png';
@@ -120,6 +123,28 @@ export class HistoriaComponent implements OnInit {
     // console.log(this.calcularEdad('2021-08-02', '2022-07-02'));
   }
 
+  onHistoriaSelected(row: HistoriaI) {
+    this.selection.toggle(row);
+    this.historiasCheck = this.selection.selected;
+    console.log(this.historiasCheck);
+  }
+
+  isAllSelected() {
+    return this.selection.selected?.length == this.dataSource.data?.length;
+  }
+
+  toggleAll() {
+    if (this.isAllSelected()) {
+      this.selection.clear();
+      this.historiasCheck = this.selection.selected;
+      console.log(this.historiasCheck);
+    } else {
+      this.selection.select(...this.dataSource.data);
+      this.historiasCheck = this.selection.selected;
+      console.log(this.historiasCheck);
+    }
+  }
+
   iniciarFormulario() {
     this.pacienteForm = this.fb.group({
       inputHistoria: ['', Validators.required],
@@ -139,12 +164,12 @@ export class HistoriaComponent implements OnInit {
 
     // buscar historia por numero de historia
 
-    this.dataSource = [];
+    this.dataSource.data = [];
 
     this.historiasService.getHistoriasPaciente(historia).subscribe(
       (data: any) => {
         const nData = data.resultado.data[0];
-        this.dataSource = nData;
+        this.dataSource.data = nData;
         const nPaciente = nData[0];
         this.paciente = {
           nombre_paciente:
@@ -172,7 +197,7 @@ export class HistoriaComponent implements OnInit {
       }
     );
 
-    console.log(this.dataSource);
+    console.log(this.dataSource.data);
 
     // this.historiasService.getCodigos().subscribe((data: any) => {
     //   const nData = data.codigos[0];
@@ -190,11 +215,10 @@ export class HistoriaComponent implements OnInit {
 
     // buscar historia por numero de historia
 
-    this.dataSource = [];
+    this.dataSource.data = [];
     this.historiasService.getHistorias().subscribe((data: any) => {
       const nData = data.resultado[0];
-      this.dataSource = nData;
-      // console.log(this.dataSource);
+      this.dataSource.data = nData;
 
       const nPaciente = nData[0];
       this.paciente = {

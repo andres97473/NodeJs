@@ -1,5 +1,6 @@
 $alerta: #ff8080;
 $seleccion: #0078d7;
+$adjuntos: #8ab2d1;
 $salida: #b9d9ca;
 $titulo: #778899;
 $fondo: #ebecea;
@@ -112,6 +113,7 @@ table {
 }
 
 /* Column Widths */
+
 .mat-column-tipo_atencion,
 .mat-column-especialidad_historia,
 .mat-column-num_orden,
@@ -124,6 +126,11 @@ table {
   color: black;
 }
 
+.mat-column-select {
+  padding-left: 10px !important;
+  padding-right: 10px !important;
+}
+
 th,
 td {
   vertical-align: middle;
@@ -134,6 +141,13 @@ td {
 
 td:hover {
   cursor: pointer;
+}
+
+// color de check
+::ng-deep .mat-checkbox {
+  .mat-checkbox-frame {
+    background-color: #ffffff !important;
+  }
 }
 
 .mat-header-row {
@@ -153,6 +167,7 @@ td:hover {
   height: 22px !important;
   background: white;
   padding: 10px;
+
   &.demo-row-is-anulado {
     background: $alerta;
     td {
@@ -164,6 +179,12 @@ td:hover {
     td {
       border: 1px solid #f3f3f3;
       color: white;
+    }
+  }
+  &.demo-row-is-adjunto {
+    background: $adjuntos;
+    td {
+      border: 1px solid #f3f3f3;
     }
   }
 }

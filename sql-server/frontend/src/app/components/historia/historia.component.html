@@ -192,10 +192,10 @@
               <button
                 type="submit"
                 class="btn btn-primary waves-effect waves-light btn-sm btn-lg btn-block w-100"
-                (click)="generarPdf()"
-                [disabled]="historia.length == 0"
+                (click)="generarPdfCheck()"
+                [disabled]="historiasCheck.length == 0"
               >
-                Imprimir Historia<mat-icon class="icon-size"
+                Imprimir Folios Seleccionados<mat-icon class="icon-size"
                   >picture_as_pdf</mat-icon
                 >
               </button>

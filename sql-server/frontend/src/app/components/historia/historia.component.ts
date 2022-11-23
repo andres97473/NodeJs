@@ -836,4 +836,8 @@ export class HistoriaComponent implements OnInit {
     }
     return ruta;
   }
+
+  generarPdfCheck() {
+    console.log(this.historiasCheck);
+  }
 }

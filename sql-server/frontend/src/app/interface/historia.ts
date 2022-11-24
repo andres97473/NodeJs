@@ -41,4 +41,5 @@ export interface HistoriaI {
   texto03?: string;
   tipo_atencion?: number;
   usuario?: string;
+  firma_med?: string;
 }

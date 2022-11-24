@@ -772,6 +772,385 @@ export class HistoriaComponent implements OnInit {
     pdf.create().open();
   }
 
+  // TODO: Generar pdf selecionados
+
+  async pdfsCheck() {
+    let historias: HistoriaI[] = [];
+
+    for (const iterator of this.historiasCheck) {
+      this.setUrlImagen('assets/Firmas/MED' + iterator.md_codigo + '.bmp')
+        .then((data) => {
+          iterator.firma_med = data;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+
+      historias.push(iterator);
+    }
+
+    this.generarPdfSeleccionados(historias);
+  }
+
+  // funcion para generar pdfs con arrar de historias
+  async generarPdfSeleccionados(historias: HistoriaI[]) {
+    const colorFondo = '#f0f0f0';
+    const pdf = new PdfMakeWrapper();
+    const separadores = this.generarSeparadores();
+    let contador = 0;
+
+    var d = new Date();
+
+    var datestring =
+      d.getDate() +
+      '-' +
+      (d.getMonth() + 1) +
+      '-' +
+      d.getFullYear() +
+      ' ' +
+      d.getHours() +
+      ':' +
+      d.getMinutes();
+
+    // pdf.pageMargins([izquierda, arriba, derecha, abajo]);
+    pdf.pageMargins([40, 50, 40, 40]);
+    pdf.header(() => {
+      return {
+        text: [
+          new Txt('CENTRO HOSPITAL LUIS ANTONIO MONTERO ESE\n')
+            .fontSize(8.5)
+            .alignment('center')
+            .bold().end,
+          new Txt('Direccion: BARRIO LA UNION POTOSI Telefono: 7263046.\n')
+            .fontSize(8.5)
+            .alignment('center').end,
+          new Txt(`Fecha Impresion:      ${datestring}`)
+            .fontSize(6.5)
+            .alignment('right').end,
+        ],
+
+        // alignment: 'center',
+        // style: 'header',
+        margin: [40, 20, 40, 5],
+      };
+    });
+
+    pdf.footer((currentPage, pageCount) => {
+      const page =
+        'Pagina No:        ' + currentPage.toString() + ' de ' + pageCount;
+      return {
+        text: [
+          new Txt(
+            '___________________________________________________________________________\n'
+          ).end,
+          new Txt(page).fontSize(6.5).alignment('left').end,
+        ],
+        // pdf.pageMargins([izquierda, arriba, derecha, abajo]);
+        margin: [50, 15, 0, 10],
+      };
+    });
+
+    for (let seleccionada of historias) {
+      contador++;
+
+      let historia: any[] = [];
+      let texto1: string[] = [];
+
+      if (this.diagnostico.length > 0) {
+        const nDX = this.diagnostico.split('\n');
+
+        // console.log(nDX[0].trim());
+        this.diagnosticoHist = nDX[0].trim();
+      }
+      // console.log(this.diagnosticoHist);
+      historia = historia.filter((h) => h.id != '-900');
+
+      pdf.add(
+        new Txt(
+          `Folio No: ${seleccionada.num_orden}     \n`.trim().padEnd(250, ' ')
+        )
+          .fontSize(6.5)
+          .alignment('left')
+          .lineHeight(1.2)
+          .margin([0, 5, 0, 0])
+          .background(colorFondo).end
+      );
+
+      pdf.add(
+        new Txt(`${seleccionada.nombre_estudio}\n\n`)
+          .fontSize(8.5)
+          .alignment('center')
+          .bold().end
+      );
+
+      // TODO: obj
+      let obj = {
+        nombre_paciente:
+          seleccionada.ap_apellido1.trim() +
+          ' ' +
+          seleccionada.ap_apellido2.trim() +
+          ' ' +
+          seleccionada.ap_nombre1.trim() +
+          ' ' +
+          seleccionada.ap_nombre2.trim(),
+        nombre_medico:
+          seleccionada.md_apellido1.trim() +
+          ' ' +
+          seleccionada.md_apellido2.trim() +
+          ' ' +
+          seleccionada.md_nombre1.trim() +
+          ' ' +
+          seleccionada.md_nombre2.trim(),
+        reg_medico: seleccionada.md_reg_medico,
+        fecha_dig: seleccionada.fecha_dig,
+        fecha_nac: seleccionada.fecha_nac,
+        edad: this.calcularEdad(seleccionada.fecha_nac, seleccionada.fecha_dig),
+        estado_civil: 'UNION LIBRE',
+        no_historia: seleccionada.no_historia,
+        identificacion: seleccionada.identificacion,
+        empresa: seleccionada.empresa_nombre,
+        diagnostico: this.diagnosticoHist,
+        sexo: seleccionada.sexo === 'M' ? 'MASCULINO' : 'FEMENINO',
+        telefono: seleccionada.telefono,
+        municipio:
+          seleccionada.municipio == 52560
+            ? 'POTOSI (N)'
+            : 'FUERA DEL MUNICIPIO',
+        direccion: seleccionada.direccion,
+      };
+
+      // console.log(obj);
+
+      pdf.add(
+        new Table([
+          // fila 1
+          [
+            new Txt('PACIENTE:'.trim()).fontSize(6.5).bold().end,
+            new Txt(obj.nombre_paciente.trim().padEnd(35, ' '))
+              .fontSize(6.5)
+              .lineHeight(1.2)
+              .background(colorFondo).end,
+            new Txt('E.CIVIL:'.trim()).fontSize(6.5).bold().alignment('right')
+              .end,
+            new Txt(obj.estado_civil.trim().padEnd(20, ' '))
+              .fontSize(6.5)
+              .lineHeight(1.2)
+              .background(colorFondo).end,
+            new Txt('FECHA ATENCION:'.trim())
+              .fontSize(6.5)
+              .bold()
+              .alignment('right').end,
+            new Txt(String(obj.fecha_dig).trim().padEnd(33, ' '))
+              .fontSize(6.5)
+              .lineHeight(1.2)
+              .background(colorFondo).end,
+          ],
+          // fila 2
+          [
+            new Txt('No HISTORIA:'.trim()).fontSize(6.5).bold().end,
+            new Txt(obj.no_historia.trim().padEnd(35, ' '))
+              .fontSize(6.5)
+              .lineHeight(1.2)
+              .background(colorFondo).end,
+            new Txt('EDAD:'.trim()).fontSize(6.5).bold().alignment('right').end,
+            new Txt(String(obj.edad).trim().padEnd(20, ' '))
+              .fontSize(6.5)
+              .lineHeight(1.2)
+              .background(colorFondo).end,
+            new Txt('TELEFONO:'.trim()).fontSize(6.5).bold().alignment('right')
+              .end,
+            new Txt(obj.telefono.trim().padEnd(33, ' '))
+              .fontSize(6.5)
+              .lineHeight(1.2)
+              .background(colorFondo).end,
+          ],
+          // fila 3
+          [
+            new Txt('IDENTIFICACION:'.trim()).fontSize(6.5).bold().end,
+            new Txt(obj.identificacion.trim().padEnd(35, ' '))
+              .fontSize(6.5)
+              .lineHeight(1.2)
+              .background(colorFondo).end,
+            new Txt('SEXO:'.trim()).fontSize(6.5).bold().alignment('right').end,
+            new Txt(obj.sexo.trim().padEnd(20, ' '))
+              .fontSize(6.5)
+              .lineHeight(1.2)
+              .background(colorFondo).end,
+            new Txt('MUNICIPIO:'.trim()).fontSize(6.5).bold().alignment('right')
+              .end,
+            new Txt(obj.municipio.padEnd(33, ' '))
+              .fontSize(6.5)
+              .lineHeight(1.2)
+              .background(colorFondo).end,
+          ],
+          // fila 4
+          [
+            new Txt('EMPRESA:'.trim()).fontSize(6.5).bold().end,
+            new Txt(String(obj.empresa).trim().padEnd(35, ' '))
+              .fontSize(6.5)
+              .lineHeight(1.2)
+              .background(colorFondo).end,
+            new Txt('FEC. NAC:').fontSize(6.5).bold().alignment('right').end,
+            new Txt(String(obj.fecha_nac).padEnd(20, ' '))
+              .fontSize(6.5)
+              .lineHeight(1.2)
+              .background(colorFondo).end,
+            new Txt('DIRECCION:'.trim()).fontSize(6.5).bold().alignment('right')
+              .end,
+            new Txt(String(obj.direccion).trim().padEnd(33, ' '))
+              .fontSize(6.5)
+              .lineHeight(1.2)
+              .background(colorFondo).end,
+          ],
+          // fila 5
+          [
+            new Txt('DIAGNOSTICO:'.trim()).fontSize(6.5).bold().end,
+            new Cell(
+              new Txt(String(obj.diagnostico).trim().padEnd(80, ' '))
+                .fontSize(6.5)
+                .lineHeight(1.2)
+                .background(colorFondo).end
+            ).colSpan(5).end,
+          ],
+        ])
+          .widths([60, 120, 40, 80, 80, 90])
+          .layout({
+            hLineWidth: function (i, node) {
+              return i === 0 || i === node.table.body.length ? 0.3 : 0;
+            },
+            vLineWidth: function (i, node) {
+              return i === 0 || i === node.table.widths.length ? 0.3 : 0;
+            },
+            hLineColor: function (i, node) {
+              return i === 0 || i === node.table.body.length ? 'gray' : 'white';
+            },
+            vLineColor: function (i, node) {
+              return i === 0 || i === node.table.widths.length
+                ? 'gray'
+                : 'white';
+            },
+          }).end
+      );
+
+      pdf.add(new Txt('\n').end);
+
+      // crear arrar de historia
+
+      if (seleccionada.texto01) {
+        const txt1 = this.splitString(seleccionada.texto01, separadores);
+        texto1 = txt1;
+      }
+
+      for (const iterator of texto1) {
+        // console.log(this.convertirString(iterator));
+        historia.push(this.convertirString(iterator));
+      }
+
+      for (const hist of historia) {
+        if (hist.largo.length > 0) {
+          pdf.add(
+            new Canvas([new Rect([0, 0], [515, 0.3]).color('#c0c0c0').end]).end
+          );
+
+          pdf.add(
+            new Txt(hist.codigo.trim().padEnd(150, ' '))
+              .fontSize(6.5)
+              .bold()
+              .lineHeight(1.2)
+              .margin([0, 5, 0, 0])
+              .background(colorFondo).end
+          );
+
+          pdf.add(
+            new Txt(hist.cuerpo).font('cour').fontSize(7.5).alignment('justify')
+              .end
+          );
+
+          pdf.add(new Txt('\n').end);
+        }
+      }
+
+      // lineas
+      pdf.add([
+        new Canvas([new Rect([0, 0], [515, 0.3]).color('black').end]).end,
+        new Canvas([new Rect([0, 0], [515, 0.3]).color('black').end]).margin([
+          0, 2, 0, 0,
+        ]).end,
+      ]);
+
+      // firmas
+
+      pdf.add(
+        new Columns([
+          await new Img(seleccionada.firma_med)
+            .width(120)
+            .margin([50, 4, 0, 0])
+            .build(),
+          new Txt('').end,
+        ]).end
+      );
+
+      pdf.add(
+        new Columns([
+          new Txt('_________________________________').end,
+          new Txt('_________________________________').alignment('center').end,
+        ]).end
+      );
+
+      pdf.add(
+        new Columns([
+          new Columns([
+            new Txt('MEDICO:')
+              .fontSize(6.5)
+              .bold()
+              .width(60)
+              .margin([0, 3, 0, 0]).end,
+            new Table([[new Txt(obj.nombre_medico).fontSize(6.5).end]])
+              .widths([160])
+              .layout({
+                hLineColor: function () {
+                  return 'gray';
+                },
+                vLineColor: function () {
+                  return 'gray';
+                },
+              }).end,
+          ]).end,
+          new Txt('FIRMA PACIENTE:').fontSize(6.5).bold().alignment('center')
+            .end,
+        ]).end
+      );
+      pdf.add(
+        new Columns([
+          new Columns([
+            new Txt('REG MEDICO:')
+              .fontSize(6.5)
+              .bold()
+              .width(60)
+              .margin([0, 3, 0, 0]).end,
+            new Table([[new Txt(obj.reg_medico).fontSize(6.5).end]])
+              .widths([120])
+              .layout({
+                hLineColor: function () {
+                  return 'gray';
+                },
+                vLineColor: function () {
+                  return 'gray';
+                },
+              }).end,
+          ]).end,
+        ]).end
+      );
+      // TODO: salto de pagina
+
+      if (this.historiasCheck.length - contador > 0) {
+        pdf.add(new Txt('').pageBreak('after').end);
+      }
+    }
+
+    pdf.create().open();
+  }
+
   // TODO: calcular edad
   calcularEdad(fecha_inicio, fecha_fin): string {
     let cumpleanos = new Date(fecha_inicio);
@@ -835,9 +1214,5 @@ export class HistoriaComponent implements OnInit {
       ruta = 'assets/Firmas/firma.png';
     }
     return ruta;
-  }
-
-  generarPdfCheck() {
-    console.log(this.historiasCheck);
   }
 }

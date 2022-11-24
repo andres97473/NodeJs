@@ -13,7 +13,7 @@ export interface HistoriaI {
   especialidad_historia?: number;
   estado_folio?: number;
   etiqueta?: number;
-  fecha_dig?: string;
+  fecha_dig?: Date;
   fecha_nac?: Date;
   identificacion?: string;
   md_apellido1?: string;

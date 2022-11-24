@@ -110,23 +110,42 @@ export class HistoriaComponent implements OnInit {
   ngOnInit() {
     this.historiasService.getEspecialidades().subscribe((resp: any) => {
       this.especialidades = resp.especialidad;
-      console.log(resp.especialidad);
+      // console.log(resp.especialidad);
     });
 
     this.historiasService.getTipoAtencion().subscribe((resp: any) => {
       this.tipoAtencion = resp.tipoAtencion;
-      console.log(resp.tipoAtencion);
+      // console.log(resp.tipoAtencion);
     });
     this.iniciarFormulario();
-
-    // TODO:
-    // console.log(this.calcularEdad('2021-08-02', '2022-07-02'));
   }
 
   onHistoriaSelected(row: HistoriaI) {
     this.selection.toggle(row);
     this.historiasCheck = this.selection.selected;
-    console.log(this.historiasCheck);
+
+    let historias: HistoriaI[] = [];
+
+    for (const iterator of this.historiasCheck) {
+      this.setUrlImagen('assets/Firmas/MED' + iterator.md_codigo + '.bmp')
+        .then((data) => {
+          iterator.firma_med = data;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+
+      historias.push(iterator);
+    }
+
+    // ordenar por fecha de dig
+    historias.sort(
+      (a, b) =>
+        new Date(b.fecha_dig).getTime() - new Date(a.fecha_dig).getTime()
+    );
+
+    this.historiasCheck = historias;
+    // console.table(this.historiasCheck);
   }
 
   isAllSelected() {
@@ -475,7 +494,7 @@ export class HistoriaComponent implements OnInit {
     return obj;
   }
 
-  // TODO: Generar pdf
+  // Generar pdf
 
   async generarPdf() {
     const colorFondo = '#f0f0f0';
@@ -529,7 +548,7 @@ export class HistoriaComponent implements OnInit {
       };
     });
 
-    // TODO: obj
+    // obj
     const obj = {
       nombre_paciente:
         this.selectedRow.ap_apellido1.trim() +
@@ -774,43 +793,36 @@ export class HistoriaComponent implements OnInit {
 
   // TODO: Generar pdf selecionados
 
-  async pdfsCheck() {
-    let historias: HistoriaI[] = [];
+  dateString(date: Date): string {
+    let d = new Date(date);
 
-    for (const iterator of this.historiasCheck) {
-      this.setUrlImagen('assets/Firmas/MED' + iterator.md_codigo + '.bmp')
-        .then((data) => {
-          iterator.firma_med = data;
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-
-      historias.push(iterator);
-    }
-
-    this.generarPdfSeleccionados(historias);
-  }
-
-  // funcion para generar pdfs con arrar de historias
-  async generarPdfSeleccionados(historias: HistoriaI[]) {
-    const colorFondo = '#f0f0f0';
-    const pdf = new PdfMakeWrapper();
-    const separadores = this.generarSeparadores();
-    let contador = 0;
-
-    var d = new Date();
-
-    var datestring =
+    let datestring =
       d.getDate() +
-      '-' +
+      '/' +
       (d.getMonth() + 1) +
-      '-' +
+      '/' +
       d.getFullYear() +
       ' ' +
       d.getHours() +
       ':' +
       d.getMinutes();
+
+    return datestring;
+  }
+
+  async pdfsCheck() {
+    this.generarPdfSeleccionados(this.historiasCheck);
+  }
+
+  // funcion para generar pdfs con arrar de historias
+  async generarPdfSeleccionados(historias: HistoriaI[]) {
+    const colorFondo = '#f0f0f0';
+    const colorFondoFolio = '#abd4f3';
+    const pdf = new PdfMakeWrapper();
+    const separadores = this.generarSeparadores();
+    let contador = 0;
+
+    var d = new Date();
 
     // pdf.pageMargins([izquierda, arriba, derecha, abajo]);
     pdf.pageMargins([40, 50, 40, 40]);
@@ -824,7 +836,7 @@ export class HistoriaComponent implements OnInit {
           new Txt('Direccion: BARRIO LA UNION POTOSI Telefono: 7263046.\n')
             .fontSize(8.5)
             .alignment('center').end,
-          new Txt(`Fecha Impresion:      ${datestring}`)
+          new Txt(`Fecha Impresion:      ${this.dateString(d)}`)
             .fontSize(6.5)
             .alignment('right').end,
         ],
@@ -850,11 +862,26 @@ export class HistoriaComponent implements OnInit {
       };
     });
 
+    // ciclo para generar pdfs con las historias seleccionadas
     for (let seleccionada of historias) {
       contador++;
 
+      // console.log(new Date(seleccionada.fecha_dig).getTime());
+
       let historia: any[] = [];
       let texto1: string[] = [];
+
+      // crear array de historia
+
+      if (seleccionada.texto01) {
+        const txt1 = this.splitString(seleccionada.texto01, separadores);
+        texto1 = txt1;
+      }
+
+      for (const iterator of texto1) {
+        // console.log(this.convertirString(iterator));
+        historia.push(this.convertirString(iterator));
+      }
 
       if (this.diagnostico.length > 0) {
         const nDX = this.diagnostico.split('\n');
@@ -873,7 +900,7 @@ export class HistoriaComponent implements OnInit {
           .alignment('left')
           .lineHeight(1.2)
           .margin([0, 5, 0, 0])
-          .background(colorFondo).end
+          .background(colorFondoFolio).end
       );
 
       pdf.add(
@@ -902,7 +929,7 @@ export class HistoriaComponent implements OnInit {
           ' ' +
           seleccionada.md_nombre2.trim(),
         reg_medico: seleccionada.md_reg_medico,
-        fecha_dig: seleccionada.fecha_dig,
+        fecha_dig: this.dateString(seleccionada.fecha_dig),
         fecha_nac: seleccionada.fecha_nac,
         edad: this.calcularEdad(seleccionada.fecha_nac, seleccionada.fecha_dig),
         estado_civil: 'UNION LIBRE',
@@ -1033,18 +1060,6 @@ export class HistoriaComponent implements OnInit {
       );
 
       pdf.add(new Txt('\n').end);
-
-      // crear arrar de historia
-
-      if (seleccionada.texto01) {
-        const txt1 = this.splitString(seleccionada.texto01, separadores);
-        texto1 = txt1;
-      }
-
-      for (const iterator of texto1) {
-        // console.log(this.convertirString(iterator));
-        historia.push(this.convertirString(iterator));
-      }
 
       for (const hist of historia) {
         if (hist.largo.length > 0) {

@@ -16,7 +16,7 @@ export class UsuarioService {
     private http: HttpClient
   ) {
     const url2 = this.document.location.href.split('#')[0];
-    console.log(url2);
+    // console.log(url2);
     // activar localhost dinamico
     //this.url = url2;
   }

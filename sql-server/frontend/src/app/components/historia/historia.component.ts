@@ -15,6 +15,7 @@ import {
   Cell,
   Columns,
   Img,
+  PageReference,
 } from 'pdfmake-wrapper';
 import { ITable, IImg, IText } from 'pdfmake-wrapper/lib/interfaces';
 
@@ -156,11 +157,33 @@ export class HistoriaComponent implements OnInit {
     if (this.isAllSelected()) {
       this.selection.clear();
       this.historiasCheck = this.selection.selected;
-      console.log(this.historiasCheck);
     } else {
       this.selection.select(...this.dataSource.data);
       this.historiasCheck = this.selection.selected;
-      console.log(this.historiasCheck);
+
+      // console.log(this.historiasCheck);
+
+      let historias: HistoriaI[] = [];
+
+      for (const iterator of this.historiasCheck) {
+        this.setUrlImagen('assets/Firmas/MED' + iterator.md_codigo + '.bmp')
+          .then((data) => {
+            iterator.firma_med = data;
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+
+        historias.push(iterator);
+      }
+
+      // ordenar por fecha de dig
+      historias.sort(
+        (a, b) =>
+          new Date(b.fecha_dig).getTime() - new Date(a.fecha_dig).getTime()
+      );
+
+      this.historiasCheck = historias;
     }
   }
 
@@ -328,8 +351,8 @@ export class HistoriaComponent implements OnInit {
   }
 
   selectRow(row: HistoriaI) {
-    // archivo
-
+    this.historia = [];
+    this.selectedRow = {};
     const separadores = this.generarSeparadores();
     // console.log(separadores);
 
@@ -338,12 +361,11 @@ export class HistoriaComponent implements OnInit {
       myDiv.scrollTop = 0;
     }
 
-    this.historia = [];
     this.selectedRow = row;
 
     this.documento_ruta = row.direccion_archivo;
 
-    console.log(this.selectedRow);
+    // console.log(this.selectedRow);
     // console.log(this.selectedRow.direccion_archivo);
 
     // this.firma_ruta = 'assets/Firmas/MED' + this.selectedRow.md_codigo + '.bmp';
@@ -351,6 +373,7 @@ export class HistoriaComponent implements OnInit {
     this.setUrlImagen('assets/Firmas/MED' + this.selectedRow.md_codigo + '.bmp')
       .then((data) => {
         this.firma_ruta = data;
+        this.selectedRow.firma_med = data;
         // console.log(this.firma_ruta);
       })
       .catch((err) => {
@@ -375,6 +398,7 @@ export class HistoriaComponent implements OnInit {
       // console.log(this.convertirString(iterator));
       this.historia.push(this.convertirString(iterator));
     }
+    // console.log(this.historia);
 
     // console.log(this.texto1);
     // console.log(this.texto2);
@@ -791,8 +815,7 @@ export class HistoriaComponent implements OnInit {
     pdf.create().open();
   }
 
-  // TODO: Generar pdf selecionados
-
+  // convertir fecha a string para visualizar
   dateString(date: Date): string {
     let d = new Date(date);
 
@@ -810,11 +833,20 @@ export class HistoriaComponent implements OnInit {
     return datestring;
   }
 
+  // generar pdf seleccionado
+  async generarPdf2() {
+    let historias: HistoriaI[] = [];
+
+    historias.push(this.selectedRow);
+    this.generarPdfSeleccionados(historias);
+  }
+
+  // funcion para generar los pdfs seleccionados con checkbox
   async pdfsCheck() {
     this.generarPdfSeleccionados(this.historiasCheck);
   }
 
-  // funcion para generar pdfs con arrar de historias
+  // funcion para generar pdfs con array de historias
   async generarPdfSeleccionados(historias: HistoriaI[]) {
     const colorFondo = '#f0f0f0';
     const colorFondoFolio = '#abd4f3';
@@ -866,10 +898,13 @@ export class HistoriaComponent implements OnInit {
     for (let seleccionada of historias) {
       contador++;
 
+      // construir pdf
+
       // console.log(new Date(seleccionada.fecha_dig).getTime());
 
       let historia: any[] = [];
       let texto1: string[] = [];
+      let diagnostico = 'Sin Diagnostico';
 
       // crear array de historia
 
@@ -883,11 +918,10 @@ export class HistoriaComponent implements OnInit {
         historia.push(this.convertirString(iterator));
       }
 
-      if (this.diagnostico.length > 0) {
-        const nDX = this.diagnostico.split('\n');
+      const diag = historia.filter((h) => h.id === '1006' || h.id === '1025');
 
-        // console.log(nDX[0].trim());
-        this.diagnosticoHist = nDX[0].trim();
+      if (diag.length > 0) {
+        diagnostico = diag[0].cuerpo.split('\n')[0];
       }
       // console.log(this.diagnosticoHist);
       historia = historia.filter((h) => h.id != '-900');
@@ -936,7 +970,7 @@ export class HistoriaComponent implements OnInit {
         no_historia: seleccionada.no_historia,
         identificacion: seleccionada.identificacion,
         empresa: seleccionada.empresa_nombre,
-        diagnostico: this.diagnosticoHist,
+        diagnostico: diagnostico,
         sexo: seleccionada.sexo === 'M' ? 'MASCULINO' : 'FEMENINO',
         telefono: seleccionada.telefono,
         municipio:
@@ -1156,6 +1190,7 @@ export class HistoriaComponent implements OnInit {
           ]).end,
         ]).end
       );
+
       // TODO: salto de pagina
 
       if (this.historiasCheck.length - contador > 0) {

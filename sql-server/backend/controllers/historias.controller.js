@@ -108,6 +108,29 @@ class HistoriaController {
     // definir ruta de archivo
     //console.log(req.body);
     // console.log(req.params.name1);
+    const { folder1, folder2, folder3, folder4, folder5, archivo } = req.params;
+    const ruta =
+      "D:/" +
+      folder1 +
+      "/" +
+      folder2 +
+      "/" +
+      folder3 +
+      "/" +
+      folder4 +
+      "/" +
+      folder5 +
+      "/" +
+      archivo;
+
+    res.setHeader("Content-Disposition", `attachment; filename=${archivo}`);
+    return res.sendFile(ruta);
+  }
+
+  async postArchivos(req, res) {
+    // definir ruta de archivo
+    //console.log(req.body);
+    // console.log(req.params.name1);
     const { file, path } = req.body;
     const archivo = file;
     const path_archivo = path;

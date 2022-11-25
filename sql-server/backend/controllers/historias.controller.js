@@ -80,7 +80,7 @@ class HistoriaController {
       ,ap.identificacion
       ,ap.sexo
       ,ap.telefono
-      ,Format(ap.fecha_nac,'dd/MM/yyyy') AS fecha_nac
+      ,ap.fecha_nac as 'fecha_nac'
       ,ap.direccion
       ,br.Nombre as 'barrio_nombre'
       ,ap.municipio

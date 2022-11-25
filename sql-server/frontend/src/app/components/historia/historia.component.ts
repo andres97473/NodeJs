@@ -213,6 +213,8 @@ export class HistoriaComponent implements OnInit {
         const nData = data.resultado.data[0];
         this.dataSource.data = nData;
         const nPaciente = nData[0];
+        // console.log(nPaciente);
+
         this.paciente = {
           nombre_paciente:
             nPaciente.ap_apellido1 +
@@ -225,7 +227,7 @@ export class HistoriaComponent implements OnInit {
           barrio_nombre: nPaciente.barrio_nombre,
           direccion: nPaciente.direccion,
           empresa_nombre: nPaciente.empresa_nombre,
-          fecha_nac: nPaciente.fecha_nac,
+          fecha_nac: this.dateStringFecha(nPaciente.fecha_nac),
           edad: this.calcularEdad(nPaciente.fecha_nac, new Date()),
           identificacion: nPaciente.identificacion,
           no_historia: nPaciente.no_historia,
@@ -239,7 +241,7 @@ export class HistoriaComponent implements OnInit {
       }
     );
 
-    console.log(this.dataSource.data);
+    // console.log(this.dataSource.data);
 
     // this.historiasService.getCodigos().subscribe((data: any) => {
     //   const nData = data.codigos[0];
@@ -263,6 +265,8 @@ export class HistoriaComponent implements OnInit {
       this.dataSource.data = nData;
 
       const nPaciente = nData[0];
+      console.log(nPaciente);
+
       this.paciente = {
         nombre_paciente:
           nPaciente.ap_apellido1 +
@@ -275,7 +279,7 @@ export class HistoriaComponent implements OnInit {
         barrio_nombre: nPaciente.barrio_nombre,
         direccion: nPaciente.direccion,
         empresa_nombre: nPaciente.empresa_nombre,
-        fecha_nac: nPaciente.fecha_nac,
+        fecha_nac: this.dateString(new Date(nPaciente.fecha_nac)),
         edad: this.calcularEdad(nPaciente.fecha_nac, new Date()),
         identificacion: nPaciente.identificacion,
         no_historia: nPaciente.no_historia,
@@ -833,6 +837,15 @@ export class HistoriaComponent implements OnInit {
     return datestring;
   }
 
+  dateStringFecha(date: Date): string {
+    let d = new Date(date);
+
+    let datestring =
+      d.getDate() + '/' + (d.getMonth() + 1) + '/' + d.getFullYear();
+
+    return datestring;
+  }
+
   // generar pdf seleccionado
   async generarPdf2() {
     let historias: HistoriaI[] = [];
@@ -964,7 +977,7 @@ export class HistoriaComponent implements OnInit {
           seleccionada.md_nombre2.trim(),
         reg_medico: seleccionada.md_reg_medico,
         fecha_dig: this.dateString(seleccionada.fecha_dig),
-        fecha_nac: seleccionada.fecha_nac,
+        fecha_nac: this.dateStringFecha(seleccionada.fecha_nac),
         edad: this.calcularEdad(seleccionada.fecha_nac, seleccionada.fecha_dig),
         estado_civil: 'UNION LIBRE',
         no_historia: seleccionada.no_historia,
@@ -1211,7 +1224,7 @@ export class HistoriaComponent implements OnInit {
       (fin.getMonth() - cumpleanos.getMonth());
 
     let years = Math.floor(total_months / 12);
-    let months = total_months - years * 12;
+    let months = Math.floor(total_months - years * 12);
 
     let yearsText = ' AÑOS ';
     let monthsText = ' MESES';

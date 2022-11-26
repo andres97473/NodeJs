@@ -57,8 +57,14 @@ export class HistoriaComponent implements OnInit {
     'fecha_dig',
     'nombre_estudio',
     'medico',
-    'especialidad_historia',
+    'anulado',
   ];
+
+  // filtro
+  filterValues: any = {};
+  nombreEstudio: boolean = true;
+  numFolios = 0;
+
   dataSource = new MatTableDataSource<HistoriaI>([]);
   selection = new SelectionModel<HistoriaI>(true, []);
 
@@ -121,6 +127,30 @@ export class HistoriaComponent implements OnInit {
     this.iniciarFormulario();
   }
 
+  crearPredicado() {
+    this.dataSource.filterPredicate = (
+      data: HistoriaI,
+      filter: string
+    ): boolean => {
+      const filterValues = JSON.parse(filter);
+
+      return this.nombreEstudio
+        ? true
+        : data.nombre_estudio
+            .trim()
+            .toUpperCase()
+            .indexOf(filterValues.nombre_estudio) == -1;
+    };
+  }
+
+  applyFilter(column: string, filterValue: string) {
+    this.filterValues[column] = filterValue;
+
+    this.dataSource.filter = JSON.stringify(this.filterValues);
+
+    this.numFolios = this.dataSource.filteredData.length;
+  }
+
   onHistoriaSelected(row: HistoriaI) {
     this.selection.toggle(row);
     this.historiasCheck = this.selection.selected;
@@ -150,7 +180,9 @@ export class HistoriaComponent implements OnInit {
   }
 
   isAllSelected() {
-    return this.selection.selected?.length == this.dataSource.data?.length;
+    return (
+      this.selection.selected?.length == this.dataSource.filteredData?.length
+    );
   }
 
   toggleAll() {
@@ -158,7 +190,7 @@ export class HistoriaComponent implements OnInit {
       this.selection.clear();
       this.historiasCheck = this.selection.selected;
     } else {
-      this.selection.select(...this.dataSource.data);
+      this.selection.select(...this.dataSource.filteredData);
       this.historiasCheck = this.selection.selected;
 
       // console.log(this.historiasCheck);
@@ -212,6 +244,12 @@ export class HistoriaComponent implements OnInit {
       (data: any) => {
         const nData = data.resultado.data[0];
         this.dataSource.data = nData;
+        console.log(this.dataSource.data);
+
+        this.numFolios = this.dataSource.data.length;
+
+        this.crearPredicado();
+
         const nPaciente = nData[0];
         // console.log(nPaciente);
 
@@ -263,9 +301,14 @@ export class HistoriaComponent implements OnInit {
     this.historiasService.getHistorias().subscribe((data: any) => {
       const nData = data.resultado[0];
       this.dataSource.data = nData;
+      console.log(this.dataSource.data);
+
+      this.numFolios = this.dataSource.data.length;
+
+      this.crearPredicado();
 
       const nPaciente = nData[0];
-      console.log(nPaciente);
+      // console.log(nPaciente);
 
       this.paciente = {
         nombre_paciente:

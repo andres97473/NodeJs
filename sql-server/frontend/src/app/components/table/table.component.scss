@@ -1,133 +1,13 @@
-/* Structure */
-
-$alerta: #ff8080;
-$seleccion: #0078d7;
-$salida: #b9d9ca;
-$titulo: #778899;
-$fondo: #ebecea;
-
-.container-fluid {
-  margin-top: 0px;
-  padding: 5px;
-}
-
-.card {
-  margin-bottom: 5px;
-}
-
-div {
-  white-space: pre-line;
-}
-
-input {
-  font-size: 11px;
-}
-
-.card-titulo {
-  background-color: $titulo;
-  color: #fff;
-}
-
-.row-no-padding > [class*="col-"] {
-  padding-left: 0 !important;
-  padding-right: 0 !important;
-}
-
-.fuente {
-  font-size: 12px !important;
-  height: 14px !important;
-}
-.input-texto {
-  background-color: #b9d9ca;
-}
-
-.example-container {
-  position: relative;
-}
-
-.example-container-paciente {
-  min-height: 80px;
-  max-height: 80px;
-}
-
-.example-historia-container {
-  position: relative;
-  min-height: 210px;
-  max-height: 210px;
-  overflow: auto;
-  font-size: 12px;
-}
-
-.container-text-hist {
-  text-align: justify;
-  padding-right: 10px;
-}
-
-.example-table-container {
-  border: 1px solid rgb(180, 180, 180);
-  position: relative;
-  min-height: 150px;
-  max-height: 150px;
-  overflow: auto;
-}
-
-.separador {
-  font-size: 15px;
-  letter-spacing: 4px;
-}
-
 table {
   width: 100%;
 }
 
-/* Column Widths */
-.mat-column-tipo_atencion,
-.mat-column-especialidad_historia,
-.mat-column-num_orden,
-.mat-column-fecha_dig,
-.mat-column-nombre_estudio,
-.mat-column-medico {
-  //   max-width: 64px;
-  padding-left: 10px !important;
-  font-size: 12px;
-  color: black;
+.mat-form-field {
+  font-size: 14px;
+  width: 100%;
 }
 
-th,
-td {
-  vertical-align: middle;
-  border: 1px solid rgb(180, 180, 180);
-  border-top: 1px rgb(180, 180, 180);
-  border-bottom: 1px rgb(180, 180, 180);
-}
-
-td:hover {
-  cursor: pointer;
-}
-
-.mat-header-row {
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  background: rgb(224, 224, 224);
-  height: 22px !important;
-}
-
-.mat-row {
-  height: 22px !important;
-  background: white;
-  padding: 10px;
-  &.demo-row-is-anulado {
-    background: $alerta;
-    td {
-      border: 1px solid #f3f3f3;
-    }
-  }
-  &.demo-row-is-clicked {
-    background: $seleccion;
-    td {
-      border: 1px solid #f3f3f3;
-      color: white;
-    }
-  }
+td,
+th {
+  width: 25%;
 }

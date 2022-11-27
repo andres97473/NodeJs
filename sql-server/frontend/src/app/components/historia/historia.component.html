@@ -179,8 +179,9 @@
           </div>
           <br />
 
-          <div class="form-group row m-b-0">
-            <div class="offset-sm-3 col-sm-9">
+          <!-- Opciones buscar e imprimir historia -->
+          <div class="form-group row">
+            <div class="col-sm-6">
               <button
                 type="submit"
                 class="btn btn-success waves-effect waves-light btn-sm btn-lg btn-block w-100"
@@ -189,31 +190,75 @@
               >
                 Buscar Paciente
               </button>
-              <button
-                type="submit"
-                class="btn btn-primary waves-effect waves-light btn-sm btn-lg btn-block w-100"
-                (click)="pdfsCheck()"
-                [disabled]="historiasCheck.length == 0"
-              >
-                Imprimir Folios Seleccionados<mat-icon class="icon-size"
-                  >picture_as_pdf</mat-icon
-                >
-              </button>
-            </div>
-            <div>
-              Numero de folios: {{ historiasCheck.length }} de {{ numFolios }}
+              <br />
+              <div>
+                Numero de folios: {{ historiasCheck.length }} de {{ numFolios }}
+              </div>
             </div>
           </div>
         </form>
-        <mat-checkbox
-          [(ngModel)]="nombreEstudio"
-          (change)="applyFilter('nombre_estudio', nombreEstudio ? '' : 'NOTA')"
-          color="primary"
-          >NOTAS</mat-checkbox
-        >
+        <div class="row">
+          <div class="col-sm-8">
+            <button
+              type="submit"
+              class="btn btn-primary waves-effect waves-light btn-sm btn-lg btn-block w-100"
+              (click)="pdfsCheck()"
+              [disabled]="historiasCheck.length == 0"
+            >
+              Imprimir Folios Seleccionados<mat-icon class="icon-size"
+                >picture_as_pdf</mat-icon
+              >
+            </button>
+          </div>
+          <div class="col-sm-4">
+            <div class="checks-container border">
+              <mat-checkbox
+                [(ngModel)]="filtroNotas"
+                (change)="applyFilter('filtroNotas', filtroNotas ? '' : 'SI')"
+                color="primary"
+                >NOTAS
+              </mat-checkbox>
+              <mat-checkbox
+                [(ngModel)]="filtroOdontologia"
+                (change)="
+                  applyFilter(
+                    'filtroOdontologia',
+                    filtroOdontologia ? '' : 'SI'
+                  )
+                "
+                color="primary"
+                >ODONTOLOGIA
+              </mat-checkbox>
+              <mat-checkbox
+                [(ngModel)]="filtroAdjuntos"
+                (change)="
+                  applyFilter('filtroAdjuntos', filtroAdjuntos ? '' : 'SI')
+                "
+                color="primary"
+                >DAT.ADJUNTOS
+              </mat-checkbox>
+              <mat-checkbox
+                [(ngModel)]="filtroUrgencias"
+                (change)="
+                  applyFilter('filtroUrgencias', filtroUrgencias ? '' : 'SI')
+                "
+                color="primary"
+                >URGENCIAS
+              </mat-checkbox>
+              <mat-checkbox
+                [(ngModel)]="filtroAnulado"
+                (change)="
+                  applyFilter('filtroAnulado', filtroAnulado ? '' : 'SI')
+                "
+                >ANULADOS
+              </mat-checkbox>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
+
   <div class="col-lg-8 col-xs-12">
     <div class="historia-container col col-lg-12 animated fadeIn fast">
       <div class="card">
@@ -286,7 +331,7 @@
                   </td>
                 </ng-container>
 
-                <!-- Number Column -->
+                <!-- Tipo de atencion Column -->
                 <ng-container matColumnDef="tipo_atencion">
                   <th mat-header-cell *matHeaderCellDef>Tipo Atencion</th>
                   <td
@@ -298,7 +343,7 @@
                   </td>
                 </ng-container>
 
-                <!-- Title Column -->
+                <!-- Numero de folio Column -->
                 <ng-container matColumnDef="num_orden">
                   <th mat-header-cell *matHeaderCellDef>No Folio</th>
                   <td
@@ -310,7 +355,7 @@
                   </td>
                 </ng-container>
 
-                <!-- State Column -->
+                <!-- fecha digitacion -->
                 <ng-container matColumnDef="fecha_dig">
                   <th mat-header-cell *matHeaderCellDef>Fecha</th>
                   <td
@@ -321,7 +366,7 @@
                     {{ row.fecha_dig | date: "dd-MM-yyyy h:mm a" }}
                   </td>
                 </ng-container>
-                <!-- State Column -->
+                <!-- nombre estudio -->
                 <ng-container matColumnDef="nombre_estudio">
                   <th mat-header-cell *matHeaderCellDef>Tipo de Historia</th>
                   <td
@@ -332,7 +377,18 @@
                     {{ row.nombre_estudio }}
                   </td>
                 </ng-container>
-                <!-- State Column -->
+                <!-- estudio codigo -->
+                <ng-container matColumnDef="especialidad">
+                  <th mat-header-cell *matHeaderCellDef>Especialidad</th>
+                  <td
+                    class="animated fadeIn fast"
+                    mat-cell
+                    *matCellDef="let row"
+                  >
+                    {{ row.especialidad_historia }}
+                  </td>
+                </ng-container>
+                <!-- medico Column -->
                 <ng-container matColumnDef="medico">
                   <th mat-header-cell *matHeaderCellDef>Profesional</th>
                   <td
@@ -344,7 +400,7 @@
                     {{ row.md_nombre1 }} {{ row.md_nombre2 }}
                   </td>
                 </ng-container>
-
+                <!-- anulado Column -->
                 <ng-container matColumnDef="anulado">
                   <th mat-header-cell *matHeaderCellDef>Anulado</th>
                   <td
@@ -352,7 +408,7 @@
                     mat-cell
                     *matCellDef="let row"
                   >
-                    {{ row.anulado == -1 ? "SI" : "NO" }}
+                    {{ row.filtroAnulado }}
                   </td>
                 </ng-container>
 

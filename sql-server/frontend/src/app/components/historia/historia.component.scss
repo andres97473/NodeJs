@@ -53,6 +53,14 @@ div {
 .form-container {
   height: 90vh;
   min-height: 90vh;
+  overflow: auto;
+}
+
+.checks-container {
+  padding-left: 2px;
+  overflow: auto;
+  max-height: 90px;
+  font-size: 10px;
 }
 
 .historia-container {

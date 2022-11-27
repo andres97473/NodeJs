@@ -56,14 +56,20 @@ export class HistoriaComponent implements OnInit {
     'num_orden',
     'fecha_dig',
     'nombre_estudio',
+    'especialidad',
     'medico',
     'anulado',
   ];
 
-  // filtro
+  // filtros
   filterValues: any = {};
-  nombreEstudio: boolean = true;
   numFolios = 0;
+  notas: boolean = true;
+  filtroAnulado: boolean = true;
+  filtroAdjuntos: boolean = true;
+  filtroNotas: boolean = true;
+  filtroOdontologia: boolean = true;
+  filtroUrgencias: boolean = true;
 
   dataSource = new MatTableDataSource<HistoriaI>([]);
   selection = new SelectionModel<HistoriaI>(true, []);
@@ -134,13 +140,85 @@ export class HistoriaComponent implements OnInit {
     ): boolean => {
       const filterValues = JSON.parse(filter);
 
-      return this.nombreEstudio
-        ? true
-        : data.nombre_estudio
-            .trim()
-            .toUpperCase()
-            .indexOf(filterValues.nombre_estudio) == -1;
+      return (
+        (this.notas
+          ? true
+          : data.nombre_estudio
+              .trim()
+              .toUpperCase()
+              .indexOf(filterValues.nombre_estudio) == -1) &&
+        (this.filtroAnulado
+          ? true
+          : data.filtroAnulado
+              .trim()
+              .toUpperCase()
+              .indexOf(filterValues.filtroAnulado) == -1) &&
+        (this.filtroAdjuntos
+          ? true
+          : data.filtroAdjuntos
+              .trim()
+              .toUpperCase()
+              .indexOf(filterValues.filtroAdjuntos) == -1) &&
+        (this.filtroNotas
+          ? true
+          : data.filtroNotas
+              .trim()
+              .toUpperCase()
+              .indexOf(filterValues.filtroNotas) == -1) &&
+        (this.filtroOdontologia
+          ? true
+          : data.filtroOdontologia
+              .trim()
+              .toUpperCase()
+              .indexOf(filterValues.filtroOdontologia) == -1) &&
+        (this.filtroUrgencias
+          ? true
+          : data.filtroUrgencias
+              .trim()
+              .toUpperCase()
+              .indexOf(filterValues.filtroUrgencias) == -1)
+      );
     };
+  }
+
+  crearFiltros() {
+    this.dataSource.data.map((h) => {
+      // filtro anulado
+      if (h.anulado == -1) {
+        h.filtroAnulado = 'SI';
+      } else {
+        h.filtroAnulado = 'NO';
+      }
+      // filtro adjuntos
+      if (h.especialidad_historia == 3007) {
+        h.filtroAdjuntos = 'SI';
+      } else {
+        h.filtroAdjuntos = 'NO';
+      }
+      // filtro adjuntos
+      if (h.especialidad_historia == 3 || h.especialidad_historia == 135) {
+        h.filtroNotas = 'SI';
+      } else {
+        h.filtroNotas = 'NO';
+      }
+      // filtro odontologia
+      if (
+        h.especialidad_historia == 41 ||
+        h.especialidad_historia == 42 ||
+        h.especialidad_historia == 43 ||
+        h.especialidad_historia == 44
+      ) {
+        h.filtroOdontologia = 'SI';
+      } else {
+        h.filtroOdontologia = 'NO';
+      }
+      // filtro urgencias
+      if (h.tipo_atencion == 3 || h.tipo_atencion == 0) {
+        h.filtroUrgencias = 'SI';
+      } else {
+        h.filtroUrgencias = 'NO';
+      }
+    });
   }
 
   applyFilter(column: string, filterValue: string) {
@@ -225,10 +303,6 @@ export class HistoriaComponent implements OnInit {
     });
   }
 
-  // onSubmit(): void {
-  //   console.log(this.pacienteForm.value);
-  // }
-
   buscarPaciente() {
     const historia = this.pacienteForm.value.inputHistoria;
     // console.log(historia);
@@ -244,6 +318,7 @@ export class HistoriaComponent implements OnInit {
       (data: any) => {
         const nData = data.resultado.data[0];
         this.dataSource.data = nData;
+        this.crearFiltros();
         console.log(this.dataSource.data);
 
         this.numFolios = this.dataSource.data.length;
@@ -301,6 +376,8 @@ export class HistoriaComponent implements OnInit {
     this.historiasService.getHistorias().subscribe((data: any) => {
       const nData = data.resultado[0];
       this.dataSource.data = nData;
+
+      this.crearFiltros();
       console.log(this.dataSource.data);
 
       this.numFolios = this.dataSource.data.length;
@@ -398,6 +475,8 @@ export class HistoriaComponent implements OnInit {
   }
 
   selectRow(row: HistoriaI) {
+    console.log(row);
+
     this.historia = [];
     this.selectedRow = {};
     const separadores = this.generarSeparadores();

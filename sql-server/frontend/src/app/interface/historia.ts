@@ -42,4 +42,9 @@ export interface HistoriaI {
   tipo_atencion?: number;
   usuario?: string;
   firma_med?: string;
+  filtroAnulado?: string;
+  filtroAdjuntos?: string;
+  filtroNotas?: string;
+  filtroOdontologia?: string;
+  filtroUrgencias?: string;
 }

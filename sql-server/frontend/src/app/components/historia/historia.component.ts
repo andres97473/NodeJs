@@ -69,6 +69,7 @@ export class HistoriaComponent implements OnInit {
   filtroAdjuntos: boolean = true;
   filtroNotas: boolean = true;
   filtroOdontologia: boolean = true;
+  filtroReferencia: boolean = true;
   filtroUrgencias: boolean = true;
 
   dataSource = new MatTableDataSource<HistoriaI>([]);
@@ -165,6 +166,12 @@ export class HistoriaComponent implements OnInit {
               .trim()
               .toUpperCase()
               .indexOf(filterValues.filtroNotas) == -1) &&
+        (this.filtroReferencia
+          ? true
+          : data.filtroReferencia
+              .trim()
+              .toUpperCase()
+              .indexOf(filterValues.filtroReferencia) == -1) &&
         (this.filtroOdontologia
           ? true
           : data.filtroOdontologia
@@ -195,7 +202,13 @@ export class HistoriaComponent implements OnInit {
       } else {
         h.filtroAdjuntos = 'NO';
       }
-      // filtro adjuntos
+      // filtro referencia
+      if (h.especialidad_historia == 3000) {
+        h.filtroReferencia = 'SI';
+      } else {
+        h.filtroReferencia = 'NO';
+      }
+      // filtro notas
       if (h.especialidad_historia == 3 || h.especialidad_historia == 135) {
         h.filtroNotas = 'SI';
       } else {
@@ -340,7 +353,6 @@ export class HistoriaComponent implements OnInit {
         this.crearPredicado();
 
         const nPaciente = nData[0];
-        // console.log(nPaciente);
 
         this.paciente = {
           nombre_paciente:
@@ -496,7 +508,7 @@ export class HistoriaComponent implements OnInit {
   }
 
   selectRow(row: HistoriaI) {
-    console.log(row);
+    // console.log(row);
 
     this.historia = [];
     this.selectedRow = {};
@@ -984,7 +996,7 @@ export class HistoriaComponent implements OnInit {
     let d = new Date(date);
 
     let datestring =
-      d.getDate() + '/' + (d.getMonth() + 1) + '/' + d.getFullYear();
+      d.getDate() + 1 + '/' + (d.getMonth() + 1) + '/' + d.getFullYear();
 
     return datestring;
   }

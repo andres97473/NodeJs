@@ -46,5 +46,6 @@ export interface HistoriaI {
   filtroAdjuntos?: string;
   filtroNotas?: string;
   filtroOdontologia?: string;
+  filtroReferencia?: string;
   filtroUrgencias?: string;
 }

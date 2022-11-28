@@ -190,34 +190,35 @@
               >
                 Buscar Paciente
               </button>
-              <br />
-              <div>
-                Numero de folios: {{ historiasCheck.length }} de {{ numFolios }}
-              </div>
+            </div>
+            <div class="col-sm-6">
+              <button
+                type="submit"
+                class="btn btn-primary waves-effect waves-light btn-sm btn-lg btn-block w-100 ml-1"
+                (click)="pdfsCheck()"
+                [disabled]="historiasCheck.length == 0"
+              >
+                Imprimir Historia
+              </button>
             </div>
           </div>
         </form>
-        <div class="row">
-          <div class="col-sm-8">
-            <button
-              type="submit"
-              class="btn btn-primary waves-effect waves-light btn-sm btn-lg btn-block w-100"
-              (click)="pdfsCheck()"
-              [disabled]="historiasCheck.length == 0"
-            >
-              Imprimir Folios Seleccionados<mat-icon class="icon-size"
-                >picture_as_pdf</mat-icon
-              >
-            </button>
+        <div class="form-group row">
+          <div class="col-sm-6">
+            <div>
+              Numero de folios: {{ historiasCheck.length }} de {{ numFolios }}
+            </div>
           </div>
-          <div class="col-sm-4">
+          <div class="col-sm-6">
             <div class="checks-container border">
               <mat-checkbox
                 [(ngModel)]="filtroNotas"
                 (change)="applyFilter('filtroNotas', filtroNotas ? '' : 'SI')"
                 color="primary"
+                [disabled]="numFolios == 0"
                 >NOTAS
               </mat-checkbox>
+              <br />
               <mat-checkbox
                 [(ngModel)]="filtroOdontologia"
                 (change)="
@@ -227,29 +228,36 @@
                   )
                 "
                 color="primary"
+                [disabled]="numFolios == 0"
                 >ODONTOLOGIA
               </mat-checkbox>
+              <br />
               <mat-checkbox
                 [(ngModel)]="filtroAdjuntos"
                 (change)="
                   applyFilter('filtroAdjuntos', filtroAdjuntos ? '' : 'SI')
                 "
                 color="primary"
+                [disabled]="numFolios == 0"
                 >DAT.ADJUNTOS
               </mat-checkbox>
+              <br />
               <mat-checkbox
                 [(ngModel)]="filtroUrgencias"
                 (change)="
                   applyFilter('filtroUrgencias', filtroUrgencias ? '' : 'SI')
                 "
                 color="primary"
+                [disabled]="numFolios == 0"
                 >URGENCIAS
               </mat-checkbox>
+              <br />
               <mat-checkbox
                 [(ngModel)]="filtroAnulado"
                 (change)="
                   applyFilter('filtroAnulado', filtroAnulado ? '' : 'SI')
                 "
+                [disabled]="numFolios == 0"
                 >ANULADOS
               </mat-checkbox>
             </div>

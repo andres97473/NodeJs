@@ -221,12 +221,22 @@ export class HistoriaComponent implements OnInit {
     });
   }
 
+  setCheckFilter() {
+    this.filtroAnulado = true;
+    this.filtroAdjuntos = true;
+    this.filtroNotas = true;
+    this.filtroOdontologia = true;
+    this.filtroUrgencias = true;
+  }
+
   applyFilter(column: string, filterValue: string) {
     this.filterValues[column] = filterValue;
 
     this.dataSource.filter = JSON.stringify(this.filterValues);
 
+    this.historiasCheck = [];
     this.numFolios = this.dataSource.filteredData.length;
+    this.selection = new SelectionModel<HistoriaI>(true, []);
   }
 
   onHistoriaSelected(row: HistoriaI) {
@@ -304,15 +314,19 @@ export class HistoriaComponent implements OnInit {
   }
 
   buscarPaciente() {
+    this.setCheckFilter();
     const historia = this.pacienteForm.value.inputHistoria;
     // console.log(historia);
 
     this.historia = [];
+    this.historiasCheck = [];
     this.selectedRow = {};
 
     // buscar historia por numero de historia
 
-    this.dataSource.data = [];
+    this.dataSource = new MatTableDataSource<HistoriaI>([]);
+    this.selection = new SelectionModel<HistoriaI>(true, []);
+    this.numFolios = 0;
 
     this.historiasService.getHistoriasPaciente(historia).subscribe(
       (data: any) => {
@@ -367,12 +381,19 @@ export class HistoriaComponent implements OnInit {
   }
 
   buscarPaciente2() {
+    this.setCheckFilter();
     const historia = this.pacienteForm.value.inputHistoria;
     // console.log(historia);
 
+    this.historia = [];
+    this.historiasCheck = [];
+    this.selectedRow = {};
     // buscar historia por numero de historia
 
-    this.dataSource.data = [];
+    this.dataSource = new MatTableDataSource<HistoriaI>([]);
+    this.selection = new SelectionModel<HistoriaI>(true, []);
+    this.numFolios = 0;
+
     this.historiasService.getHistorias().subscribe((data: any) => {
       const nData = data.resultado[0];
       this.dataSource.data = nData;

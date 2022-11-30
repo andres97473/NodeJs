@@ -83,7 +83,7 @@ function pingHost() {
           } else {
             console.log("Desconectado!!");
             // TODO: whatsapp
-            let chatId = `${process.env.NUMBER_CODE}${process.env.NUMBER_PHONE}@c.us`;
+            let chatId = `${process.env.NUMBER_CODE}${process.env.NUMBER_NOTIFICACION}@c.us`;
             client.sendMessage(chatId, "Desconectado!!");
           }
           const fecha = new Date();

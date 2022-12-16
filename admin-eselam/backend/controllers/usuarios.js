@@ -17,7 +17,7 @@ const getUsuarios = async (req, res) => {
   const [usuarios, total] = await Promise.all([
     Usuario.find(
       {},
-      "num_documento tipo_doc apellido1 apellido2 nombre1 nombre2 email img role celular created_at update_at activo"
+      "num_documento tipo_doc apellido1 apellido2 nombre1 nombre2 celular email img role modulos created_at update_at activo"
     )
       .skip(desde)
       .limit(5),
@@ -33,14 +33,24 @@ const getUsuarios = async (req, res) => {
 
 const crearUsuario = async (req, res = response) => {
   // console.log(req.body);
-  const { password, email } = req.body;
+  const { password, email, num_documento } = req.body;
 
   try {
+    // validar email unico
     const existeEmail = await Usuario.findOne({ email });
     if (existeEmail) {
       return res.status(400).json({
         ok: false,
         msg: "El correo ya esta registrado",
+      });
+    }
+
+    // validar num_documento unico
+    const existeDocumento = await Usuario.findOne({ num_documento });
+    if (existeDocumento) {
+      return res.status(400).json({
+        ok: false,
+        msg: "El numero de documento ya esta registrado",
       });
     }
 

@@ -1,0 +1,47 @@
+<div (click)="click()" id="main-wrapper">
+  <app-header></app-header>
+  <app-sidebar></app-sidebar>
+
+  <div class="page-wrapper">
+    <div class="container-fluid animated fadeIn">
+      <!-- Breadcrumbs -->
+      <app-breadcrumbs></app-breadcrumbs>
+
+      <!-- Mi sistema de rutas -->
+      <!-- ============================================================== -->
+      <!-- Start Page Content -->
+      <!-- ============================================================== -->
+      <router-outlet></router-outlet>
+
+      <!-- 
+        <div class="row animated fadeIn">
+          <div class="col-12">
+            <div class="card">
+              <div class="card-body">
+
+              </div>
+            </div>
+          </div>
+        </div>
+       -->
+
+      <!-- ============================================================== -->
+      <!-- End PAge Content -->
+      <!-- ============================================================== -->
+    </div>
+    <!-- ============================================================== -->
+    <!-- footer -->
+    <!-- ============================================================== -->
+    <footer class="footer">© {{ nombre_app }} V. 20220920</footer>
+    <!-- ============================================================== -->
+    <!-- End footer -->
+    <!-- ============================================================== -->
+  </div>
+</div>
+
+<app-modal-imagen></app-modal-imagen>
+
+<app-modal-sesion
+  [sesionTime]="sesionService.time"
+  [progreso]="pocentaje"
+></app-modal-sesion>

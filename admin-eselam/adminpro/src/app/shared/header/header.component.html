@@ -1,0 +1,272 @@
+<!-- ============================================================== -->
+<!-- Topbar header - style you can find in pages.scss -->
+<!-- ============================================================== -->
+<header class="topbar">
+  <nav class="navbar top-navbar navbar-expand-md navbar-light">
+    <!-- ============================================================== -->
+    <!-- Logo -->
+    <!-- ============================================================== -->
+    <div class="navbar-header">
+      <a class="navbar-brand" routerLink="/dashboard">
+        <!-- Logo icon --><b>
+          <!--You can put here icon as well // <i class="wi wi-sunset"></i> //-->
+          <!-- Dark Logo icon -->
+          <img
+            src="./assets/images/logo-icon.png"
+            alt="homepage"
+            class="dark-logo"
+          />
+          <!-- Light Logo icon -->
+          <img
+            src="./assets/images/logo-light-icon.png"
+            alt="homepage"
+            class="light-logo"
+          />
+        </b>
+        <!--End Logo icon -->
+        <!-- Logo text --><span>
+          <!-- dark Logo text -->
+          <img
+            src="./assets/images/logo-text.png"
+            alt="homepage"
+            class="dark-logo" />
+          <!-- Light Logo text -->
+          <img
+            src="./assets/images/logo-light-text.png"
+            class="light-logo"
+            alt="homepage"
+        /></span>
+      </a>
+    </div>
+    <!-- ============================================================== -->
+    <!-- End Logo -->
+    <!-- ============================================================== -->
+    <div class="navbar-collapse">
+      <!-- ============================================================== -->
+      <!-- toggle and nav items -->
+      <!-- ============================================================== -->
+      <ul class="navbar-nav mr-auto">
+        <!-- This is  -->
+        <li class="nav-item">
+          <a
+            class="nav-link nav-toggler hidden-md-up waves-effect waves-dark"
+            href="javascript:void(0)"
+            ><i class="ti-menu"></i
+          ></a>
+        </li>
+        <li class="nav-item">
+          <a
+            class="nav-link sidebartoggler hidden-sm-down waves-effect waves-dark"
+            href="javascript:void(0)"
+            ><i class="ti-menu"></i
+          ></a>
+        </li>
+        <li class="nav-item hidden-sm-down"></li>
+      </ul>
+      <!-- ============================================================== -->
+      <!-- User profile and search -->
+      <!-- ============================================================== -->
+      <ul class="navbar-nav my-lg-0">
+        <!-- datos de mensajes del usuario -->
+        <li class="nav-item dropdown">
+          <a class="nav-link">
+            <span class="label label-mensaje"
+              >Mensajes disponibles:
+              <span class="negrita">{{ usuario.getDisponibles }}</span></span
+            >
+          </a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link">
+            <span class="label label-mensaje"
+              >Plan vence:
+              <span class="negrita">{{ usuario.getVence }}</span></span
+            >
+          </a>
+        </li>
+        <!-- datos de mensajes del usuario -->
+
+        <!-- ============================================================== -->
+        <!-- Search -->
+        <!-- ============================================================== -->
+        <li
+          *ngIf="usuario.getRole === 'ADMIN_ROLE'"
+          class="nav-item hidden-xs-down search-box"
+        >
+          <a
+            class="nav-link hidden-sm-down waves-effect waves-dark"
+            href="javascript:void(0)"
+            ><i class="ti-search"></i
+          ></a>
+          <form class="app-search" (ngSubmit)="buscar(txtTermino.value)">
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Buscar Usuarios"
+              #txtTermino
+            />
+            <a class="srh-btn"><i class="ti-close"></i></a>
+          </form>
+        </li>
+
+        <!-- ============================================================== -->
+        <!-- Notificaciones -->
+        <!-- ============================================================== -->
+        <li class="nav-item dropdown">
+          <a
+            class="nav-link dropdown-toggle waves-effect waves-dark"
+            href=""
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+          >
+            <i class="mdi mdi-message"></i>
+            <div [class.notify]="notificacionesService.novistos > 0">
+              <span class="heartbit"></span> <span class="point"></span>
+            </div>
+          </a>
+          <div
+            class="dropdown-menu dropdown-menu-right mailbox animated fadeIn fast"
+          >
+            <ul>
+              <li>
+                <div class="drop-title">Notificaciones</div>
+              </li>
+              <li>
+                <div
+                  class="message-center ps ps--theme_default ps--active-y"
+                  data-ps-id="7c8e1f46-76a6-3f31-b4f6-f9268abfde75"
+                >
+                  <div
+                    *ngIf="notificacionesService.notificaciones.length == 0"
+                    class="ml-2 mt-2"
+                  >
+                    No hay notificaciones
+                  </div>
+
+                  <!-- Message -->
+                  <div
+                    *ngFor="
+                      let notificacion of notificacionesService.notificaciones
+                    "
+                    class="cursor"
+                    [class.bg-light-info]="!notificacion.visto"
+                    [class.font-bold]="!notificacion.visto"
+                    (click)="verNotificacion(notificacion)"
+                  >
+                    <a>
+                      <div
+                        class="btn btn-circle mr-1"
+                        [class]="notificacion.color"
+                      >
+                        <i [class]="notificacion.icono"></i>
+                      </div>
+                      <div class="mail-contnet">
+                        <h5>{{ notificacion.titulo }}</h5>
+                        <span class="mail-desc">{{
+                          notificacion.usuario.email
+                        }}</span>
+                        <span class="mail-desc">{{
+                          notificacion.descripcion
+                        }}</span>
+                        <span class="time">{{
+                          notificacion.update_at | date: "yyyy/M/dd h:mm a"
+                        }}</span>
+                      </div>
+                    </a>
+                  </div>
+
+                  <div
+                    class="ps__scrollbar-x-rail"
+                    style="left: 0px; bottom: 0px"
+                  >
+                    <div
+                      class="ps__scrollbar-x"
+                      tabindex="0"
+                      style="left: 0px; width: 0px"
+                    ></div>
+                  </div>
+                  <div
+                    class="ps__scrollbar-y-rail"
+                    style="top: 0px; right: 0px; height: 200px"
+                  >
+                    <div
+                      class="ps__scrollbar-y"
+                      tabindex="0"
+                      style="top: 0px; height: 123px"
+                    ></div>
+                  </div>
+                </div>
+              </li>
+              <li>
+                <a class="nav-link text-center" routerLink="notificaciones">
+                  <strong>Ver todas las Notificaciones </strong>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </li>
+
+        <!-- ============================================================== -->
+        <!-- Profile -->
+        <!-- ============================================================== -->
+        <li class="nav-item dropdown">
+          <a
+            class="nav-link dropdown-toggle waves-effect waves-dark"
+            href=""
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+            ><img
+              [src]="usuario.img | imagen: 'usuarios'"
+              alt="user"
+              class="profile-pic"
+          /></a>
+          <div
+            class="dropdown-menu dropdown-menu-right menu-ancho animated fadeIn fast"
+          >
+            <ul class="dropdown-user">
+              <li>
+                <div class="dw-user-box">
+                  <div class="u-img">
+                    <img [src]="usuario.img | imagen: 'usuarios'" alt="user" />
+                  </div>
+                  <div class="u-text">
+                    <h4>{{ usuario.nombre }}</h4>
+                    <p class="text-muted">{{ usuario.email }}</p>
+                    <p>
+                      Token:
+                      <span class="label label-info label-rounded">{{
+                        usuario.getToken
+                      }}</span>
+                    </p>
+                  </div>
+                </div>
+              </li>
+              <li role="separator" class="divider"></li>
+              <li>
+                <a routerLink="perfil"><i class="ti-user"></i> Mi Perfil</a>
+              </li>
+              <li role="separator" class="divider"></li>
+              <li>
+                <a routerLink="account-settings"
+                  ><i class="ti-settings"></i> Configuración de cuenta</a
+                >
+              </li>
+              <li role="separator" class="divider"></li>
+              <li>
+                <a class="cursor" (click)="logout()"
+                  ><i class="fa fa-power-off"></i> Cerrar Sesion</a
+                >
+              </li>
+            </ul>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </nav>
+</header>
+<!-- ============================================================== -->
+<!-- End Topbar header -->
+<!-- ============================================================== -->

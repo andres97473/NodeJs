@@ -1,0 +1,187 @@
+<div class="alert alert-success animated fadeIn">
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">X</span>
+  </button>
+  <h3 class="text-success"><i class="fa fa-check-circle"></i> Bienvenido</h3>
+  En esta pagina puedes enviar mensajes de prueba a tu propio numero de Whatsapp
+  sin gastar tu saldo, debes tener registrado tu numero de Whatsapp para poder
+  utilizar esta funcion!
+</div>
+
+<div class="row animated fadeIn">
+  <div class="col-lg-12">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">Envio de mensajes de prueba</h4>
+        <h6 class="card-subtitle">
+          Debes tener tu numero de Whatsapp registrado
+        </h6>
+        <form
+          class="form-horizontal p-t-20"
+          [formGroup]="pruebaForm"
+          (ngSubmit)="sendPrueba()"
+        >
+          <div class="form-body">
+            <div class="row p-t-20">
+              <!-- col 1 -->
+              <div class="col-md-6">
+                <div class="form-group row">
+                  <label class="col-sm-3 control-label">Token</label>
+                  <div class="col-sm-9">
+                    <div class="input-group">
+                      <div class="input-group-addon">
+                        <i class="mdi mdi-security"></i>
+                      </div>
+                      <input
+                        id="tokentxt"
+                        type="text"
+                        class="form-control"
+                        placeholder="Token"
+                        [placeholder]="usuario.getToken"
+                        formControlName="token"
+                        readonly
+                      />
+
+                      <div class="tooltip2">
+                        <span class="input-group-btn">
+                          <button
+                            class="btn btn-info"
+                            type="button"
+                            (click)="copyToClipBoard()"
+                          >
+                            <i class="mdi mdi-content-copy"> </i>
+                          </button>
+                        </span>
+                        <span class="tooltiptext">Copiar a Portapapeles</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-group row">
+                  <label class="col-sm-3 control-label">Celular</label>
+                  <div class="col-sm-9">
+                    <div class="input-group">
+                      <div class="input-group-addon">
+                        <i class="mdi mdi-whatsapp"></i>
+                      </div>
+                      <input
+                        type="text"
+                        class="form-control"
+                        placeholder="Sin numero"
+                        formControlName="celular"
+                        readonly
+                      />
+                      <div class="tooltip2">
+                        <span class="input-group-btn">
+                          <button
+                            class="btn btn-info"
+                            type="button"
+                            routerLink="/dashboard/perfil"
+                          >
+                            <i class="mdi mdi-account"> </i>
+                          </button>
+                        </span>
+                        <span class="tooltiptext">Registar Whatsapp</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-group row">
+                  <label class="col-sm-3 control-label"># Mensajes</label>
+                  <div class="col-sm-9">
+                    <div class="input-group">
+                      <div class="input-group-addon">
+                        <i class="mdi mdi-format-list-numbers"></i>
+                      </div>
+                      <input
+                        type="number"
+                        class="form-control"
+                        placeholder="Numero de repeticiones"
+                        formControlName="repeticiones"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col text-danger">
+                    <p *ngIf="errorPrueba.length > 0">
+                      {{ errorPrueba }}
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <!-- col 1 -->
+
+              <!-- col 2 -->
+              <div class="col-md-6">
+                <div class="form-group">
+                  <div class="form-group">
+                    <label>Registre su Mensaje</label>
+                    <textarea
+                      class="form-control"
+                      rows="4"
+                      formControlName="mensaje"
+                    ></textarea>
+                    <button
+                      type="button"
+                      class="btn btn-info btn-block waves-effect waves-light m-r-10"
+                      (click)="guardarEnMemoria()"
+                    >
+                      <i class="fa fa-save"></i>
+                      Guargar Mensaje en Memoria
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <!-- col 2 -->
+
+              <!-- col 5 -->
+              <div *ngIf="enviando || enviado" class="col-md-12">
+                <div class="card">
+                  <div class="card-body">
+                    <h5 *ngIf="!message">Enviando mensajes... {{ value }} %</h5>
+                    <h5 *ngIf="message">Envio de mensajes exitoso !!</h5>
+                    <div style="width: 100%">
+                      <mat-progress-bar
+                        mode="determinate"
+                        [value]="value"
+                      ></mat-progress-bar>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- col 5 -->
+
+              <!-- col 6 -->
+              <div *ngIf="enviados > 0" class="col-md-12">
+                <div class="card">
+                  <div class="card-body">
+                    <h5 class="m-b-0 font-medium">
+                      Mensajes enviados: {{ enviados }}
+                      <span class="text-muted font-14 m-l-10"
+                        >| &nbsp;
+                        {{ fechaEnvio | date: "dd/MM/yyyy hh:mm a" }}</span
+                      >
+                    </h5>
+                  </div>
+                </div>
+              </div>
+              <!-- col 6 -->
+
+              <button
+                type="submit"
+                class="btn btn-success btn-block waves-effect waves-light m-r-10"
+                [disabled]="pruebaForm.invalid || enviando"
+              >
+                <i class="mdi mdi-send"></i>
+                Enviar Mensajes de prueba
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

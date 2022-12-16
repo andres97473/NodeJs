@@ -1,0 +1,285 @@
+<div class="row animated fadeIn">
+  <div class="col-md-6">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">Perfil de usuario</h4>
+        <h6 class="card-subtitle">Ajustes</h6>
+        <form
+          class="form-horizontal p-t-20"
+          [formGroup]="perfilForm"
+          (ngSubmit)="actualizarPerfil()"
+        >
+          <div class="form-group row">
+            <label class="col-sm-3 control-label">Nombre Completo</label>
+            <div class="col-sm-9">
+              <div class="input-group">
+                <div class="input-group-addon"><i class="ti-user"></i></div>
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="Nombre completo del usaurio"
+                  formControlName="nombre"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label class="col-sm-3 control-label">Email</label>
+            <div class="col-sm-9">
+              <div class="input-group">
+                <div class="input-group-addon"><i class="ti-email"></i></div>
+                <input
+                  type="email"
+                  class="form-control"
+                  placeholder="Ingrese el email"
+                  formControlName="email"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label class="col-sm-3 control-label">Codigo Pais</label>
+            <div class="col-sm-9">
+              <div class="input-group">
+                <div class="input-group-addon"><i class="ti-world"></i></div>
+                <select
+                  class="custom-select col-8"
+                  id="inlineFormCustomSelect"
+                  formControlName="cod_pais"
+                  (ngModelChange)="codPais = $event"
+                >
+                  <option *ngFor="let pais of paises" [value]="pais.codigo">
+                    {{ pais.nombre }}
+                  </option>
+                </select>
+
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="Ingrese el codigo del pais"
+                  formControlName="cod_pais"
+                  [ngModel]="codPais"
+                  readonly
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label class="col-sm-3 control-label">Celular</label>
+            <div class="col-sm-9">
+              <div class="input-group">
+                <div class="input-group-addon">
+                  <i class="mdi mdi-whatsapp"></i>
+                </div>
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="Ingrese su numero de celular"
+                  formControlName="celular"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label class="col-sm-3 control-label">Token</label>
+            <div class="col-sm-9">
+              <div class="input-group">
+                <div class="input-group-addon">
+                  <i class="mdi mdi-security"></i>
+                </div>
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="Token"
+                  [placeholder]="usuario.getToken"
+                  formControlName="token"
+                  readonly
+                />
+              </div>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-3 control-label">Codigo</label>
+            <div class="col-sm-9">
+              <div class="input-group">
+                <div class="input-group-addon">
+                  <i class="fa fa-refresh"></i>
+                </div>
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="Token"
+                  [placeholder]="usuario.getCodigo"
+                  formControlName="codigo"
+                  readonly
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label class="col-sm-3 control-label">Plan Vence</label>
+            <div class="col-sm-9">
+              <div class="input-group">
+                <div class="input-group-addon">
+                  <i class="ti-timer"></i>
+                </div>
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="No tiene un plan Activo"
+                  formControlName="vence"
+                  readonly
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label class="col-sm-3 control-label"># SMS</label>
+            <div class="col-sm-9">
+              <div class="input-group">
+                <div class="input-group-addon">
+                  <i class="ti-mobile"></i>
+                </div>
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="No tiene Mensajes Disponibles"
+                  formControlName="disponibles"
+                  readonly
+                />
+              </div>
+            </div>
+          </div>
+
+          <button
+            type="submit"
+            class="btn btn-success btn-block waves-effect waves-light m-r-10"
+            [disabled]="perfilForm.invalid"
+          >
+            <i class="fa fa-save"></i>
+            Guardar Cambios
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="col">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">Subir Imagen</h4>
+        <h6 class="card-subtitle">Avatar</h6>
+
+        <div class="text-center mb-2">
+          <img
+            *ngIf="!imgTemp"
+            class="img-avatar"
+            [src]="usuario.img | imagen: 'usuarios'"
+          />
+          <img *ngIf="imgTemp" class="img-avatar" [src]="imgTemp" />
+        </div>
+
+        <input type="file" (change)="cambiarImagen($event)" />
+
+        <br />
+        <br />
+
+        <div *ngIf="imagenSubir" class="col-md-12">
+          <h5 *ngIf="!message && !enviado">Archivo listo para enviar</h5>
+          <h5 *ngIf="!message && enviado">Subiendo archivo... {{ value }} %</h5>
+          <h5 *ngIf="message">{{ message }}</h5>
+          <div style="width: 100%">
+            <mat-progress-bar
+              mode="determinate"
+              [value]="value"
+            ></mat-progress-bar>
+          </div>
+          <br />
+        </div>
+
+        <button
+          type="button"
+          class="btn btn-success btn-block waves-effect waves-light m-r-10"
+          [disabled]="enviando || !imagenSubir"
+          (click)="subirImagen()"
+        >
+          <i class="fa fa-save"></i>
+          Cambiar Imagen
+        </button>
+        <hr />
+        <h4 class="card-title">Seguridad</h4>
+
+        <!-- incio -->
+        <p>
+          <button
+            class="btn btn-primary"
+            type="button"
+            data-toggle="collapse"
+            data-target="#collapseExample"
+            aria-expanded="false"
+            aria-controls="collapseExample"
+          >
+            Desea cambiar su contraseña?
+          </button>
+        </p>
+        <div class="collapse" id="collapseExample">
+          <div class="card card-body">
+            <form
+              class="form-horizontal form-material"
+              id="loginform"
+              autocomplete="off"
+              [formGroup]="passwordForm"
+              (ngSubmit)="cambiarPassword()"
+            >
+              <div class="form-group">
+                <div class="col-xs-12">
+                  <input
+                    class="form-control"
+                    type="password"
+                    placeholder="Contraseña"
+                    formControlName="password"
+                  />
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="col-xs-12">
+                  <input
+                    class="form-control"
+                    type="password"
+                    placeholder="Confirmar Contraseña"
+                    formControlName="password2"
+                  />
+                </div>
+              </div>
+              <div class="form-group text-center m-t-20">
+                <div class="col-xs-12">
+                  <button
+                    class="btn btn-primary btn-block waves-effect waves-light m-r-10"
+                    type="submit"
+                  >
+                    Cambiar Contraseña
+                  </button>
+                  <br />
+                  <br />
+                  <div class="row">
+                    <div class="col text-danger">
+                      <p *ngIf="contrasenasNoValidas()">
+                        {{ errorPassword }}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+        <!--  fin -->
+      </div>
+    </div>
+  </div>
+</div>

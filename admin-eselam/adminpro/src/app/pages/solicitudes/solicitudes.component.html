@@ -1,0 +1,131 @@
+<div class="row animated fadeIn">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title animated fadeIn fast">
+          Total de usuarios de Solicitudes Realizadas
+        </h4>
+        <h6 class="card-subtitle">
+          Debe subir el soporte de pago para aprovar la solicitud y despues
+          presionar el boton enviar
+        </h6>
+        <div class="table-responsive">
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th class="w100">Soporte</th>
+                <th>Actualizado</th>
+                <th>Plan</th>
+                <th>Descripcion</th>
+                <th>Valor</th>
+                <th>Estado</th>
+                <th class="text-nowrap w100">Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let solicitud of solicitudes">
+                <td class="text-center">
+                  <button
+                    *ngIf="!solicitud.soporte_pago"
+                    type="button"
+                    class="cargar-soporte btn waves-effect waves-light btn-primary"
+                    (click)="abrirModal(solicitud)"
+                  >
+                    Cargar soporte de pago
+                  </button>
+                  <img
+                    *ngIf="
+                      (solicitud.soporte_pago &&
+                        solicitud.estado === 'PENDIENTE') ||
+                      (solicitud.soporte_pago &&
+                        solicitud.estado === 'NO_APROBADA')
+                    "
+                    class="w100 cursor"
+                    [src]="solicitud.soporte_pago | imagen: 'solicitudes'"
+                    alt="Soporte de Pago"
+                    (click)="abrirModal(solicitud)"
+                  />
+                  <img
+                    *ngIf="
+                      solicitud.estado === 'ENVIADO' ||
+                      solicitud.estado === 'APROBADA'
+                    "
+                    class="w100 cursor overflow"
+                    [src]="solicitud.soporte_pago | imagen: 'solicitudes'"
+                    alt="Soporte de Pago"
+                  />
+                  <button
+                    *ngIf="
+                      solicitud.estado === 'ENVIADO' ||
+                      solicitud.estado === 'APROBADA'
+                    "
+                    type="button"
+                    class="btn waves-effect waves-light btn-block btn-sm btn-success"
+                    (click)="verSoporte(solicitud)"
+                  >
+                    ver soporte
+                  </button>
+                </td>
+                <td>{{ solicitud.update_at | date: "yyyy/M/dd h:mm a" }}</td>
+                <td>{{ solicitud.nombre }}</td>
+                <td>{{ solicitud.descripcion }}</td>
+                <td>{{ solicitud.valor | currency: "COL$ " }}</td>
+                <td>
+                  <span
+                    *ngIf="solicitud.estado === 'PENDIENTE'"
+                    class="label label-inverse"
+                    >PENDIENTE</span
+                  >
+                  <span
+                    *ngIf="solicitud.estado === 'NO_APROBADA'"
+                    class="label label-danger"
+                    >NO_APROBADA</span
+                  >
+                  <span
+                    *ngIf="solicitud.estado === 'ENVIADO'"
+                    class="label label-warning"
+                    >ENVIADO</span
+                  >
+                  <span
+                    *ngIf="solicitud.estado === 'APROBADA'"
+                    class="label label-success"
+                    >APROBADA</span
+                  >
+                </td>
+
+                <td class="text-nowrap">
+                  <a class="tooltip2 mr-1">
+                    <button
+                      class="btn btn-info"
+                      type="button"
+                      (click)="EnviarSoportePago(solicitud)"
+                      [disabled]="
+                        !solicitud.soporte_pago ||
+                        solicitud.estado === 'ENVIADO' ||
+                        solicitud.estado === 'APROBADA'
+                      "
+                    >
+                      <i class="fa fa-file-image-o"> </i>
+                    </button>
+                    <span class="tooltiptext">Enviar soporte de Pago</span>
+                  </a>
+                  <a class="tooltip2 mr-2">
+                    <button
+                      class="btn btn-danger"
+                      type="button"
+                      (click)="cancelarSolicitud(solicitud)"
+                      [disabled]="solicitud.estado === 'APROBADA'"
+                    >
+                      <i class="mdi mdi-cart-off"> </i>
+                    </button>
+                    <span class="tooltiptext">Cancelar Solicitud</span>
+                  </a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,44 @@
+.pricing-body {
+  border-top: 1px solid rgba(120, 130, 140, 0.13);
+  border-bottom: 5px solid rgba(120, 130, 140, 0.13);
+  border-right: 1px solid rgba(120, 130, 140, 0.13);
+  vertical-align: middle;
+  position: relative;
+}
+
+.pricing-box {
+  position: relative;
+  text-align: center;
+  margin-top: 30px;
+}
+
+.featured-plan .pricing-body {
+  background: #ebf3f5;
+  border: 1px solid #ddd;
+}
+
+.price-table-content .price-row {
+  padding: 20px 0;
+  border-top: 1px solid rgba(120, 130, 140, 0.13);
+}
+
+.no-padding {
+  padding-top: 20px;
+}
+
+.price-lable {
+  position: absolute;
+  top: -15px;
+  padding: 5px 10px;
+  margin: 0 auto;
+  display: inline-block;
+  width: 100px;
+  left: 0px;
+  right: 0px;
+}
+
+.col-sm-6,
+.col-md-3 {
+  padding-left: 0;
+  padding-right: 0;
+}

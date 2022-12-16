@@ -1,0 +1,70 @@
+<div class="row animated fadeIn">
+  <div class="col-lg-3">
+    <div class="card">
+      <div class="card-body">
+        <div class="d-flex">
+          <div class="m-r-20 align-self-center">
+            <img src="../assets/images/icon/income.png" alt="Income" />
+          </div>
+          <div class="align-self-center">
+            <h6 class="text-muted m-t-10 m-b-0">Total Enviados</h6>
+            <h2 class="m-t-0">{{ mensajesTotal }}</h2>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-3">
+    <div class="card">
+      <div class="card-body">
+        <div class="d-flex">
+          <div class="m-r-20 align-self-center">
+            <img src="../assets/images/icon/assets.png" alt="Income" />
+          </div>
+          <div class="align-self-center">
+            <h6 class="text-muted m-t-10 m-b-0">Pruebas</h6>
+            <h2 class="m-t-0">{{ mensajesPrueba }}</h2>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-3">
+    <div class="card">
+      <div class="card-body">
+        <div class="d-flex">
+          <div class="m-r-20 align-self-center">
+            <img src="../assets/images/icon/expense.png" alt="Income" />
+          </div>
+          <div class="align-self-center">
+            <h6 class="text-muted m-t-10 m-b-0">Mensajes</h6>
+            <h2 class="m-t-0">{{ mensajesMensaje }}</h2>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-3">
+    <div class="card">
+      <div class="card-body">
+        <div class="d-flex">
+          <div class="m-r-20 align-self-center">
+            <img src="../assets/images/icon/staff.png" alt="Income" />
+          </div>
+          <div class="align-self-center">
+            <h6 class="text-muted m-t-10 m-b-0">Archivo</h6>
+            <h2 class="m-t-0">{{ mensajesArchivo }}</h2>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-table2
+  class="animated fadeIn"
+  *ngIf="mensajes.length > 0"
+  [columns]="columnas"
+  [datatable]="mensajes"
+>
+</app-table2>

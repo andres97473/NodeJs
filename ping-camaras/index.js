@@ -81,8 +81,7 @@ function pingHost() {
           ) {
             status = "CONECTADO";
           } else {
-            console.log("Desconectado!!");
-            // TODO: whatsapp
+            // console.log("Desconectado!!");
             let chatId = `${process.env.NUMBER_CODE}${process.env.NUMBER_NOTIFICACION}@c.us`;
             client.sendMessage(chatId, "Desconectado!!");
           }

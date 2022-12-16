@@ -1,0 +1,139 @@
+.fast {
+  -webkit-animation-duration: 0.3s;
+  animation-duration: 0.3s;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+}
+
+.negrita {
+  font-weight: bold !important;
+  color: #3b4151 !important;
+}
+
+.label-mensaje {
+  color: #1c3042;
+  background-color: #d1fae0;
+}
+
+#themecolors .selector,
+.cursor {
+  cursor: pointer;
+}
+
+.separador {
+  border-top: gray 1px;
+}
+
+.hover-route:hover {
+  color: white !important;
+  background-color: rgb(189, 64, 64) !important;
+}
+
+.menu-ancho {
+  width: 400px;
+}
+
+.cargar-soporte {
+  width: 100px;
+  height: 100px;
+  white-space: pre-wrap;
+}
+
+.img-avatar {
+  width: 150px;
+}
+
+.avatar {
+  border-radius: 100%;
+  width: 40px;
+}
+
+.overflow {
+  height: 80px;
+  overflow: hidden;
+}
+
+.w75 {
+  width: 75px;
+}
+
+.w100 {
+  width: 100px;
+}
+
+.w140 {
+  width: 140px;
+}
+.w200 {
+  width: 200px;
+}
+
+.oculto {
+  display: none;
+}
+
+.fondo-modal-imagen {
+  background-color: rgba(0, 0, 0, 0.4);
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  z-index: 9999;
+}
+
+.fondo-modal-sesion {
+  background-color: rgba(0, 0, 0, 0.4);
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  z-index: 9999;
+}
+
+/* Tooltip container */
+.tooltip2 {
+  position: relative;
+  z-index: 9999;
+}
+
+.tooltip2 .tooltiptext {
+  visibility: hidden;
+  font-size: 11px;
+  width: auto;
+  height: auto;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+  position: absolute;
+  z-index: 999;
+  bottom: 130%;
+  left: 40%;
+  margin-left: -60px;
+  z-index: 9999;
+}
+
+.tooltip2 .tooltiptext::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: black transparent transparent transparent;
+  z-index: 9999;
+}
+
+.tooltip2:hover .tooltiptext {
+  padding: 5px;
+  visibility: visible;
+  z-index: 9999;
+}
+
+.mat-sort-header-container {
+  display: contents !important;
+}

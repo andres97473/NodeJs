@@ -6,8 +6,9 @@ const {
   getUsuarios,
   crearUsuario,
   actualizarUsuario,
-  deleteUsuario,
   actualizarUsuarioPassword,
+  cambiarEstado,
+  deleteUsuario,
 } = require("../controllers/usuarios");
 const {
   validarJWT,
@@ -48,6 +49,17 @@ router.put(
     validarCampos,
   ],
   actualizarUsuario
+);
+
+router.put(
+  "/desactivar/:id",
+  [
+    validarJWT,
+    validarADMIN_ROLE_o_MismoUsuario,
+    check("estado", "El estado es obligatorio").not().isEmpty(),
+    validarCampos,
+  ],
+  cambiarEstado
 );
 
 router.put(

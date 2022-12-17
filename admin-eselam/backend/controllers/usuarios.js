@@ -103,8 +103,9 @@ const actualizarUsuario = async (req, res = response) => {
     }
 
     // Actualizaciones
-    const { password, email, activo, ...campos } = req.body;
+    const { password, email, num_documento, activo, ...campos } = req.body;
 
+    // verificar si ya existe ese email registrado
     if (usuarioDB.email !== email) {
       const existeEmail = await Usuario.findOne({ email });
       if (existeEmail) {
@@ -115,8 +116,23 @@ const actualizarUsuario = async (req, res = response) => {
       }
     }
 
+    // verificar si ya existe ese documento registrado
+    if (usuarioDB.num_documento !== num_documento) {
+      const existeDocumento = await Usuario.findOne({ num_documento });
+      if (existeDocumento) {
+        return res.status(400).json({
+          ok: false,
+          msg: "Ya existe un usuario con ese numero de Documento",
+        });
+      }
+    }
+
     campos.email = email;
+    campos.num_documento = num_documento;
     campos.update_at = new Date();
+
+    // eliminar propiedades
+    delete campos.modulos;
 
     const usuarioActualizado = await Usuario.findByIdAndUpdate(uid, campos, {
       new: true,
@@ -155,12 +171,42 @@ const actualizarUsuarioPassword = async (req, res = response) => {
     const passwordEncriptado = bcrypt.hashSync(password, salt);
 
     const updatePassword = await Usuario.findByIdAndUpdate(uid, {
-      $set: { password: passwordEncriptado },
+      $set: { password: passwordEncriptado, update_at: new Date() },
     });
 
     res.json({
       ok: true,
       msg: "Contraseña actualizada",
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      ok: false,
+      msg: "Error inesperado, revisar logs",
+    });
+  }
+};
+
+const cambiarEstado = async (req, res = response) => {
+  const uid = req.params.id;
+  const { estado } = req.body;
+  try {
+    const usuarioDB = await Usuario.findById(uid);
+
+    if (!usuarioDB) {
+      return res.status(404).json({
+        ok: false,
+        msg: "No existe un usuario por ese id",
+      });
+    }
+
+    const desactivarUser = await Usuario.findByIdAndUpdate(uid, {
+      $set: { activo: estado, update_at: new Date() },
+    });
+
+    res.json({
+      ok: true,
+      msg: "El estado del usuario se ha actualizado por: " + estado,
     });
   } catch (error) {
     console.log(error);
@@ -209,5 +255,6 @@ module.exports = {
   crearUsuario,
   actualizarUsuario,
   actualizarUsuarioPassword,
+  cambiarEstado,
   deleteUsuario,
 };

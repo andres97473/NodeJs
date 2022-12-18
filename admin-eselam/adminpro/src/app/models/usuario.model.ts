@@ -2,21 +2,22 @@ import { environment } from '../../environments/environment';
 
 export class Usuario {
   constructor(
-    public nombre: string,
+    public num_documento: string,
+    public tipo_doc: string,
     public email: string,
-    public uid?: string,
-    public password?: string,
-    public img?: string,
-    public google?: boolean,
-    public role?: string,
-    public cod_pais?: string,
+    public apellido1?: string,
+    public apellido2?: string,
+    public nombre1?: string,
+    public nombre2?: string,
     public celular?: string,
-    public codigo?: string,
-    public vence?: string,
-    public disponibles?: number,
+    public img?: string,
+    public role?: string,
+    public modulos?: object,
+    public password?: string,
     public activo?: boolean,
     public created_at?: Date,
-    public update_at?: Date
+    public update_at?: Date,
+    public uid?: string
   ) {}
 
   // imprimirUsuario() {
@@ -24,7 +25,7 @@ export class Usuario {
   // }
 
   get imprimirUsuario() {
-    return console.log(this.nombre);
+    return console.log(this.nombre1);
   }
 
   get getToken() {
@@ -35,19 +36,7 @@ export class Usuario {
     return this.role;
   }
 
-  get getCodigo() {
-    return this.codigo;
-  }
-
-  get getCodigoPais() {
-    return this.cod_pais;
-  }
-
-  get getVence() {
-    return this.vence;
-  }
-
-  get getDisponibles() {
-    return this.disponibles;
+  get getModulos() {
+    return this.modulos;
   }
 }

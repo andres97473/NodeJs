@@ -34,6 +34,7 @@ app.use("/api/usuarios", require("./routes/usuarios"));
 app.use("/api/login", require("./routes/auth"));
 app.use("/api/todo", require("./routes/busquedas"));
 app.use("/api/upload", require("./routes/uploads"));
+app.use("/api/notificaciones", require("./routes/notificaciones"));
 
 // Validar error de diferentes rutas
 app.get("*", (req, res) => {
@@ -63,7 +64,7 @@ io.on("connection", (socket) => {
   const { email } = socket.handshake.query;
 
   socket.join(email);
-  // console.log("new connection ", idHandShake, " email ", email);
+  console.log("new connection ", idHandShake, " email ", email);
 
   socket.on("evento", async (resp) => {
     const admins = await Usuario.find(
@@ -73,14 +74,14 @@ io.on("connection", (socket) => {
       { email: 1, _id: 0 }
     );
 
-    // console.log(resp);
+    console.log(resp);
     for (const admin of admins) {
       socket.to(admin.email).emit("evento", resp);
     }
   });
 
   socket.on("solicitud:admin", (resp) => {
-    // console.log(resp);
+    console.log(resp);
     socket.to(resp.email).emit("solicitud:admin", resp);
   });
 });

@@ -5,8 +5,6 @@ import Swal from 'sweetalert2';
 
 import { UsuarioService } from '../../services/usuario.service';
 import { SesionService } from '../../services/sesion.service';
-import { PaisI } from '../../interface/pais.interface';
-import { MensajesService } from '../../services/mensajes.service';
 
 @Component({
   selector: 'app-register',
@@ -15,7 +13,6 @@ import { MensajesService } from '../../services/mensajes.service';
 })
 export class RegisterComponent implements OnInit {
   public formSubmitted = false;
-  public paises: PaisI[] = [];
 
   public registerForm = this.fb.group(
     {
@@ -36,17 +33,10 @@ export class RegisterComponent implements OnInit {
     private router: Router,
     private fb: FormBuilder,
     private usuarioService: UsuarioService,
-    private sesionService: SesionService,
-    private mensajesService: MensajesService
+    private sesionService: SesionService
   ) {}
 
-  ngOnInit(): void {
-    this.usuarioService.getPaises().subscribe((resp) => {
-      this.paises = resp.paises;
-    });
-
-    this.registerForm.controls['cod_pais'].setValue('+57');
-  }
+  ngOnInit(): void {}
 
   verTerminos() {
     Swal.fire({
@@ -68,20 +58,6 @@ export class RegisterComponent implements OnInit {
         this.router.navigateByUrl('/');
         this.sesionService.time = this.sesionService.getSegundos;
         this.sesionService.ocultar = true;
-
-        if (resp.usuario.celular) {
-          const mensaje = `Bienvenido a la app de envió de mensajes de whatsapp.\nsu usuario es: ${resp.usuario.email}\nel codigo de su pais es: ${resp.usuario.cod_pais}\nsu codigo de seguridad es: ${resp.usuario.codigo}\nsu token es: ${resp.usuario.uid}`;
-
-          this.mensajesService
-            .sendMessagePrueba({
-              token: resp.usuario.uid,
-              mensaje,
-              repeticiones: '1',
-            })
-            .subscribe((resp) => {
-              // console.log(resp);
-            });
-        }
       },
       (err) => {
         console.warn(err.error);

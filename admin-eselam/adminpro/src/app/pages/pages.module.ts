@@ -18,15 +18,6 @@ import { AccountSettingsComponent } from './account-settings/account-settings.co
 import { PerfilComponent } from './perfil/perfil.component';
 import { UsuariosComponent } from './mantenimientos/usuarios/usuarios.component';
 import { BusquedaComponent } from './busqueda/busqueda.component';
-import { MensajesPruebaComponent } from './mensajes-prueba/mensajes-prueba.component';
-import { MensajesEnvioComponent } from './mensajes-envio/mensajes-envio.component';
-import { MensajesArchivoComponent } from './mensajes-archivo/mensajes-archivo.component';
-import { ClientesComponent } from './clientes/clientes.component';
-import { EnviadosComponent } from './enviados/enviados.component';
-import { ApisComponent } from './apis/apis.component';
-import { PlanesComponent } from './planes/planes.component';
-import { SolicitudesComponent } from './solicitudes/solicitudes.component';
-import { SolicitudesAdminComponent } from './mantenimientos/solicitudes-admin/solicitudes-admin.component';
 import { NotificacionesComponent } from './notificaciones/notificaciones.component';
 
 @NgModule({
@@ -37,15 +28,6 @@ import { NotificacionesComponent } from './notificaciones/notificaciones.compone
     PerfilComponent,
     UsuariosComponent,
     BusquedaComponent,
-    MensajesPruebaComponent,
-    MensajesEnvioComponent,
-    MensajesArchivoComponent,
-    ClientesComponent,
-    EnviadosComponent,
-    ApisComponent,
-    PlanesComponent,
-    SolicitudesComponent,
-    SolicitudesAdminComponent,
     NotificacionesComponent,
   ],
   imports: [

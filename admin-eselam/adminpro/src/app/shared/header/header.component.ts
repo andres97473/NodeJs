@@ -21,91 +21,11 @@ export class HeaderComponent implements OnInit {
     private socketWebService: SocketWebService
   ) {
     this.usuario = usuarioService.usuario;
-
-    // TODO: notificacion admin
-    socketWebService.callback.subscribe((resp) => {
-      this.notificacionesService
-        .postNotificacion({
-          titulo: resp.nombre,
-          descripcion: `La Solicitud fue ${resp.estado}`,
-          icono: resp.icono,
-          color: resp.color,
-          usuario: resp.usuario,
-        })
-        .subscribe((resp: any) => {
-          const {
-            color,
-            created_at,
-            descripcion,
-            icono,
-            titulo,
-            update_at,
-            visto,
-            _id,
-          } = resp.notificacion;
-
-          this.notificacionesService.notificaciones.unshift({
-            color,
-            created_at,
-            descripcion,
-            icono,
-            titulo,
-            update_at,
-            visto,
-            _id,
-            usuario: resp.usuario,
-          });
-          this.notificacionesService.novistos =
-            this.notificacionesService.novistos + 1;
-        });
-    });
-
-    // TODO: notificacion usuarios
-    socketWebService.callbackSol.subscribe((resp) => {
-      this.notificacionesService
-        .postNotificacion({
-          titulo: resp.nombre,
-          descripcion: `La Solicitud fue ${resp.estado}`,
-          icono: resp.icono,
-          color: resp.color,
-          usuario: resp.usuario,
-        })
-        .subscribe((resp: any) => {
-          const {
-            color,
-            created_at,
-            descripcion,
-            icono,
-            titulo,
-            update_at,
-            visto,
-            _id,
-          } = resp.notificacion;
-
-          this.notificacionesService.notificaciones.unshift({
-            color,
-            created_at,
-            descripcion,
-            icono,
-            titulo,
-            update_at,
-            visto,
-            _id,
-            usuario: resp.usuario,
-          });
-          this.notificacionesService.novistos =
-            this.notificacionesService.novistos + 1;
-        });
-      if (resp.disponibles) {
-        usuarioService.usuario.disponibles = resp.disponibles;
-      } else if (resp.vence) {
-        usuarioService.usuario.vence = resp.vence;
-      }
-    });
   }
 
   ngOnInit(): void {
     this.cargarNotificaciones();
+    console.log(this.usuario.getModulos);
   }
 
   cargarNotificaciones() {

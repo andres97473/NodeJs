@@ -5,7 +5,7 @@
         <input
           type="text"
           class="form-control"
-          placeholder="Buscar usuario..."
+          placeholder="Buscar usuario por email..."
           #txtTermino
           (keyup)="buscarUsuarios(txtTermino.value)"
         />
@@ -44,7 +44,6 @@
                 <th>Correo</th>
                 <th>Nombre</th>
                 <th class="w140">Role</th>
-                <th class="w100">Auth</th>
                 <th class="text-nowrap w100">Acciones</th>
               </tr>
             </thead>
@@ -53,13 +52,13 @@
                 <td class="text-center">
                   <img
                     class="avatar cursor"
-                    [src]="usuario.img | imagen: 'usuarios'"
+                    [src]="usuario.img | imagen : 'usuarios'"
                     alt="Avatar de usaurio"
                     (click)="abrirModal(usuario)"
                   />
                 </td>
                 <td>{{ usuario.email }}</td>
-                <td>{{ usuario.nombre }}</td>
+                <td>{{ usuario.nombre1 }}</td>
                 <td>
                   <select
                     class="form-control"
@@ -70,15 +69,6 @@
                     <option value="USER_ROLE">User</option>
                   </select>
                 </td>
-                <td>
-                  <span *ngIf="usuario.google" class="label label-danger"
-                    >GOOGLE</span
-                  >
-                  <span *ngIf="!usuario.google" class="label label-info"
-                    >EMAIL</span
-                  >
-                </td>
-
                 <td class="text-nowrap text-center">
                   <a
                     class="cursor"

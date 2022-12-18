@@ -6,7 +6,7 @@ const getTodo = async (req, res = response) => {
   const busqueda = req.params.busqueda;
   const regex = new RegExp(busqueda, "i");
 
-  const [usuarios] = await Promise.all([Usuario.find({ nombre: regex })]);
+  const [usuarios] = await Promise.all([Usuario.find({ email: regex })]);
 
   res.json({
     ok: true,
@@ -23,7 +23,7 @@ const getDocumentosColeccion = async (req, res = response) => {
 
   switch (tabla) {
     case "usuarios":
-      data = await Usuario.find({ nombre: regex });
+      data = await Usuario.find({ email: regex });
       break;
     default:
       return res.status(400).json({

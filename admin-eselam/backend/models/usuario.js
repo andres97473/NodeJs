@@ -15,6 +15,28 @@ const UsuarioSchema = Schema({
   modulos: {
     type: Object,
     default: {
+      correspondencia: {
+        unidad: {
+          ver: true,
+          consultar: true,
+          adicionar: false,
+          modificar: false,
+          eliminar: false,
+          anular: false,
+          imprimir: false,
+        },
+      },
+      noticias: {
+        noticias: {
+          ver: true,
+          consultar: true,
+          adicionar: false,
+          modificar: false,
+          eliminar: false,
+          anular: false,
+          imprimir: false,
+        },
+      },
       administracion: {
         tablasGenerales: {
           ver: false,

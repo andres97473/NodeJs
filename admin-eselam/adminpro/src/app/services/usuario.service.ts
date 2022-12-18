@@ -10,7 +10,6 @@ import { RegisterForm } from '../interface/register-form.interface';
 import { LoginForm } from '../interface/login-form.interface';
 import { Usuario } from '../models/usuario.model';
 import { CargarUsuario } from '../interface/cargar-usuarios.interface';
-import { PaisI } from '../interface/pais.interface';
 import { DOCUMENT } from '@angular/common';
 
 // declare const google: any;
@@ -130,36 +129,38 @@ export class UsuarioService {
         map((resp: any) => {
           const {
             email,
-            google,
-            nombre,
+            nombre1,
+            nombre2,
+            apellido1,
+            apellido2,
+            num_documento,
+            tipo_doc,
+            modulos,
             role,
             img = '',
             uid,
-            disponibles,
-            vence,
-            cod_pais,
             celular,
-            codigo,
             activo,
             created_at,
             update_at,
-          } = resp.usuario;
+          } = resp.usuario as Usuario;
           this.usuario = new Usuario(
-            nombre,
+            num_documento,
+            tipo_doc,
             email,
-            uid,
-            '',
-            img,
-            google,
-            role,
-            cod_pais,
+            apellido1,
+            apellido2,
+            nombre1,
+            nombre2,
             celular,
-            codigo,
-            vence,
-            disponibles,
+            img,
+            role,
+            modulos,
+            '',
             activo,
             created_at,
-            update_at
+            update_at,
+            uid
           );
           // guardar propiedades en el local storage
           this.guardarLocalStorage(resp);
@@ -231,21 +232,22 @@ export class UsuarioService {
         const usuarios = resp.usuarios.map(
           (user) =>
             new Usuario(
-              user.nombre,
+              user.num_documento,
+              user.tipo_doc,
               user.email,
-              user.uid,
-              '',
-              user.img,
-              user.google,
-              user.role,
-              user.cod_pais,
+              user.apellido1,
+              user.apellido2,
+              user.nombre1,
+              user.nombre2,
               user.celular,
-              user.codigo,
-              user.vence,
-              user.disponibles,
+              user.img,
+              user.role,
+              user.modulos,
+              '',
               user.activo,
               user.created_at,
-              user.update_at
+              user.update_at,
+              user.uid
             )
         );
 
@@ -268,28 +270,6 @@ export class UsuarioService {
       `${base_url}/usuarios/${usuario.uid}`,
       usuario,
       this.getHeaders
-    );
-  }
-
-  actualizarMensajesFecha(email: string, vence: string) {
-    return this.http.put(
-      `${base_url}/usuarios/mensajes-fecha/${email}`,
-      { vence },
-      this.getHeaders
-    );
-  }
-
-  actualizarMensajesDisponibles(email: string, disponibles: number) {
-    return this.http.put(
-      `${base_url}/usuarios/mensajes-disponibles/${email}`,
-      { disponibles },
-      this.getHeaders
-    );
-  }
-
-  getPaises() {
-    return this.http.get<{ ok: Boolean; paises: PaisI[] }>(
-      `${base_url}/paises`
     );
   }
 

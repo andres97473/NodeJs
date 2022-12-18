@@ -72,21 +72,22 @@ export class BusquedasService {
     return resultados.map(
       (user) =>
         new Usuario(
-          user.nombre,
+          user.num_documento,
+          user.tipo_doc,
           user.email,
-          user.uid,
-          '',
-          user.img,
-          user.google,
-          user.role,
-          user.cod_pais,
+          user.apellido1,
+          user.apellido2,
+          user.nombre1,
+          user.nombre2,
           user.celular,
-          user.codigo,
-          user.vence,
-          user.disponibles,
+          user.img,
+          user.role,
+          user.modulos,
+          '',
           user.activo,
           user.created_at,
-          user.update_at
+          user.update_at,
+          user.uid
         )
     );
   }

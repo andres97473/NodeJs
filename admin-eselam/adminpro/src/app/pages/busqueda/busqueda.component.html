@@ -1,11 +1,11 @@
 <div class="row animated fadeIn fast">
-  <div class="col-4">
+  <div class="col-6">
     <div class="card">
       <div class="card-body">
         <h3>Usuarios</h3>
 
         <div *ngIf="usuarios.length === 0" class="alert alert-info">
-          <p class="mb-0">No hay usuarios con ese termino</p>
+          <p class="mb-0">No hay usuarios con ese email</p>
         </div>
 
         <div *ngIf="usuarios.length > 0" class="table-responsive">
@@ -13,15 +13,17 @@
             <thead>
               <tr>
                 <th>Avatar</th>
+                <th>Email</th>
                 <th>Nombre</th>
               </tr>
             </thead>
             <tbody>
               <tr class="animated fadeIn fast" *ngFor="let usuario of usuarios">
                 <td>
-                  <img class="w75" [src]="usuario.img | imagen: 'usuarios'" />
+                  <img class="w75" [src]="usuario.img | imagen : 'usuarios'" />
                 </td>
-                <td>{{ usuario.nombre }}</td>
+                <td>{{ usuario.email }}</td>
+                <td>{{ usuario.nombre1 }} {{ usuario.apellido1 }}</td>
               </tr>
             </tbody>
           </table>

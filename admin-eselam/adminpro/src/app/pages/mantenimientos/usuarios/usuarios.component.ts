@@ -85,7 +85,7 @@ export class UsuariosComponent implements OnInit, OnDestroy {
     } else {
       return Swal.fire({
         title: '¿Borrar Usuario?',
-        text: `Esta a punto de borrar a ${usuario.nombre}`,
+        text: `Esta a punto de borrar a ${usuario.nombre1}`,
         icon: 'question',
         showCancelButton: true,
         confirmButtonText: 'Si, Borrar usuario!',
@@ -94,7 +94,7 @@ export class UsuariosComponent implements OnInit, OnDestroy {
           this.usuarioService.eliminarUsuario(usuario).subscribe((resp) => {
             Swal.fire(
               'Usuario Borrado',
-              `${usuario.nombre} fue eliminado correctamente`,
+              `${usuario.nombre1} fue eliminado correctamente`,
               'success'
             );
             this.cargarUsuarios();

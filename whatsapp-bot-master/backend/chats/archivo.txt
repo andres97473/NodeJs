@@ -1,1 +1,0 @@
-archivo para evitar que se borre la carpeta chats

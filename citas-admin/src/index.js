@@ -4,9 +4,11 @@ import employeesRoutes from "./routes/employees.routes.js";
 
 const app = express();
 
+app.use(express.json());
+
 //rutas
 app.use(indexRoutes);
-app.use(employeesRoutes);
+app.use("/api", employeesRoutes);
 
 app.listen(3000);
 console.log("Server listening on port 3000");

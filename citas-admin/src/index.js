@@ -1,8 +1,12 @@
 import express from "express";
 import indexRoutes from "./routes/index.routes.js";
 import employeesRoutes from "./routes/employees.routes.js";
+import { PORT } from "./config.js";
 
 const app = express();
+
+// Carpeta publica
+app.use(express.static("public"));
 
 app.use(express.json());
 
@@ -10,5 +14,11 @@ app.use(express.json());
 app.use(indexRoutes);
 app.use("/api", employeesRoutes);
 
-app.listen(3000);
-console.log("Server listening on port 3000");
+app.use((req, res, next) => {
+  res.status(404).json({
+    message: "endpoint not found",
+  });
+});
+
+app.listen(PORT);
+console.log("Server listening on Port", PORT);

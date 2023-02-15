@@ -1,5 +1,6 @@
 const qrcode = require("qrcode-terminal");
 const { Client, LocalAuth, MessageMedia, List } = require("whatsapp-web.js");
+const { getEmployees } = require("./controllers/employees.controller.js");
 
 const client = new Client({
   authStrategy: new LocalAuth(),
@@ -54,6 +55,24 @@ const listenMessage = () => {
         // sendMessage(from, "pong!!");
         // msg.reply("pong!!");
         client.sendMessage(from, "Pong!!");
+      } else if (msgRecibido.includes("#empleados")) {
+        getEmployees()
+          .then((employees) => {
+            let empleados = [];
+            empleados = employees[0];
+            let msg = "";
+            // console.log(empleados);
+            for (const i of empleados) {
+              // TODO: concatenar string
+              console.log(i);
+            }
+
+            // enviar mensaje
+            client.sendMessage(from, "lista de empleados");
+          })
+          .catch((err) => {
+            console.log(err);
+          });
       }
     } else {
       //console.log("no es mensaje");

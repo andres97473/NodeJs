@@ -58,17 +58,23 @@ const listenMessage = () => {
       } else if (msgRecibido.includes("#empleados")) {
         getEmployees()
           .then((employees) => {
-            let empleados = [];
+            var mensaje = "";
+            empleados = [];
             empleados = employees[0];
-            let msg = "";
             // console.log(empleados);
             for (const i of empleados) {
               // TODO: concatenar string
-              console.log(i);
+              mensaje =
+                mensaje +
+                "Su nombre es " +
+                i.name +
+                ", y su salario es: " +
+                i.salary +
+                "\n";
             }
-
+            // console.log(mensaje);
             // enviar mensaje
-            client.sendMessage(from, "lista de empleados");
+            client.sendMessage(from, mensaje);
           })
           .catch((err) => {
             console.log(err);

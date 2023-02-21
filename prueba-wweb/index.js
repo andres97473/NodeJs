@@ -1,6 +1,10 @@
 const qrcode = require("qrcode-terminal");
 const { Client, LocalAuth, MessageMedia, List } = require("whatsapp-web.js");
 const { getEmployees } = require("./controllers/employees.controller.js");
+const {
+  getTurnosCitas,
+  getCitas,
+} = require("./controllers/citas.controller.js");
 
 const client = new Client({
   authStrategy: new LocalAuth(),

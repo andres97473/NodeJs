@@ -25,6 +25,24 @@ const diaFecha = (fecha) => {
   }
 };
 
+// comparar arrays por id y fecha_string
+const compararCitas = async (data1, data2) => {
+  var array = [];
+  for (var i = 0; i < data1.length; i++) {
+    var igual = false;
+    for (var j = 0; (j < data2.length) & !igual; j++) {
+      if (
+        data1[i]["id_profesional"] == data2[j]["id_profesional"] &&
+        data1[i]["fecha_string"] == data2[j]["fecha_string"]
+      )
+        igual = true;
+    }
+    if (!igual) array.push(data1[i]);
+  }
+  // console.log(array);
+  return array;
+};
+
 // get turnos por dia
 const getTurnos = async (fecha) => {
   try {
@@ -108,4 +126,4 @@ const getTurnosCitas = async (fecha) => {
   return citas_disponibles;
 };
 
-module.exports = { getTurnosCitas, getCitas };
+module.exports = { getTurnosCitas, getCitas, compararCitas };

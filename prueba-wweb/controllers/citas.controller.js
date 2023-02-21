@@ -1,5 +1,11 @@
+const moment = require("moment");
 const { pool } = require("../db.js");
 
+// constantes
+const formatDate = "YYYY-MM-DD hh:mmA";
+// const fechaPrueba = "2023-02-01";
+
+// cambiar dias
 const diaFecha = (fecha) => {
   const dia = new Date(fecha);
   if (dia.getDay() === 6) {
@@ -19,14 +25,18 @@ const diaFecha = (fecha) => {
   }
 };
 
-const getTurnos = async () => {
-  fecha = "2023-02-01";
+// get turnos por dia
+const getTurnos = async (fecha) => {
   try {
     return ([rows] = await pool.query(
-      `SELECT tu.id_turno, tu.hora_inicio, tu.hora_fin, tu.tiempo, tu.id_dia, tu.id_profesional
-       FROM tb_turnos as tu 
-       WHERE tu.id_dia = ? AND tu.id_profesional= 21 
-       LIMIT 2`,
+      `SELECT tu.id_turno, tu.hora_inicio, tu.hora_fin, tu.tiempo, tu.id_dia,
+       tu.id_profesional, CONCAT_WS(' ', su.nombre1, su.nombre2, su.apellido1, su.apellido2 ) AS profesional, 
+       es.id_especialidad ,es.descripcion_especialidad AS especialidad ,su.estado 
+       FROM tb_turnos AS tu 
+       INNER JOIN seg_usuarios_sistema AS su ON ( su.id_usuario = tu.id_profesional )
+       INNER JOIN seg_especialidades_usuario AS eu ON ( eu.id_usuario = su.id_usuario )
+       INNER JOIN tb_especialidades AS es ON ( es.id_especialidad = eu.id_especialidad )
+       WHERE tu.id_dia = ? AND su.estado = 1 AND es.id_especialidad IN (1)`,
       [diaFecha(fecha)]
     ));
   } catch (error) {
@@ -34,15 +44,33 @@ const getTurnos = async () => {
   }
 };
 
-const getTurnosCitas = async () => {
-  fecha = "2023-02-01";
+// get citas por dia
+const getCitas = async (fecha) => {
+  try {
+    return ([rows] = await pool.query(
+      `SELECT ac.id_cita, ac.fec_cita, ac.hor_cita,CONCAT_WS(' ',ac.fec_cita, ac.hor_cita) AS fecha_string, ac.estado AS id_estado,
+      adm_estados_citas.descripcion_est_cita AS estado,
+      su.id_usuario AS id_profesional, CONCAT_WS(' ', su.nombre1, su.nombre2, su.apellido1, su.apellido2 ) AS profesional
+      FROM adm_citas AS ac
+      INNER JOIN adm_estados_citas ON (adm_estados_citas.id=ac.estado)
+      INNER JOIN seg_usuarios_sistema AS su ON (su.id_usuario=ac.id_profesional)
+      WHERE ac.fec_cita = ? AND ac.estado != 4 AND ac.id_especialidad IN (1)`,
+      [fecha]
+    ));
+  } catch (error) {
+    return console.log(error);
+  }
+};
+
+const getTurnosCitas = async (fecha) => {
   var citas_disponibles = [];
-  getTurnos()
-    .then((citas) => {
-      const turnos = citas[0];
+
+  getTurnos(fecha)
+    .then((rows) => {
+      const turnos = rows[0];
 
       for (const turno of turnos) {
-        console.log(turno);
+        // console.log(turno);
         var inicio_turno = new Date(
           fecha +
             " " +
@@ -59,9 +87,17 @@ const getTurnosCitas = async () => {
             turno.hora_fin.slice(-2)
         );
         while (inicio_turno <= fin_turno) {
-          console.log(
-            inicio_turno.getHours() + ":" + inicio_turno.getMinutes()
-          );
+          // push array
+          citas_disponibles.push({
+            fecha_turno: inicio_turno,
+            fecha_string: moment(inicio_turno).format(formatDate),
+            tiempo: turno.tiempo,
+            id_profesional: turno.id_profesional,
+            profesional: turno.profesional,
+            id_especialidad: turno.id_especialidad,
+            especialidad: turno.especialidad,
+          });
+
           inicio_turno.setMinutes(inicio_turno.getMinutes() + turno.tiempo);
         }
       }
@@ -69,6 +105,7 @@ const getTurnosCitas = async () => {
     .catch((err) => {
       console(err);
     });
+  return citas_disponibles;
 };
 
-module.exports = { getTurnos, getTurnosCitas };
+module.exports = { getTurnosCitas, getCitas };

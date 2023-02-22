@@ -25,6 +25,27 @@ const diaFecha = (fecha) => {
   }
 };
 
+const fechaString = (string) => {
+  return string.substr(0, string.length - 2) + " " + string.slice(-2);
+};
+
+/**
+ * @param fecha y hora inicial del rango
+ * @param  fecha y hora final del rango
+ * @param  fecha y hora a comparar
+ */
+const validarFechaEnRango = (fechaInicio, fechaFin, fechaValidar) => {
+  const fechaInicioMs = fechaInicio.getTime();
+  const fechaFinMs = fechaFin.getTime();
+  const fechaValidarMs = fechaValidar.getTime();
+
+  if (fechaValidarMs >= fechaInicioMs && fechaValidarMs <= fechaFinMs) {
+    return true;
+  } else {
+    return false;
+  }
+};
+
 // comparar arrays por id y fecha_string
 const compararCitas = async (data1, data2) => {
   var array = [];
@@ -35,6 +56,28 @@ const compararCitas = async (data1, data2) => {
         data1[i]["id_profesional"] == data2[j]["id_profesional"] &&
         data1[i]["fecha_string"] == data2[j]["fecha_string"]
       )
+        igual = true;
+    }
+    if (!igual) array.push(data1[i]);
+  }
+  // console.log(array);
+  return array;
+};
+
+// comparar arrays dentro de rango
+const compararBloqueos = async (data1, data2) => {
+  var array = [];
+  for (var i = 0; i < data1.length; i++) {
+    var igual = false;
+    for (var j = 0; (j < data2.length) & !igual; j++) {
+      const inicio = data2[j]["inicio_bloqueo"];
+      const fin = data2[j]["fin_bloqueo"];
+      const cita = data1[i]["fecha_string"];
+
+      const fecha_inicio = new Date(fechaString(inicio));
+      const fecha_fin = new Date(fechaString(fin));
+      const fecha_cita = new Date(fechaString(cita));
+      if (validarFechaEnRango(fecha_inicio, fecha_fin, fecha_cita))
         igual = true;
     }
     if (!igual) array.push(data1[i]);
@@ -54,7 +97,7 @@ const getTurnos = async (fecha) => {
        INNER JOIN seg_usuarios_sistema AS su ON ( su.id_usuario = tu.id_profesional )
        INNER JOIN seg_especialidades_usuario AS eu ON ( eu.id_usuario = su.id_usuario )
        INNER JOIN tb_especialidades AS es ON ( es.id_especialidad = eu.id_especialidad )
-       WHERE tu.id_dia = ? AND su.estado = 1 AND es.id_especialidad IN (1)`,
+       WHERE tu.id_dia = ? AND su.estado = 1 AND es.id_especialidad IN (1) AND su.descripcion NOT LIKE '%URGENCIA%'`,
       [diaFecha(fecha)]
     ));
   } catch (error) {
@@ -80,6 +123,24 @@ const getCitas = async (fecha) => {
   }
 };
 
+const getBloqueos = async (fecha) => {
+  try {
+    return ([rows] = await pool.query(
+      `SELECT bl.id_bloqueo, bl.fec_bloqueo, bl.desde_m AS hora_inicio, bl.hasta_m AS hora_fin, 
+      CONCAT_WS(' ',bl.fec_bloqueo, bl.desde_m) AS inicio_bloqueo,
+      CONCAT_WS(' ',bl.fec_bloqueo, bl.hasta_m) AS fin_bloqueo,
+      bl.motivo, bl.id_profesional, CONCAT_WS(' ', su.nombre1, su.nombre2, su.apellido1, su.apellido2 ) AS profesional
+      FROM adm_bloqueos AS bl
+      INNER JOIN seg_usuarios_sistema AS su ON ( su.id_usuario = bl.id_profesional )
+      WHERE bl.fec_bloqueo = ?`,
+      [fecha]
+    ));
+  } catch (error) {
+    return console.log(error);
+  }
+};
+
+// convertir turnos en citas posibles para el dia
 const getTurnosCitas = async (fecha) => {
   var citas_disponibles = [];
 
@@ -126,4 +187,10 @@ const getTurnosCitas = async (fecha) => {
   return citas_disponibles;
 };
 
-module.exports = { getTurnosCitas, getCitas, compararCitas };
+module.exports = {
+  getTurnosCitas,
+  getCitas,
+  getBloqueos,
+  compararCitas,
+  compararBloqueos,
+};

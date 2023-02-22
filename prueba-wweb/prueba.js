@@ -1,14 +1,15 @@
 const {
   getTurnosCitas,
   getCitas,
+  getBloqueos,
   compararCitas,
+  compararBloqueos,
 } = require("./controllers/citas.controller.js");
 
-var turnosCitas = [];
-var citasAsignadas = [];
+const buscarDisponibles = async (fecha) => {
+  var turnosCitas = [];
+  var citasAsignadas = [];
 
-const buscarDisponibles = async () => {
-  const fecha = "2023-02-01";
   getTurnosCitas(fecha)
     .then((turnos) => {
       turnosCitas = turnos;
@@ -24,7 +25,20 @@ const buscarDisponibles = async () => {
       // console.log(citasAsignadas);
       compararCitas(turnosCitas, citasAsignadas)
         .then((res) => {
-          console.log(res);
+          getBloqueos(fecha)
+            .then((bloqueos) => {
+              bloqueosTurnos = bloqueos[0];
+              compararBloqueos(res, bloqueosTurnos)
+                .then((res) => {
+                  console.log(res);
+                })
+                .catch((err) => {
+                  console.log(err);
+                });
+            })
+            .catch((err) => {
+              console.log(err);
+            });
         })
         .catch((err) => {
           console.log(err);
@@ -35,7 +49,7 @@ const buscarDisponibles = async () => {
     });
 };
 
-buscarDisponibles()
+buscarDisponibles("2023-02-08")
   .then()
   .catch((err) => {
     console.log(err);

@@ -4,6 +4,9 @@ const { getEmployees } = require("./controllers/employees.controller.js");
 const {
   getTurnosCitas,
   getCitas,
+  getBloqueos,
+  compararCitas,
+  compararBloqueos,
 } = require("./controllers/citas.controller.js");
 
 const client = new Client({

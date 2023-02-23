@@ -75,14 +75,14 @@ const compararBloqueos = async (data1, data2) => {
     for (var i = 0; i < data1.length; i++) {
       var igual = false;
       for (var j = 0; (j < data2.length) & !igual; j++) {
-        const inicio = data2[j]["inicio_bloqueo"];
-        const fin = data2[j]["fin_bloqueo"];
-        const cita = data1[i]["fecha_string"];
-
-        const fecha_inicio = new Date(fechaString(inicio));
-        const fecha_fin = new Date(fechaString(fin));
-        const fecha_cita = new Date(fechaString(cita));
-        if (validarFechaEnRango(fecha_inicio, fecha_fin, fecha_cita))
+        if (
+          data1[i]["id_profesional"] == data2[j]["id_profesional"] &&
+          validarFechaEnRango(
+            new Date(fechaString(data2[j]["inicio_bloqueo"])),
+            new Date(fechaString(data2[j]["fin_bloqueo"])),
+            new Date(fechaString(data1[i]["fecha_string"]))
+          )
+        )
           igual = true;
       }
       if (!igual) array.push(data1[i]);
@@ -117,7 +117,7 @@ const getTurnos = async (fecha) => {
 const getCitas = async (fecha) => {
   try {
     return ([rows] = await pool.query(
-      `SELECT ac.id_cita, ac.fec_cita, ac.hor_cita,CONCAT_WS(' ',ac.fec_cita, ac.hor_cita) AS fecha_string, ac.estado AS id_estado,
+      `SELECT ac.id_cita,CONCAT_WS(' ',ac.fec_cita, ac.hor_cita) AS fecha_string, ac.estado AS id_estado,
       adm_estados_citas.descripcion_est_cita AS estado,
       su.id_usuario AS id_profesional, CONCAT_WS(' ', su.nombre1, su.nombre2, su.apellido1, su.apellido2 ) AS profesional
       FROM adm_citas AS ac
@@ -134,7 +134,7 @@ const getCitas = async (fecha) => {
 const getBloqueos = async (fecha) => {
   try {
     return ([rows] = await pool.query(
-      `SELECT bl.id_bloqueo, bl.fec_bloqueo, bl.desde_m AS hora_inicio, bl.hasta_m AS hora_fin, 
+      `SELECT bl.id_bloqueo, 
       CONCAT_WS(' ',bl.fec_bloqueo, bl.desde_m) AS inicio_bloqueo,
       CONCAT_WS(' ',bl.fec_bloqueo, bl.hasta_m) AS fin_bloqueo,
       bl.motivo, bl.id_profesional, CONCAT_WS(' ', su.nombre1, su.nombre2, su.apellido1, su.apellido2 ) AS profesional
@@ -150,49 +150,93 @@ const getBloqueos = async (fecha) => {
 
 // convertir turnos en citas posibles para el dia
 const getTurnosCitas = async (fecha) => {
-  var citas_disponibles = [];
+  try {
+    var citas_disponibles = [];
 
-  getTurnos(fecha)
-    .then((rows) => {
-      const turnos = rows[0];
+    const rows = await getTurnos(fecha);
 
-      for (const turno of turnos) {
-        // console.log(turno);
-        var inicio_turno = new Date(
-          fecha +
-            " " +
-            turno.hora_inicio.slice(0, 5) +
-            " " +
-            turno.hora_inicio.slice(-2)
-        );
+    const turnos = rows[0];
 
-        var fin_turno = new Date(
-          fecha +
-            " " +
-            turno.hora_fin.slice(0, 5) +
-            " " +
-            turno.hora_fin.slice(-2)
-        );
-        while (inicio_turno <= fin_turno) {
-          // push array
-          citas_disponibles.push({
-            fecha_turno: inicio_turno,
-            fecha_string: moment(inicio_turno).format(formatDate),
-            tiempo: turno.tiempo,
-            id_profesional: turno.id_profesional,
-            profesional: turno.profesional,
-            id_especialidad: turno.id_especialidad,
-            especialidad: turno.especialidad,
-          });
+    for (const turno of turnos) {
+      // console.log(turno);
+      var inicio_turno = new Date(
+        fecha +
+          " " +
+          turno.hora_inicio.slice(0, 5) +
+          " " +
+          turno.hora_inicio.slice(-2)
+      );
 
-          inicio_turno.setMinutes(inicio_turno.getMinutes() + turno.tiempo);
-        }
+      var fin_turno = new Date(
+        fecha +
+          " " +
+          turno.hora_fin.slice(0, 5) +
+          " " +
+          turno.hora_fin.slice(-2)
+      );
+
+      // console.log(
+      //   "inicio " +
+      //     inicio_turno.toLocaleString() +
+      //     " fin " +
+      //     fin_turno.toLocaleString()
+      // );
+
+      while (inicio_turno <= fin_turno) {
+        // push array
+        // console.log(inicio_turno.toLocaleString());
+        citas_disponibles.push({
+          fecha_string: moment(inicio_turno).format(formatDate),
+          tiempo: turno.tiempo,
+          id_profesional: turno.id_profesional,
+          profesional: turno.profesional,
+          id_especialidad: turno.id_especialidad,
+          especialidad: turno.especialidad,
+        });
+
+        inicio_turno.setMinutes(inicio_turno.getMinutes() + turno.tiempo);
       }
-    })
-    .catch((err) => {
-      console(err);
-    });
-  return citas_disponibles;
+    }
+    // console.log(citas_disponibles);
+
+    return citas_disponibles;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+// convierte citas disponibles y los agrupad por id_profesional
+const convertirDisponibles = async (arrayRespuesta) => {
+  try {
+    var nuevoArray = [];
+    var arrayTemporal = [];
+    for (var i = 0; i < arrayRespuesta.length; i++) {
+      arrayTemporal = nuevoArray.filter(
+        (resp) => resp["id_profesional"] == arrayRespuesta[i]["id_profesional"]
+      );
+      if (arrayTemporal.length > 0) {
+        nuevoArray[nuevoArray.indexOf(arrayTemporal[0])]["disponibles"].push({
+          fecha_string: arrayRespuesta[i]["fecha_string"],
+          especialidad: arrayRespuesta[i]["especialidad"],
+        });
+      } else {
+        nuevoArray.push({
+          id_profesional: arrayRespuesta[i]["id_profesional"],
+          profesional: arrayRespuesta[i]["profesional"],
+          disponibles: [
+            {
+              fecha_string: arrayRespuesta[i]["fecha_string"],
+              especialidad: arrayRespuesta[i]["especialidad"],
+            },
+          ],
+        });
+      }
+    }
+
+    return nuevoArray;
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 module.exports = {
@@ -201,4 +245,5 @@ module.exports = {
   getBloqueos,
   compararCitas,
   compararBloqueos,
+  convertirDisponibles,
 };

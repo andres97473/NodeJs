@@ -48,42 +48,50 @@ const validarFechaEnRango = (fechaInicio, fechaFin, fechaValidar) => {
 
 // comparar arrays por id y fecha_string
 const compararCitas = async (data1, data2) => {
-  var array = [];
-  for (var i = 0; i < data1.length; i++) {
-    var igual = false;
-    for (var j = 0; (j < data2.length) & !igual; j++) {
-      if (
-        data1[i]["id_profesional"] == data2[j]["id_profesional"] &&
-        data1[i]["fecha_string"] == data2[j]["fecha_string"]
-      )
-        igual = true;
+  try {
+    var array = [];
+    for (var i = 0; i < data1.length; i++) {
+      var igual = false;
+      for (var j = 0; (j < data2.length) & !igual; j++) {
+        if (
+          data1[i]["id_profesional"] == data2[j]["id_profesional"] &&
+          data1[i]["fecha_string"] == data2[j]["fecha_string"]
+        )
+          igual = true;
+      }
+      if (!igual) array.push(data1[i]);
     }
-    if (!igual) array.push(data1[i]);
+    // console.log(array);
+    return array;
+  } catch (error) {
+    console.log(error);
   }
-  // console.log(array);
-  return array;
 };
 
 // comparar arrays dentro de rango
 const compararBloqueos = async (data1, data2) => {
-  var array = [];
-  for (var i = 0; i < data1.length; i++) {
-    var igual = false;
-    for (var j = 0; (j < data2.length) & !igual; j++) {
-      const inicio = data2[j]["inicio_bloqueo"];
-      const fin = data2[j]["fin_bloqueo"];
-      const cita = data1[i]["fecha_string"];
+  try {
+    var array = [];
+    for (var i = 0; i < data1.length; i++) {
+      var igual = false;
+      for (var j = 0; (j < data2.length) & !igual; j++) {
+        const inicio = data2[j]["inicio_bloqueo"];
+        const fin = data2[j]["fin_bloqueo"];
+        const cita = data1[i]["fecha_string"];
 
-      const fecha_inicio = new Date(fechaString(inicio));
-      const fecha_fin = new Date(fechaString(fin));
-      const fecha_cita = new Date(fechaString(cita));
-      if (validarFechaEnRango(fecha_inicio, fecha_fin, fecha_cita))
-        igual = true;
+        const fecha_inicio = new Date(fechaString(inicio));
+        const fecha_fin = new Date(fechaString(fin));
+        const fecha_cita = new Date(fechaString(cita));
+        if (validarFechaEnRango(fecha_inicio, fecha_fin, fecha_cita))
+          igual = true;
+      }
+      if (!igual) array.push(data1[i]);
     }
-    if (!igual) array.push(data1[i]);
+    // console.log(array);
+    return array;
+  } catch (error) {
+    console.log(error);
   }
-  // console.log(array);
-  return array;
 };
 
 // get turnos por dia

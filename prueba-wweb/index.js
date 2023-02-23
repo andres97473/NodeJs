@@ -1,13 +1,7 @@
 const qrcode = require("qrcode-terminal");
 const { Client, LocalAuth, MessageMedia, List } = require("whatsapp-web.js");
 const { getEmployees } = require("./controllers/employees.controller.js");
-const {
-  getTurnosCitas,
-  getCitas,
-  getBloqueos,
-  compararCitas,
-  compararBloqueos,
-} = require("./controllers/citas.controller.js");
+const { getDisponiblesAsync } = require("./promises/promesas.js");
 
 const client = new Client({
   authStrategy: new LocalAuth(),
@@ -86,9 +80,19 @@ const listenMessage = () => {
           .catch((err) => {
             console.log(err);
           });
+      } else if (msgRecibido.includes("#citas")) {
+        console.log("citas");
       }
     } else {
       //console.log("no es mensaje");
     }
   });
 };
+
+getDisponiblesAsync("2023-02-09")
+  .then((res) => {
+    console.log(res);
+  })
+  .catch((err) => {
+    console.log(err);
+  });

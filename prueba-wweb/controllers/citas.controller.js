@@ -223,6 +223,7 @@ const convertirDisponibles = async (arrayRespuesta) => {
         nuevoArray.push({
           id_profesional: arrayRespuesta[i]["id_profesional"],
           profesional: arrayRespuesta[i]["profesional"],
+          especialidad: arrayRespuesta[i]["especialidad"],
           disponibles: [
             {
               fecha_string: arrayRespuesta[i]["fecha_string"],

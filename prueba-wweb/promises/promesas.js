@@ -33,16 +33,26 @@ module.exports = {
   getCitasDisponibles,
 };
 
-const fecha = "2023-02-09";
+const fecha = "2023-03-02";
 
 getCitasDisponibles(fecha)
   .then((res) => {
-    //TODO: la siguiente informacion corresponde al dia xxxxxx
-    var mensaje = "";
+    const nFecha = new Date(fecha + "T00:00");
+    const options = {
+      weekday: "long",
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    };
+    // console.log(nFecha.toLocaleDateString("es-ES", options));
+    var mensaje =
+      "La siguiente informacion corresponde al dia " +
+      nFecha.toLocaleDateString("es-ES", options);
     for (const profesionales of res) {
       // console.log(profesionales);
       mensaje =
         mensaje +
+        "\n\n" +
         "Profesional de " +
         profesionales.especialidad +
         " " +
@@ -54,7 +64,6 @@ getCitasDisponibles(fecha)
           mensaje + "-> Cita disponible para el dia " + cita.fecha_string;
         mensaje = mensaje + "\n";
         mensaje = mensaje + "---------------------------";
-        mensaje = mensaje + "\n";
       }
     }
     console.log(mensaje);

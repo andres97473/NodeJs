@@ -2,6 +2,7 @@ const {
   getTurnosCitas,
   getCitas,
   getBloqueos,
+  getFestivos,
   compararCitas,
   compararBloqueos,
   convertirDisponibles,
@@ -44,6 +45,7 @@ async function getCitasDisponibles(fecha) {
 
 async function getMensajeDisponibles(fecha) {
   try {
+    const festivos = await getFestivos(fecha);
     const res = await getCitasDisponibles(fecha);
     const nFecha = new Date(fecha + "T00:00");
     var mensaje = "";
@@ -55,6 +57,12 @@ async function getMensajeDisponibles(fecha) {
     };
     if (!validarFormatoFecha(fecha)) {
       return "ERROR: La fecha no esta en el formato año-mes-dia (AAAA-MM-DD)";
+    } else if (festivos[0].length > 0) {
+      return (
+        "El dia " +
+        nFecha.toLocaleDateString("es-ES", options) +
+        " Es festivo, no hay citas disponibles para este dia"
+      );
     } else if (res.length === 0) {
       return (
         "No hay citas disponibles para el dia " +

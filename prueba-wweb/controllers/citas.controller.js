@@ -94,6 +94,20 @@ const compararBloqueos = async (data1, data2) => {
   }
 };
 
+// get dias festivos
+const getFestivos = async (fecha) => {
+  try {
+    return ([rows] = await pool.query(
+      `SELECT fs.fec_festivo
+      FROM tb_festivos AS fs
+      WHERE fs.fec_festivo = ?`,
+      [fecha]
+    ));
+  } catch (error) {
+    return console.log(error);
+  }
+};
+
 // get turnos por dia
 const getTurnos = async (fecha) => {
   try {
@@ -244,6 +258,7 @@ module.exports = {
   getTurnosCitas,
   getCitas,
   getBloqueos,
+  getFestivos,
   compararCitas,
   compararBloqueos,
   convertirDisponibles,

@@ -21,6 +21,20 @@ function validarFormatoFecha(campo) {
   }
 }
 
+/**
+ * Validar que la fecha no sea menor a la fecha actual
+ * @param  {string} campo
+ */
+function validarFechaActual(campo) {
+  const nFecha = new Date(campo + "T23:59");
+  const hoy = new Date();
+  if (nFecha >= hoy) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
 async function getCitasDisponibles(fecha) {
   try {
     const turnosCitas = await getTurnosCitas(fecha);
@@ -47,7 +61,7 @@ async function getMensajeDisponibles(fecha) {
   try {
     const festivos = await getFestivos(fecha);
     const res = await getCitasDisponibles(fecha);
-    const nFecha = new Date(fecha + "T00:00");
+    const nFecha = new Date(fecha + "T23:59");
     var mensaje = "";
     const options = {
       weekday: "long",
@@ -57,6 +71,13 @@ async function getMensajeDisponibles(fecha) {
     };
     if (!validarFormatoFecha(fecha)) {
       return "ERROR: La fecha no esta en el formato año-mes-dia (AAAA-MM-DD)";
+    } else if (!validarFechaActual(fecha)) {
+      return (
+        "Error: El dia " +
+        nFecha.toLocaleDateString("es-ES", options) +
+        " Es una fecha anterior al dia de hoy, " +
+        "No se pueden asignar citas para dias ya pasados"
+      );
     } else if (festivos[0].length > 0) {
       return (
         "El dia " +
@@ -105,7 +126,7 @@ module.exports = {
   validarFormatoFecha,
 };
 
-const fecha = "2023-02-09";
+const fecha = "2023-03-01";
 
 getMensajeDisponibles(fecha)
   .then((res) => {

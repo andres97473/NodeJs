@@ -82,23 +82,31 @@ const listenMessage = () => {
           .catch((err) => {
             console.log(err);
           });
-      } else if (msgRecibido.includes("cita")) {
+      } else if (msgRecibido.includes("#cita")) {
         const formatDate = "YYYY-MM-DD";
-        const nFecha = new Date();
+        var nFecha = new Date();
         const mensaje =
-          "Para buscar citas disponibles para un dia " +
-          "escriba #disponibles seguido de la fecha para la que quiere su cita, ejemplo\n\n" +
+          "Para buscar las citas disponibles en un dia " +
+          "escriba #disponibles seguido de la fecha para la que quiere su cita, ejemplo:";
+        const mensaje2 =
           "#disponibles:" +
-          moment(nFecha).format(formatDate);
+          moment(nFecha.setDate(nFecha.getDate() + 1)).format(formatDate);
         // enviar mensaje
-        client.sendMessage(from, mensaje);
+        setTimeout(() => {
+          client.sendMessage(from, mensaje);
+        }, 1500);
+        setTimeout(() => {
+          client.sendMessage(from, mensaje2);
+        }, 1800);
       } else if (msgRecibido.match(pattern1) && msgRecibido != "") {
         const array = msgRecibido.split(":");
 
         getMensajeDisponibles(array[1])
           .then((res) => {
             // console.log(res);
-            client.sendMessage(from, res);
+            setTimeout(() => {
+              client.sendMessage(from, res);
+            }, 1000);
           })
           .catch((err) => {
             console.log(err);

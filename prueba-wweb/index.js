@@ -1,5 +1,6 @@
 const qrcode = require("qrcode-terminal");
 const { Client, LocalAuth, MessageMedia, List } = require("whatsapp-web.js");
+const moment = require("moment");
 const { getEmployees } = require("./controllers/employees.controller.js");
 const { getMensajeDisponibles } = require("./promises/index.js");
 
@@ -51,6 +52,7 @@ const listenMessage = () => {
 
     if (from.includes("@c.us")) {
       let msgRecibido = removeAccents(body);
+      const pattern1 = /^#disponibles:./;
 
       if (msgRecibido.includes("ping")) {
         // sendMessage(from, "pong!!");
@@ -80,19 +82,30 @@ const listenMessage = () => {
           .catch((err) => {
             console.log(err);
           });
-      } else if (msgRecibido.includes("#citas")) {
-        console.log("citas");
+      } else if (msgRecibido.includes("cita")) {
+        const formatDate = "YYYY-MM-DD";
+        const nFecha = new Date();
+        const mensaje =
+          "Para buscar citas disponibles para un dia " +
+          "escriba #disponibles seguido de la fecha para la que quiere su cita, ejemplo\n\n" +
+          "#disponibles:" +
+          moment(nFecha).format(formatDate);
+        // enviar mensaje
+        client.sendMessage(from, mensaje);
+      } else if (msgRecibido.match(pattern1) && msgRecibido != "") {
+        const array = msgRecibido.split(":");
+
+        getMensajeDisponibles(array[1])
+          .then((res) => {
+            // console.log(res);
+            client.sendMessage(from, res);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
       }
     } else {
       //console.log("no es mensaje");
     }
   });
 };
-
-getMensajeDisponibles("2023-02-09")
-  .then((res) => {
-    console.log(res);
-  })
-  .catch((err) => {
-    console.log(err);
-  });

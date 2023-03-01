@@ -7,6 +7,7 @@ const {
   compararBloqueos,
   convertirDisponibles,
 } = require("../controllers/citas.controller.js");
+const moment = require("moment");
 
 /**
  * Validar que fecha este en formato AAAA-MM-DD
@@ -109,7 +110,7 @@ async function getMensajeDisponibles(fecha) {
           mensaje =
             mensaje + "-> Cita disponible para el dia " + cita.fecha_string;
           mensaje = mensaje + "\n";
-          mensaje = mensaje + "---------------------------";
+          mensaje = mensaje + "-----------------------------------------------";
         }
       }
       return mensaje;
@@ -120,18 +121,21 @@ async function getMensajeDisponibles(fecha) {
   }
 }
 
+function enviarMensaje(mensaje) {
+  var pattern1 = /^#disponibles:./;
+  if (mensaje.match(pattern1) && mensaje != "") {
+    const array = mensaje.split(":");
+    console.log(array[1]);
+    return true;
+  } else {
+    return false;
+  }
+}
+
 module.exports = {
   getCitasDisponibles,
   getMensajeDisponibles,
   validarFormatoFecha,
 };
 
-const fecha = "2023-03-01";
-
-getMensajeDisponibles(fecha)
-  .then((res) => {
-    console.log(res);
-  })
-  .catch((err) => {
-    console.log(err);
-  });
+// console.log(enviarMensaje("#disponibles:123"));

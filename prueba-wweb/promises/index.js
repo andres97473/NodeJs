@@ -131,7 +131,8 @@ async function getMensajeDisponibles(fecha) {
 async function asignarCitaDisponible(mensaje) {
   try {
     const pattern1 = /^#asignar:./;
-    const numero = /\d{2}/;
+    const pattern2 = /\d{2}/;
+    const pattern3 = /AM|PM/;
     if (mensaje.match(pattern1) && mensaje != "") {
       const array = mensaje.split(":");
       if (array.length !== 6) {
@@ -145,16 +146,14 @@ async function asignarCitaDisponible(mensaje) {
           return "ERROR: El codigo del Profesional debe ser un numero Entero";
         } else if (!validarFormatoFecha(fecha)) {
           return "ERROR: La fecha no esta en el formato año-mes-dia (AAAA-MM-DD)";
-        } else if (!hora.match(numero)) {
+        } else if (!hora.match(pattern2)) {
           return "ERROR: La hora no esta en el formato HH, si la hora es menor que 10 debe poner un cero adelante";
-        } else if (!minutos.match(numero)) {
+        } else if (!minutos.match(pattern2)) {
           return "ERROR: Los minutos no estan en el formato MM, si los minutos son menor que 10 debe poner un cero adelante";
         }
         // TODO: revisar if
-        else if (amPm != "AM") {
-          if (amPm != "PM") {
-            return "ERROR: debe escribir AM si desea su cita en la mañana o PM si desea su cita en la tarde";
-          }
+        else if (!amPm.match(pattern3) || amPm.length != 2) {
+          return "ERROR: debe escribir AM si desea su cita en la mañana o PM si desea su cita en la tarde";
         }
 
         return "correcto";
@@ -172,7 +171,7 @@ module.exports = {
   asignarCitaDisponible,
 };
 
-asignarCitaDisponible("#asignar:21:2023-03-16:09:30:PM")
+asignarCitaDisponible("#asignar:21:2023-03-16:09:30:AM")
   .then((res) => {
     console.log(res);
   })

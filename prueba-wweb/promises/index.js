@@ -128,14 +128,40 @@ async function getMensajeDisponibles(fecha) {
   }
 }
 
-function enviarMensaje(mensaje) {
-  var pattern1 = /^#disponibles:./;
-  if (mensaje.match(pattern1) && mensaje != "") {
-    const array = mensaje.split(":");
-    console.log(array[1]);
-    return true;
-  } else {
-    return false;
+async function asignarCitaDisponible(mensaje) {
+  try {
+    const pattern1 = /^#asignar:./;
+    const numero = /\d{2}/;
+    if (mensaje.match(pattern1) && mensaje != "") {
+      const array = mensaje.split(":");
+      if (array.length !== 6) {
+        return "ERROR: Faltan datos para poder realizar la solicitud, revisa el formato aceptado";
+      } else {
+        const [comodin, codigo, fecha, hora, minutos, amPm] = array;
+        console.log(comodin, codigo, fecha, hora, minutos, amPm);
+        // TODO: validar cada campo antes de buscar en db
+        if (!Number.isInteger(Number(codigo))) {
+          console.log(codigo);
+          return "ERROR: El codigo del Profesional debe ser un numero Entero";
+        } else if (!validarFormatoFecha(fecha)) {
+          return "ERROR: La fecha no esta en el formato año-mes-dia (AAAA-MM-DD)";
+        } else if (!hora.match(numero)) {
+          return "ERROR: La hora no esta en el formato HH, si la hora es menor que 10 debe poner un cero adelante";
+        } else if (!minutos.match(numero)) {
+          return "ERROR: Los minutos no estan en el formato MM, si los minutos son menor que 10 debe poner un cero adelante";
+        }
+        // TODO: revisar if
+        else if (amPm != "AM") {
+          if (amPm != "PM") {
+            return "ERROR: debe escribir AM si desea su cita en la mañana o PM si desea su cita en la tarde";
+          }
+        }
+
+        return "correcto";
+      }
+    }
+  } catch (error) {
+    console.log(error);
   }
 }
 
@@ -143,7 +169,16 @@ module.exports = {
   getCitasDisponibles,
   getMensajeDisponibles,
   validarFormatoFecha,
+  asignarCitaDisponible,
 };
+
+asignarCitaDisponible("#asignar:21:2023-03-16:09:30:PM")
+  .then((res) => {
+    console.log(res);
+  })
+  .catch((err) => {
+    console.log(err);
+  });
 
 // getMensajeDisponibles("2023-03-16").then((res) => {
 //   console.log(res);

@@ -38,6 +38,22 @@ function validarFechaActual(campo) {
   }
 }
 
+/**
+ * @param fechaString que se quiere comparar
+ */
+const validarFechaMayor4Horas = (fechaString) => {
+  const arrayFecha = String(fechaString).split(":");
+  const [fecha, hora, minutos, amPm] = arrayFecha;
+  const nFecha = new Date(fecha + " " + hora + ":" + minutos + " " + amPm);
+  const ahora = new Date();
+  const diferencia = (nFecha - ahora) / 1000 / 60 / 60;
+  if (Math.floor(diferencia) >= 4) {
+    return true;
+  } else {
+    return false;
+  }
+};
+
 async function getCitasDisponibles(fecha) {
   try {
     const turnosCitas = await getTurnosCitas(fecha);
@@ -236,6 +252,16 @@ async function asignarCitaDisponible(mensaje) {
           );
         }
 
+        if (
+          !validarFechaMayor4Horas(
+            fecha + ":" + hora + ":" + minutos + ":" + amPm
+          )
+        ) {
+          return "Error: no se pueden asignar citas con un tiempo menor a 4 horas de la hora actual a la hora de asignacion de la cita";
+        }
+
+        // TODO: validar usuario con citas activas, validar usuario con inasistencias
+
         // TODO: insertar cita en base de datos
         return buscarCitaDisponible;
       }
@@ -252,7 +278,7 @@ module.exports = {
   asignarCitaDisponible,
 };
 
-asignarCitaDisponible("#asignar:21:1081594300:2023-03-15:04:40:PM")
+asignarCitaDisponible("#asignar:21:1081594300:2023-03-16:02:00:PM")
   .then((res) => {
     console.log(res);
   })

@@ -108,6 +108,20 @@ const getFestivos = async (fecha) => {
   }
 };
 
+// get usuario por docuemnto
+const getUsuarioDocumento = async (documento) => {
+  try {
+    return ([rows] = await pool.query(
+      `SELECT us.id_usr_salud, us.num_doc_usr, us.apellido1, us.apellido2, us.nombre1, us.nombre2
+      FROM adm_usuarios AS us
+      WHERE us.num_doc_usr = ?`,
+      [documento]
+    ));
+  } catch (error) {
+    return console.log(error);
+  }
+};
+
 // get turnos por dia
 const getTurnos = async (fecha) => {
   try {
@@ -121,6 +135,25 @@ const getTurnos = async (fecha) => {
        INNER JOIN tb_especialidades AS es ON ( es.id_especialidad = eu.id_especialidad )
        WHERE tu.id_dia = ? AND su.estado = 1 AND es.id_especialidad IN (1) AND su.descripcion NOT LIKE '%URGENCIA%'`,
       [diaFecha(fecha)]
+    ));
+  } catch (error) {
+    return console.log(error);
+  }
+};
+
+// get turnos por dia
+const getTurnosProfesional = async (id, fecha) => {
+  try {
+    return ([rows] = await pool.query(
+      `SELECT tu.id_turno, tu.hora_inicio, tu.hora_fin, tu.tiempo, tu.id_dia,
+       tu.id_profesional, CONCAT_WS(' ', su.nombre1, su.nombre2, su.apellido1, su.apellido2 ) AS profesional, 
+       es.id_especialidad ,es.descripcion_especialidad AS especialidad ,su.estado 
+       FROM tb_turnos AS tu 
+       INNER JOIN seg_usuarios_sistema AS su ON ( su.id_usuario = tu.id_profesional )
+       INNER JOIN seg_especialidades_usuario AS eu ON ( eu.id_usuario = su.id_usuario )
+       INNER JOIN tb_especialidades AS es ON ( es.id_especialidad = eu.id_especialidad )
+       WHERE tu.id_profesional =? AND tu.id_dia = ? AND su.estado = 1 AND es.id_especialidad IN (1) AND su.descripcion NOT LIKE '%URGENCIA%'`,
+      [id, diaFecha(fecha)]
     ));
   } catch (error) {
     return console.log(error);
@@ -219,6 +252,63 @@ const getTurnosCitas = async (fecha) => {
   }
 };
 
+// convertir turnos en citas posibles para el dia por profesional
+const getTurnosCitasProfesional = async (id, fecha) => {
+  try {
+    var citas_disponibles = [];
+
+    const rows = await getTurnosProfesional(id, fecha);
+
+    const turnos = rows[0];
+
+    for (const turno of turnos) {
+      // console.log(turno);
+      var inicio_turno = new Date(
+        fecha +
+          " " +
+          turno.hora_inicio.slice(0, 5) +
+          " " +
+          turno.hora_inicio.slice(-2)
+      );
+
+      var fin_turno = new Date(
+        fecha +
+          " " +
+          turno.hora_fin.slice(0, 5) +
+          " " +
+          turno.hora_fin.slice(-2)
+      );
+
+      // console.log(
+      //   "inicio " +
+      //     inicio_turno.toLocaleString() +
+      //     " fin " +
+      //     fin_turno.toLocaleString()
+      // );
+
+      while (inicio_turno <= fin_turno) {
+        // push array
+        // console.log(inicio_turno.toLocaleString());
+        citas_disponibles.push({
+          fecha_string: moment(inicio_turno).format(formatDate),
+          tiempo: turno.tiempo,
+          id_profesional: turno.id_profesional,
+          profesional: turno.profesional,
+          id_especialidad: turno.id_especialidad,
+          especialidad: turno.especialidad,
+        });
+
+        inicio_turno.setMinutes(inicio_turno.getMinutes() + turno.tiempo);
+      }
+    }
+    // console.log(citas_disponibles);
+
+    return citas_disponibles;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 // convierte citas disponibles y los agrupad por id_profesional
 const convertirDisponibles = async (arrayRespuesta) => {
   try {
@@ -256,9 +346,11 @@ const convertirDisponibles = async (arrayRespuesta) => {
 
 module.exports = {
   getTurnosCitas,
+  getTurnosCitasProfesional,
   getCitas,
   getBloqueos,
   getFestivos,
+  getUsuarioDocumento,
   compararCitas,
   compararBloqueos,
   convertirDisponibles,

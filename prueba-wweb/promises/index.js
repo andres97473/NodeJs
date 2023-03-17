@@ -41,14 +41,15 @@ function validarFechaActual(campo) {
 
 /**
  * @param fechaString que se quiere comparar
+ * @param horas que se reuqiere que sea mayor la fechaString a la fecha actual
  */
-const validarFechaMayor4Horas = (fechaString) => {
+const validarFechaMayorAHoras = (fechaString, horas) => {
   const arrayFecha = String(fechaString).split(":");
   const [fecha, hora, minutos, amPm] = arrayFecha;
   const nFecha = new Date(fecha + " " + hora + ":" + minutos + " " + amPm);
   const ahora = new Date();
   const diferencia = (nFecha - ahora) / 1000 / 60 / 60;
-  if (Math.floor(diferencia) >= 4) {
+  if (Math.floor(diferencia) >= horas) {
     return true;
   } else {
     return false;
@@ -183,6 +184,10 @@ async function asignarCitaDisponible(mensaje) {
     const pattern2 = /\d{2}/;
     const pattern3 = /AM|PM/;
     if (mensaje.match(pattern1) && mensaje != "") {
+      const array = mensaje.split(":");
+      const [comodin, codigo, documento, fecha, hora, minutos, amPm] = array;
+      const horas = 4;
+
       const nFecha = new Date(fecha + "T23:59");
       const options = {
         weekday: "long",
@@ -191,8 +196,6 @@ async function asignarCitaDisponible(mensaje) {
         day: "numeric",
       };
 
-      const array = mensaje.split(":");
-      const [comodin, codigo, documento, fecha, hora, minutos, amPm] = array;
       const usuarioDoc = await getUsuarioDocumento(documento);
       const usuarioCodigo = usuarioDoc[0][0];
       // console.log(usuarioCodigo);
@@ -254,11 +257,16 @@ async function asignarCitaDisponible(mensaje) {
           " No esta disponible"
         );
       } else if (
-        !validarFechaMayor4Horas(
-          fecha + ":" + hora + ":" + minutos + ":" + amPm
+        !validarFechaMayorAHoras(
+          fecha + ":" + hora + ":" + minutos + ":" + amPm,
+          horas
         )
       ) {
-        return "Error: no se pueden asignar citas con un tiempo menor a 4 horas de la hora actual a la hora de asignacion de la cita";
+        return (
+          "Error: no se pueden asignar citas con un tiempo menor a " +
+          horas +
+          " horas de la hora actual a la hora de asignacion de la cita"
+        );
       }
 
       // TODO: validar usuario con citas activas, validar usuario con inasistencias
@@ -278,7 +286,7 @@ module.exports = {
   asignarCitaDisponible,
 };
 
-asignarCitaDisponible("#asignar:21:1081594300:2023-03-16:04:00:PM")
+asignarCitaDisponible("#asignar:21:1081594300:2023-03-17:03:00:PM")
   .then((res) => {
     console.log(res);
   })

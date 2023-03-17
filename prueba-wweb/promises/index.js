@@ -187,6 +187,7 @@ async function asignarCitaDisponible(mensaje) {
       const array = mensaje.split(":");
       const [comodin, codigo, documento, fecha, hora, minutos, amPm] = array;
       const horas = 4;
+      const citasInasistentes = 3;
 
       const nFecha = new Date(fecha + "T23:59");
       const options = {
@@ -198,6 +199,9 @@ async function asignarCitaDisponible(mensaje) {
 
       const usuarioDoc = await getUsuarioDocumento(documento);
       const usuarioCodigo = usuarioDoc[0][0];
+      const usuarioInasistencias = await getCitasInasistentesDocumento(
+        documento
+      );
       // console.log(usuarioCodigo);
       const citasProfesional = await getCitasDisponiblesProfesional(
         codigo,
@@ -222,13 +226,21 @@ async function asignarCitaDisponible(mensaje) {
       } else if (!amPm.match(pattern3) || amPm.length != 2) {
         return "ERROR: debe escribir AM si desea su cita en la mañana o PM si desea su cita en la tarde";
       } else if (usuarioDoc[0].length == 0) {
-        return "ERROR: usuario no encontrado en la base de datos";
+        return "ERROR: usuario no encontrado en la base de datos, verifique que su numero de documento este correcto o que tenga la atencion en la institucion";
       } else if (!validarFechaActual(fecha)) {
         return (
           "Error: El dia " +
           nFecha.toLocaleDateString("es-ES", options) +
           " Es una fecha anterior al dia de hoy, " +
           "No se pueden asignar citas para dias ya pasados"
+        );
+      } else if (usuarioInasistencias[0].length >= citasInasistentes) {
+        const inasistencias = usuarioInasistencias[0];
+        console.log(inasistencias);
+        return (
+          "Error: El usuario tiene " +
+          citasInasistentes +
+          " o mas citas inasistentes"
         );
       } else if (citasProfesional.length == 0) {
         return (
@@ -286,7 +298,7 @@ module.exports = {
   asignarCitaDisponible,
 };
 
-asignarCitaDisponible("#asignar:21:1081594300:2023-03-17:03:00:PM")
+asignarCitaDisponible("#asignar:21:5307670:2023-03-17:04:40:PM")
   .then((res) => {
     console.log(res);
   })

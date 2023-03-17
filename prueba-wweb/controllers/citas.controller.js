@@ -183,11 +183,11 @@ const getCitasInasistentesDocumento = async (documento) => {
   try {
     return ([rows] = await pool.query(
       `SELECT adm_usuarios.id_usr_salud, adm_usuarios.num_doc_usr,tb_tipo_documento.tipo_doc,adm_usuarios.apellido1,adm_usuarios.apellido2,adm_usuarios.nombre1,adm_usuarios.nombre2,
-      adm_citas.fec_cita,TIMESTAMPDIFF(DAY,adm_citas.fec_solicitud,adm_citas.fec_cita) AS 'dias espera',
+      adm_citas.fec_cita,TIMESTAMPDIFF(DAY,adm_citas.fec_solicitud,adm_citas.fec_cita) AS 'dias_espera',
       profesional.id_usuario AS id_profesional,
       CONCAT_WS(' ',profesional.nombre1,profesional.nombre2,profesional.apellido1,profesional.apellido2) AS 'profesional',
-      adm_estados_citas.descripcion_est_cita AS 'estado cita',
-      adm_motivoscancelacion.descripcion AS 'motivo cancelacion'
+      adm_estados_citas.descripcion_est_cita AS 'estado_cita',
+      adm_motivoscancelacion.descripcion AS 'motivo_cancelacion'
       FROM adm_citas 
       INNER JOIN adm_usuarios ON (adm_usuarios.id_usr_salud=adm_citas.id_usr_cita) 
       INNER JOIN tb_eps ON (tb_eps.id_eps=adm_usuarios.id_eps) 

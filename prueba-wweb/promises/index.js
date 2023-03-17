@@ -5,6 +5,7 @@ const {
   getBloqueos,
   getFestivos,
   getUsuarioDocumento,
+  getCitasInasistentesDocumento,
   compararCitas,
   compararBloqueos,
   convertirDisponibles,
@@ -54,6 +55,9 @@ const validarFechaMayor4Horas = (fechaString) => {
   }
 };
 
+/**
+ * @param fechaString para generar las citas disponibles y quitar las que no se pueden asignar
+ */
 async function getCitasDisponibles(fecha) {
   try {
     const turnosCitas = await getTurnosCitas(fecha);
@@ -75,6 +79,9 @@ async function getCitasDisponibles(fecha) {
   }
 }
 
+/**
+ * @param fechaString para generar las citas disponibles para un profesional y quitar las que no se pueden asignar
+ */
 async function getCitasDisponiblesProfesional(id, fecha) {
   try {
     const turnosCitas = await getTurnosCitasProfesional(id, fecha);
@@ -94,6 +101,9 @@ async function getCitasDisponiblesProfesional(id, fecha) {
   }
 }
 
+/**
+ * @param fechaString para generar un mensaje con las citas disponibles de ese dia para todos los profesionales
+ */
 async function getMensajeDisponibles(fecha) {
   try {
     const festivos = await getFestivos(fecha);
@@ -164,107 +174,97 @@ async function getMensajeDisponibles(fecha) {
   }
 }
 
+/**
+ * @param mensaje para generar asignar una cita a un usuario en una fecha y hora para un profesional
+ */
 async function asignarCitaDisponible(mensaje) {
   try {
     const pattern1 = /^#asignar:./;
     const pattern2 = /\d{2}/;
     const pattern3 = /AM|PM/;
     if (mensaje.match(pattern1) && mensaje != "") {
+      const nFecha = new Date(fecha + "T23:59");
+      const options = {
+        weekday: "long",
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      };
+
       const array = mensaje.split(":");
+      const [comodin, codigo, documento, fecha, hora, minutos, amPm] = array;
+      const usuarioDoc = await getUsuarioDocumento(documento);
+      const usuarioCodigo = usuarioDoc[0][0];
+      // console.log(usuarioCodigo);
+      const citasProfesional = await getCitasDisponiblesProfesional(
+        codigo,
+        fecha
+      );
+      const festivos = await getFestivos(fecha);
+
+      let buscarCitaDisponible = citasProfesional.find(
+        (o) => o.fecha_string === fecha + " " + hora + ":" + minutos + amPm
+      );
+
       if (array.length !== 7) {
-        return "ERROR: Faltan datos para poder realizar la solicitud, revisa el formato aceptado";
-      } else {
-        const [comodin, codigo, documento, fecha, hora, minutos, amPm] = array;
-
-        if (!Number.isInteger(Number(codigo))) {
-          return "ERROR: El codigo del Profesional debe ser un numero Entero";
-        } else if (!validarFormatoFecha(fecha)) {
-          return "ERROR: La fecha no esta en el formato año-mes-dia (AAAA-MM-DD)";
-        } else if (!hora.match(pattern2)) {
-          return "ERROR: La hora no esta en el formato HH, si la hora es menor que 10 debe poner un cero adelante";
-        } else if (!minutos.match(pattern2)) {
-          return "ERROR: Los minutos no estan en el formato MM, si los minutos son menor que 10 debe poner un cero adelante";
-        } else if (!amPm.match(pattern3) || amPm.length != 2) {
-          return "ERROR: debe escribir AM si desea su cita en la mañana o PM si desea su cita en la tarde";
-        }
-        const usuarioDoc = await getUsuarioDocumento(documento);
-        const nFecha = new Date(fecha + "T23:59");
-        const options = {
-          weekday: "long",
-          year: "numeric",
-          month: "long",
-          day: "numeric",
-        };
-
-        if (usuarioDoc[0].length == 0) {
-          return "ERROR: usuario no encontrado en la base de datos";
-        }
-        const usuarioCodigo = usuarioDoc[0][0];
-        // console.log(usuarioCodigo);
-
-        const citasProfesional = await getCitasDisponiblesProfesional(
-          codigo,
-          fecha
+        return "ERROR: Los datos suministrados no coinciden con el formato aceptado, #asignar:codigoProfesional:numeroDocumento:fechaCita:horaCita:minutosCita:AMPM";
+      } else if (!Number.isInteger(Number(codigo))) {
+        return "ERROR: El codigo del Profesional debe ser un numero Entero";
+      } else if (!validarFormatoFecha(fecha)) {
+        return "ERROR: La fecha no esta en el formato año-mes-dia (AAAA-MM-DD), si el mes o el dia son menores a 10 debe poner un cero adelante";
+      } else if (!hora.match(pattern2)) {
+        return "ERROR: La hora no esta en el formato HH, si la hora es menor que 10 debe poner un cero adelante";
+      } else if (!minutos.match(pattern2)) {
+        return "ERROR: Los minutos no estan en el formato MM, si los minutos son menor que 10 debe poner un cero adelante";
+      } else if (!amPm.match(pattern3) || amPm.length != 2) {
+        return "ERROR: debe escribir AM si desea su cita en la mañana o PM si desea su cita en la tarde";
+      } else if (usuarioDoc[0].length == 0) {
+        return "ERROR: usuario no encontrado en la base de datos";
+      } else if (!validarFechaActual(fecha)) {
+        return (
+          "Error: El dia " +
+          nFecha.toLocaleDateString("es-ES", options) +
+          " Es una fecha anterior al dia de hoy, " +
+          "No se pueden asignar citas para dias ya pasados"
         );
-
-        const festivos = await getFestivos(fecha);
-
-        if (!validarFechaActual(fecha)) {
-          return (
-            "Error: El dia " +
-            nFecha.toLocaleDateString("es-ES", options) +
-            " Es una fecha anterior al dia de hoy, " +
-            "No se pueden asignar citas para dias ya pasados"
-          );
-        } else if (citasProfesional.length == 0) {
-          return (
-            "ERROR: no hay citas disponibles para el profesional con codigo " +
-            codigo +
-            " para el dia " +
-            nFecha.toLocaleDateString("es-ES", options)
-          );
-        } else if (festivos[0].length > 0) {
-          return (
-            "El dia " +
-            nFecha.toLocaleDateString("es-ES", options) +
-            " Es festivo, no hay citas disponibles para este dia"
-          );
-        }
-
-        // console.log(citasProfesional);
-
-        let buscarCitaDisponible = citasProfesional.find(
-          (o) => o.fecha_string === fecha + " " + hora + ":" + minutos + amPm
+      } else if (citasProfesional.length == 0) {
+        return (
+          "ERROR: no hay citas disponibles para el profesional con codigo " +
+          codigo +
+          " para el dia " +
+          nFecha.toLocaleDateString("es-ES", options)
         );
-
-        if (!buscarCitaDisponible) {
-          return (
-            "La cita del dia " +
-            nFecha.toLocaleDateString("es-ES", options) +
-            " a las " +
-            hora +
-            ":" +
-            minutos +
-            amPm +
-            ", para el profesional con codigo " +
-            codigo +
-            " No esta disponible"
-          );
-        }
-
-        if (
-          !validarFechaMayor4Horas(
-            fecha + ":" + hora + ":" + minutos + ":" + amPm
-          )
-        ) {
-          return "Error: no se pueden asignar citas con un tiempo menor a 4 horas de la hora actual a la hora de asignacion de la cita";
-        }
-
-        // TODO: validar usuario con citas activas, validar usuario con inasistencias
-
-        // TODO: insertar cita en base de datos
-        return buscarCitaDisponible;
+      } else if (festivos[0].length > 0) {
+        return (
+          "El dia " +
+          nFecha.toLocaleDateString("es-ES", options) +
+          " Es festivo, no hay citas disponibles para este dia"
+        );
+      } else if (!buscarCitaDisponible) {
+        return (
+          "La cita del dia " +
+          nFecha.toLocaleDateString("es-ES", options) +
+          " a las " +
+          hora +
+          ":" +
+          minutos +
+          amPm +
+          ", para el profesional con codigo " +
+          codigo +
+          " No esta disponible"
+        );
+      } else if (
+        !validarFechaMayor4Horas(
+          fecha + ":" + hora + ":" + minutos + ":" + amPm
+        )
+      ) {
+        return "Error: no se pueden asignar citas con un tiempo menor a 4 horas de la hora actual a la hora de asignacion de la cita";
       }
+
+      // TODO: validar usuario con citas activas, validar usuario con inasistencias
+
+      // TODO: insertar cita en base de datos
+      return buscarCitaDisponible;
     }
   } catch (error) {
     console.log(error);
@@ -278,7 +278,7 @@ module.exports = {
   asignarCitaDisponible,
 };
 
-asignarCitaDisponible("#asignar:21:1081594300:2023-03-16:02:00:PM")
+asignarCitaDisponible("#asignar:21:1081594300:2023-03-16:04:00:PM")
   .then((res) => {
     console.log(res);
   })

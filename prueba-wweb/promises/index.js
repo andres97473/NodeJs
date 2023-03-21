@@ -6,6 +6,7 @@ const {
   getFestivos,
   getUsuarioDocumento,
   getCitasInasistentesDocumento,
+  getCitasActivasUsuario,
   compararCitas,
   compararBloqueos,
   convertirDisponibles,
@@ -208,6 +209,11 @@ async function asignarCitaDisponible(mensaje) {
         fecha
       );
       const festivos = await getFestivos(fecha);
+      const fechaActual = moment(new Date()).format("YYYY-MM-DD");
+      const usuarioActivas = await getCitasActivasUsuario(
+        fechaActual,
+        documento
+      );
 
       let buscarCitaDisponible = citasProfesional.find(
         (o) => o.fecha_string === fecha + " " + hora + ":" + minutos + amPm
@@ -242,6 +248,23 @@ async function asignarCitaDisponible(mensaje) {
           citasInasistentes +
           " o mas citas inasistentes"
         );
+      } else if (usuarioActivas[0].length > 0) {
+        const activas = usuarioActivas[0];
+        let mensajeActivas = "";
+        for (const activa of activas) {
+          mensajeActivas =
+            mensajeActivas +
+            "-> El usuario ya tiene una Cita asignada para el dia " +
+            activa.fec_cita.toLocaleDateString("es-ES", options);
+          mensajeActivas = mensajeActivas + " a las " + activa.hor_cita;
+          mensajeActivas =
+            mensajeActivas +
+            ", Debe cumplir con su cita para poder solicitar una nueva";
+          mensajeActivas = mensajeActivas + "\n";
+          mensajeActivas =
+            mensajeActivas + "-----------------------------------------------";
+        }
+        return mensajeActivas;
       } else if (citasProfesional.length == 0) {
         return (
           "ERROR: no hay citas disponibles para el profesional con codigo " +
@@ -264,7 +287,7 @@ async function asignarCitaDisponible(mensaje) {
           ":" +
           minutos +
           amPm +
-          ", para el profesional con codigo " +
+          ", del profesional con codigo " +
           codigo +
           " No esta disponible"
         );
@@ -281,7 +304,7 @@ async function asignarCitaDisponible(mensaje) {
         );
       }
 
-      // TODO: validar usuario con citas activas, validar usuario con inasistencias
+      // TODO: validar usuario con citas activas
 
       // TODO: insertar cita en base de datos
       return buscarCitaDisponible;
@@ -298,7 +321,7 @@ module.exports = {
   asignarCitaDisponible,
 };
 
-asignarCitaDisponible("#asignar:21:5307670:2023-03-17:04:40:PM")
+asignarCitaDisponible("#asignar:21:1085904407:2023-03-21:04:40:PM")
   .then((res) => {
     console.log(res);
   })

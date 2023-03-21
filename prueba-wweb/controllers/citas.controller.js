@@ -212,6 +212,44 @@ const getCitasInasistentesDocumento = async (documento) => {
   }
 };
 
+/**
+ * Obtener citas Activas mayores a la fecha actual
+ * @param  {string} fecha fecha actual en formato string
+ * @param  {string} documento numero de documento del usuario que del que se buscan las citas activas
+ */
+const getCitasActivasUsuario = async (fecha, documento) => {
+  try {
+    return ([rows] = await pool.query(
+      `SELECT adm_usuarios.id_usr_salud, adm_usuarios.num_doc_usr,tb_tipo_documento.tipo_doc,adm_usuarios.apellido1,adm_usuarios.apellido2,adm_usuarios.nombre1,adm_usuarios.nombre2,
+      adm_citas.fec_cita,adm_citas.hor_cita,TIMESTAMPDIFF(DAY,adm_citas.fec_solicitud,adm_citas.fec_cita) AS 'dias_espera',
+      profesional.id_usuario AS id_profesional,
+      CONCAT_WS(' ',profesional.nombre1,profesional.nombre2,profesional.apellido1,profesional.apellido2) AS 'profesional',
+      adm_estados_citas.descripcion_est_cita AS 'estado_cita',
+      adm_motivoscancelacion.descripcion AS 'motivo_cancelacion'
+      FROM adm_citas 
+      INNER JOIN adm_usuarios ON (adm_usuarios.id_usr_salud=adm_citas.id_usr_cita) 
+      INNER JOIN tb_eps ON (tb_eps.id_eps=adm_usuarios.id_eps) 
+      INNER JOIN tb_especialidades ON (tb_especialidades.id_especialidad=adm_citas.id_especialidad)
+      INNER JOIN tb_tipo_documento ON (tb_tipo_documento.id_tipo_doc=adm_usuarios.id_tipo_doc_usr) 
+      INNER JOIN tb_regimenes ON (tb_regimenes.id_regimen=adm_usuarios.id_regimen)
+      INNER JOIN seg_usuarios_sistema AS profesional ON (profesional.id_usuario=adm_citas.id_profesional)
+      INNER JOIN seg_usuarios_sistema AS usuario_crea ON (usuario_crea.id_usuario=adm_citas.id_usr_crea)
+      LEFT JOIN seg_usuarios_sistema AS usuario_confirma ON (usuario_confirma.id_usuario=adm_citas.id_usr_confirma)
+      INNER JOIN adm_estados_citas ON (adm_estados_citas.id=adm_citas.estado)
+      LEFT JOIN adm_motivoscancelacion ON (adm_citas.id_mot_cancelacion=adm_motivoscancelacion.id_motcancel)
+      LEFT JOIN adm_ingresos ON (adm_ingresos.id_cita=adm_citas.id_cita)
+      WHERE tb_especialidades.id_especialidad = 1
+       AND adm_citas.estado = 1
+       AND adm_citas.fec_cita >= ?
+       AND adm_usuarios.num_doc_usr = ?     
+      ORDER BY adm_citas.fec_solicitud ASC,tb_especialidades.descripcion_especialidad`,
+      [fecha, documento]
+    ));
+  } catch (error) {
+    return console.log(error);
+  }
+};
+
 const getBloqueos = async (fecha) => {
   try {
     return ([rows] = await pool.query(
@@ -386,6 +424,7 @@ module.exports = {
   getFestivos,
   getUsuarioDocumento,
   getCitasInasistentesDocumento,
+  getCitasActivasUsuario,
   compararCitas,
   compararBloqueos,
   convertirDisponibles,

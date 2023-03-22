@@ -183,8 +183,8 @@ const getCitasInasistentesDocumento = async (documento) => {
   try {
     return ([rows] = await pool.query(
       `SELECT adm_usuarios.id_usr_salud, adm_usuarios.num_doc_usr,tb_tipo_documento.tipo_doc,adm_usuarios.apellido1,adm_usuarios.apellido2,adm_usuarios.nombre1,adm_usuarios.nombre2,
-      adm_citas.fec_cita,TIMESTAMPDIFF(DAY,adm_citas.fec_solicitud,adm_citas.fec_cita) AS 'dias_espera',
-      profesional.id_usuario AS id_profesional,
+      adm_citas.fec_cita,adm_citas.hor_cita,TIMESTAMPDIFF(DAY,adm_citas.fec_solicitud,adm_citas.fec_cita) AS 'dias_espera',
+      tb_especialidades.descripcion_especialidad AS especialidad, profesional.id_usuario AS id_profesional,
       CONCAT_WS(' ',profesional.nombre1,profesional.nombre2,profesional.apellido1,profesional.apellido2) AS 'profesional',
       adm_estados_citas.descripcion_est_cita AS 'estado_cita',
       adm_motivoscancelacion.descripcion AS 'motivo_cancelacion'
@@ -222,7 +222,7 @@ const getCitasActivasUsuario = async (fecha, documento) => {
     return ([rows] = await pool.query(
       `SELECT adm_usuarios.id_usr_salud, adm_usuarios.num_doc_usr,tb_tipo_documento.tipo_doc,adm_usuarios.apellido1,adm_usuarios.apellido2,adm_usuarios.nombre1,adm_usuarios.nombre2,
       adm_citas.fec_cita,adm_citas.hor_cita,TIMESTAMPDIFF(DAY,adm_citas.fec_solicitud,adm_citas.fec_cita) AS 'dias_espera',
-      profesional.id_usuario AS id_profesional,
+      tb_especialidades.descripcion_especialidad AS especialidad, profesional.id_usuario AS id_profesional,
       CONCAT_WS(' ',profesional.nombre1,profesional.nombre2,profesional.apellido1,profesional.apellido2) AS 'profesional',
       adm_estados_citas.descripcion_est_cita AS 'estado_cita',
       adm_motivoscancelacion.descripcion AS 'motivo_cancelacion'

@@ -1,3 +1,5 @@
+require("dotenv").config();
+const moment = require("moment");
 const {
   getTurnosCitas,
   getTurnosCitasProfesional,
@@ -11,7 +13,6 @@ const {
   compararBloqueos,
   convertirDisponibles,
 } = require("../controllers/citas.controller.js");
-const moment = require("moment");
 
 /**
  * Validar que fecha este en formato AAAA-MM-DD
@@ -242,19 +243,47 @@ async function asignarCitaDisponible(mensaje) {
         );
       } else if (usuarioInasistencias[0].length >= citasInasistentes) {
         const inasistencias = usuarioInasistencias[0];
-        console.log(inasistencias);
-        return (
+        const ATEN_USUARIO = process.env.ATEN_USUARIO;
+        let mensajeInasistencias =
           "Error: El usuario tiene " +
           citasInasistentes +
-          " o mas citas inasistentes"
-        );
+          " o mas Citas Inasistentes y no puede utilizar este servicio" +
+          "\n";
+        for (const inasistencia of inasistencias) {
+          mensajeInasistencias =
+            mensajeInasistencias +
+            " ->" +
+            inasistencia.fec_cita.toLocaleDateString("es-ES", options);
+          mensajeInasistencias =
+            mensajeInasistencias + " a las " + inasistencia.hor_cita;
+          mensajeInasistencias = inasistencia.motivo_cancelacion
+            ? mensajeInasistencias + ", " + inasistencia.motivo_cancelacion
+            : "";
+
+          mensajeInasistencias = mensajeInasistencias + "\n";
+        }
+        mensajeInasistencias =
+          mensajeInasistencias +
+          "Para solicitar una cita llamar al numero " +
+          ATEN_USUARIO;
+        mensajeInasistencias =
+          mensajeInasistencias +
+          " en horario de 09:00AM a 11:00AM del medio dia";
+        mensajeInasistencias =
+          mensajeInasistencias + " y de 03:00PM a 04:00PM en la tarde";
+        return mensajeInasistencias;
       } else if (usuarioActivas[0].length > 0) {
         const activas = usuarioActivas[0];
         let mensajeActivas = "";
         for (const activa of activas) {
           mensajeActivas =
+            mensajeActivas + "Error: El usuario ya tiene una Cita asignada de ";
+          mensajeActivas =
+            mensajeActivas + activa.especialidad + " con el profesional ";
+          mensajeActivas = mensajeActivas + activa.profesional;
+          mensajeActivas =
             mensajeActivas +
-            "-> El usuario ya tiene una Cita asignada para el dia " +
+            " para el dia " +
             activa.fec_cita.toLocaleDateString("es-ES", options);
           mensajeActivas = mensajeActivas + " a las " + activa.hor_cita;
           mensajeActivas =
@@ -274,22 +303,22 @@ async function asignarCitaDisponible(mensaje) {
         );
       } else if (festivos[0].length > 0) {
         return (
-          "El dia " +
+          "Error: El dia " +
           nFecha.toLocaleDateString("es-ES", options) +
           " Es festivo, no hay citas disponibles para este dia"
         );
       } else if (!buscarCitaDisponible) {
         return (
-          "La cita del dia " +
+          "Error: La cita del dia " +
           nFecha.toLocaleDateString("es-ES", options) +
           " a las " +
           hora +
           ":" +
           minutos +
           amPm +
-          ", del profesional con codigo " +
+          " con el profesional de codigo " +
           codigo +
-          " No esta disponible"
+          ", No esta disponible"
         );
       } else if (
         !validarFechaMayorAHoras(
@@ -303,8 +332,6 @@ async function asignarCitaDisponible(mensaje) {
           " horas de la hora actual a la hora de asignacion de la cita"
         );
       }
-
-      // TODO: validar usuario con citas activas
 
       // TODO: insertar cita en base de datos
       return buscarCitaDisponible;
@@ -321,7 +348,7 @@ module.exports = {
   asignarCitaDisponible,
 };
 
-asignarCitaDisponible("#asignar:21:1085904407:2023-03-21:04:40:PM")
+asignarCitaDisponible("#asignar:21:5307084:2023-03-22:12:30:PM")
   .then((res) => {
     console.log(res);
   })

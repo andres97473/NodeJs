@@ -178,7 +178,10 @@ const getCitas = async (fecha) => {
   }
 };
 
-// get citas inasistentes no canceladas a tiempo usuario
+/**
+ * Obtener inasistencias de un usuario
+ * @param  {string} documento numero de documento del usuario del que se buscan inasistencias
+ */
 const getCitasInasistentesDocumento = async (documento) => {
   try {
     return ([rows] = await pool.query(
@@ -206,6 +209,43 @@ const getCitasInasistentesDocumento = async (documento) => {
        AND adm_motivoscancelacion.id_motcancel IN (1,10,25)
       ORDER BY adm_citas.fec_solicitud ASC,tb_especialidades.descripcion_especialidad`,
       [documento]
+    ));
+  } catch (error) {
+    return console.log(error);
+  }
+};
+
+/**
+ * Obtener inasistencias de un numero de Whatsapp
+ * @param  {string} whatsapp numero de whatsapp del usuario del que se buscan inasistencias
+ */
+const getCitasInasistentesWhatsapp = async (whatsapp) => {
+  try {
+    return ([rows] = await pool.query(
+      `SELECT adm_usuarios.id_usr_salud, adm_usuarios.num_doc_usr,tb_tipo_documento.tipo_doc,adm_usuarios.apellido1,adm_usuarios.apellido2,adm_usuarios.nombre1,adm_usuarios.nombre2,
+      adm_citas.fec_cita,adm_citas.hor_cita,TIMESTAMPDIFF(DAY,adm_citas.fec_solicitud,adm_citas.fec_cita) AS 'dias_espera',
+      tb_especialidades.descripcion_especialidad AS especialidad, profesional.id_usuario AS id_profesional,
+      CONCAT_WS(' ',profesional.nombre1,profesional.nombre2,profesional.apellido1,profesional.apellido2) AS 'profesional',
+      adm_estados_citas.descripcion_est_cita AS 'estado_cita',
+      adm_motivoscancelacion.descripcion AS 'motivo_cancelacion'
+      FROM adm_citas 
+      INNER JOIN adm_usuarios ON (adm_usuarios.id_usr_salud=adm_citas.id_usr_cita) 
+      INNER JOIN tb_eps ON (tb_eps.id_eps=adm_usuarios.id_eps) 
+      INNER JOIN tb_especialidades ON (tb_especialidades.id_especialidad=adm_citas.id_especialidad)
+      INNER JOIN tb_tipo_documento ON (tb_tipo_documento.id_tipo_doc=adm_usuarios.id_tipo_doc_usr) 
+      INNER JOIN tb_regimenes ON (tb_regimenes.id_regimen=adm_usuarios.id_regimen)
+      INNER JOIN seg_usuarios_sistema AS profesional ON (profesional.id_usuario=adm_citas.id_profesional)
+      INNER JOIN seg_usuarios_sistema AS usuario_crea ON (usuario_crea.id_usuario=adm_citas.id_usr_crea)
+      LEFT JOIN seg_usuarios_sistema AS usuario_confirma ON (usuario_confirma.id_usuario=adm_citas.id_usr_confirma)
+      INNER JOIN adm_estados_citas ON (adm_estados_citas.id=adm_citas.estado)
+      LEFT JOIN adm_motivoscancelacion ON (adm_citas.id_mot_cancelacion=adm_motivoscancelacion.id_motcancel)
+      LEFT JOIN adm_ingresos ON (adm_ingresos.id_cita=adm_citas.id_cita)
+      WHERE adm_citas.id_usr_cita<>0 
+       AND tb_especialidades.id_especialidad = 1
+       AND adm_citas.whatsapp = ?
+       AND adm_motivoscancelacion.id_motcancel IN (1,10,25)
+      ORDER BY adm_citas.fec_solicitud ASC,tb_especialidades.descripcion_especialidad`,
+      [whatsapp]
     ));
   } catch (error) {
     return console.log(error);
@@ -423,6 +463,7 @@ module.exports = {
   getBloqueos,
   getFestivos,
   getUsuarioDocumento,
+  getCitasInasistentesWhatsapp,
   getCitasInasistentesDocumento,
   getCitasActivasUsuario,
   compararCitas,

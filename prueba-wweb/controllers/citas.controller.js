@@ -5,7 +5,10 @@ const { pool } = require("../db.js");
 const formatDate = "YYYY-MM-DD hh:mmA";
 // const fechaPrueba = "2023-02-01";
 
-// cambiar dias
+/**
+ * Obtener dia de semana segun formato de cronhis
+ * @param  {string} fecha en formato string
+ */
 const diaFecha = (fecha) => {
   const dia = new Date(fecha);
   if (dia.getDay() === 6) {
@@ -25,6 +28,10 @@ const diaFecha = (fecha) => {
   }
 };
 
+/**
+ * Retorna fecha en formato string
+ * @param  {string} fecha en formato string
+ */
 const fechaString = (string) => {
   return string.substr(0, string.length - 2) + " " + string.slice(-2);
 };
@@ -46,7 +53,11 @@ const validarFechaEnRango = (fechaInicio, fechaFin, fechaValidar) => {
   }
 };
 
-// comparar arrays por id y fecha_string
+/**
+ * Comparar arrays por id y fecha_string
+ * @param data1 array con la informacion
+ * @param data2 array del que se van a quitar los elementos al array 1
+ */
 const compararCitas = async (data1, data2) => {
   try {
     var array = [];
@@ -68,7 +79,11 @@ const compararCitas = async (data1, data2) => {
   }
 };
 
-// comparar arrays dentro de rango
+/**
+ * Comparar arrays dentro de rango
+ * @param data1 array con la informacion
+ * @param data2 array del que se van a quitar los elementos al array 1
+ */
 const compararBloqueos = async (data1, data2) => {
   try {
     var array = [];
@@ -94,7 +109,10 @@ const compararBloqueos = async (data1, data2) => {
   }
 };
 
-// get dias festivos
+/**
+ * get dias festivos
+ * @param {string} fecha que se busca si es un festivo
+ */
 const getFestivos = async (fecha) => {
   try {
     return ([rows] = await pool.query(
@@ -108,7 +126,10 @@ const getFestivos = async (fecha) => {
   }
 };
 
-// get usuario por docuemnto
+/**
+ * get usuario por documento
+ * @param {string} documento que se busca si esta en la base de datos
+ */
 const getUsuarioDocumento = async (documento) => {
   try {
     return ([rows] = await pool.query(
@@ -122,7 +143,10 @@ const getUsuarioDocumento = async (documento) => {
   }
 };
 
-// get turnos por dia
+/**
+ * get turnos por dia
+ * @param {string} fecha que se busca los turnos de los profesionales
+ */
 const getTurnos = async (fecha) => {
   try {
     return ([rows] = await pool.query(
@@ -141,7 +165,11 @@ const getTurnos = async (fecha) => {
   }
 };
 
-// get turnos por dia
+/**
+ * get turnos de un profesional por dia
+ * @param {int} id del profesional que se buscan los turnos
+ * @param {string} fecha que se busca los turnos de los profesionales
+ */
 const getTurnosProfesional = async (id, fecha) => {
   try {
     return ([rows] = await pool.query(
@@ -160,7 +188,10 @@ const getTurnosProfesional = async (id, fecha) => {
   }
 };
 
-// get citas por dia
+/**
+ * get citas por dia
+ * @param {string} fecha de las citas de un dia
+ */
 const getCitas = async (fecha) => {
   try {
     return ([rows] = await pool.query(
@@ -180,7 +211,7 @@ const getCitas = async (fecha) => {
 
 /**
  * Obtener inasistencias de un usuario
- * @param  {string} documento numero de documento del usuario del que se buscan inasistencias
+ * @param {string} documento numero de documento del usuario del que se buscan inasistencias
  */
 const getCitasInasistentesDocumento = async (documento) => {
   try {
@@ -290,6 +321,10 @@ const getCitasActivasUsuario = async (fecha, documento) => {
   }
 };
 
+/**
+ * Obtener bloqueos para una fecha
+ * @param  {string} fecha en formato string
+ */
 const getBloqueos = async (fecha) => {
   try {
     return ([rows] = await pool.query(
@@ -307,7 +342,59 @@ const getBloqueos = async (fecha) => {
   }
 };
 
-// convertir turnos en citas posibles para el dia
+/**
+ * Insertar una nueva cita para un usuario
+ * @param {int} id_usr_cita id del usuario
+ * @param {int} id_profesional id del profesional
+ * @param {string} fec_cita fecha para la que va a quedar la cita AAAA-MM-DD
+ * @param {string} hor_cita hora para la que va a quedar la cita HH:MM[AM/PM]
+ * @param {string} fec_deseada fecha para la que el usuario quiere su cita AAAA-MM-DD
+ * @param {string} fec_solicitud fecha actual en la que se hace la solicitud de la cita AAAA-MM-DD
+ * @param {string} hor_solicitud hora actual en la que se hace la solicitud de la cita HH:MM[AM/PM]
+ * @param {Date} fec_creacion fecha actual en la que se crea el registro AAAA-MM-DD HH:MM:SS
+ * @param {string} whatsapp desde el cual se realiza el registro de la cita
+ */
+const insertCita = async (
+  id_usr_cita,
+  id_profesional,
+  fec_cita,
+  hor_cita,
+  fec_deseada,
+  fec_solicitud,
+  hor_solicitud,
+  fec_creacion,
+  whatsapp
+) => {
+  try {
+    return ([rows] = await pool.query(
+      `INSERT INTO adm_citas
+      (id_usr_cita,id_sede,id_profesional,id_especialidad,fec_cita,hor_cita,fec_deseada,
+      fec_solicitud,hor_solicitud,descripcion,fec_creacion,id_cita_tipo,clase,origen,
+      id_usr_crea,estado,id_cau_externa,id_programa,id_promotor,es_telefonica,
+      id_modo,id_lugar,whatsapp)
+      VALUES
+      (?,1,?,1,?,?,?,?,?,'CITA ASIGNADA POR WHATSAPP',?,1,1,1,1,1,13,0,0,0,0,0,?)`,
+      [
+        id_usr_cita,
+        id_profesional,
+        fec_cita,
+        hor_cita,
+        fec_deseada,
+        fec_solicitud,
+        hor_solicitud,
+        fec_creacion,
+        whatsapp,
+      ]
+    ));
+  } catch (error) {
+    return console.log(error);
+  }
+};
+
+/**
+ * Convertir turnos en citas posibles para el dia
+ * @param  {string} fecha en formato string
+ */
 const getTurnosCitas = async (fecha) => {
   try {
     var citas_disponibles = [];
@@ -364,7 +451,11 @@ const getTurnosCitas = async (fecha) => {
   }
 };
 
-// convertir turnos en citas posibles para el dia por profesional
+/**
+ * Convertir turnos en citas posibles para el dia por profesional
+ * @param  {int} id del profesional
+ * @param  {string} fecha en formato string
+ */
 const getTurnosCitasProfesional = async (id, fecha) => {
   try {
     var citas_disponibles = [];
@@ -421,7 +512,10 @@ const getTurnosCitasProfesional = async (id, fecha) => {
   }
 };
 
-// convierte citas disponibles y los agrupad por id_profesional
+/**
+ * Convierte citas disponibles y los agrupa por id_profesional
+ * @param  {array} arrayRespuesta array que se desea convertir
+ */
 const convertirDisponibles = async (arrayRespuesta) => {
   try {
     var nuevoArray = [];
@@ -466,6 +560,7 @@ module.exports = {
   getCitasInasistentesWhatsapp,
   getCitasInasistentesDocumento,
   getCitasActivasUsuario,
+  insertCita,
   compararCitas,
   compararBloqueos,
   convertirDisponibles,

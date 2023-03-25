@@ -10,6 +10,7 @@ const {
   getCitasInasistentesWhatsapp,
   getCitasInasistentesDocumento,
   getCitasActivasUsuario,
+  insertCita,
   compararCitas,
   compararBloqueos,
   convertirDisponibles,
@@ -243,7 +244,7 @@ async function asignarCitaDisponible(mensaje, whatsapp) {
         for (const inasistencia of inasistencias) {
           mensajeInasistencias =
             mensajeInasistencias +
-            " -> Paciente: " +
+            " -> Cita: " +
             inasistencia.nombre1 +
             " " +
             inasistencia.nombre2 +
@@ -251,8 +252,8 @@ async function asignarCitaDisponible(mensaje, whatsapp) {
             inasistencia.apellido1 +
             " " +
             inasistencia.apellido2 +
-            ", ";
-          inasistencia.fec_cita.toLocaleDateString("es-ES", options);
+            ", " +
+            inasistencia.fec_cita.toLocaleDateString("es-ES", options);
           mensajeInasistencias =
             mensajeInasistencias + " a las " + inasistencia.hor_cita;
           mensajeInasistencias = inasistencia.motivo_cancelacion
@@ -374,7 +375,60 @@ async function asignarCitaDisponible(mensaje, whatsapp) {
       }
 
       // TODO: insertar cita en base de datos
-      return buscarCitaDisponible;
+
+      const registrarCita = await insertCita(
+        usuarioCodigo.id_usr_salud,
+        codigo,
+        fecha,
+        `${hora}:${minutos}${amPm}`,
+        fecha,
+        fecha,
+        `${hora}:${minutos}${amPm}`,
+        new Date(),
+        whatsapp
+      );
+
+      const idCita = registrarCita[0].insertId;
+      console.log(buscarCitaDisponible);
+
+      return (
+        "Cita registrada con exito, los datos de la cita son los siguientes:\n" +
+        " Codido de registro: *" +
+        idCita +
+        "*\n" +
+        " Documento: *" +
+        documento +
+        "*\n" +
+        " Usuario: *" +
+        usuarioCodigo.nombre1 +
+        " " +
+        usuarioCodigo.nombre2 +
+        " " +
+        usuarioCodigo.apellido1 +
+        " " +
+        usuarioCodigo.apellido2 +
+        "*\n" +
+        " Fecha Cita: *" +
+        nFecha.toLocaleDateString("es-ES", options) +
+        " a las " +
+        hora +
+        ":" +
+        minutos +
+        amPm +
+        "*\n" +
+        " Especialidad: *" +
+        buscarCitaDisponible.especialidad +
+        "*\n" +
+        " Profesional: *" +
+        buscarCitaDisponible.profesional +
+        "*\n" +
+        "Recuerde asistir con 30 minutos de anticipacion para facturar su cita, si desea cancelar su cita Utilice el codigo de registro *" +
+        idCita +
+        "*, recuerde que cancelar con minimo " +
+        horas +
+        " horas de anticipacion" +
+        " a la hora de la cita o se registrara como una inasistencia"
+      );
     }
   } catch (error) {
     console.log(error);
@@ -388,7 +442,10 @@ module.exports = {
   asignarCitaDisponible,
 };
 
-asignarCitaDisponible("#asignar:21:5307084:2023-03-23:12:30:PM", "3043479843")
+asignarCitaDisponible(
+  "#asignar:21:1081594300:2023-03-27:12:30:PM",
+  "3043479843"
+)
   .then((res) => {
     console.log(res);
   })

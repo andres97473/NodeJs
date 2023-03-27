@@ -62,29 +62,6 @@ const listenMessage = () => {
         // sendMessage(from, "pong!!");
         // msg.reply("pong!!");
         client.sendMessage(from, "Pong!!");
-      } else if (msgRecibido.includes("#empleados")) {
-        getEmployees()
-          .then((employees) => {
-            var mensaje = "";
-            empleados = [];
-            empleados = employees[0];
-            // console.log(empleados);
-            for (const i of empleados) {
-              mensaje =
-                mensaje +
-                "Su nombre es " +
-                i.name +
-                ", y su salario es: " +
-                i.salary +
-                "\n";
-            }
-            // console.log(mensaje);
-            // enviar mensaje
-            client.sendMessage(from, mensaje);
-          })
-          .catch((err) => {
-            console.log(err);
-          });
       } else if (msgRecibido.includes("#cita")) {
         const formatDate = "YYYY-MM-DD";
         var nFecha = new Date();
@@ -103,10 +80,35 @@ const listenMessage = () => {
         }, 1500);
       } else if (msgRecibido.match(pattern1) && msgRecibido != "") {
         const array = msgRecibido.split(":");
+        const mensaje =
+          "Para asignar una de las citas disponibles envia un mensaje con la siguiente extrectura:\n" +
+          "#asignar:codigo del profesional:numero de docuemnto:fecha:hora:minutos:AM o PM\n" +
+          "Ejemplo:*#asignar:21:1081594301:2023-03-27:12:30:PM*";
 
         getMensajeDisponibles(array[1])
           .then((res) => {
             // console.log(res);
+
+            // enviar citas disponiles para un dia
+            setTimeout(() => {
+              client.sendMessage(from, res);
+            }, 1000);
+
+            // enviar ejemplo de como asignar una cita
+            setTimeout(() => {
+              client.sendMessage(from, mensaje);
+            }, 1200);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      } else if (msgRecibido.match(pattern2) && msgRecibido != "") {
+        const numWhatsapp = from.split("@");
+        // console.log(numWhatsapp[0]);
+
+        asignarCitaDisponible(msgRecibido, numWhatsapp[0])
+          .then((res) => {
+            // enviar citas disponiles para un dia
             setTimeout(() => {
               client.sendMessage(from, res);
             }, 1000);

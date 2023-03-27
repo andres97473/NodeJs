@@ -180,17 +180,20 @@ async function getMensajeDisponibles(fecha) {
 }
 
 /**
- * @param mensaje para generar asignar una cita a un usuario en una fecha y hora para un profesional
+ * Asignar una cita disponible a un usuario
+ * @param {string} mensaje para generar asignar una cita a un usuario en una fecha y hora para un profesional
+ * @param {string} whatsapp desde donde se realiza la solicitud
  */
 async function asignarCitaDisponible(mensaje, whatsapp) {
   try {
     const pattern1 = /^#asignar:./;
-    const pattern2 = /\d{2}/;
+    const pattern2 = /[0-9]{2}/;
     const pattern3 = /AM|PM/;
     const ATEN_USUARIO = process.env.ATEN_USUARIO;
     if (mensaje.match(pattern1) && mensaje != "") {
       const array = mensaje.split(":");
-      const [comodin, codigo, documento, fecha, hora, minutos, amPm] = array;
+      const [comodin, codigo, documento, fecha, hora, minutos, ampm] = array;
+      const amPm = ampm.toUpperCase();
       const horas = 4;
       const citasInasistentes = 3;
 
@@ -268,9 +271,9 @@ async function asignarCitaDisponible(mensaje, whatsapp) {
         return "ERROR: El codigo del Profesional debe ser un numero Entero";
       } else if (!validarFormatoFecha(fecha)) {
         return "ERROR: La fecha no esta en el formato año-mes-dia (AAAA-MM-DD), si el mes o el dia son menores a 10 debe poner un cero adelante";
-      } else if (!hora.match(pattern2)) {
+      } else if (!hora.match(pattern2) || hora.length != 2) {
         return "ERROR: La hora no esta en el formato HH, si la hora es menor que 10 debe poner un cero adelante";
-      } else if (!minutos.match(pattern2)) {
+      } else if (!minutos.match(pattern2) || minutos.length != 2) {
         return "ERROR: Los minutos no estan en el formato MM, si los minutos son menor que 10 debe poner un cero adelante";
       } else if (!amPm.match(pattern3) || amPm.length != 2) {
         return "ERROR: debe escribir AM si desea su cita en la mañana o PM si desea su cita en la tarde";
@@ -389,7 +392,7 @@ async function asignarCitaDisponible(mensaje, whatsapp) {
       );
 
       const idCita = registrarCita[0].insertId;
-      console.log(buscarCitaDisponible);
+      // console.log(buscarCitaDisponible);
 
       return (
         "Cita registrada con exito, los datos de la cita son los siguientes:\n" +
@@ -424,7 +427,7 @@ async function asignarCitaDisponible(mensaje, whatsapp) {
         "*\n" +
         "Recuerde asistir con 30 minutos de anticipacion para facturar su cita, si desea cancelar su cita Utilice el codigo de registro *" +
         idCita +
-        "*, recuerde que cancelar con minimo " +
+        "*, recuerde que debe cancelar con minimo " +
         horas +
         " horas de anticipacion" +
         " a la hora de la cita o se registrara como una inasistencia"
@@ -442,16 +445,16 @@ module.exports = {
   asignarCitaDisponible,
 };
 
-asignarCitaDisponible(
-  "#asignar:21:1081594300:2023-03-27:12:30:PM",
-  "3043479843"
-)
-  .then((res) => {
-    console.log(res);
-  })
-  .catch((err) => {
-    console.log(err);
-  });
+// asignarCitaDisponible(
+//   "#asignar:21:1081594300:2023-03-28:12:10:pm",
+//   "573043479843"
+// )
+//   .then((res) => {
+//     console.log(res);
+//   })
+//   .catch((err) => {
+//     console.log(err);
+//   });
 
 // getMensajeDisponibles("2023-03-16").then((res) => {
 //   console.log(res);

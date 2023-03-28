@@ -10,6 +10,7 @@ const {
   getCitasInasistentesWhatsapp,
   getCitasInasistentesDocumento,
   getCitasActivasUsuario,
+  getCitaId,
   insertCita,
   compararCitas,
   compararBloqueos,
@@ -44,8 +45,8 @@ function validarFechaActual(campo) {
 }
 
 /**
- * @param fechaString que se quiere comparar
- * @param horas que se reuqiere que sea mayor la fechaString a la fecha actual
+ * @param {string} fechaString que se quiere comparar
+ * @param {int} horas que se requiere que sea mayor la fechaString a la fecha actual
  */
 const validarFechaMayorAHoras = (fechaString, horas) => {
   const arrayFecha = String(fechaString).split(":");
@@ -61,7 +62,8 @@ const validarFechaMayorAHoras = (fechaString, horas) => {
 };
 
 /**
- * @param fechaString para generar las citas disponibles y quitar las que no se pueden asignar
+ * funcion busca las citas disponibles para todos los profesionales en una fecha
+ * @param {string} fecha para generar las citas disponibles y quitar las que no se pueden asignar
  */
 async function getCitasDisponibles(fecha) {
   try {
@@ -85,7 +87,9 @@ async function getCitasDisponibles(fecha) {
 }
 
 /**
- * @param fechaString para generar las citas disponibles para un profesional y quitar las que no se pueden asignar
+ * funcion busca las citas disponibles para un profesional por id en una fecha
+ * @param {int} id de un profesional
+ * @param {string} fecha para generar las citas disponibles para un profesional y quitar las que no se pueden asignar
  */
 async function getCitasDisponiblesProfesional(id, fecha) {
   try {
@@ -107,7 +111,8 @@ async function getCitasDisponiblesProfesional(id, fecha) {
 }
 
 /**
- * @param fechaString para generar un mensaje con las citas disponibles de ese dia para todos los profesionales
+ * Funcion que retorna un texto con las citas disponibles de los profesionales en una fecha o los errores encontrados
+ * @param {string} fecha para generar un mensaje con las citas disponibles de ese dia para todos los profesionales
  */
 async function getMensajeDisponibles(fecha) {
   try {
@@ -377,8 +382,6 @@ async function asignarCitaDisponible(mensaje, whatsapp) {
         );
       }
 
-      // TODO: insertar cita en base de datos
-
       const registrarCita = await insertCita(
         usuarioCodigo.id_usr_salud,
         codigo,
@@ -438,12 +441,32 @@ async function asignarCitaDisponible(mensaje, whatsapp) {
   }
 }
 
+/**
+ * Cancelar una cita por medio de su id
+ * @param {int} id de la cita que se desea cancelar
+ * @param {string} whatsapp desde donde se realiza la solicitud
+ */
+async function cancelarCitaId(id, whatsapp) {
+  try {
+    const citaId = await getCitaId(id);
+
+    return citaId;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 module.exports = {
   getCitasDisponibles,
   getMensajeDisponibles,
   validarFormatoFecha,
   asignarCitaDisponible,
+  cancelarCitaId,
 };
+
+// getMensajeDisponibles("2023-03-16").then((res) => {
+//   console.log(res);
+// });
 
 // asignarCitaDisponible(
 //   "#asignar:21:1081594300:2023-03-28:12:10:pm",
@@ -456,6 +479,10 @@ module.exports = {
 //     console.log(err);
 //   });
 
-// getMensajeDisponibles("2023-03-16").then((res) => {
-//   console.log(res);
-// });
+cancelarCitaId(127909, "573043479843")
+  .then((res) => {
+    console.log(res[0]);
+  })
+  .catch((err) => {
+    console.log(err);
+  });

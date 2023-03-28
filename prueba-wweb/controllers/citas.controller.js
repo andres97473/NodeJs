@@ -392,6 +392,26 @@ const insertCita = async (
 };
 
 /**
+ * Obtener una cita por medio de su id
+ * @param  {int} id de la cita que se desea buscar
+ */
+const getCitaId = async (id) => {
+  try {
+    return ([rows] = await pool.query(
+      `SELECT ci.id_cita,ci.id_usr_cita,ci.fec_cita,ci.hor_cita,
+      us.num_doc_usr,us.apellido1,us.apellido2,us.nombre1,us.nombre2,
+      ci.descripcion,ci.estado,ci.whatsapp
+      FROM adm_citas AS ci
+      INNER JOIN adm_usuarios AS us ON (us.id_usr_salud=ci.id_usr_cita) 
+      WHERE ci.id_cita = ?`,
+      [id]
+    ));
+  } catch (error) {
+    return console.log(error);
+  }
+};
+
+/**
  * Convertir turnos en citas posibles para el dia
  * @param  {string} fecha en formato string
  */
@@ -560,6 +580,7 @@ module.exports = {
   getCitasInasistentesWhatsapp,
   getCitasInasistentesDocumento,
   getCitasActivasUsuario,
+  getCitaId,
   insertCita,
   compararCitas,
   compararBloqueos,

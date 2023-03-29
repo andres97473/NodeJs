@@ -12,6 +12,7 @@ const {
   getCitasActivasUsuario,
   getCitaId,
   insertCita,
+  updateCitaId,
   compararCitas,
   compararBloqueos,
   convertirDisponibles,
@@ -443,14 +444,61 @@ async function asignarCitaDisponible(mensaje, whatsapp) {
 
 /**
  * Cancelar una cita por medio de su id
- * @param {int} id de la cita que se desea cancelar
+ * @param {string} mensaje con el id de la cita a cancelar
  * @param {string} whatsapp desde donde se realiza la solicitud
  */
-async function cancelarCitaId(id, whatsapp) {
+async function cancelarCitaId(mensaje, whatsapp) {
   try {
-    const citaId = await getCitaId(id);
+    const pattern1 = /^#cancelar:./;
+    const ATEN_USUARIO = process.env.ATEN_USUARIO;
+    const formatDate = "YYYY-MM-DD hh:mmA";
+    const formatDate2 = "YYYY-MM-DD";
+    if (mensaje.match(pattern1) && mensaje != "") {
+      const array = mensaje.split(":");
+      if (array.length !== 2) {
+        return "ERROR: Los datos suministrados no coinciden con el formato aceptado, #cancelar:codigoRegistro";
+      } else {
+        const [comodin, id] = array;
+        const citaId = await getCitaId(id);
+        const cancelar = citaId[0][0];
+        const horas = 4;
 
-    return citaId;
+        const fechaCita = moment(cancelar.fec_cita).format(formatDate2);
+        const horaCita =
+          String(cancelar.hor_cita).substring(0, 5) +
+          ":" +
+          String(cancelar.hor_cita).substring(5, 8);
+
+        if (!Number.isInteger(Number(id))) {
+          return "ERROR: El codigo de Registro debe ser un numero Entero";
+        } else if (!cancelar) {
+          return "ERROR: No se encontro una cita con ese codigo de Registro";
+        } else if (cancelar.whatsapp !== whatsapp) {
+          return "ERROR: Este numero de whatsapp no coincide con el que hizo el registro de la cita";
+        } else if (cancelar.estado === 4) {
+          const nFecha = cancelar.fec_cancela;
+          return (
+            "ERROR: La cita ya fue cancelada el dia " +
+            moment(nFecha).format(formatDate)
+          );
+        } else if (
+          !validarFechaMayorAHoras(fechaCita + ":" + horaCita, horas)
+        ) {
+          return (
+            "Error: no se pueden cancelar citas con un tiempo menor a " +
+            horas +
+            " horas, de la hora actual a la hora de asistencia de la cita"
+          );
+        } else {
+          const citaCancelada = await updateCitaId(
+            new Date(),
+            cancelar.id_cita
+          );
+
+          return "Cita cancelada con exito";
+        }
+      }
+    }
   } catch (error) {
     console.log(error);
   }
@@ -479,9 +527,9 @@ module.exports = {
 //     console.log(err);
 //   });
 
-cancelarCitaId(127909, "573043479843")
+cancelarCitaId("#cancelar:127909", "573043479843")
   .then((res) => {
-    console.log(res[0]);
+    console.log(res);
   })
   .catch((err) => {
     console.log(err);

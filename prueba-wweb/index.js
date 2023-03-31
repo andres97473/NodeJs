@@ -83,9 +83,9 @@ const listenMessage = () => {
       } else if (msgRecibido.match(pattern1) && msgRecibido != "") {
         const array = msgRecibido.split(":");
         const mensaje =
-          "Para asignar una de las citas disponibles envia un mensaje con la siguiente extrectura:\n" +
+          "Para asignar una de las citas disponibles envia un mensaje con la siguiente estructura:\n" +
           "#asignar:codigo del profesional:numero de docuemnto:fecha:hora:minutos:AM o PM\n" +
-          "Ejemplo:*#asignar:21:1081594301:2023-03-27:12:30:PM*";
+          "Ejemplo:\n*#asignar:21:1081594301:2023-03-27:12:30:PM*";
 
         getMensajeDisponibles(array[1])
           .then((res) => {

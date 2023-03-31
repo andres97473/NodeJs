@@ -5,6 +5,7 @@ const { getEmployees } = require("./controllers/employees.controller.js");
 const {
   getMensajeDisponibles,
   asignarCitaDisponible,
+  cancelarCitaId,
 } = require("./promises/index.js");
 
 const client = new Client({
@@ -50,13 +51,14 @@ const removeAccents = (str) => {
    */
 const listenMessage = () => {
   client.on("message", async (msg) => {
-    //console.log("mensaje ", msg);
+    // console.log("mensaje ", msg);
     const { from, to, body } = msg;
 
     if (from.includes("@c.us")) {
       let msgRecibido = removeAccents(body);
       const pattern1 = /^#disponibles:./;
       const pattern2 = /^#asignar:./;
+      const pattern3 = /^#cancelar:./;
 
       if (msgRecibido.includes("ping")) {
         // sendMessage(from, "pong!!");
@@ -107,6 +109,20 @@ const listenMessage = () => {
         // console.log(numWhatsapp[0]);
 
         asignarCitaDisponible(msgRecibido, numWhatsapp[0])
+          .then((res) => {
+            // enviar citas disponiles para un dia
+            setTimeout(() => {
+              client.sendMessage(from, res);
+            }, 1000);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      } else if (msgRecibido.match(pattern3) && msgRecibido != "") {
+        const numWhatsapp = from.split("@");
+        // console.log(numWhatsapp[0]);
+
+        cancelarCitaId(msgRecibido, numWhatsapp[0])
           .then((res) => {
             // enviar citas disponiles para un dia
             setTimeout(() => {

@@ -285,6 +285,21 @@ async function asignarCitaDisponible(mensaje, whatsapp) {
         return "ERROR: debe escribir AM si desea su cita en la mañana o PM si desea su cita en la tarde";
       } else if (!usuarioCodigo) {
         return "ERROR: usuario no encontrado en la base de datos, verifique que su numero de documento este correcto o que tenga la atencion en la institucion";
+      } else if (usuarioCodigo.estado === 0) {
+        return (
+          "ERROR: El usuario " +
+          usuarioCodigo.nombre1 +
+          " " +
+          usuarioCodigo.nombre2 +
+          " " +
+          usuarioCodigo.apellido1 +
+          " " +
+          usuarioCodigo.apellido2 +
+          " con numero de documento " +
+          usuarioCodigo.num_doc_usr +
+          " *Esta Inactivo*\n" +
+          pieMensaje
+        );
       } else if (!validarFechaActual(fecha)) {
         return (
           "Error: El dia " +
@@ -523,7 +538,7 @@ module.exports = {
 // });
 
 // asignarCitaDisponible(
-//   "#asignar:21:1081594300:2023-03-28:12:10:pm",
+//   "#asignar:21:1081594300:2023-04-03:12:10:pm",
 //   "573043479843"
 // )
 //   .then((res) => {
@@ -533,10 +548,10 @@ module.exports = {
 //     console.log(err);
 //   });
 
-cancelarCitaId("#cancelar:127909", "573043479843")
-  .then((res) => {
-    console.log(res);
-  })
-  .catch((err) => {
-    console.log(err);
-  });
+// cancelarCitaId("#cancelar:127909", "573043479843")
+//   .then((res) => {
+//     console.log(res);
+//   })
+//   .catch((err) => {
+//     console.log(err);
+//   });

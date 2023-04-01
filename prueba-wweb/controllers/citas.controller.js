@@ -133,7 +133,7 @@ const getFestivos = async (fecha) => {
 const getUsuarioDocumento = async (documento) => {
   try {
     return ([rows] = await pool.query(
-      `SELECT us.id_usr_salud, us.num_doc_usr, us.apellido1, us.apellido2, us.nombre1, us.nombre2
+      `SELECT us.id_usr_salud, us.num_doc_usr, us.apellido1, us.apellido2, us.nombre1, us.nombre2, us.estado
       FROM adm_usuarios AS us
       WHERE us.num_doc_usr = ?`,
       [documento]

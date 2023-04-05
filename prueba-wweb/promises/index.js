@@ -513,8 +513,13 @@ async function cancelarCitaId(mensaje, whatsapp) {
                 new Date(),
                 cancelar.id_cita
               );
+              const fechaCita = moment(cancelar.fec_cita).format(formatDate2);
+              const horaCita =
+                String(cancelar.hor_cita).substring(0, 5) +
+                ":" +
+                String(cancelar.hor_cita).substring(5, 8);
 
-              return "Cita cancelada con exito";
+              return `La cita con codigo de registro *${id}* del dia ${fechaCita} ${horaCita} fue cancelada con exito!!`;
             }
           }
         }
@@ -538,7 +543,7 @@ module.exports = {
 // });
 
 // asignarCitaDisponible(
-//   "#asignar:21:1081594300:2023-04-03:12:10:pm",
+//   "#asignar:21:1081594300:2023-04-05:12:10:pm",
 //   "573043479843"
 // )
 //   .then((res) => {
@@ -548,7 +553,7 @@ module.exports = {
 //     console.log(err);
 //   });
 
-// cancelarCitaId("#cancelar:127909", "573043479843")
+// cancelarCitaId("#cancelar:127917", "573043479843")
 //   .then((res) => {
 //     console.log(res);
 //   })

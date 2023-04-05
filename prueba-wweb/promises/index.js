@@ -553,10 +553,10 @@ module.exports = {
 //     console.log(err);
 //   });
 
-cancelarCitaId("#cancelar:127918", "573043479843")
-  .then((res) => {
-    console.log(res);
-  })
-  .catch((err) => {
-    console.log(err);
-  });
+// cancelarCitaId("#cancelar:127918", "573043479843")
+//   .then((res) => {
+//     console.log(res);
+//   })
+//   .catch((err) => {
+//     console.log(err);
+//   });

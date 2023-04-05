@@ -414,7 +414,7 @@ async function asignarCitaDisponible(mensaje, whatsapp) {
       // console.log(buscarCitaDisponible);
 
       return (
-        "Cita registrada con exito, los datos de la cita son los siguientes:\n" +
+        "Cita registrada con exito!!, los datos de la cita son los siguientes:\n" +
         " Codido de registro: *" +
         idCita +
         "*\n" +
@@ -553,10 +553,10 @@ module.exports = {
 //     console.log(err);
 //   });
 
-// cancelarCitaId("#cancelar:127917", "573043479843")
-//   .then((res) => {
-//     console.log(res);
-//   })
-//   .catch((err) => {
-//     console.log(err);
-//   });
+cancelarCitaId("#cancelar:127918", "573043479843")
+  .then((res) => {
+    console.log(res);
+  })
+  .catch((err) => {
+    console.log(err);
+  });

@@ -85,7 +85,8 @@ const listenMessage = () => {
         const mensaje =
           "Para asignar una de las citas disponibles envia un mensaje con la siguiente estructura:\n" +
           "#asignar:codigo del profesional:numero de docuemnto:fecha:hora:minutos:AM o PM\n" +
-          "Ejemplo:\n*#asignar:21:1081594301:2023-03-27:12:30:PM*";
+          "Ejemplo:";
+        const mensaje2 = "#asignar:21:1081594301:2023-03-27:12:30:PM";
 
         getMensajeDisponibles(array[1])
           .then((res) => {
@@ -100,6 +101,10 @@ const listenMessage = () => {
             setTimeout(() => {
               client.sendMessage(from, mensaje);
             }, 1200);
+            // enviar ejemplo de como asignar una cita
+            setTimeout(() => {
+              client.sendMessage(from, mensaje2);
+            }, 1300);
           })
           .catch((err) => {
             console.log(err);

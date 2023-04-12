@@ -46,6 +46,7 @@ function validarFechaActual(campo) {
 }
 
 /**
+ * Validar que la diferencia entre la fecha actual y la fecha solicitada no sea menor a las horas
  * @param {string} fechaString que se quiere comparar
  * @param {int} horas que se requiere que sea mayor la fechaString a la fecha actual
  */
@@ -56,6 +57,22 @@ const validarFechaMayorAHoras = (fechaString, horas) => {
   const ahora = new Date();
   const diferencia = (nFecha - ahora) / 1000 / 60 / 60;
   if (Math.floor(diferencia) >= horas) {
+    return true;
+  } else {
+    return false;
+  }
+};
+
+/**
+ * Si la diferencia en dias supera a los dias que se ingresan retorna true
+ * @param {string} fechaString que se quiere comparar
+ * @param {int} dias que se requiere que sea mayor la fechaString a la fecha actual
+ */
+const validarFechaMenorADias = (fechaString, dias) => {
+  const nFecha = new Date(fechaString);
+  const ahora = new Date();
+  const diferencia = (nFecha - ahora) / 1000 / 60 / 60 / 24;
+  if (Math.floor(diferencia) > dias) {
     return true;
   } else {
     return false;
@@ -177,6 +194,7 @@ async function getMensajeDisponibles(fecha) {
           mensaje = mensaje + "-----------------------------------------------";
         }
       }
+
       return mensaje;
     }
     // console.log(mensaje);
@@ -201,6 +219,7 @@ async function asignarCitaDisponible(mensaje, whatsapp) {
       const [comodin, codigo, documento, fecha, hora, minutos, ampm] = array;
       const amPm = ampm.toUpperCase();
       const horas = 4;
+      const dias = 15;
       const citasInasistentes = 3;
 
       const pieMensaje =
@@ -395,6 +414,12 @@ async function asignarCitaDisponible(mensaje, whatsapp) {
           "Error: no se pueden asignar citas con un tiempo menor a " +
           horas +
           " horas de la hora actual a la hora de asignacion de la cita"
+        );
+      } else if (validarFechaMenorADias(fecha, dias)) {
+        return (
+          "Error: no se pueden asignar citas con un tiempo mayor a " +
+          dias +
+          " dias de la hora actual a la hora de asignacion de la cita"
         );
       }
 

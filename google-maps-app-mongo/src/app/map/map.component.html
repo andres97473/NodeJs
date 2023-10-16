@@ -1,0 +1,117 @@
+<div class="row container">
+  <div class="col-6">
+    <button class="btn btn-primary mb-2 mt-2" (click)="getCurrentLocation()">
+      Buscar ubicacion actual
+    </button>
+    <form [formGroup]="branchesForm" (ngSubmit)="branchesSubmit(branchesForm)">
+      <div class="mb-3">
+        <label for="exampleInputdistancia" class="form-label"
+          >Metros de distancia</label
+        >
+        <input
+          type="number"
+          class="form-control"
+          id="exampleInputdistancia"
+          formControlName="maxDistance"
+        />
+      </div>
+
+      <div class="mb-3">
+        <label for="exampleInputlatitud" class="form-label">Latitud</label>
+        <input
+          type="number"
+          class="form-control"
+          id="exampleInputlatitud"
+          formControlName="lat"
+        />
+      </div>
+
+      <div class="mb-3">
+        <label for="exampleInputlongitud" class="form-label">Longitud</label>
+        <input
+          type="number"
+          class="form-control"
+          id="exampleInputlongitud"
+          formControlName="lng"
+        />
+      </div>
+
+      <div class="row">
+        <div class="col-6">
+          <button type="submit" class="btn btn-primary">
+            Buscar ubicaciones cercanas
+          </button>
+        </div>
+        <div class="col-6">
+          <div *ngIf="branches.length">Resultados: {{ branches.length }}</div>
+        </div>
+      </div>
+    </form>
+
+    <div class="table-container" *ngIf="branches.length">
+      <table class="table table-bordered mt-4">
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Email</th>
+            <th>Dirección</th>
+            <th>Distancia (metros)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            *ngFor="let branch of branches"
+            (mouseenter)="centerBranch(branch)"
+            class="branch-list"
+          >
+            <td>{{ branch.name }}</td>
+            <td>{{ branch.email }}</td>
+            <td>{{ branch.address.street }}, {{ branch.address.country }}</td>
+            <td>{{ branch.distance | number : "1.0-0" }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="col-6">
+    <google-map
+      height="100vh"
+      width="750px"
+      [center]="center"
+      [zoom]="zoom"
+      (mapClick)="addMarker($event)"
+    >
+      <map-marker
+        #marker="mapMarker"
+        *ngFor="let markerPosition of markerPositions"
+        [position]="markerPosition"
+        (mapClick)="openInfoWindow(marker)"
+        [icon]="'assets/icon2.png'"
+      ></map-marker>
+      <map-marker
+        #marker="mapMarker"
+        *ngIf="actualMarkerPosition"
+        [position]="actualMarkerPosition"
+      ></map-marker>
+      <map-info-window>
+        <div class="card">
+          <div class="card-header">
+            {{ branchSelected?.name }}
+          </div>
+          <div class="card-body">
+            <p>Email: {{ branchSelected?.email }}</p>
+            <p>
+              Dirección: {{ branchSelected?.address?.street }},
+              {{ branchSelected?.address?.country }}
+            </p>
+            <p>
+              Distancia:
+              {{ branchSelected?.distance | number : "1.0-0" }} metros
+            </p>
+          </div>
+        </div>
+      </map-info-window>
+    </google-map>
+  </div>
+</div>

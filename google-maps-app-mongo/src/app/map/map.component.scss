@@ -1,0 +1,18 @@
+.table-container {
+  max-height: 300px;
+  /* Ajusta la altura máxima según tus necesidades */
+  overflow-y: auto;
+  /* Agrega una barra de desplazamiento vertical cuando sea necesario */
+}
+
+.branch-list {
+  cursor: pointer;
+  &:hover {
+    background-color: rgb(237, 237, 237);
+  }
+}
+
+.center-transition {
+  transition: center 0.5s ease;
+  /* Personaliza la duración y la función de temporización según tus preferencias */
+}

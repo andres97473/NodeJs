@@ -20,11 +20,12 @@ const {
 
 /**
  * Validar que fecha este en formato AAAA-MM-DD
- * @param  {string} campo
+ * @param  {string} fechaString fecha que se va a validar
+ * @returns {boolean}
  */
-function validarFormatoFecha(campo) {
+function validarFormatoFecha(fechaString) {
   var RegExPattern = /^\d{4,4}\-\d{2,2}\-\d{2,2}$/;
-  if (campo.match(RegExPattern) && campo != "") {
+  if (fechaString.match(RegExPattern) && fechaString != "") {
     return true;
   } else {
     return false;
@@ -33,10 +34,11 @@ function validarFormatoFecha(campo) {
 
 /**
  * Validar que la fecha no sea menor a la fecha actual
- * @param  {string} campo
+ * @param  {string} fechaString fecha que se va a validar
+ * @returns {boolean}
  */
-function validarFechaActual(campo) {
-  const nFecha = new Date(campo + "T23:59");
+function validarFechaActual(fechaString) {
+  const nFecha = new Date(fechaString + "T23:59");
   const hoy = new Date();
   if (nFecha >= hoy) {
     return true;
@@ -47,8 +49,9 @@ function validarFechaActual(campo) {
 
 /**
  * Validar que la diferencia entre la fecha actual y la fecha solicitada no sea menor a las horas
- * @param {string} fechaString que se quiere comparar
- * @param {int} horas que se requiere que sea mayor la fechaString a la fecha actual
+ * @param {string} fechaString Fecha que se quiere comparar
+ * @param {int} horas Horas que se requiere que sea mayor la fechaString a la fecha actual
+ * @returns {boolean}
  */
 const validarFechaMayorAHoras = (fechaString, horas) => {
   const arrayFecha = String(fechaString).split(":");
@@ -67,6 +70,7 @@ const validarFechaMayorAHoras = (fechaString, horas) => {
  * Si la diferencia en dias supera a los dias que se ingresan retorna true
  * @param {string} fechaString que se quiere comparar
  * @param {int} dias que se requiere que sea mayor la fechaString a la fecha actual
+ * @returns {boolean}
  */
 const validarFechaMenorADias = (fechaString, dias) => {
   const nFecha = new Date(fechaString);
@@ -81,7 +85,8 @@ const validarFechaMenorADias = (fechaString, dias) => {
 
 /**
  * funcion busca las citas disponibles para todos los profesionales en una fecha
- * @param {string} fecha para generar las citas disponibles y quitar las que no se pueden asignar
+ * @param {string} fecha Fecha para generar las citas disponibles y quitar las que no se pueden asignar
+ * @returns {array}
  */
 async function getCitasDisponibles(fecha) {
   try {
@@ -106,8 +111,9 @@ async function getCitasDisponibles(fecha) {
 
 /**
  * funcion busca las citas disponibles para un profesional por id en una fecha
- * @param {int} id de un profesional
- * @param {string} fecha para generar las citas disponibles para un profesional y quitar las que no se pueden asignar
+ * @param {int} id Id de un profesional
+ * @param {string} fecha Fecha para generar las citas disponibles para un profesional y quitar las que no se pueden asignar
+ * @returns {array}
  */
 async function getCitasDisponiblesProfesional(id, fecha) {
   try {
@@ -130,7 +136,8 @@ async function getCitasDisponiblesProfesional(id, fecha) {
 
 /**
  * Funcion que retorna un texto con las citas disponibles de los profesionales en una fecha o los errores encontrados
- * @param {string} fecha para generar un mensaje con las citas disponibles de ese dia para todos los profesionales
+ * @param {string} fecha Fecha para generar un mensaje con las citas disponibles de ese dia para todos los profesionales
+ * @returns {string}
  */
 async function getMensajeDisponibles(fecha) {
   try {
@@ -205,8 +212,9 @@ async function getMensajeDisponibles(fecha) {
 
 /**
  * Asignar una cita disponible a un usuario
- * @param {string} mensaje para generar asignar una cita a un usuario en una fecha y hora para un profesional
- * @param {string} whatsapp desde donde se realiza la solicitud
+ * @param {string} mensaje Mensaje que contiene la informacion para asignar una cita disponible a un usuario en una fecha y hora para un profesional
+ * @param {string} whatsapp Numero de whatsapp desde donde se realiza la solicitud
+ * @returns {string}
  */
 async function asignarCitaDisponible(mensaje, whatsapp) {
   try {
@@ -484,8 +492,9 @@ async function asignarCitaDisponible(mensaje, whatsapp) {
 
 /**
  * Cancelar una cita por medio de su id
- * @param {string} mensaje con el id de la cita a cancelar
- * @param {string} whatsapp desde donde se realiza la solicitud
+ * @param {string} mensaje Mensaje con el id de la cita a cancelar
+ * @param {string} whatsapp Numero de whatsapp desde donde se realiza la solicitud
+ * @returns {string}
  */
 async function cancelarCitaId(mensaje, whatsapp) {
   try {

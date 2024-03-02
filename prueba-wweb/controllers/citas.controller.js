@@ -6,8 +6,9 @@ const formatDate = "YYYY-MM-DD hh:mmA";
 // const fechaPrueba = "2023-02-01";
 
 /**
- * Obtener dia de semana segun formato de cronhis
- * @param  {string} fecha en formato string
+ * Obtener dia de semana segun formato de cronhis a partir de una fecha
+ * @param  {string} fecha Fecha en formato string
+ * @returns {number}
  */
 const diaFecha = (fecha) => {
   const dia = new Date(fecha);
@@ -30,16 +31,19 @@ const diaFecha = (fecha) => {
 
 /**
  * Retorna fecha en formato string
- * @param  {string} fecha en formato string
+ * @param  {string} fecha Fecha en formato string
+ * @returns {string}
  */
 const fechaString = (string) => {
   return string.substr(0, string.length - 2) + " " + string.slice(-2);
 };
 
 /**
- * @param fecha y hora inicial del rango
- * @param  fecha y hora final del rango
- * @param  fecha y hora a comparar
+ * Validar que una fecha este dentro de un rango de fechas
+ * @param  {Date} fechaInicio Fecha de incio del rango
+ * @param  {Date} fechaFin Fecha de fin del rango
+ * @param  {Date} fechaValidar Fecha que se requiere que este dentro del rango
+ * @returns {boolean}
  */
 const validarFechaEnRango = (fechaInicio, fechaFin, fechaValidar) => {
   const fechaInicioMs = fechaInicio.getTime();
@@ -55,8 +59,9 @@ const validarFechaEnRango = (fechaInicio, fechaFin, fechaValidar) => {
 
 /**
  * Comparar arrays por id y fecha_string
- * @param data1 array con la informacion
- * @param data2 array del que se van a quitar los elementos al array 1
+ * @param {array} data1 array con la informacion
+ * @param {array} data2 array del que se van a quitar los elementos al array 1
+ * @returns {array}
  */
 const compararCitas = async (data1, data2) => {
   try {
@@ -81,8 +86,9 @@ const compararCitas = async (data1, data2) => {
 
 /**
  * Comparar arrays dentro de rango
- * @param data1 array con la informacion
- * @param data2 array del que se van a quitar los elementos al array 1
+ * @param {array} data1 array con la informacion
+ * @param {array} data2 array del que se van a quitar los elementos al array 1
+ * @returns {array}
  */
 const compararBloqueos = async (data1, data2) => {
   try {
